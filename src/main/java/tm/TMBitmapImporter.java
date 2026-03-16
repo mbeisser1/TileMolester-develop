@@ -88,7 +88,7 @@ public class TMBitmapImporter {
         }
 
         DirectColorTileCodec codec = new DirectColorTileCodec("", 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000, "");
-        // copy to a new canvas
+        // Save Selection As a new canvas
         int cols = w / 8;
         int rows = h / 8;
         byte[] bits = new byte[cols * rows * codec.getTileSize()];

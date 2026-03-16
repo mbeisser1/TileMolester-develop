@@ -206,7 +206,7 @@ public class TMUI extends JFrame {
 	private JMenuItem pasteMenuItem = new JMenuItem("Paste");
 	private JMenuItem clearMenuItem = new JMenuItem("Clear");
 	private JMenuItem selectAllMenuItem = new JMenuItem("Select All");
-	private JMenuItem copyToMenuItem = new JMenuItem("Copy To...");
+	private JMenuItem copyToMenuItem = new JMenuItem("Export As...");
 	private JMenuItem pasteFromMenuItem = new JMenuItem("Paste From...");
 	private JMenuItem newSelectionMenuItem = new JMenuItem("New Selection");
 	private JMenuItem applySelectionMenuItem = new JMenuItem("Apply Selection");
@@ -363,7 +363,7 @@ public class TMUI extends JFrame {
 		pasteMenuItem.setText(xlate("Paste"));
 		clearMenuItem.setText(xlate("Clear"));
 		selectAllMenuItem.setText(xlate("Select_All"));
-		copyToMenuItem.setText(xlate("Copy_To"));
+		copyToMenuItem.setText(xlate("Export_As"));
 		pasteFromMenuItem.setText(xlate("Paste_From"));
 		newSelectionMenuItem.setText(xlate("New_Selection"));
 		applySelectionMenuItem.setText(xlate("Apply_Selection"));
@@ -443,7 +443,7 @@ public class TMUI extends JFrame {
 		fileOpenChooser.setDialogTitle(xlate("Open_File_Dialog_Title"));
 		fileSaveChooser.setDialogTitle(xlate("Save_As_Dialog_Title"));
 		bitmapOpenChooser.setDialogTitle(xlate("Paste_From_Dialog_Title"));
-		bitmapSaveChooser.setDialogTitle(xlate("Copy_To_Dialog_Title"));
+		bitmapSaveChooser.setDialogTitle(xlate("Export_As_Dialog_Title"));
 		paletteOpenChooser.setDialogTitle(xlate("Open_Palette_Dialog_Title"));
 
 		///////// Read specs
@@ -576,7 +576,7 @@ public class TMUI extends JFrame {
 		bitmapSaveChooser.addChoosableFileFilter(bmf.png);
 		bitmapSaveChooser.addChoosableFileFilter(bmf.bmp);
 		bitmapSaveChooser.addChoosableFileFilter(bmf.pcx);
-		bitmapSaveChooser.setFileFilter(bmf.png);
+		bitmapSaveChooser.setFileFilter(bmf.bmp);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -1287,7 +1287,7 @@ public class TMUI extends JFrame {
 		editMenu.add(selectAllMenuItem);
 		//
 		editMenu.addSeparator();
-		// Copy To...
+		// Save Selection As...
 		copyToMenuItem.setMnemonic(KeyEvent.VK_O);
 		copyToMenuItem.addActionListener(
 				new ActionListener() {
@@ -2318,25 +2318,40 @@ public class TMUI extends JFrame {
 
 	/**
 	 *
-	 * Handles menu command "Copy To...".
+	 * Handles menu command "Save Selection As...".
 	 *
 	 **/
 
-	public void doCopyToCommand() {
+	public boolean exportSelectionAs() {
 		TMView view = getSelectedView();
-		if (view != null) {
-			int retVal = bitmapSaveChooser.showSaveDialog(this);
-			if (retVal == JFileChooser.APPROVE_OPTION) {
-				File file = bitmapSaveChooser.getSelectedFile();
-				try {
-					TMBitmapExporter.saveTileCanvasToFile(view.getEditorCanvas().getSelectionCanvas(), file);
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(this,
-							xlate("Save_Bitmap_Error") + "\n" + e.getMessage(),
-							"Tile Molester",
-							JOptionPane.ERROR_MESSAGE);
-				}
+		if (view == null) {
+			return false;
+		}
+		bitmapSaveChooser.setFileFilter(bmf.bmp);
+		int retVal = bitmapSaveChooser.showSaveDialog(this);
+		if (retVal == JFileChooser.APPROVE_OPTION) {
+			File file = bitmapSaveChooser.getSelectedFile();
+			try {
+				TMBitmapExporter.saveTileCanvasToFile(view.getEditorCanvas().getSelectionCanvas(), file);
+				return true;
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(this,
+						xlate("Save_Bitmap_Error") + "\n" + e.getMessage(),
+						"Tile Molester",
+						JOptionPane.ERROR_MESSAGE);
+				return false;
 			}
+		}
+		return false;
+	}
+
+	public void doCopyToCommand() {
+		exportSelectionAs();
+	}
+
+	public void doCutAsCommand() {
+		if (exportSelectionAs()) {
+			doCutCommand();
 		}
 	}
 

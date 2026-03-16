@@ -53,8 +53,10 @@ public class TMPaletteVizualiser extends JPanel {
 **/
 
     public void setPalIndex(int palIndex) {
-        this.lastIndex = palIndex > this.palIndex ? this.lastIndex + this.colorCount : this.lastIndex - this.colorCount;
-		this.palIndex = palIndex;
+        this.palIndex = palIndex;
+        // keep lastIndex in same page when palette page changes
+        // to avoid drift/messed-up mapping after cycling
+        this.lastIndex = this.palIndex * this.colorCount;
     }
 
 /**

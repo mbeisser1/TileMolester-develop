@@ -89,6 +89,28 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
     private void initSelectionPopup() {
         selectionPopup = new JPopupMenu();
         JMenuItem menuItem;
+        // Cut As...
+        menuItem = new JMenuItem("Cut As...");
+        menuItem.setMnemonic(KeyEvent.VK_T);
+        menuItem.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    ui.doCutAsCommand();
+                }
+            }
+        );
+        selectionPopup.add(menuItem);
+        // Export As...
+        menuItem = new JMenuItem("Export As...");
+        menuItem.setMnemonic(KeyEvent.VK_X);
+        menuItem.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    ui.doCopyToCommand();
+                }
+            }
+        );
+        selectionPopup.add(menuItem);
         // Cut
         menuItem = new JMenuItem("Cut");
         menuItem.setMnemonic(KeyEvent.VK_T);
@@ -296,6 +318,8 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         dy = e.getY();
         oldX = getX();
         oldY = getY();
+        // support popup on mac/linux/Windows where trigger can be in press
+        maybeShowPopup(e);
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -313,6 +337,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                     )
             );
         }
+        // support popup on all platforms (some send on release)
         maybeShowPopup(e);
     }
 /**

@@ -23,6 +23,7 @@ import tm.TMPalette;
 import tm.treenodes.*;
 import tm.reversibleaction.*;
 import tm.canvases.TMEditorCanvas;
+import tm.canvases.TMTileCanvas;
 import tm.tilecodecs.TileCodec;
 
 import javax.swing.*;
@@ -293,8 +294,25 @@ public class TMView extends JInternalFrame {
 		editorCanvas.unpackPixels();
 		editorCanvas.repaint();
 
+		updateSelectionPaletteAndIndex(palette, 0);
+
 		setFGColor(palette.getEntryRGB(1));
 		setBGColor(palette.getEntryRGB(0));
+	}
+
+	/**
+	 * Keep selection canvas palette/index in sync with the parent view.
+	 */
+	private void updateSelectionPaletteAndIndex(TMPalette palette, int palIndex) {
+		if (editorCanvas.hasSelection()) {
+			TMTileCanvas selection = editorCanvas.getSelectionCanvas();
+			if (selection != editorCanvas) {
+				selection.setPalette(palette);
+				selection.setPalIndex(palIndex);
+				selection.unpackPixels();
+				selection.repaint();
+			}
+		}
 	}
 
 	/**
@@ -317,6 +335,8 @@ public class TMView extends JInternalFrame {
 		editorCanvas.setPalIndex(palIndex);
 		editorCanvas.unpackPixels();
 		editorCanvas.repaint();
+
+		updateSelectionPaletteAndIndex(getPalette(), palIndex);
 	}
 
 	/**
