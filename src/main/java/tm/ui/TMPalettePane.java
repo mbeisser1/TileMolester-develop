@@ -294,8 +294,7 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
                 }
 
                 // redraw stuff
-                view.getEditorCanvas().unpackPixels();
-                view.getEditorCanvas().redraw();
+                view.refreshPaletteDisplay();
                 repaint();
             }
         }

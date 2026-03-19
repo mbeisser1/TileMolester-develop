@@ -303,7 +303,7 @@ public class TMView extends JInternalFrame {
 	/**
 	 * Keep selection canvas palette/index in sync with the parent view.
 	 */
-	private void updateSelectionPaletteAndIndex(TMPalette palette, int palIndex) {
+	public void updateSelectionPaletteAndIndex(TMPalette palette, int palIndex) {
 		if (editorCanvas.hasSelection()) {
 			TMTileCanvas selection = editorCanvas.getSelectionCanvas();
 			if (selection != editorCanvas) {
@@ -313,6 +313,15 @@ public class TMView extends JInternalFrame {
 				selection.repaint();
 			}
 		}
+	}
+
+	/**
+	 * Refresh the editor and selection displays after palette edits.
+	 */
+	public void refreshPaletteDisplay() {
+		editorCanvas.unpackPixels();
+		editorCanvas.repaint();
+		updateSelectionPaletteAndIndex(getPalette(), getPalIndex());
 	}
 
 	/**

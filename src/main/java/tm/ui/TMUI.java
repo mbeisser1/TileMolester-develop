@@ -2333,6 +2333,8 @@ public class TMUI extends JFrame {
 			File file = bitmapSaveChooser.getSelectedFile();
 			try {
 				TMBitmapExporter.saveTileCanvasToFile(view.getEditorCanvas().getSelectionCanvas(), file);
+				// Keep selection and palette in sync after export.
+				view.refreshPaletteDisplay();
 				return true;
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this,
@@ -3115,8 +3117,7 @@ public class TMUI extends JFrame {
 				view.getPalette().setEntryRGB(colorIndex, rgb);
 
 				this.setFGColor(rgb);
-				view.getEditorCanvas().unpackPixels();
-				view.getEditorCanvas().redraw();
+				view.refreshPaletteDisplay();
 				repaint();
 			}
 			
@@ -3133,8 +3134,7 @@ public class TMUI extends JFrame {
 		TMView view = getSelectedView();
 		if (view != null) {
 			view.getPalette().setCodec(codec);
-			view.getEditorCanvas().unpackPixels();
-			view.getEditorCanvas().redraw();
+			view.refreshPaletteDisplay();
 			refreshPalettePane();
 		}
 	}
@@ -4473,10 +4473,17 @@ public class TMUI extends JFrame {
 		}
 		int mode = ((TMTileCodecFileFilter) ff).getDefaultMode();
 		TileCodec tc = getTileCodecByID(((TMTileCodecFileFilter) ff).getCodecID());
+		// hardcode 4bpp planar for opened files
+		TileCodec forcedTc = getTileCodecByID("PL03");
+		if (forcedTc != null) {
+			tc = forcedTc;
+		}
 		TMPalette pal = new TMPalette("PAL000", TMPalette.defaultPalette, getColorCodecByID("CF01"),
 				ColorCodec.LITTLE_ENDIAN, true);
 
-		addViewToDesktop(createView(img, tc, pal, mode));
+		TMView view = createView(img, tc, pal, mode);
+		view.setGridSize(3, 36);
+		addViewToDesktop(view);
 
 		Vector recentFiles = TileMolester.settings.getRecentFiles();
 		// Remove file from recentFiles, if it's there
