@@ -185,6 +185,8 @@ Palette_Size_Dialog_Title =
 New_Palette_Dialog_Title = 
 Import_Internal_Palette_Dialog_Title = 
 Open_Palette_Dialog_Title = 
+Palette_Rotate_Right = 
+Palette_Rotate_Left = 
 
 # Incremental Canvas Size
 

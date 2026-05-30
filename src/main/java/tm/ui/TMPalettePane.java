@@ -35,6 +35,8 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
 *
@@ -59,11 +61,16 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
     private Cursor pickupCursor = Toolkit.getDefaultToolkit().createCustomCursor(new ImageIcon(cl.getResource("icons/DropperCursor24.gif")).getImage(), new Point(8,23), "Dropper");
     private JButton decButton = new JButton(new FlatSVGIcon("icons/fluent/caret_left_24_filled.svg", 32, 32));
     private JButton incButton = new JButton(new FlatSVGIcon("icons/fluent/caret_right_24_filled.svg", 32, 32));
+    private JButton rotatePaletteRightButton = new JButton(new FlatSVGIcon("icons/fluent/rotate_right_24_regular.svg", 32, 32));
+    private JButton rotatePaletteLeftButton = new JButton(new FlatSVGIcon("icons/fluent/rotate_left_24_regular.svg", 32, 32));
     private JButton leftShiftButton = new JButton(new FlatSVGIcon("icons/fluent/caret_left_24_filled.svg", 22, 22));
     private JButton rightShiftButton = new JButton(new FlatSVGIcon("icons/fluent/caret_right_24_filled.svg", 22, 22));
     private JButton swapButton = new JButton(new FlatSVGIcon("icons/fluent/custom/swap.svg", 22, 22));
 	
 	private JTextField shiftValueField = new JTextField("1");
+
+    /** Baseline native palette entries per palIndex, captured on first rotate. */
+    private Map<Integer, int[]> palettePageBaseline = new HashMap<>();
 
 	/**
 *
@@ -88,6 +95,8 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         add(vizualiser);
         add(decButton);
         add(incButton);
+        add(rotatePaletteRightButton);
+        add(rotatePaletteLeftButton);
         add(leftShiftButton);
         add(rightShiftButton);
         add(shiftValueField);
@@ -99,6 +108,8 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         vizualiser.setSize(256, 64);
         decButton.setSize(32, 64);
         incButton.setSize(32, 64);
+        rotatePaletteRightButton.setSize(32, 64);
+        rotatePaletteLeftButton.setSize(32, 64);
         leftShiftButton.setSize(32, 32);
         rightShiftButton.setSize(32, 32);
         shiftValueField.setSize(64, 20);
@@ -110,9 +121,11 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         decButton.setLocation(80, 8);
         vizualiser.setLocation(112, 8);
         incButton.setLocation(368, 8);
-        leftShiftButton.setLocation(420, 24);
-        shiftValueField.setLocation(460, 30);
-        rightShiftButton.setLocation(530, 24);
+        rotatePaletteRightButton.setLocation(400, 8);
+        rotatePaletteLeftButton.setLocation(432, 8);
+        leftShiftButton.setLocation(464, 24);
+        shiftValueField.setLocation(504, 30);
+        rightShiftButton.setLocation(574, 24);
 
         vizualiser.setCursor(pickupCursor);
         vizualiser.addMouseListener(this);
@@ -138,6 +151,26 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     setNextPalIndex();
+                }
+            }
+        );
+
+        rotatePaletteRightButton.setToolTipText(ui.xlate("Palette_Rotate_Right"));
+        rotatePaletteRightButton.setFocusable(false);
+        rotatePaletteRightButton.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    shiftCurrentPalettePageRight();
+                }
+            }
+        );
+
+        rotatePaletteLeftButton.setToolTipText(ui.xlate("Palette_Rotate_Left"));
+        rotatePaletteLeftButton.setFocusable(false);
+        rotatePaletteLeftButton.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    shiftCurrentPalettePageLeft();
                 }
             }
         );
@@ -225,6 +258,9 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
 **/
 
     public void viewSelected(TMView view) {
+        if (this.view != view) {
+            palettePageBaseline.clear();
+        }
         this.view = view;
         // get view palette,color settings
         setPalette(view.getPalette());
@@ -232,6 +268,9 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         setBitDepth(view.getTileCodec().getBitsPerPixel());
         setFGColor(view.getFGColor());
         setBGColor(view.getBGColor());
+        boolean palettized = view.getTileCodec().getBitsPerPixel() <= 8;
+        rotatePaletteRightButton.setEnabled(palettized);
+        rotatePaletteLeftButton.setEnabled(palettized);
         repaint();
     }
 
@@ -342,6 +381,7 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
     public void setPreviousPalIndex() {
         view.setKeysEnabled(false);
         //
+        resetPalettePageRotation(view.getPalIndex());
         int pi = view.getPalIndex();
         pi = (pi == 0) ? view.getPalIndexMaximum() : pi-1;
         view.mapDrawColorsToPalIndex(pi);
@@ -361,6 +401,7 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
     public void setNextPalIndex() {
         view.setKeysEnabled(false);
         //
+        resetPalettePageRotation(view.getPalIndex());
         int pi = view.getPalIndex();
         pi = (pi == view.getPalIndexMaximum()) ? 0 : pi+1;
         view.mapDrawColorsToPalIndex(pi);
@@ -449,6 +490,121 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
     public void unlockShiftButtons() {
         leftShiftButton.setEnabled(true);
         rightShiftButton.setEnabled(true);
+    }
+
+    private void ensureBaseline(int palIndex, TMPalette palette, int base, int count) {
+        if (!palettePageBaseline.containsKey(palIndex)) {
+            int[] baseline = new int[count];
+            for (int i = 0; i < count; i++) {
+                baseline[i] = palette.getEntry(base + i);
+            }
+            palettePageBaseline.put(palIndex, baseline);
+        }
+    }
+
+    private void syncPalettePageToFile(TMPalette palette, int base, int count) {
+        if (palette.isDirect()) {
+            return;
+        }
+        byte[] dest = view.getFileImage().getContents();
+        int bytesPerPixel = palette.getCodec().getBytesPerPixel();
+        for (int i = 0; i < count; i++) {
+            int idx = base + i;
+            byte[] src = palette.getEntryBytes(idx);
+            System.arraycopy(src, 0, dest, palette.getOffset() + idx * bytesPerPixel, src.length);
+        }
+        ui.fileImageModified(view.getFileImage());
+    }
+
+    private void updateDrawColorsForCurrentPage() {
+        if (view.getTileCodec().getBitsPerPixel() > 8) {
+            return;
+        }
+        TMPalette pal = view.getPalette();
+        int palIndex = view.getPalIndex();
+        int colorCount = view.getTileCodec().getColorCount();
+        int colorIndex = palIndex * colorCount;
+        int fgIndex = pal.indexOf(colorIndex, view.getFGColor());
+        int bgIndex = pal.indexOf(colorIndex, view.getBGColor());
+        if (fgIndex >= 0) {
+            ui.setFGColor(pal.getEntryRGB(colorIndex + fgIndex));
+        }
+        if (bgIndex >= 0) {
+            ui.setBGColor(pal.getEntryRGB(colorIndex + bgIndex));
+        }
+    }
+
+    private void applyPageEntries(TMPalette palette, int base, int[] entries) {
+        for (int i = 0; i < entries.length; i++) {
+            palette.setEntry(base + i, entries[i]);
+        }
+        syncPalettePageToFile(palette, base, entries.length);
+        updateDrawColorsForCurrentPage();
+        view.refreshPaletteDisplay();
+        viewSelected(view);
+    }
+
+    public void resetPalettePageRotation(int palIndex) {
+        if (view == null || view.getTileCodec().getBitsPerPixel() > 8) {
+            return;
+        }
+        int[] baseline = palettePageBaseline.get(palIndex);
+        if (baseline == null) {
+            return;
+        }
+        TMPalette palette = view.getPalette();
+        int base = palIndex * view.getTileCodec().getColorCount();
+        applyPageEntries(palette, base, baseline);
+    }
+
+    public void shiftCurrentPalettePageRight() {
+        shiftCurrentPalettePage(+1);
+    }
+
+    public void shiftCurrentPalettePageLeft() {
+        shiftCurrentPalettePage(-1);
+    }
+
+    private void shiftCurrentPalettePage(int direction) {
+        if (view == null || view.getTileCodec().getBitsPerPixel() > 8) {
+            return;
+        }
+        view.setKeysEnabled(false);
+        TMPalette palette = view.getPalette();
+        int palIndex = view.getPalIndex();
+        int colorCount = view.getTileCodec().getColorCount();
+        int base = palIndex * colorCount;
+
+        ensureBaseline(palIndex, palette, base, colorCount);
+
+        int[] shifted = new int[colorCount];
+        for (int i = 0; i < colorCount; i++) {
+            shifted[i] = palette.getEntry(base + i);
+        }
+        if (direction > 0) {
+            // last -> first, rest shift right
+            int last = shifted[colorCount - 1];
+            for (int i = colorCount - 1; i >= 1; i--) {
+                shifted[i] = shifted[i - 1];
+            }
+            shifted[0] = last;
+        } else {
+            // first -> last, rest shift left
+            int first = shifted[0];
+            for (int i = 0; i < colorCount - 1; i++) {
+                shifted[i] = shifted[i + 1];
+            }
+            shifted[colorCount - 1] = first;
+        }
+
+        for (int i = 0; i < colorCount; i++) {
+            palette.setEntry(base + i, shifted[i]);
+        }
+        syncPalettePageToFile(palette, base, colorCount);
+        updateDrawColorsForCurrentPage();
+        view.refreshPaletteDisplay();
+        viewSelected(view);
+        view.setKeysEnabled(true);
     }
 
 }
