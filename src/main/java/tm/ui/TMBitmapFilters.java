@@ -21,9 +21,7 @@ package tm.ui;
 import tm.fileselection.TMFileFilter;
 
 /**
- *
  * File filters for the open+save bitmap dialog.
- *
  **/
 public class TMBitmapFilters {
 
@@ -36,12 +34,13 @@ public class TMBitmapFilters {
     public final SupportedFilter supported = new SupportedFilter();
 
     /**
-     *
      * Recognizes *.bmp files.
-     *
      **/
     private class BMPFilter extends TMFileFilter {
 
+        /**
+         * Creates a filter for Windows Bitmap files.
+         **/
         public BMPFilter() {
             super("bmp", "Windows Bitmap (*.bmp)");
         }
@@ -49,12 +48,13 @@ public class TMBitmapFilters {
     }
 
     /**
-     *
      * Recognizes *.pcx files.
-     *
      **/
     private class PCXFilter extends TMFileFilter {
 
+        /**
+         * Creates a filter for ZSoft Paintbrush PCX files.
+         **/
         public PCXFilter() {
             super("pcx", "ZSoft Paintbrush (*.pcx)");
         }
@@ -62,12 +62,13 @@ public class TMBitmapFilters {
     }
 
     /**
-     *
      * Recognizes *.jpg files.
-     *
      **/
     private class JPEGFilter extends TMFileFilter {
 
+        /**
+         * Creates a filter for JPEG image files.
+         **/
         public JPEGFilter() {
             super("jpg,jpeg", "JPEG (*.jpg, *.jpeg)");
         }
@@ -75,12 +76,13 @@ public class TMBitmapFilters {
     }
 
     /**
-     *
      * Recognizes *.gif files.
-     *
      **/
     private class GIFFilter extends TMFileFilter {
 
+        /**
+         * Creates a filter for GIF image files.
+         **/
         public GIFFilter() {
             super("gif", "CompuServe Graphics Interchange (*.gif)");
         }
@@ -88,12 +90,13 @@ public class TMBitmapFilters {
     }
 
     /**
-     *
      * Recognizes *.tiff files.
-     *
      **/
     private class TIFFFilter extends TMFileFilter {
 
+        /**
+         * Creates a filter for TIFF image files.
+         **/
         public TIFFFilter() {
             super("tiff", "TIFF (*.tiff)");
         }
@@ -101,12 +104,13 @@ public class TMBitmapFilters {
     }
 
     /**
-     *
      * Recognizes *.png files.
-     *
      **/
     private class PNGFilter extends TMFileFilter {
 
+        /**
+         * Creates a filter for PNG image files.
+         **/
         public PNGFilter() {
             super("png", "Portable Network Graphics (*.png)");
         }
@@ -114,12 +118,13 @@ public class TMBitmapFilters {
     }
 
     /**
-     *
      * Recognizes all the above file formats.
-     *
      **/
     private class SupportedFilter extends TMFileFilter {
 
+        /**
+         * Creates a filter that accepts all supported bitmap formats.
+         **/
         public SupportedFilter() {
             super("bmp,pcx,gif,jpg,jpeg,png", "All Supported Formats");
         }

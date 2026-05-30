@@ -34,9 +34,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- *
  * Tile canvas where pixels can be edited.
- *
  **/
 public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
 
@@ -75,9 +73,7 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
 	private boolean showBlockGrid=false;
 
     /**
-     *
      * Creates an editor canvas for the given TMUI instance.
-     *
      **/
     public TMEditorCanvas(TMUI ui, TMView view) {
         super(view.getFileImage().getContents());
@@ -98,9 +94,8 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Paints the editor canvas.
-     *
+     * @param g graphics context used for drawing
      **/
     public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -110,9 +105,8 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
 	
 
     /**
-     *
      * Draws the block grid.
-     *
+     * @param g graphics context used for drawing
      **/
     private void drawBlockGrid(Graphics g) {
         if (isBlockGridVisible()) {
@@ -133,9 +127,8 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Draws a frame around the current selection, if there is one.
-     *
+     * @param g graphics context used for drawing
      **/
     private void drawIntermediateSelection(Graphics g) {
         if (isSelecting) {
@@ -161,19 +154,17 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
 // Drawing/tool-related
 
     /**
-     *
      * The mouse was clicked inside the canvas.
-     *
+     * @param e event from the AWT/Swing listener
      **/
     public void mouseClicked(MouseEvent e) {
         e.getClickCount();
     }
 
     /**
-     *
      * Mouse entered the editor canvas.
      * Switch to the proper cursor according to the current tool.
-     *
+     * @param e event from the AWT/Swing listener
      **/
     public void mouseEntered(MouseEvent e) {
         setToolTipText("");
@@ -205,18 +196,16 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * The mouse exited the canvas.
-     *
+     * @param e event from the AWT/Swing listener
      **/
     public void mouseExited(MouseEvent e) {
         ui.hideStatusBarCoords();
     }
 
     /**
-     *
      * Initiates relevant tool action.
-     *
+     * @param e event from the AWT/Swing listener
      **/
     public void mousePressed(MouseEvent e) {
         // disable the keyboard events while a mouse action is in progress
@@ -311,9 +300,8 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Called when user has pressed mouse button and is moving mouse.
-     *
+     * @param e event from the AWT/Swing listener
      **/
     public void mouseDragged(MouseEvent e) {
         // get the current tool
@@ -398,9 +386,8 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Terminates relevant tool action.
-     *
+     * @param e event from the AWT/Swing listener
      **/
     public void mouseReleased(MouseEvent e) {
         // get the current tool
@@ -457,9 +444,8 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * The mouse was moved within the canvas.
-     *
+     * @param e event from the AWT/Swing listener
      **/
     public void mouseMoved(MouseEvent e) {
         // get pixel coordinate
@@ -482,9 +468,9 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Non-recursive algorithm that performs flood fill, starting at location (x,y).
-     *
+     * @param x horizontal pixel or tile coordinate
+     * @param y vertical pixel or tile coordinate
      **/
     public void floodFill(int x, int y) {
         Vector<Point> seeds = new Vector<>();
@@ -533,12 +519,11 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Replaces color with drawing color.
      * This isn't used anymore because it's recursive at the pixel granularity,
      * which caused stack overflows when filling moderately large areas.
-     * See the above method for a non-recursive implementation.
-     *
+     * @param x horizontal pixel or tile coordinate
+     * @param y vertical pixel or tile coordinate
      **/
     private void fillRecursive(int x, int y) {
         // bounds check
@@ -558,10 +543,13 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Draws a line from coordinates (x1,y1) to (x2,y2) in the pixel buffer,
      * using the current draw color.
-     *
+     * @param x1 starting horizontal tile coordinate
+     * @param y1 starting vertical tile coordinate
+     * @param x2 ending horizontal tile or pixel coordinate
+     * @param y2 ending vertical tile or pixel coordinate
+     * @param trace trace value
      **/
     private void drawLine(int x1, int y1, int x2, int y2, boolean trace) {
         int dx = x2 - x1;
@@ -623,10 +611,11 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Sets the pixel at coordinate (x,y) in the canvas to the specified value,
      * and signals that it has been modified.
-     *
+     * @param x horizontal pixel or tile coordinate
+     * @param y vertical pixel or tile coordinate
+     * @param argb 32-bit ARGB pixel value
      **/
     protected void setPixelTraceable(int x, int y, int argb) {
         // mark the tile as modified
@@ -636,9 +625,9 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Marks the tile at location (col,row) in the grid as modified.
-     *
+     * @param col col value
+     * @param row row value
      **/
     private void tileModified(int col, int row) {
         Point p = gridCoords[row][col];
@@ -653,10 +642,12 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Copies the pixels for the tile at location (x,y) in the grid to the
      * specified buffer, starting at the specified offset.
-     *
+     * @param x horizontal pixel or tile coordinate
+     * @param y vertical pixel or tile coordinate
+     * @param buf pixel buffer to read from or write to
+     * @param ofs starting index within the pixel buffer
      **/
     public void copyTilePixelsToBuffer(int x, int y, int[] buf, int ofs) {
         int pixOfs = (y * 8 * canvasWidth) + (x * 8);
@@ -669,9 +660,11 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Copies the pixels in the buffer to the tile at location (x,y).
-     *
+     * @param x horizontal pixel or tile coordinate
+     * @param y vertical pixel or tile coordinate
+     * @param buf pixel buffer to read from or write to
+     * @param ofs starting index within the pixel buffer
      **/
     public void copyBufferToTilePixels(int x, int y, int[] buf, int ofs) {
         int pixOfs = (y * 8 * canvasWidth) + (x * 8);
@@ -684,15 +677,22 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
-     * Commits a drawing operation: Encodes all the affected tiles,
-     * sets modified, eventually adds to Undo buffer, redraws tiles
-     *
+     * Commits a drawing operation: encodes all affected tiles, marks the file
+     * modified, records undo state, and redraws the canvas.
+     * @param name presentation name for undo/redo
+     * @return reversible action describing the committed drawing changes
      **/
     private ReversibleTileModifyAction commitDrawingOperation(String name) {
         return commitDrawingOperation(name,true);
     }
 
+    /**
+     * Commits a drawing operation: encodes all affected tiles, marks the file
+     * modified, optionally records undo state, and redraws the canvas.
+     * @param name presentation name for undo/redo
+     * @param undoable whether the drawing commit should be recorded for undo
+     * @return reversible action describing the committed drawing changes
+     **/
     private ReversibleTileModifyAction commitDrawingOperation(String name, boolean undoable) {
         // Undo-stuff
         BookmarkItemNode bookmark = view.createBookmark("");
@@ -728,18 +728,16 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Gets the current tile column.
-     *
+     * @return current tile column under the cursor
      **/
     public int getCurrentCol() {
         return currentCol;
     }
 
     /**
-     *
      * Gets the current tile row.
-     *
+     * @return current tile row under the cursor
      **/
     public int getCurrentRow() {
         return currentRow;
@@ -749,9 +747,8 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
 // Selection-related
 
     /**
-     *
      * Copies the current selection to the specified canvas.
-     *
+     * @return new selection canvas containing a copy of the current selection
      **/
     public TMSelectionCanvas copySelection() {
         if (!hasSelection()) {
@@ -763,9 +760,8 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Cuts the current selection.
-     *
+     * @return new selection canvas containing the cut tile data
      **/
     public TMSelectionCanvas cutSelection() {
         if (!hasSelection()) {
@@ -785,9 +781,8 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Pastes the contents of the given canvas onto the selection canvas.
-     *
+     * @param canvas tile canvas involved in the operation
      **/
     public void paste(TMSelectionCanvas canvas) {
         maybeApplySelection();
@@ -797,9 +792,12 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Sets the bgColor to specified pixels
-     *
+     * @param bgColor background color used to clear pixels
+     * @param x1 starting horizontal tile coordinate
+     * @param y1 starting vertical tile coordinate
+     * @param x2 ending horizontal tile or pixel coordinate
+     * @param y2 ending vertical tile or pixel coordinate
      **/
     public void setBlankPixels(int bgColor,int x1,int y1,int x2,int y2)
     {
@@ -818,9 +816,8 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
         redraw();
     }
     /**
-     *
      * Recreates the spcified selection
-     *
+     * @param selection existing selection canvas to reattach
      **/
     public void makeSelection(TMSelectionCanvas selection)
     {
@@ -835,10 +832,12 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
         setBlankPixels(ui.getBGColor(),x1,y1,x1+w,y1+h);
     }
     /**
-     *
      * Copies the tiles in the rectangle starting at (x1,y1) of width
      * w and height h.
-     *
+     * @param x1 starting horizontal tile coordinate
+     * @param y1 starting vertical tile coordinate
+     * @param w selection width in tiles
+     * @param h selection height in tiles
      **/
     public void makeSelection(int x1, int y1, int w, int h) {
         selectionCanvas = new TMSelectionCanvas(ui, this, x1, y1, w, h);
@@ -848,9 +847,10 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     *
      * Show selection at the specified tile grid coordinate.
-     *
+     * @param selectionCanvas floating selection canvas
+     * @param x horizontal pixel or tile coordinate
+     * @param y vertical pixel or tile coordinate
      **/
     public void showSelection(TMSelectionCanvas selectionCanvas, int x, int y) {
         this.selectionCanvas = selectionCanvas;
@@ -862,16 +862,20 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
         redraw();
     }
 
-/**
- *
- * Encodes the contents of the selection canvas at its current position.
- *
- **/
-public ReversibleTileModifyAction encodeSelection()
-{
-   return encodeSelection(true);
-}
+    /**
+     * Encodes the contents of the selection canvas at its current position.
+     * @return reversible action describing the encoded selection, if any
+     **/
+    public ReversibleTileModifyAction encodeSelection()
+    {
+       return encodeSelection(true);
+    }
 
+    /**
+     * Encodes the contents of the selection canvas at its current position.
+     * @param userCanUndo whether the encode operation should be recorded for undo
+     * @return reversible action describing the encoded selection, if any
+     **/
     public ReversibleTileModifyAction encodeSelection(boolean userCanUndo) {
         int srcx = 0;
         int srcy = 0;
@@ -977,10 +981,8 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Applies the selection canvas at its current position
      * if it is actually valid (i.e. visible).
-     *
      **/
     public void maybeApplySelection() {
         if (hasSelection()) {
@@ -991,11 +993,10 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Gets the canvas that is currently regarded as the selection canvas.
      * If the selection canvas itself is visible, it is returned; otherwise
      * the whole editor canvas is regarded as the selection and is returned.
-     *
+     * @return visible selection canvas, or this editor when none is shown
      **/
     public TMTileCanvas getSelectionCanvas() {
         if (hasSelection()) {
@@ -1007,18 +1008,16 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Gets the current drawing color for the specified mouse button.
-     *
+     * @return foreground or background color for the given mouse button
+     * @param button mouse button ({@link java.awt.event.MouseEvent#BUTTON1} or {@link java.awt.event.MouseEvent#BUTTON2})
      **/
     private int getDrawColor(int button) {
         return (button == MouseEvent.BUTTON1) ? ui.getFGColor() : ui.getBGColor();
     }
 
     /**
-     *
      * Clears the current selection.
-     *
      **/
     public void clearSelection() {
         view.addReversibleAction(
@@ -1030,9 +1029,7 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Flips the current selection horizontally.
-     *
      **/
     public void flipSelectionHorizontally() {
         TMTileCanvas sp = getSelectionCanvas();
@@ -1050,9 +1047,7 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Flips the current selection vertically.
-     *
      **/
     public void flipSelectionVertically() {
         TMTileCanvas sp = getSelectionCanvas();
@@ -1070,10 +1065,10 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Stretches the selection from the current # of columns and rows
      * to the specified # of columns and rows.
-     *
+     * @param cols number of tile columns
+     * @param rows number of tile rows
      **/
     public void stretchSelection(int cols, int rows) {
         TMTileCanvas sp = getSelectionCanvas();
@@ -1092,9 +1087,7 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Rotates the current selection clockwise.
-     *
      **/
     public void rotateSelectionClockwise() {
         TMTileCanvas sp = getSelectionCanvas();
@@ -1112,9 +1105,7 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Rotates the current selection counter-clockwise.
-     *
      **/
     public void rotateSelectionCounterClockwise() {
         TMTileCanvas sp = getSelectionCanvas();
@@ -1131,9 +1122,7 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Shifts the current selection one pixel left.
-     *
      **/
     public void shiftSelectionLeft() {
         TMTileCanvas sp = getSelectionCanvas();
@@ -1151,9 +1140,7 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Shifts the current selection one pixel right.
-     *
      **/
     public void shiftSelectionRight() {
         TMTileCanvas sp = getSelectionCanvas();
@@ -1171,9 +1158,7 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Shifts the current selection one pixel up.
-     *
      **/
     public void shiftSelectionUp() {
         TMTileCanvas sp = getSelectionCanvas();
@@ -1191,9 +1176,7 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Shifts the current selection one pixel down.
-     *
      **/
     public void shiftSelectionDown() {
         TMTileCanvas sp = getSelectionCanvas();
@@ -1211,9 +1194,7 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Selects all tiles.
-     *
      **/
     public void selectAll() {
         maybeApplySelection();
@@ -1224,9 +1205,8 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Sets the drawing scale (zoom).
-     *
+     * @param scale zoom factor applied to the canvas
      **/
     public void setScale(double scale) {
         super.setScale(scale);
@@ -1237,108 +1217,97 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Returns whether the user is selecting a grid of tiles.
-     *
+     * @return whether the user is rubber-banding a tile selection
      **/
     public boolean isSelecting() {
         return isSelecting;
     }
 
     /**
-     *
      * Gets the upper left column # of the selection.
-     *
+     * @return sel x1 value
      **/
     public int getSelX1() {
         return selX1;
     }
 
     /**
-     *
      * Gets the upper left row # of the selection.
-     *
+     * @return sel y1 value
      **/
     public int getSelY1() {
         return selY1;
     }
 
     /**
-     *
      * Gets the lower right column # of the selection.
-     *
+     * @return sel x2 value
      **/
     public int getSelX2() {
         return selX2;
     }
 
     /**
-     *
      * Gets the lower right row # of the selection.
-     *
+     * @return sel y2 value
      **/
     public int getSelY2() {
         return selY2;
     }
 
     /**
-     *
      * Returns whether the user is currently drawing a line.
-     *
+     * @return whether a line tool preview is in progress
      **/
     public boolean isDrawingLine() {
         return isDrawingLine;
     }
 
     /**
-     *
      * Gets x1 coordinate of line.
-     *
+     * @return line x1 value
      **/
     public int getLineX1() {
         return lineX1;
     }
 
     /**
-     *
      * Gets y1 coordinate of line.
-     *
+     * @return line y1 value
      **/
     public int getLineY1() {
         return lineY1;
     }
 
     /**
-     *
      * Gets x2 coordinate of line.
-     *
+     * @return line x2 value
      **/
     public int getLineX2() {
         return lineX2;
     }
 
     /**
-     *
      * Gets y2 coordinate of line.
-     *
+     * @return line y2 value
      **/
     public int getLineY2() {
         return lineY2;
     }
 
     /**
-     *
      * Returns whether there is a selection present. TODO FIX
-     *
+     * @return whether a floating selection canvas is present
      **/
     public boolean hasSelection() {
         return (getComponentCount() == 1);
     }
 
     /**
-     *
      * Sets the tile grid size.
-     *
+     * @param cols number of tile columns
+     * @param rows number of tile rows
      **/
     public void setGridSize(int cols, int rows) {
         super.setGridSize(cols, rows);
@@ -1352,29 +1321,27 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Gets the view.
-     *
+     * @return view hosting this editor canvas
      **/
     public TMView getView() {
         return view;
     }
 
     /**
-     *
      * Kills the view ref. (Futile attempt at getting the garbage collector to
      * free the JInternalFrame.)
-     *
      **/
     public void killViewRef() {
         view = null;
     }
 
     /**
-     *
      * Gets the starting offset of the data for the tile at position (x,y)
      * in the grid.
-     *
+     * @return byte offset of tile data, or -1 if out of range
+     * @param x horizontal pixel or tile coordinate
+     * @param y vertical pixel or tile coordinate
      **/
     protected int getTileBitsOffset(int x, int y) {
         int blockRowSize = blockHeight * getRowSize();
@@ -1425,36 +1392,33 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Gets the stride.
-     *
+     * @return codec stride for the current layout mode
      **/
     public int getStride() {
         return (mode == TileCodec.MODE_1D) ? 0 : blockWidth-1;
     }
 
     /**
-     *
      * Turns the block grid on or off.
-     *
+     * @param showBlockGrid whether the block grid overlay is visible
      **/
     public void setBlockGridVisible(boolean showBlockGrid) {
         this.showBlockGrid = showBlockGrid;
     }
 
     /**
-     *
      * Gets the visibility status of the block grid.
-     *
+     * @return whether the block grid is shown
      **/
     public boolean isBlockGridVisible() {
         return showBlockGrid;
     }
 
     /**
-     *
      * Sets the block dimensions.
-     *
+     * @param blockWidth block width in tiles
+     * @param blockHeight block height in tiles
      **/
     public void setBlockDimensions(int blockWidth, int blockHeight) {
         this.blockWidth = blockWidth;
@@ -1462,36 +1426,32 @@ public ReversibleTileModifyAction encodeSelection()
     }
 
     /**
-     *
      * Gets the block width (in # of tiles).
-     *
+     * @return block width in tiles
      **/
     public int getBlockWidth() {
         return blockWidth;
     }
 
     /**
-     *
      * Gets the block height (in # of tiles).
-     *
+     * @return block height in tiles
      **/
     public int getBlockHeight() {
         return blockHeight;
     }
 
     /**
-     *
      * Sets row-interleaved state.
-     *
+     * @param rowInterleaved whether blocks use row-interleaved layout
      **/
     public void setRowInterleaveBlocks(boolean rowInterleaved) {
         this.rowInterleaved = rowInterleaved;
     }
 
     /**
-     *
      * Gets row-interleaved state.
-     *
+     * @return whether row-interleaved block layout is enabled
      **/
     public boolean getRowInterleaveBlocks() {
         return rowInterleaved;

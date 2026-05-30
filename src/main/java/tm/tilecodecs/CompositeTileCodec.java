@@ -19,7 +19,6 @@
 package tm.tilecodecs;
 
 /**
- *
  * Composite tile codec.
  * A <code>composite</code> tile is a tile that is built up of several
  * standard tiles. As an example, consider a 3bpp tile that consists
@@ -30,18 +29,17 @@ package tm.tilecodecs;
  * on top of each other. This class provides just this kind of functionality.
  * It allows more flexibility in the tile formats, but is probably a bit
  * slower.
- *
  **/
 public class CompositeTileCodec extends TileCodec {
 
     private TileCodec[] codecs;
 
     /**
-     *
-     * Creates a composite tile codec.
-     * <code>codecs</code> is an array of codecs that will be used to build
-     * a tile, going from low to high bitplanes.
-     *
+     * Builds a composite codec from low-to-high bitplane sub-codecs.
+     * @param id short codec identifier
+     * @param bpp total bits per pixel for the combined tile
+     * @param codecs sub-codecs applied in order from least to most significant bitplanes
+     * @param description human-readable label
      **/
     public CompositeTileCodec(String id, int bpp, TileCodec[] codecs, String description) {
         super(id, bpp, description);
@@ -49,12 +47,11 @@ public class CompositeTileCodec extends TileCodec {
     }
 
     /**
-     *
-     * Decodes a tile.
-     *
-     * @param bits   An array of ints holding encoded tile data in each LSB
-     * @param ofs    Where to start decoding from in the array
-     *
+     * Decodes a composite tile by decoding each sub-tile and OR-ing bitplanes together.
+     * @param bits file buffer containing encoded tile data
+     * @param ofs byte offset where this tile starts
+     * @param stride row padding passed to each sub-codec (see {@link TileCodec#decode})
+     * @return 64 combined palette indices in {@link #pixels}
      **/
     public int[] decode(byte[] bits, int ofs, int stride) {
         // decode the first sub-tile
@@ -75,9 +72,11 @@ public class CompositeTileCodec extends TileCodec {
     }
 
     /**
-     *
-     * Encodes a bitplaned tile.
-     *
+     * Encodes a composite tile by shifting and encoding each bitplane sub-tile.
+     * @param pixels 64 combined palette indices
+     * @param bits destination file buffer
+     * @param ofs byte offset where this tile starts
+     * @param stride row padding passed to each sub-codec (see {@link TileCodec#encode})
      **/
     public void encode(int[] pixels, byte[] bits, int ofs, int stride) {
         // encode the first sub-tile

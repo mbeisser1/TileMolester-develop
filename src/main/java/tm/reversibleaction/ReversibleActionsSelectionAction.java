@@ -24,10 +24,8 @@ import tm.canvases.TMEditorCanvas;
 
 
 /**
- *
  * Allows undo/redo of an action that modifies the entire image/selection,
  * such as flip and rotate.
- *
  **/
 public class ReversibleActionsSelectionAction extends ReversibleAction {
 
@@ -44,6 +42,12 @@ public class ReversibleActionsSelectionAction extends ReversibleAction {
     private int action;
     private BookmarkItemNode bookmark;
 
+    /**
+     * Records a canvas transform action for undo by applying the inverse on undo.
+     * @param presentationName undo menu label for this transform
+     * @param canvas tile or selection canvas being transformed
+     * @param action one of the {@code *_ACTION} constants defined in this class
+     **/
     public ReversibleActionsSelectionAction(String presentationName, TMTileCanvas canvas, int action) {
         super(presentationName);
         this.canvas = canvas;
@@ -53,7 +57,9 @@ public class ReversibleActionsSelectionAction extends ReversibleAction {
         }
     }
 
-    // undo by performing the "inverse" action.
+    /**
+     * Undoes by performing the inverse transform and restoring the view bookmark.
+     **/
     public void undo() {
         if (canvas instanceof TMEditorCanvas) {
             ((TMEditorCanvas)canvas).getView().gotoBookmark(bookmark);
@@ -91,7 +97,9 @@ public class ReversibleActionsSelectionAction extends ReversibleAction {
         canvas.redraw();
     }
 
-    // redo by simply performing the original action again.
+    /**
+     * Redoes by performing the original transform again.
+     **/
     public void redo() {
         if (canvas instanceof TMEditorCanvas) {
             ((TMEditorCanvas)canvas).getView().gotoBookmark(bookmark);
@@ -129,8 +137,16 @@ public class ReversibleActionsSelectionAction extends ReversibleAction {
         canvas.redraw();
     }
 
+    /**
+     * Transform can always be undone.
+     * @return {@code true}
+     **/
     public boolean canUndo() { return true; }
 
+    /**
+     * Transform can always be redone.
+     * @return {@code true}
+     **/
     public boolean canRedo() { return true; }
 
 }

@@ -18,10 +18,21 @@
 
 package tm.filelistener;
 
+/**
+ * Listener for iNES (*.nes) ROM files.
+ **/
 public class INESFileListener extends TMFileListener {
 
     private static int[] iNES_ID = { 0x4E,0x45,0x53,0x1A };
 
+    /**
+     * Detects if this is an iNES ROM.
+     * The extension must be {@code nes} and bytes 0–3 must be {@code NES} followed by
+     * {@code 0x1A}.
+     * @param data file contents in memory
+     * @param extension lowercase filename extension without dot
+     * @return {@code true} if the header matches iNES
+     **/
     public boolean doFormatDetect(final byte[] data, String extension) {
         // verify extension
         if (!extension.equals("nes")) {
@@ -36,9 +47,19 @@ public class INESFileListener extends TMFileListener {
         return true;
     }
 
+    /**
+     * Does nothing on file load.
+     * @param data file contents in memory
+     * @param extension lowercase filename extension without dot
+     **/
     public void fileLoaded(byte[] data, String extension) {
     }
 
+    /**
+     * Does nothing on file save.
+     * @param data file contents about to be saved
+     * @param extension lowercase filename extension without dot
+     **/
     public void fileSaving(byte[] data, String extension) {
     }
 

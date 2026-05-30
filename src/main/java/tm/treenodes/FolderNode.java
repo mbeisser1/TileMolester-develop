@@ -19,34 +19,32 @@
 package tm.treenodes;
 
 /**
- *
  * A folder.
  * Has a name and zero or more children, each of which may be either
  * an item or a folder.
- *
  **/
 public class FolderNode extends TMTreeNode {
 
     private String name;
 
     /**
-     *
      * Creates a folder with the given name.
-     *
      **/
     public FolderNode(String name) {
         super();
         this.name = name;
     }
 
+    /**
+     * Returns the string representation of this object.
+     * @return display string for this object
+     **/
     public String toString() {
         return name;
     }
 
     /**
-     *
      * Returns the XML-equivalent of this folder.
-     *
      **/
     public String toXML() {
         // TODO: Use getDepth() to indent properly
@@ -64,6 +62,10 @@ public class FolderNode extends TMTreeNode {
         return s.toString();
     }
 
+    /**
+     * Sets the display text of this node.
+     * @param text new display text for the node
+     **/
     public void setText(String text) {
         this.name = text;
     }

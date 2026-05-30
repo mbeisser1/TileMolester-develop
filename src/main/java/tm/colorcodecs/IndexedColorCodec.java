@@ -19,24 +19,29 @@
 package tm.colorcodecs;
 
 /**
- *
  * An IndexedColorCodec translates pixels according to a
  * pre-defined array of 32-bit ARGB values.
- *
  **/
 public class IndexedColorCodec extends ColorCodec {
 
     private int[] colorTable;   // table of pre-defined ARGB values
 
+    /**
+     * Creates an indexed palette codec backed by a fixed ARGB lookup table.
+     * @param id short codec identifier
+     * @param bitsPerPixel bits per index in the file
+     * @param colorTable ARGB values indexed 0 … length−1
+     * @param description human-readable label
+     **/
     public IndexedColorCodec(String id, int bitsPerPixel, int[] colorTable, String description) {
         super(id, bitsPerPixel, description);
         this.colorTable = colorTable;
     }
 
     /**
-     *
-     * To decode, simply look up the table.
-     *
+     * Looks up a palette index in the color table.
+     * @param value palette index from the file
+     * @return ARGB from {@code colorTable}, or 0 if out of range
      **/
     public int decode(int value) {
         if (value < colorTable.length) {
@@ -46,9 +51,9 @@ public class IndexedColorCodec extends ColorCodec {
     }
 
     /**
-     *
-     * To encode, find the closest match in the table.
-     *
+     * Finds the table index whose RGB is closest to the given ARGB (Manhattan distance).
+     * @param argb 32-bit ARGB color to match
+     * @return index of the nearest table entry
      **/
     public int encode(int argb) {
         int targetR = (argb & 0x00FF0000) >> 16;

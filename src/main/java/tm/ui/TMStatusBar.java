@@ -27,9 +27,7 @@ import java.awt.event.*;
 import javax.swing.border.*;
 
 /**
- *
  * Tile Molester status bar.
- *
  **/
 public class TMStatusBar extends JPanel {
 
@@ -42,9 +40,7 @@ public class TMStatusBar extends JPanel {
     private JLabel messageLabel = new JLabel(" ");
 
     /**
-     *
      * Creates the status bar.
-     *
      **/
     public TMStatusBar() {
         super();
@@ -79,18 +75,16 @@ public class TMStatusBar extends JPanel {
     }
 
     /**
-     *
      * Sets the text for general message.
-     *
+     * @param s text displayed in the status bar
      **/
     public void setMessage(String s) {
         messageLabel.setText(" "+s+" ");
     }
 
     /**
-     *
      * Sets the hex text that indicates the file position.
-     *
+     * @param offset byte offset into the file buffer
      **/
     public void setOffset(int offset) {
         String hexOffset = Integer.toHexString(offset).toUpperCase();
@@ -101,14 +95,21 @@ public class TMStatusBar extends JPanel {
     }
 
     /**
-     *
      * Sets the coordinates.
-     *
+     * @param x horizontal pixel or tile coordinate
+     * @param y vertical pixel or tile coordinate
      **/
     public void setCoords(int x, int y) {
         coordsLabel.setText(" ("+x+","+y+") ");
     }
 
+    /**
+     * Sets the selection coords.
+     * @param x1 starting horizontal tile coordinate
+     * @param y1 starting vertical tile coordinate
+     * @param x2 ending horizontal tile or pixel coordinate
+     * @param y2 ending vertical tile or pixel coordinate
+     **/
     public void setSelectionCoords(int x1, int y1, int x2, int y2) {
         int w = Math.abs(x1 - x2) + 1;
         int h = Math.abs(y1 - y2) + 1;
@@ -116,9 +117,8 @@ public class TMStatusBar extends JPanel {
     }
 
     /**
-     *
      * Sets the text that indicates the graphics codec in use.
-     *
+     * @param s text displayed in the status bar
      **/
     public void setCodec(String s) {
         codecLabel.setText(" "+s+" ");   // i18n
@@ -127,9 +127,8 @@ public class TMStatusBar extends JPanel {
 
 
     /**
-     *
      * Sets the text that indicates the graphics codec in use.
-     *
+     * @param offset byte offset into the file buffer
      **/
     public void setPalOffset(int offset) {
         String hexOffset = Integer.toHexString(offset).toUpperCase();
@@ -141,9 +140,8 @@ public class TMStatusBar extends JPanel {
 
 
     /**
-     *
      * Sets the text that indicates the current mode.
-     *
+     * @param mode tile layout mode ({@link tm.tilecodecs.TileCodec#MODE_1D} or {@link tm.tilecodecs.TileCodec#MODE_2D})
      **/
     public void setMode(int mode) {
         if (mode == TileCodec.MODE_1D)
@@ -153,18 +151,17 @@ public class TMStatusBar extends JPanel {
     }
 
     /**
-     *
      * Sets the text that indicates how many tiles are shown.
-     *
+     * @param w selection width in tiles
+     * @param h selection height in tiles
      **/
     public void setTiles(int w, int h) {
         tilesLabel.setText(" "+w+"x"+h+" tiles ");  // i18n
     }
 
     /**
-     *
      * Called when a view has been selected.
-     *
+     * @param view file view associated with this component
      **/
     public void viewSelected(TMView view) {
         TMEditorCanvas ec = view.getEditorCanvas();
@@ -191,11 +188,15 @@ public class TMStatusBar extends JPanel {
     }
 
     /**
-     *
      * Convenience method for setting various fields of gridbagconstraints.
-     *
-     */
-
+     * @param gbc grid bag constraints to populate
+     * @param gx grid x position
+     * @param gy grid y position
+     * @param gw grid width in cells
+     * @param gh grid height in cells
+     * @param wx horizontal weight
+     * @param wy vertical weight
+     **/
     protected static void buildConstraints(GridBagConstraints gbc, int gx, int gy, int gw, int gh, int wx, int wy) {
         gbc.gridx = gx;
         gbc.gridy = gy;
@@ -207,10 +208,10 @@ public class TMStatusBar extends JPanel {
 
 
 	/**
-	 *
 	 * Sets coordinates text.
-	 *
-	 */
+	 * Sets the coords.
+	 * @param string coordinate text to display
+	 **/
 	public void setCoords(String string) {
 		coordsLabel.setText(string);
 	}

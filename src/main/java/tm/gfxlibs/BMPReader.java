@@ -18,6 +18,11 @@ public class BMPReader extends Object
     public static final int BI_RLE8 = 1;
     public static final int BI_RLE4 = 2;
 
+    /**
+     * Reads a BMP stream and returns an ImageProducer.
+     * @param stream input stream containing BMP or PCX data
+     * @return MemoryImageSource for the decoded bitmap
+     **/
     public static ImageProducer getBMPImage(InputStream stream)
     throws IOException
     {
@@ -97,6 +102,9 @@ public class BMPReader extends Object
     // Reads in pixels in 24-bit format. There is no color table, and the
     // pixels are stored in 3-byte pairs. Oddly, all windows bitmaps are
     // stored upside-down - the bottom line is stored first.
+    /**
+     * Reads uncompressed 24-bit BMP pixel data.
+     **/
     protected static void readRGB24(int width, int height, int pixels[],
         DataInputStream in)
     throws IOException
@@ -121,6 +129,9 @@ public class BMPReader extends Object
 
     // readRGB reads in pixels values that are stored uncompressed.
     // The bits represent indices into the color table.
+    /**
+     * Reads uncompressed indexed BMP pixel data.
+     **/
     protected static void readRGB(int width, int height, int colorTable[],
         int bitCount, int pixels[], DataInputStream in)
     throws IOException
@@ -167,6 +178,9 @@ public class BMPReader extends Object
 
 
     // readRLE reads run-length encoded data in either RLE4 or RLE8 format.
+    /**
+     * Reads RLE-compressed BMP pixel data.
+     **/
     protected static void readRLE(int width, int height, int colorTable[],
         int bitCount, int pixels[], DataInputStream in,
         int imageSize, int pixelSize)
@@ -281,6 +295,11 @@ public class BMPReader extends Object
 
     // intelShort converts a 16-bit number stored in intel byte order into
     // the local host format
+    /**
+     * Converts a 16-bit value from Intel byte order.
+     * @param i 32-bit value in Intel byte order
+     * @return host-order 16-bit value
+     **/
     protected static int intelShort(int i)
     {
         return ((i >> 8) & 0xff) + ((i << 8) & 0xff00);
@@ -288,6 +307,11 @@ public class BMPReader extends Object
 
     // intelInt converts a 32-bit number stored in intel byte order into
     // the local host format
+    /**
+     * Converts a 32-bit value from Intel byte order.
+     * @param i 32-bit value in Intel byte order
+     * @return host-order 32-bit value
+     **/
     protected static int intelInt(int i)
     {
         return ((i & 0xff) << 24) + ((i & 0xff00) << 8) +

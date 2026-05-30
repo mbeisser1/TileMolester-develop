@@ -40,10 +40,14 @@ public class PCXReader
   /* This is the main-class of the PcxReader. It reads the PCX-Data
    * from a stream and converts it into an Image-Class.
    */
-
   public static final int NORMAL = 1;
   public static final int RLE = 2;
   
+  /**
+   * Loads a PCX image from an input stream.
+   * @param in data input stream positioned at pixel data
+   * @return decoded PCX image, or null on failure
+   **/
   public static Image loadImage(InputStream in)
   {
     int pcxheight, pcxwidth;
@@ -196,6 +200,12 @@ public class PCXReader
     return picture;
   }
 
+  /**
+   * Decompresses RLE-encoded PCX scanline data.
+   * @param imagebytes number of decompressed byte values to read
+   * @param imageData buffer receiving decompressed PCX bytes
+   * @param in data input stream positioned at pixel data
+   **/
   private static void readRLECompressedData(int imagebytes, int[] imageData, InputStream in)
     throws IOException
   {

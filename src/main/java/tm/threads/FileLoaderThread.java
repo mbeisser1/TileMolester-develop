@@ -21,9 +21,7 @@ package tm.threads;
 import java.io.*;
 
 /**
- *
  * Thread for reading a file into a buffer.
- *
  **/
 public class FileLoaderThread extends ProgressThread {
 
@@ -32,6 +30,12 @@ public class FileLoaderThread extends ProgressThread {
     private int bytesLeft;
     private byte[] contents;
 
+    /**
+     * Allocates a buffer sized to the file and opens an input stream for chunked reading.
+     * @param file source file to load
+     * @throws OutOfMemoryError if the file cannot fit in a byte array
+     * @throws FileNotFoundException if the file does not exist or cannot be opened
+     **/
     public FileLoaderThread(File file) throws OutOfMemoryError, FileNotFoundException {
         super();
         try {
@@ -49,11 +53,18 @@ public class FileLoaderThread extends ProgressThread {
         this.setPriority(NORM_PRIORITY);
     }
 
+    /**
+     * Returns how much of the file has been read so far.
+     * @return completion percentage from 0 to 100
+     **/
     public int getPercentageCompleted() {
         int result = (int)((long)(((long)contents.length - (long)bytesLeft) * 100) / (long)contents.length);
         return result;
     }
 
+    /**
+     * Reads the file in {@link #CHUNK_SIZE} chunks until the buffer is full.
+     **/
     public void run() {
         while (bytesLeft > 0) {
             if (bytesLeft > CHUNK_SIZE) {
@@ -78,10 +89,17 @@ public class FileLoaderThread extends ProgressThread {
         // done loading data
     }
 
+    /**
+     * Returns the loaded file contents.
+     * @return byte array holding the entire file
+     **/
     public byte[] getContents() {
         return contents;
     }
 
+    /**
+     * Drops the reference to the loaded buffer so it can be garbage collected.
+     **/
     public void killContentsRef() {
         contents = null;
     }

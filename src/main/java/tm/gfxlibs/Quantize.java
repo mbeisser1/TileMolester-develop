@@ -1,7 +1,6 @@
 /*
  * @(#)Quantize.java    0.90 9/19/00 Adam Doppelt
  */
-
 /**
  * An efficient color quantization algorithm, adapted from the C++
  * implementation quantize.c in <a
@@ -9,9 +8,7 @@
  * an image are placed into an oct tree. The oct tree is reduced in
  * size, and the pixels from the original image are reassigned to the
  * nodes in the reduced tree.<p>
- *
  * Here is the copyright notice from ImageMagick:
- *
  * <pre>
  * %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  * %  Permission is hereby granted, free of charge, to any person obtaining a    %
@@ -39,12 +36,9 @@
  * %                                                                             %
  * %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  * </pre>
- *
- *
  * @version 0.90 19 Sep 2000
  * @author <a href="http://www.gurge.com/amd/">Adam Doppelt</a>
- */
-
+ **/
 package tm.gfxlibs;
 
 public class Quantize {
@@ -266,7 +260,7 @@ public class Quantize {
      * Reduce the image to the given number of colors. The pixels are
      * reduced in place.
      * @return The new color palette.
-     */
+     **/
     public static int[] quantizeImage(int pixels[][], int max_colors) {
         Cube cube = new Cube(pixels, max_colors);
         cube.classification();
@@ -415,7 +409,7 @@ public class Quantize {
 
         /**
          * The result of a closest color search.
-         */
+         **/
         static class Search {
             int distance;
             int color_number;
@@ -491,7 +485,7 @@ public class Quantize {
 
         /**
          * A single Node in the tree.
-         */
+         **/
         static class Node {
             Cube cube;
 
@@ -565,7 +559,7 @@ public class Quantize {
             /**
              * Remove this child node, and make sure our parent
              * absorbs our pixel statistics.
-             */
+             **/
             void pruneChild() {
                 --parent.nchild;
                 parent.unique += unique;
@@ -580,7 +574,7 @@ public class Quantize {
 
             /**
              * Prune the lowest layer of the tree.
-             */
+             **/
             void pruneLevel() {
                 if (nchild != 0) {
                     for (int id = 0; id < 8; id++) {
@@ -597,10 +591,9 @@ public class Quantize {
             /**
              * Remove any nodes that have fewer than threshold
              * pixels. Also, as long as we're walking the tree:
-             *
              * - figure out the color with the fewest pixels
              * - recalculate the total number of colors in the tree
-             */
+             **/
             int reduce(int threshold, int next_threshold) {
                 if (nchild != 0) {
                     for (int id = 0; id < 8; id++) {
@@ -673,13 +666,17 @@ public class Quantize {
 
             /**
              * Figure out the distance between this node and som color.
-             */
+             **/
             final static int distance(int color, int r, int g, int b) {
                 return (SQUARES[((color >> 16) & 0xFF) - r + MAX_RGB] +
                         SQUARES[((color >>  8) & 0xFF) - g + MAX_RGB] +
                         SQUARES[((color >>  0) & 0xFF) - b + MAX_RGB]);
             }
 
+            /**
+             * Returns the string representation of this object.
+             * @return display string for this object
+             **/
             public String toString() {
                 StringBuffer buf = new StringBuffer();
                 if (parent == this) {

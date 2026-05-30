@@ -15,6 +15,11 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.formdev.flatlaf.util.SystemInfo;
 
+/**
+ * Look-and-feel theme support for Tile Molester.
+ * Selects a FlatLaf theme based on the host operating system and the
+ * user's dark-mode preference, and exposes the corresponding UI colors.
+ **/
 public class TMTheme {
 	private static boolean isWindows = SystemInfo.isWindows;
 	private static boolean isLinux = SystemInfo.isLinux;
@@ -49,6 +54,9 @@ public class TMTheme {
 	public static final String MACOS_DARK_FRAME_BG = "#232627";
 	public static final String MACOS_DARK_ACCENT = "#1C78CE";
 
+	/**
+	 * Loads the current theme and applies platform-specific UI decorations.
+	 **/
 	public TMTheme() {
 		loadTheme();
 		FlatSVGIcon.ColorFilter.getInstance().add(Color.decode("#212121"), Color.decode("#292929"), Color.decode("#e1e1e1"));
@@ -58,10 +66,17 @@ public class TMTheme {
 		}
 	}
 
+	/**
+	 * Loads the look-and-feel theme stored in {@link #theme}.
+	 **/
 	public static void loadTheme() {
 		loadTheme(TMTheme.theme);
 	}
 
+	/**
+	 * Installs the requested FlatLaf theme and refreshes Swing UI defaults.
+	 * @param theme theme identifier constant from this class
+	 **/
 	public static void loadTheme(int theme) {
 		try {
 			switch (theme) {
@@ -100,6 +115,10 @@ public class TMTheme {
 		}
 	}
 
+	/**
+	 * Resolves the theme constant for the current OS and dark-mode setting.
+	 * @return theme identifier constant from this class
+	 **/
 	public static int getCurrentTheme() {
 		if(isWindows && darkMode) return WINDOWS_DARK_THEME;
 		if(isWindows && !darkMode) return WINDOWS_LIGHT_THEME;
@@ -110,6 +129,10 @@ public class TMTheme {
 		return WINDOWS_DARK_THEME;
 	}
 
+	/**
+	 * Toggles dark mode and reloads the matching theme.
+	 * @param darkMode whether dark theme should be active
+	 **/
 	public static void setDarkMode(boolean darkMode) {
 		TMTheme.darkMode = darkMode;
 		TMTheme.theme = getCurrentTheme();
@@ -117,6 +140,10 @@ public class TMTheme {
 	}
 
 
+	/**
+	 * Returns the accent and background colors for the active theme.
+	 * @return map of theme color names to {@link java.awt.Color} values
+	 **/
 	public static Map<String, Color> getThemeColors() {
         Map<String, Color> colors = new HashMap<>();
 

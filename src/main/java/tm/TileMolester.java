@@ -30,24 +30,21 @@ import java.util.logging.Logger;
 
 
 /**
- *
  * Tile Molester main class.
  * A quite pointless class really. The application is very UI-centric,
  * so the TMUI class evolved into the real application backbone.
  * This class just gets the show started.
- *
  **/
 public class TileMolester {
 
-	/**
-	 *
-	 * Constructor.
-	 *
-	 **/
 	Logger mLog = Logger.getGlobal();
 	ClassLoader cl = getClass().getClassLoader();
 	public static TMSettings settings;
-	
+
+	/**
+	 * Constructor.
+	 * Initializes platform-specific settings and starts the main UI.
+	 **/
 	public TileMolester() {
 		if(SystemInfo.isMacOS) {
 			System.setProperty( "apple.awt.application.appearance", "system" );
@@ -73,9 +70,8 @@ public class TileMolester {
 	}
 
 	/**
-	 *
 	 * Starts up the program.
-	 *
+	 * @param args command-line arguments (currently unused)
 	 **/
 	public static void main(String[] args) {
 		new TileMolester();

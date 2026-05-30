@@ -28,17 +28,20 @@ import java.util.regex.Pattern;
 
 /**
  * Reads comma-separated RRGGBB hex values from a CSV palette file.
- */
+ **/
 public class PaletteCsvReader {
 
     private static final Pattern HEX6 = Pattern.compile("^[0-9A-Fa-f]{6}$");
 
+    /**
+     * Creates a PaletteCsvReader instance.
+     **/
     private PaletteCsvReader() {
     }
 
     /**
      * @return 24-bit RGB values (0x00RRGGBB) in file order
-     */
+     **/
     public static int[] read(File file) throws Exception {
         ArrayList<Integer> colors = new ArrayList<>();
         try (BufferedReader in = new BufferedReader(
@@ -63,6 +66,12 @@ public class PaletteCsvReader {
         return rgb;
     }
 
+    /**
+     * Parses a single hex color token from a CSV palette entry.
+     * @param entryNumber 1-based palette entry number for error reporting
+     * @param token hex color token from the CSV file
+     * @return 24-bit RGB value from the hex token
+     **/
     private static int parseHexColor(int entryNumber, String token) throws PaletteCsvParseException {
         String hex = token;
         if (hex.length() >= 2

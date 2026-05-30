@@ -23,13 +23,11 @@ import java.awt.*;
 import java.awt.image.*;
 
 /**
- *
  * Provides a surface where decoded graphics data can be rendered.
  * This is an abstract class: Subclasses are required to implement the
  * unpackPixels() and packPixels() methods for decoding and encoding
  * graphics data, respectively.
  * Pixels must be decoded to 32-bit ARGB format (see implementation details below).
- *
  **/
 public abstract class TMPixelCanvas extends JPanel {
 
@@ -48,9 +46,7 @@ public abstract class TMPixelCanvas extends JPanel {
     private boolean showPixelGrid=false;
 
     /**
-     *
      * Creates a pixel pane using <code>bits</code> as the graphics source.
-     *
      **/
     public TMPixelCanvas(byte[] bits) {
         super();
@@ -64,9 +60,7 @@ public abstract class TMPixelCanvas extends JPanel {
     }
 
     /**
-     *
      * Creates a pixel pane of the specified size and using <code>bits</code> as the graphics source.
-     *
      **/
     public TMPixelCanvas(byte[] bits, int canvasWidth, int canvasHeight) {
         super();
@@ -80,9 +74,9 @@ public abstract class TMPixelCanvas extends JPanel {
     }
 
     /**
-     *
      * Sets the size of the canvas in pixels.
-     *
+     * @param canvasWidth canvas width in pixels
+     * @param canvasHeight canvas height in pixels
      **/
     public void setCanvasSize(int canvasWidth, int canvasHeight) {
         this.canvasWidth = canvasWidth;
@@ -98,27 +92,24 @@ public abstract class TMPixelCanvas extends JPanel {
     }
 
     /**
-     *
      * Sets the offset into the buffer from which tile data is unpacked/packed.
-     *
+     * @param offset byte offset into the file buffer
      **/
     public void setOffset(int offset) {
         this.offset = offset;
     }
 
     /**
-     *
      * Gets the offset.
-     *
+     * @return current file offset shown in the view
      **/
     public int getOffset() {
         return offset;
     }
 
     /**
-     *
      * Sets the scale.
-     *
+     * @param scale zoom factor applied to the canvas
      **/
     public void setScale(double scale) {
         if (scale < 1.0) scale = 1.0;   // minimum
@@ -132,35 +123,29 @@ public abstract class TMPixelCanvas extends JPanel {
     }
 
     /**
-     *
      * Gets the scale.
-     *
+     * @return current zoom factor
      **/
     public double getScale() {
         return scale;
     }
 
     /**
-     *
      * Subclasses required to implement this method. It is responsible for
      * filling the canvas with pixels, by decoding data starting at
      * &bits[offset].
-     *
      **/
     protected abstract void unpackPixels();
 
     /**
-     *
      * Subclasses required to implement this method. It is responsible for
      * encoding the canvas's pixels into some format.
-     *
      **/
     protected abstract void packPixels();
 
     /**
-     *
      * Paints pixels and grid(s).
-     *
+     * @param g graphics context used for drawing
      **/
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -172,9 +157,8 @@ public abstract class TMPixelCanvas extends JPanel {
     }
 
     /**
-     *
      * Draws pixel grid.
-     *
+     * @param g graphics context used for drawing
      **/
     private void drawPixelGrid(Graphics g) {
         if (scale < 8.0) return;    // don't show it for scales less than 8
@@ -190,99 +174,92 @@ public abstract class TMPixelCanvas extends JPanel {
     }
 
     /**
-     *
      * Turns the pixel grid on (true) or off (false).
-     *
+     * @param showPixelGrid whether the per-pixel grid overlay is visible
      **/
     public void setPixelGridVisible(boolean showPixelGrid) {
         this.showPixelGrid = showPixelGrid;
     }
 
     /**
-     *
      * Returns pixel grid visibility.
-     *
+     * @return whether the pixel grid is shown
      **/
     public boolean isPixelGridVisible() {
         return showPixelGrid;
     }
 
     /**
-     *
      * Sets the pixel at location (x, y) in the image to the specified value.
-     *
+     * @param x horizontal pixel or tile coordinate
+     * @param y vertical pixel or tile coordinate
+     * @param argb 32-bit ARGB pixel value
      **/
     public void setPixel(int x, int y, int argb) {
         pixels[(y*canvasWidth)+x] = argb;
     }
 
     /**
-     *
      * Gets the pixel at location (x, y) in the image.
-     *
+     * @return 32-bit ARGB value at the given coordinate
+     * @param x horizontal pixel or tile coordinate
+     * @param y vertical pixel or tile coordinate
      **/
     protected int getPixel(int x, int y) {
         return pixels[(y*canvasWidth)+x];
     }
 
     /**
-     *
      * Inverts the pixel at (x,y).
-     *
+     * @param x horizontal pixel or tile coordinate
+     * @param y vertical pixel or tile coordinate
      **/
     protected void xorPixel(int x, int y) {
         setPixel(x, y, getPixel(x, y) ^ 0xFFFFFF);
     }
 
     /**
-     *
      * Gets the buffer containing the currently rendered pixels.
-     *
+     * @return decoded ARGB pixel array
      **/
     protected int[] getPixels() {
         return pixels;
     }
 
     /**
-     *
      * Gets the width of the canvas image.
-     *
+     * @return canvas width in pixels
      **/
     public int getCanvasWidth() {
         return canvasWidth;
     }
 
     /**
-     *
      * Gets the height of the canvas image.
-     *
+     * @return canvas height in pixels
      **/
     public int getCanvasHeight() {
         return canvasHeight;
     }
 
     /**
-     *
      * Sets the data buffer that will be used to fetch/encode native graphics data.
-     *
+     * @param bits encoded graphics data buffer
      **/
     public void setBits(byte[] bits) {
         this.bits = bits;
     }
 
     /**
-     *
      * Gets the native graphics data buffer.
-     *
+     * @return encoded graphics data buffer
      **/
     public byte[] getBits() {
         return bits;
     }
 
     /**
-     *
      * Updates the pixels and repaints the canvas.
-     *
      **/
     public void redraw() {
         source.newPixels();
@@ -290,18 +267,15 @@ public abstract class TMPixelCanvas extends JPanel {
     }
 
     /**
-     *
      * Gets the image where the pixels are rendered.
-     *
+     * @return off-screen image holding decoded pixels
      **/
     public Image getImage() {
         return image;
     }
 
     /**
-     *
      * Mirrors the canvas (flips horizontally).
-     *
      **/
     public void mirror() {
         for (int y=0; y<canvasHeight; y++) {
@@ -316,9 +290,7 @@ public abstract class TMPixelCanvas extends JPanel {
     }
 
     /**
-     *
      * Flips the canvas (vertically).
-     *
      **/
     public void flip() {
         for (int y=0; y<canvasHeight/2; y++) {
@@ -333,9 +305,7 @@ public abstract class TMPixelCanvas extends JPanel {
     }
 
     /**
-     *
      * Rotates the canvas 90 degrees left (counter-clockwise).
-     *
      **/
     public void rotateLeft() {
         int[] pix = getPixels();
@@ -351,9 +321,7 @@ public abstract class TMPixelCanvas extends JPanel {
     }
 
     /**
-     *
      * Rotates the canvas 90 degrees right (clockwise).
-     *
      **/
     public void rotateRight() {
         int[] pix = getPixels();
@@ -369,9 +337,7 @@ public abstract class TMPixelCanvas extends JPanel {
     }
 
     /**
-     *
      * Shifts the canvas one column left.
-     *
      **/
     public void shiftLeft() {
         for (int y=0; y<canvasHeight; y++) {
@@ -385,9 +351,7 @@ public abstract class TMPixelCanvas extends JPanel {
     }
 
     /**
-     *
      * Shifts the canvas one column right.
-     *
      **/
     public void shiftRight() {
         for (int y=0; y<canvasHeight; y++) {
@@ -401,9 +365,7 @@ public abstract class TMPixelCanvas extends JPanel {
     }
 
     /**
-     *
      * Shifts the canvas one row up.
-     *
      **/
     public void shiftUp() {
         for (int x=0; x<canvasWidth; x++) {
@@ -417,9 +379,7 @@ public abstract class TMPixelCanvas extends JPanel {
     }
 
     /**
-     *
      * Shifts the canvas one row down.
-     *
      **/
     public void shiftDown() {
         for (int x=0; x<canvasWidth; x++) {

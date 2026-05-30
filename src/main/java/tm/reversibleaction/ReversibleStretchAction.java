@@ -21,9 +21,7 @@ package tm.reversibleaction;
 import tm.canvases.TMSelectionCanvas;
 
 /**
- *
  * Allows undo/redo of selection stretching.
- *
  **/
 public class ReversibleStretchAction extends ReversibleAction {
 
@@ -34,6 +32,12 @@ public class ReversibleStretchAction extends ReversibleAction {
     private int newRows;
     private byte[] oldBits;
 
+    /**
+     * Records the selection grid size and bitmask before stretching.
+     * @param canvas selection canvas being stretched
+     * @param newCols target column count after stretch
+     * @param newRows target row count after stretch
+     **/
     public ReversibleStretchAction(TMSelectionCanvas canvas, int newCols, int newRows) {
         super("Stretch Selection"); // i18n
         this.canvas = canvas;
@@ -44,6 +48,9 @@ public class ReversibleStretchAction extends ReversibleAction {
         this.newRows = newRows;
     }
 
+    /**
+     * Restores the previous grid dimensions and selection bitmask.
+     **/
     public void undo() {
         canvas.setGridSize(oldCols, oldRows);
         canvas.setBits(oldBits);
@@ -51,12 +58,24 @@ public class ReversibleStretchAction extends ReversibleAction {
         canvas.redraw();
     }
 
+    /**
+     * Re-applies the stretch to the target dimensions.
+     **/
     public void redo() {
         canvas.stretchTo(newCols, newRows);
         canvas.redraw();
     }
 
+    /**
+     * Stretch can always be undone.
+     * @return {@code true}
+     **/
     public boolean canUndo() { return true; }
+
+    /**
+     * Stretch can always be redone.
+     * @return {@code true}
+     **/
     public boolean canRedo() { return true; }
 
 }

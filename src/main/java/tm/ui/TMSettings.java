@@ -91,9 +91,7 @@ public class TMSettings extends JFrame {
 	}
 
 	/**
-	 *
 	 * Loads program settings from file.
-	 *
 	 **/
 	public void loadSettings() {
 		boolean loadedLocale = false;
@@ -149,9 +147,7 @@ public class TMSettings extends JFrame {
 
 
 	 /**
-	  *
 	  * Lets the user select a locale from a combobox.
-	  *
 	  **/
 	 public void selectLanguage() {
 		// figure out available translations
@@ -197,9 +193,7 @@ public class TMSettings extends JFrame {
 
 
 	/**
-	 *
 	 * Saves program settings to file.
-	 *
 	 **/
 	public void saveSettings() {
 		StringBuffer sb = new StringBuffer();
@@ -239,9 +233,10 @@ public class TMSettings extends JFrame {
 
 
 	/**
-	 *
 	 * Makes a property tag with the given key and value.
-	 *
+	 * @return XML property element for settings persistence
+	 * @param key property key or translation key
+	 * @param value property value
 	 **/
 	public String makePropertyTag(String key, String value) {
 		return "  <property key=\"" + key + "\" value=\"" + value + "\"/>\n";
@@ -249,10 +244,10 @@ public class TMSettings extends JFrame {
 
 
 	 /**
-	  *
 	  * Attempts to translate the given key string by consulting a ResourceBundle.
 	  * If no corresponding value is found, the key itself is returned.
-	  *
+	  * @return localized string for the given key, or the key itself if missing
+	  * @param key property key or translation key
 	  **/
 	 public String xlate(String key) {
 		try {
@@ -265,12 +260,16 @@ public class TMSettings extends JFrame {
 
 
 	/**
-	 *
 	 * File filter that recognizes filenames of the form
 	 * language_xx_yy.properties
-	 *
 	 **/
 	private class PropertiesFilter implements FilenameFilter {
+		/**
+		 * Accepts language resource files named language_xx_yy.properties.
+		 * @return whether the filename matches the language-properties pattern
+		 * @param dir directory being listed
+		 * @param name presentation name for undo/redo
+		 **/
 		public boolean accept(File dir, String name) {
 			return (name.toLowerCase().startsWith("language")
 					&& (name.indexOf('_') != -1)
@@ -279,35 +278,67 @@ public class TMSettings extends JFrame {
 	}
 
 
+	/**
+	 * Gets the max recent files.
+	 * @return maximum number of recent files to remember
+	 **/
 	public int getMaxRecentFiles() {
 		return maxRecentFiles;
 	}
 
+	/**
+	 * Sets the recent files.
+	 * @param newRecentFiles replacement list of recently opened files
+	 **/
 	public void setRecentFiles(Vector<File> newRecentFiles) {
 		recentFiles = newRecentFiles;
 	}
 
+	/**
+	 * Gets the recent files.
+	 * @return list of recently opened files
+	 **/
 	public Vector<File> getRecentFiles() {
 		return recentFiles;
 	}
 
+	/**
+	 * Gets the locale.
+	 * @return user-selected locale
+	 **/
 	public Locale getLocale() {
 		return locale;
 	}
 
 	
+	/**
+	 * Sets the last path.
+	 * @param path filesystem path string
+	 **/
 	public void setLastPath(String path) {
 		lastPath = path;
 	}
 
+	/**
+	 * Gets the last path.
+	 * @return last directory path used in file dialogs
+	 **/
 	public String getLastPath() {
 		return lastPath;
 	}
 
+	/**
+	 * Sets the view status bar.
+	 * @param newViewStatusBar whether the status bar should be visible
+	 **/
 	public void setViewStatusBar(boolean newViewStatusBar) {
 		viewStatusBar = newViewStatusBar;
 	}
 
+	/**
+	 * Sets the view tool bar.
+	 * @param newViewToolBar whether the tool bar should be visible
+	 **/
 	public void setViewToolBar(boolean newViewToolBar) {
 		viewToolBar = newViewToolBar;
 	}

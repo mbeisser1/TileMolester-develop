@@ -22,9 +22,7 @@ import tm.TMPalette;
 import tm.ui.TMView;
 
 /**
- *
  * Allows undo/redo of a palette entry modification.
- *
  **/
 public class ReversiblePaletteEditAction extends ReversibleAction {
 
@@ -33,6 +31,14 @@ public class ReversiblePaletteEditAction extends ReversibleAction {
     private int newColor;
     private TMPalette palette;
 
+    /**
+     * Records a single palette entry change for undo/redo.
+     * @param view TODO: view is not stored; reserved for future palette refresh
+     * @param palette palette being edited
+     * @param colorIndex index of the entry that changed
+     * @param oldColor previous 32-bit RGB value
+     * @param newColor new 32-bit RGB value
+     **/
     public ReversiblePaletteEditAction(TMView view, TMPalette palette, int colorIndex, int oldColor, int newColor) {
         super("Edit Palette");  // i18n
         this.palette = palette;
@@ -41,18 +47,32 @@ public class ReversiblePaletteEditAction extends ReversibleAction {
         this.newColor = newColor;
     }
 
+    /**
+     * Restores the previous palette entry color.
+     **/
     public void undo() {
         palette.setEntryRGB(colorIndex, oldColor);
         // paletteChanged()
     }
 
+    /**
+     * Re-applies the new palette entry color.
+     **/
     public void redo() {
         palette.setEntryRGB(colorIndex, newColor);
         // paletteChanged()
     }
 
+    /**
+     * Palette edit can always be undone.
+     * @return {@code true}
+     **/
     public boolean canUndo() { return true; }
 
+    /**
+     * Palette edit can always be redone.
+     * @return {@code true}
+     **/
     public boolean canRedo() { return true; }
 
 }

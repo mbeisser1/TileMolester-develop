@@ -26,9 +26,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- *
  * The dialog where user can enter desired file offset.
- *
  **/
 public class TMGoToDialog extends TMModalDialog {
 
@@ -43,27 +41,21 @@ public class TMGoToDialog extends TMModalDialog {
     private JRadioButton relButton;
 
     /**
-     *
      * Creates the goto dialog.
-     *
      **/
     public TMGoToDialog(Frame owner, tm.utils.Xlator xl) {
         super(owner, "Go_To_Dialog_Title", xl);
     }
 
     /**
-     *
      * Gets the selected mode.
-     *
      **/
     public int getMode() {
         return (absButton.isSelected()) ? ABSOLUTE_MODE : RELATIVE_MODE;
     }
 
     /**
-     *
      * Gets the offset that was entered.
-     *
      **/
     public int getOffset() {
         if (inputOK())
@@ -71,6 +63,10 @@ public class TMGoToDialog extends TMModalDialog {
         return 0;
     }
 
+    /**
+     * Builds and returns the dialog content panel.
+     * @return dialog content panel
+     **/
     protected JPanel getDialogPane() {
         JPanel p = new JPanel();
         GridBagLayout gbl = new GridBagLayout();
@@ -126,6 +122,10 @@ public class TMGoToDialog extends TMModalDialog {
         ofsField.setText("");
         ofsField.setColumns(10);
         ofsField.addKeyListener(new KeyAdapter() {
+            /**
+             * Filters or handles key-typed input.
+             * @param e event object
+             **/
             public void keyTyped(KeyEvent e) {
                 char c = e.getKeyChar();
                 if (!((Character.digit(c, getRadix()) != -1) ||
@@ -140,6 +140,10 @@ public class TMGoToDialog extends TMModalDialog {
         ofsField.getDocument().addDocumentListener(new TMDocumentListener());
 
         hexButton.addActionListener(new ActionListener() {
+            /**
+             * Handles a UI action event.
+             * @param e event object
+             **/
             public void actionPerformed(ActionEvent e) {
                 if (inputOK()) {
                     int ofs = Integer.parseInt(ofsField.getText(), 10);
@@ -148,6 +152,10 @@ public class TMGoToDialog extends TMModalDialog {
             }
         });
         decButton.addActionListener(new ActionListener() {
+            /**
+             * Handles a UI action event.
+             * @param e event object
+             **/
             public void actionPerformed(ActionEvent e) {
                 if (inputOK()) {
                     int ofs = Integer.parseInt(ofsField.getText(), 16);
@@ -159,10 +167,17 @@ public class TMGoToDialog extends TMModalDialog {
         return p;
     }
 
+    /**
+     * Shows the dialog and waits for user confirmation.
+     * @return JOptionPane.OK_OPTION or JOptionPane.CANCEL_OPTION
+     **/
     public int showDialog() {
         ofsField.setText("");
         maybeEnableOKButton();
         SwingUtilities.invokeLater( new Runnable() {
+            /**
+             * Runs the deferred UI task.
+             **/
             public void run() {
                 ofsField.requestFocus();
             }
@@ -170,10 +185,18 @@ public class TMGoToDialog extends TMModalDialog {
         return super.showDialog();
     }
 
+    /**
+     * Gets the numeric radix selected for offset entry.
+     * @return 16 for hex or 10 for decimal entry
+     **/
     private int getRadix() {
         return (hexButton.isSelected()) ? 16 : 10;
     }
 
+    /**
+     * Reports whether the current dialog input is valid for OK.
+     * @return true if dialog input is valid for OK
+     **/
     public boolean inputOK() {
         return !(ofsField.getText().equals(""));
     }

@@ -22,9 +22,7 @@ import tm.canvases.TMSelectionCanvas;
 import tm.canvases.TMEditorCanvas;
 
 /**
- *
  * Allows undo/redo of the Clear operation.
- *
  **/
 public class ReversibleClearAction extends ReversibleAction {
 
@@ -32,6 +30,11 @@ public class ReversibleClearAction extends ReversibleAction {
     private TMEditorCanvas owner;
     private int x, y;
 
+    /**
+     * Records the cleared selection and its grid position for undo/redo.
+     * @param selection selection canvas that was cleared
+     * @param owner editor canvas that owned the selection
+     **/
     public ReversibleClearAction(TMSelectionCanvas selection, TMEditorCanvas owner) {
         super("Clear Selection");   // i18n
         this.selection = selection;
@@ -40,16 +43,31 @@ public class ReversibleClearAction extends ReversibleAction {
         y = selection.getY() / selection.getScaledTileDim();
     }
 
+    /**
+     * Restores the selection on the editor canvas.
+     **/
     public void undo() {
         owner.showSelection(selection, x, y);
     }
 
+    /**
+     * Removes the selection from the editor canvas again.
+     **/
     public void redo() {
         owner.remove(selection);
         owner.repaint();
     }
 
+    /**
+     * Clear can always be undone.
+     * @return {@code true}
+     **/
     public boolean canUndo() { return true; }
+
+    /**
+     * Clear can always be redone.
+     * @return {@code true}
+     **/
     public boolean canRedo() { return true; }
 
 }

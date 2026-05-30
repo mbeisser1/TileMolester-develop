@@ -28,9 +28,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- *
  * A tile canvas that can be moved around.
- *
  **/
 public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListener {
 
@@ -43,9 +41,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
     private int oldY;
 
     /**
-     *
      * Creates a selection canvas by copying the specified tile grid.
-     *
      **/
     public TMSelectionCanvas(TMUI ui, TMTileCanvas canvas, int x1, int y1, int w, int h) {
         super(null);
@@ -79,9 +75,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
     }
 
     /**
-     *
      * Sets up the selection popup menu.
-     *
      **/
     private void initSelectionPopup() {
         selectionPopup = new JPopupMenu();
@@ -91,6 +85,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_T);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doCutAsCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doCutAsCommand();
                 }
@@ -102,6 +100,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_X);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doCopyToCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doCopyToCommand();
                 }
@@ -113,6 +115,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_T);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doCutCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doCutCommand();
                 }
@@ -124,6 +130,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_C);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doCopyCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doCopyCommand();
                 }
@@ -135,6 +145,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_P);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doPasteCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doPasteCommand();
                 }
@@ -146,6 +160,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_L);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doClearCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doClearCommand();
                 }
@@ -157,6 +175,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_S);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doSelectAllCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doSelectAllCommand();
                 }
@@ -170,6 +192,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_M);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doMirrorCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doMirrorCommand();
                 }
@@ -181,6 +207,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_F);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doFlipCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doFlipCommand();
                 }
@@ -194,6 +224,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_O);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doRotateRightCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doRotateRightCommand();
                 }
@@ -205,6 +239,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_A);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doRotateLeftCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doRotateLeftCommand();
                 }
@@ -218,6 +256,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_L);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doShiftLeftCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doShiftLeftCommand();
                 }
@@ -229,6 +271,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_R);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doShiftRightCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doShiftRightCommand();
                 }
@@ -240,6 +286,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_U);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doShiftUpCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doShiftUpCommand();
                 }
@@ -251,6 +301,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_D);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doShiftDownCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doShiftDownCommand();
                 }
@@ -264,6 +318,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         menuItem.setMnemonic(KeyEvent.VK_E);
         menuItem.addActionListener(
             new ActionListener() {
+                /**
+                 * Forwards the toolbar/menu action to {@link TMUI#doStretchCommand()}.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     ui.doStretchCommand();
                 }
@@ -273,9 +331,8 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
     }
 
     /**
-     *
      * Paints the selection.
-     *
+     * @param g graphics context used for drawing
      **/
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -285,9 +342,8 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
    }
 
     /**
-     *
      * Called when user has pressed mouse button and is moving mouse.
-     *
+     * @param e event from the AWT/Swing listener
      **/
     public void mouseDragged(MouseEvent e) {
         // reposition
@@ -295,18 +351,29 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
     }
 
     /**
-     *
      * Mouse event handlers.
-     *
+     * @param e event from the AWT/Swing listener
      **/
     public void mouseMoved(MouseEvent e) { }
 
+    /**
+     * @param e event from the AWT/Swing listener
+     **/
     public void mouseClicked(MouseEvent e) { }
 
+    /**
+     * @param e event from the AWT/Swing listener
+     **/
     public void mouseEntered(MouseEvent e) { }
 
+    /**
+     * @param e event from the AWT/Swing listener
+     **/
     public void mouseExited(MouseEvent e) { }
 
+    /**
+     * @param e event from the AWT/Swing listener
+     **/
     public void mousePressed(MouseEvent e) {
         dx = e.getX();
         dy = e.getY();
@@ -316,6 +383,10 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         maybeShowPopup(e);
     }
 
+    /**
+     * Snaps the selection to the tile grid and records the move for undo.
+     * @param e event from the AWT/Swing listener
+     **/
     public void mouseReleased(MouseEvent e) {
         if (hasMoved()) {
             snapToGrid();
@@ -335,9 +406,8 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         maybeShowPopup(e);
     }
     /**
-     *
      * Checks if the selection has been moved
-     *
+     * @return whether the selection was dragged to a new location
      **/
     public boolean hasMoved()
     {
@@ -345,9 +415,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
     }
 
     /**
-     *
      * Aligns the selection to a tile boundary.
-     *
      **/
     public void snapToGrid() {
         int dim = getScaledTileDim();
@@ -358,9 +426,8 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
     }
 
     /**
-     *
      * Shows the popup menu if the mouse event was a popup trigger.
-     *
+     * @param e event from the AWT/Swing listener
      **/
     public void maybeShowPopup(MouseEvent e) {
         if (e.isPopupTrigger()) {

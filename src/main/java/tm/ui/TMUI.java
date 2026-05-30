@@ -49,14 +49,12 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
- *
  * The main UI window.
  * Has a desktop for child frames, a menu, toolbars, a palette panel, and a
  * statusbar.
  * The code is mainly dominated by
  * 1) setting up the various menus and toolbars; and
  * 2) providing action handlers for menu items and tool buttons.
- *
  **/
 public class TMUI extends JFrame {
 	public static boolean isWindows = SystemInfo.isWindows;
@@ -313,9 +311,7 @@ public class TMUI extends JFrame {
 	private Logger uiLogger = Logger.getLogger("D_TMUI");
 
 	/**
-	 *
 	 * Creates a Tile Molester UI.
-	 *
 	 **/
 	public TMUI() {
 		super("Tile Molester");
@@ -580,10 +576,18 @@ public class TMUI extends JFrame {
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		addWindowListener(new WindowAdapter() {
+			/**
+			 * Handles the user request to close the main window.
+			 * @param e event from the AWT/Swing listener
+			 **/
 			public void windowClosing(WindowEvent e) {
 				doExitCommand();
 			}
 
+			/**
+			 * Restores normal window state when the frame is activated.
+			 * @param e event from the AWT/Swing listener
+			 **/
 			public void windowActivated(WindowEvent e) {
 				setExtendedState(JFrame.NORMAL); // Hacky way to make it not run in full screen by default
 				// HACK to fix the GUI after running FCEU in fullscreen mode
@@ -627,18 +631,25 @@ public class TMUI extends JFrame {
 		 * ModifButtonUI() { }
 		 */
 
+		/**
+		 * Creates the custom button UI delegate.
+		 * @return UI delegate for the custom button
+		 * @param c Swing component requesting the UI delegate
+		 **/
 		public static ComponentUI createUI(JComponent c) {
 			return new CButtonUI();
 		}
 
+		/**
+		 * Paints no border for the custom toolbar button UI.
+		 * @param g graphics context used for drawing
+		 **/
 		public void paintBorder(Graphics g) {
 		}
 	}
 
 	/**
-	 *
 	 * Sets up the toolbar.
-	 *
 	 **/
 	private void initToolBar() {
 		// toolBar.setBorder(null);
@@ -648,6 +659,10 @@ public class TMUI extends JFrame {
 		newButton.setFocusable(false);
 		newButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doNewCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doNewCommand();
 					}
@@ -658,6 +673,10 @@ public class TMUI extends JFrame {
 		openButton.setFocusable(false);
 		openButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doOpenCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doOpenCommand();
 					}
@@ -668,6 +687,10 @@ public class TMUI extends JFrame {
 		saveButton.setFocusable(false);
 		saveButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doSaveCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doSaveCommand();
 					}
@@ -680,6 +703,10 @@ public class TMUI extends JFrame {
 		cutButton.setFocusable(false);
 		cutButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doCutCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doCutCommand();
 					}
@@ -690,6 +717,10 @@ public class TMUI extends JFrame {
 		copyButton.setFocusable(false);
 		copyButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doCopyCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doCopyCommand();
 					}
@@ -700,6 +731,10 @@ public class TMUI extends JFrame {
 		pasteButton.setFocusable(false);
 		pasteButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doPasteCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doPasteCommand();
 					}
@@ -712,6 +747,10 @@ public class TMUI extends JFrame {
 		undoButton.setFocusable(false);
 		undoButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doUndoCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doUndoCommand();
 					}
@@ -722,6 +761,10 @@ public class TMUI extends JFrame {
 		redoButton.setFocusable(false);
 		redoButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doRedoCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doRedoCommand();
 					}
@@ -734,6 +777,10 @@ public class TMUI extends JFrame {
 		gotoButton.setFocusable(false);
 		gotoButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doGoToCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doGoToCommand();
 					}
@@ -744,6 +791,10 @@ public class TMUI extends JFrame {
 		addBookmarkButton.setFocusable(false);
 		addBookmarkButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doAddToBookmarksCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doAddToBookmarksCommand();
 					}
@@ -756,6 +807,10 @@ public class TMUI extends JFrame {
 		decWidthButton.setFocusable(false);
 		decWidthButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doDecreaseWidthCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doDecreaseWidthCommand();
 					}
@@ -766,6 +821,10 @@ public class TMUI extends JFrame {
 		incWidthButton.setFocusable(false);
 		incWidthButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doIncreaseWidthCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doIncreaseWidthCommand();
 					}
@@ -776,6 +835,10 @@ public class TMUI extends JFrame {
 		decHeightButton.setFocusable(false);
 		decHeightButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doDecreaseHeightCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doDecreaseHeightCommand();
 					}
@@ -786,6 +849,10 @@ public class TMUI extends JFrame {
 		incHeightButton.setFocusable(false);
 		incHeightButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doIncreaseHeightCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doIncreaseHeightCommand();
 					}
@@ -799,9 +866,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Sets up the navigation bar.
-	 *
 	 **/
 	public void initNavBar() {
 		// navBar.setBorder(null);
@@ -813,6 +878,10 @@ public class TMUI extends JFrame {
 		minusPageButton.setFocusable(false);
 		minusPageButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doMinusPageCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doMinusPageCommand();
 					}
@@ -823,6 +892,10 @@ public class TMUI extends JFrame {
 		plusPageButton.setFocusable(false);
 		plusPageButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doPlusPageCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doPlusPageCommand();
 					}
@@ -833,6 +906,10 @@ public class TMUI extends JFrame {
 		minusRowButton.setFocusable(false);
 		minusRowButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doMinusRowCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doMinusRowCommand();
 					}
@@ -843,6 +920,10 @@ public class TMUI extends JFrame {
 		plusRowButton.setFocusable(false);
 		plusRowButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doPlusRowCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doPlusRowCommand();
 					}
@@ -853,6 +934,10 @@ public class TMUI extends JFrame {
 		minusTileButton.setFocusable(false);
 		minusTileButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doMinusTileCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doMinusTileCommand();
 					}
@@ -863,6 +948,10 @@ public class TMUI extends JFrame {
 		plusTileButton.setFocusable(false);
 		plusTileButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doPlusTileCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doPlusTileCommand();
 					}
@@ -873,6 +962,10 @@ public class TMUI extends JFrame {
 		minusByteButton.setFocusable(false);
 		minusByteButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doMinusByteCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doMinusByteCommand();
 					}
@@ -883,6 +976,10 @@ public class TMUI extends JFrame {
 		plusByteButton.setFocusable(false);
 		plusByteButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doPlusByteCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doPlusByteCommand();
 					}
@@ -894,9 +991,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Sets up the tool palette.
-	 *
 	 **/
 	private void initToolPalette() {
 		toolPalette.setBorder(null);
@@ -905,6 +1000,10 @@ public class TMUI extends JFrame {
 		selectButton.setFocusable(false);
 		selectButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Invokes {@link #deselectToolPalette()} in response to the user action.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						toolType = TMTools.ToolType.SELECT_TOOL;
 						deselectToolPalette();
@@ -917,6 +1016,10 @@ public class TMUI extends JFrame {
 		zoomButton.setFocusable(false);
 		zoomButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Invokes {@link #deselectToolPalette()} in response to the user action.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						toolType = TMTools.ToolType.ZOOM_TOOL;
 						deselectToolPalette();
@@ -929,6 +1032,10 @@ public class TMUI extends JFrame {
 		pickupButton.setFocusable(false);
 		pickupButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Invokes {@link #deselectToolPalette()} in response to the user action.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						toolType = TMTools.ToolType.PICKUP_TOOL;
 						deselectToolPalette();
@@ -941,6 +1048,10 @@ public class TMUI extends JFrame {
 		brushButton.setFocusable(false);
 		brushButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Invokes {@link #deselectToolPalette()} in response to the user action.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						toolType = TMTools.ToolType.BRUSH_TOOL;
 						deselectToolPalette();
@@ -953,6 +1064,10 @@ public class TMUI extends JFrame {
 		lineButton.setFocusable(false);
 		lineButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Invokes {@link #deselectToolPalette()} in response to the user action.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						toolType = TMTools.ToolType.LINE_TOOL;
 						deselectToolPalette();
@@ -965,6 +1080,10 @@ public class TMUI extends JFrame {
 		fillButton.setFocusable(false);
 		fillButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Invokes {@link #deselectToolPalette()} in response to the user action.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						toolType = TMTools.ToolType.FILL_TOOL;
 						deselectToolPalette();
@@ -977,6 +1096,10 @@ public class TMUI extends JFrame {
 		replaceButton.setFocusable(false);
 		replaceButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Invokes {@link #deselectToolPalette()} in response to the user action.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						toolType = TMTools.ToolType.REPLACE_TOOL;
 						deselectToolPalette();
@@ -989,6 +1112,10 @@ public class TMUI extends JFrame {
 		moveButton.setFocusable(false);
 		moveButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Invokes {@link #deselectToolPalette()} in response to the user action.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						toolType = TMTools.ToolType.MOVE_TOOL;
 						deselectToolPalette();
@@ -1003,9 +1130,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Deselects all tools in the tool palette.
-	 *
 	 **/
 	public void deselectToolPalette() {
 		selectButton.setSelected(false);
@@ -1019,9 +1144,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Sets up the selection palette.
-	 *
 	 **/
 	public void initSelectionToolBar() {
 		selectionToolBar.setBorder(null);
@@ -1030,6 +1153,10 @@ public class TMUI extends JFrame {
 		mirrorButton.setFocusable(false);
 		mirrorButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doMirrorCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doMirrorCommand();
 					}
@@ -1040,6 +1167,10 @@ public class TMUI extends JFrame {
 		flipButton.setFocusable(false);
 		flipButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doFlipCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doFlipCommand();
 					}
@@ -1050,6 +1181,10 @@ public class TMUI extends JFrame {
 		rotateRightButton.setFocusable(false);
 		rotateRightButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doRotateRightCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doRotateRightCommand();
 					}
@@ -1060,6 +1195,10 @@ public class TMUI extends JFrame {
 		rotateLeftButton.setFocusable(false);
 		rotateLeftButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doRotateLeftCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doRotateLeftCommand();
 					}
@@ -1070,6 +1209,10 @@ public class TMUI extends JFrame {
 		shiftLeftButton.setFocusable(false);
 		shiftLeftButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doShiftLeftCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doShiftLeftCommand();
 					}
@@ -1080,6 +1223,10 @@ public class TMUI extends JFrame {
 		shiftRightButton.setFocusable(false);
 		shiftRightButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doShiftRightCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doShiftRightCommand();
 					}
@@ -1090,6 +1237,10 @@ public class TMUI extends JFrame {
 		shiftUpButton.setFocusable(false);
 		shiftUpButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doShiftUpCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doShiftUpCommand();
 					}
@@ -1100,6 +1251,10 @@ public class TMUI extends JFrame {
 		shiftDownButton.setFocusable(false);
 		shiftDownButton.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doShiftDownCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doShiftDownCommand();
 					}
@@ -1112,9 +1267,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Sets up the menu bar.
-	 *
 	 **/
 	private void initMenuBar() {
 		// File menu
@@ -1124,6 +1277,10 @@ public class TMUI extends JFrame {
 		newMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK));
 		newMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doNewCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doNewCommand();
 					}
@@ -1134,6 +1291,10 @@ public class TMUI extends JFrame {
 		openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
 		openMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doOpenCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doOpenCommand();
 					}
@@ -1146,6 +1307,10 @@ public class TMUI extends JFrame {
 		closeMenuItem.setMnemonic(KeyEvent.VK_C);
 		closeMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doCloseCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doCloseCommand();
 					}
@@ -1155,6 +1320,10 @@ public class TMUI extends JFrame {
 		closeAllMenuItem.setMnemonic(KeyEvent.VK_E);
 		closeAllMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doCloseAllCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doCloseAllCommand();
 					}
@@ -1167,6 +1336,10 @@ public class TMUI extends JFrame {
 		saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
 		saveMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doSaveCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doSaveCommand();
 					}
@@ -1176,6 +1349,10 @@ public class TMUI extends JFrame {
 		saveAsMenuItem.setMnemonic(KeyEvent.VK_A);
 		saveAsMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doSaveAsCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doSaveAsCommand();
 					}
@@ -1185,6 +1362,10 @@ public class TMUI extends JFrame {
 		saveAllMenuItem.setMnemonic(KeyEvent.VK_L);
 		saveAllMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doSaveAllCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doSaveAllCommand();
 					}
@@ -1196,6 +1377,10 @@ public class TMUI extends JFrame {
 		exitMenuItem.setMnemonic(KeyEvent.VK_X);
 		exitMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doExitCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doExitCommand();
 					}
@@ -1209,6 +1394,10 @@ public class TMUI extends JFrame {
 		undoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.CTRL_MASK));
 		undoMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doUndoCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doUndoCommand();
 					}
@@ -1219,6 +1408,10 @@ public class TMUI extends JFrame {
 		redoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.CTRL_MASK));
 		redoMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doRedoCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doRedoCommand();
 					}
@@ -1231,6 +1424,10 @@ public class TMUI extends JFrame {
 		cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK));
 		cutMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doCutCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doCutCommand();
 					}
@@ -1241,6 +1438,10 @@ public class TMUI extends JFrame {
 		copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK));
 		copyMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doCopyCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doCopyCommand();
 					}
@@ -1251,6 +1452,10 @@ public class TMUI extends JFrame {
 		pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK));
 		pasteMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doPasteCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doPasteCommand();
 					}
@@ -1261,6 +1466,10 @@ public class TMUI extends JFrame {
 		clearMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
 		clearMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doClearCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doClearCommand();
 					}
@@ -1273,6 +1482,10 @@ public class TMUI extends JFrame {
 		selectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK));
 		selectAllMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doSelectAllCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doSelectAllCommand();
 					}
@@ -1284,6 +1497,10 @@ public class TMUI extends JFrame {
 		copyToMenuItem.setMnemonic(KeyEvent.VK_O);
 		copyToMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doCopyToCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doCopyToCommand();
 					}
@@ -1293,6 +1510,10 @@ public class TMUI extends JFrame {
 		pasteFromMenuItem.setMnemonic(KeyEvent.VK_F);
 		pasteFromMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doPasteFromCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doPasteFromCommand();
 					}
@@ -1310,6 +1531,10 @@ public class TMUI extends JFrame {
 		zoomInMenuItem.setMnemonic(KeyEvent.VK_I);
 		zoomInMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doZoomInCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doZoomInCommand();
 					}
@@ -1319,6 +1544,10 @@ public class TMUI extends JFrame {
 		zoomOutMenuItem.setMnemonic(KeyEvent.VK_O);
 		zoomOutMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doZoomOutCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doZoomOutCommand();
 					}
@@ -1330,6 +1559,10 @@ public class TMUI extends JFrame {
 		_100MenuItem.setMnemonic(KeyEvent.VK_1);
 		_100MenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Handles the user interface action event.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doZoomCommand(1.0);
 					}
@@ -1339,6 +1572,10 @@ public class TMUI extends JFrame {
 		_200MenuItem.setMnemonic(KeyEvent.VK_2);
 		_200MenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Handles the user interface action event.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doZoomCommand(2.0);
 					}
@@ -1348,6 +1585,10 @@ public class TMUI extends JFrame {
 		_400MenuItem.setMnemonic(KeyEvent.VK_4);
 		_400MenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Handles the user interface action event.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doZoomCommand(4.0);
 					}
@@ -1357,6 +1598,10 @@ public class TMUI extends JFrame {
 		_800MenuItem.setMnemonic(KeyEvent.VK_8);
 		_800MenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Handles the user interface action event.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doZoomCommand(8.0);
 					}
@@ -1366,6 +1611,10 @@ public class TMUI extends JFrame {
 		_1600MenuItem.setMnemonic(KeyEvent.VK_6);
 		_1600MenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Handles the user interface action event.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doZoomCommand(16.0);
 					}
@@ -1375,6 +1624,10 @@ public class TMUI extends JFrame {
 		_3200MenuItem.setMnemonic(KeyEvent.VK_3);
 		_3200MenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Handles the user interface action event.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doZoomCommand(32.0);
 					}
@@ -1386,6 +1639,10 @@ public class TMUI extends JFrame {
 		// 1-Dimensional
 		_1DimensionalMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Handles the user interface action event.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doModeCommand(TileCodec.MODE_1D);
 						_1DimensionalMenuItem.setSelected(true);
@@ -1395,6 +1652,10 @@ public class TMUI extends JFrame {
 		// 2-Dimensional
 		_2DimensionalMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Handles the user interface action event.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doModeCommand(TileCodec.MODE_2D);
 						_2DimensionalMenuItem.setSelected(true);
@@ -1413,6 +1674,10 @@ public class TMUI extends JFrame {
 		sizeBlockToCanvasMenuItem.setMnemonic(KeyEvent.VK_F);
 		sizeBlockToCanvasMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doSizeBlockToCanvasCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doSizeBlockToCanvasCommand();
 					}
@@ -1424,6 +1689,10 @@ public class TMUI extends JFrame {
 		customBlockSizeMenuItem.setMnemonic(KeyEvent.VK_C);
 		customBlockSizeMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doCustomBlockSizeCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doCustomBlockSizeCommand();
 					}
@@ -1434,6 +1703,10 @@ public class TMUI extends JFrame {
 		rowInterleaveBlocksMenuItem.setMnemonic(KeyEvent.VK_R);
 		rowInterleaveBlocksMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doRowInterleaveBlocksCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doRowInterleaveBlocksCommand();
 					}
@@ -1445,6 +1718,10 @@ public class TMUI extends JFrame {
 		blockGridMenuItem.setMnemonic(KeyEvent.VK_V);
 		blockGridMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doBlockGridCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doBlockGridCommand();
 					}
@@ -1454,6 +1731,10 @@ public class TMUI extends JFrame {
 		tileGridMenuItem.setMnemonic(KeyEvent.VK_A);
 		tileGridMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doTileGridCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doTileGridCommand();
 					}
@@ -1463,6 +1744,10 @@ public class TMUI extends JFrame {
 		pixelGridMenuItem.setMnemonic(KeyEvent.VK_P);
 		pixelGridMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doPixelGridCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doPixelGridCommand();
 					}
@@ -1475,6 +1760,10 @@ public class TMUI extends JFrame {
 		statusBarMenuItem.setSelected(viewStatusBar);
 		statusBarMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doStatusBarCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doStatusBarCommand();
 					}
@@ -1485,6 +1774,10 @@ public class TMUI extends JFrame {
 		toolBarMenuItem.setSelected(viewToolBar);
 		toolBarMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doToolBarCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doToolBarCommand();
 					}
@@ -1494,6 +1787,10 @@ public class TMUI extends JFrame {
 		darkModeMenuItem.setSelected(darkMode);
 		darkModeMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doDarkModeCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doDarkModeCommand();
 					}
@@ -1507,6 +1804,10 @@ public class TMUI extends JFrame {
 		mirrorMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, Event.CTRL_MASK));
 		mirrorMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doMirrorCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doMirrorCommand();
 					}
@@ -1517,6 +1818,10 @@ public class TMUI extends JFrame {
 		flipMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, Event.CTRL_MASK));
 		flipMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doFlipCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doFlipCommand();
 					}
@@ -1528,6 +1833,10 @@ public class TMUI extends JFrame {
 		rotateRightMenuItem.setMnemonic(KeyEvent.VK_O);
 		rotateRightMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doRotateRightCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doRotateRightCommand();
 					}
@@ -1537,6 +1846,10 @@ public class TMUI extends JFrame {
 		rotateLeftMenuItem.setMnemonic(KeyEvent.VK_A);
 		rotateLeftMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doRotateLeftCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doRotateLeftCommand();
 					}
@@ -1550,6 +1863,10 @@ public class TMUI extends JFrame {
 		// Event.SHIFT_MASK));
 		shiftLeftMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doShiftLeftCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doShiftLeftCommand();
 					}
@@ -1561,6 +1878,10 @@ public class TMUI extends JFrame {
 		// Event.SHIFT_MASK));
 		shiftRightMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doShiftRightCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doShiftRightCommand();
 					}
@@ -1572,6 +1893,10 @@ public class TMUI extends JFrame {
 		// Event.SHIFT_MASK));
 		shiftUpMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doShiftUpCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doShiftUpCommand();
 					}
@@ -1583,6 +1908,10 @@ public class TMUI extends JFrame {
 		// Event.SHIFT_MASK));
 		shiftDownMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doShiftDownCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doShiftDownCommand();
 					}
@@ -1594,6 +1923,10 @@ public class TMUI extends JFrame {
 		canvasSizeMenuItem.setMnemonic(KeyEvent.VK_S);
 		canvasSizeMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doCanvasSizeCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doCanvasSizeCommand();
 					}
@@ -1603,6 +1936,10 @@ public class TMUI extends JFrame {
 		stretchMenuItem.setMnemonic(KeyEvent.VK_E);
 		stretchMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doStretchCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doStretchCommand();
 					}
@@ -1616,6 +1953,10 @@ public class TMUI extends JFrame {
 		goToMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, Event.CTRL_MASK));
 		goToMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doGoToCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doGoToCommand();
 					}
@@ -1626,6 +1967,10 @@ public class TMUI extends JFrame {
 		goToAgainMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
 		goToAgainMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doGoToAgainCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doGoToAgainCommand();
 					}
@@ -1637,6 +1982,10 @@ public class TMUI extends JFrame {
 		addToBookmarksMenuItem.setMnemonic(KeyEvent.VK_A);
 		addToBookmarksMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doAddToBookmarksCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doAddToBookmarksCommand();
 					}
@@ -1646,6 +1995,10 @@ public class TMUI extends JFrame {
 		organizeBookmarksMenuItem.setMnemonic(KeyEvent.VK_O);
 		organizeBookmarksMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doOrganizeBookmarksCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doOrganizeBookmarksCommand();
 					}
@@ -1660,6 +2013,10 @@ public class TMUI extends JFrame {
 		editColorsMenuItem.setMnemonic(KeyEvent.VK_E);
 		editColorsMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doEditColorsCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doEditColorsCommand();
 					}
@@ -1674,6 +2031,10 @@ public class TMUI extends JFrame {
 		paletteLittleEndianMenuItem.setMnemonic(KeyEvent.VK_L);
 		paletteLittleEndianMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Handles the user interface action event.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doPaletteEndiannessCommand(ColorCodec.LITTLE_ENDIAN);
 					}
@@ -1683,6 +2044,10 @@ public class TMUI extends JFrame {
 		paletteBigEndianMenuItem.setMnemonic(KeyEvent.VK_B);
 		paletteBigEndianMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Handles the user interface action event.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doPaletteEndiannessCommand(ColorCodec.BIG_ENDIAN);
 					}
@@ -1697,6 +2062,10 @@ public class TMUI extends JFrame {
 		paletteSizeMenuItem.setMnemonic(KeyEvent.VK_S);
 		paletteSizeMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doPaletteSizeCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doPaletteSizeCommand();
 					}
@@ -1708,6 +2077,10 @@ public class TMUI extends JFrame {
 		newPaletteMenuItem.setMnemonic(KeyEvent.VK_N);
 		newPaletteMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doNewPaletteCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doNewPaletteCommand();
 					}
@@ -1719,6 +2092,10 @@ public class TMUI extends JFrame {
 		importInternalPaletteMenuItem.setMnemonic(KeyEvent.VK_T);
 		importInternalPaletteMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doImportInternalPaletteCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doImportInternalPaletteCommand();
 					}
@@ -1728,6 +2105,10 @@ public class TMUI extends JFrame {
 		importExternalPaletteMenuItem.setMnemonic(KeyEvent.VK_A);
 		importExternalPaletteMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doImportExternalPaletteCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doImportExternalPaletteCommand();
 					}
@@ -1740,6 +2121,10 @@ public class TMUI extends JFrame {
 		addToPalettesMenuItem.setMnemonic(KeyEvent.VK_A);
 		addToPalettesMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doAddToPalettesCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doAddToPalettesCommand();
 					}
@@ -1749,6 +2134,10 @@ public class TMUI extends JFrame {
 		organizePalettesMenuItem.setMnemonic(KeyEvent.VK_O);
 		organizePalettesMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doOrganizePalettesCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doOrganizePalettesCommand();
 					}
@@ -1761,6 +2150,10 @@ public class TMUI extends JFrame {
 		newWindowMenuItem.setMnemonic(KeyEvent.VK_N);
 		newWindowMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doNewWindowCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doNewWindowCommand();
 					}
@@ -1772,6 +2165,10 @@ public class TMUI extends JFrame {
 		tileMenuItem.setMnemonic(KeyEvent.VK_T);
 		tileMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doTileCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doTileCommand();
 					}
@@ -1781,6 +2178,10 @@ public class TMUI extends JFrame {
 		cascadeMenuItem.setMnemonic(KeyEvent.VK_C);
 		cascadeMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doCascadeCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doCascadeCommand();
 					}
@@ -1790,6 +2191,10 @@ public class TMUI extends JFrame {
 		arrangeIconsMenuItem.setMnemonic(KeyEvent.VK_I);
 		arrangeIconsMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doArrangeIconsCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doArrangeIconsCommand();
 					}
@@ -1803,6 +2208,10 @@ public class TMUI extends JFrame {
 		helpTopicsMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 		helpTopicsMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doHelpTopicsCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doHelpTopicsCommand();
 					}
@@ -1813,6 +2222,10 @@ public class TMUI extends JFrame {
 		aboutMenuItem.setMnemonic(KeyEvent.VK_A);
 		aboutMenuItem.addActionListener(
 				new ActionListener() {
+					/**
+					 * Forwards the toolbar/menu action to {@link TMUI#doAboutCommand()}.
+					 * @param e event from the AWT/Swing listener
+					 **/
 					public void actionPerformed(ActionEvent e) {
 						doAboutCommand();
 					}
@@ -1825,11 +2238,9 @@ public class TMUI extends JFrame {
 	// Begin code for handling menu commands
 
 	/**
-	 *
 	 * Handles menu command "New".
 	 * Prompts the user to enter the desired file size, then creates a new
 	 * FileImage and a default view + palette.
-	 *
 	 **/
 	public void doNewCommand() {
 		// Show dialog for creating new file
@@ -1848,11 +2259,9 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Open...".
 	 * User selects file from standard file dialog, the file is
 	 * opened and a default view + palette is assigned.
-	 *
 	 **/
 	public void doOpenCommand() {
 		// set to directory of selected file, if there is one
@@ -1878,11 +2287,9 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Close".
 	 * Closes a view. If it is the last (only) view of a FileImage,
 	 * and the file is modified, the user is prompted to save the file.
-	 *
 	 **/
 	public void doCloseCommand() {
 		TMView view = getSelectedView();
@@ -1941,9 +2348,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Saves the resources for the given fileimage to a file in XML format.
-	 *
+	 * @param img img value
 	 **/
 	public void saveResources(FileImage img) {
 		// TODO: should only save if # bookmarks | # of palettes > 0?
@@ -1966,19 +2372,23 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 *
+	 **/
 	public void saveBookmarks() {
-		// TODO
-	}
-
-	public void savePalettes() {
 		// TODO
 	}
 
 	/**
 	 *
+	 **/
+	public void savePalettes() {
+		// TODO
+	}
+
+	/**
 	 * Handles menu command "Close All".
 	 * Does the same as "Close", only for all the current frames.
-	 *
 	 **/
 	public void doCloseAllCommand() {
 		JInternalFrame[] frames = desktop.getAllFrames();
@@ -2034,9 +2444,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Save".
-	 *
 	 **/
 	public void doSaveCommand() {
 		TMView view = getSelectedView();
@@ -2090,9 +2498,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Save As...".
-	 *
 	 **/
 	public void doSaveAsCommand() {
 		TMView view = getSelectedView();
@@ -2111,9 +2517,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Save All".
-	 *
 	 **/
 	public void doSaveAllCommand() {
 		JInternalFrame[] frames = desktop.getAllFrames();
@@ -2132,9 +2536,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Exit".
-	 *
 	 **/
 	public void doExitCommand() {
 		doCloseAllCommand();
@@ -2146,11 +2548,9 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Undo".
 	 * Extracts the top item in the Undo stack and undoes it.
 	 * Moves the item to the Redo stack.
-	 *
 	 **/
 	public void doUndoCommand() {
 		TMView view = getSelectedView();
@@ -2162,11 +2562,9 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Redo".
 	 * Extracts the top item in the Redo stack and redoes it.
 	 * Moves the item to the Undo stack.
-	 *
 	 **/
 	public void doRedoCommand() {
 		TMView view = getSelectedView();
@@ -2178,11 +2576,9 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Cut".
 	 * The current selection of the selected frame is cut to the
 	 * central selection.
-	 *
 	 **/
 	public void doCutCommand() {
 		TMView view = getSelectedView();
@@ -2196,9 +2592,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Copy".
-	 *
 	 **/
 	public void doCopyCommand() {
 		TMView view = getSelectedView();
@@ -2212,9 +2606,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Paste".
-	 *
 	 **/
 	public void doPasteCommand() {
 		TMView view = getSelectedView();
@@ -2227,9 +2619,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Clear".
-	 *
 	 **/
 	public void doClearCommand() {
 		TMView view = getSelectedView();
@@ -2239,11 +2629,9 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Go To...".
 	 * Shows a dialog where the user can enter an absolute or relative
 	 * file offset to jump to. Then jumps to that offset.
-	 *
 	 **/
 	public void doGoToCommand() {
 		TMView view = getSelectedView();
@@ -2262,10 +2650,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Go To Again".
 	 * Only applicable when the preceding "Go To..." was of relative type.
-	 *
 	 **/
 	public void doGoToAgainCommand() {
 		TMView view = getSelectedView();
@@ -2280,9 +2666,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Select All".
-	 *
 	 **/
 	public void doSelectAllCommand() {
 		TMView view = getSelectedView();
@@ -2292,9 +2676,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Save Selection As...".
-	 *
+	 * @return export selection as flag
 	 **/
 	public boolean exportSelectionAs() {
 		TMView view = getSelectedView();
@@ -2321,10 +2704,16 @@ public class TMUI extends JFrame {
 		return false;
 	}
 
+	/**
+	 * Handles the "CopyTo" menu or toolbar command.
+	 **/
 	public void doCopyToCommand() {
 		exportSelectionAs();
 	}
 
+	/**
+	 * Handles the "CutAs" menu or toolbar command.
+	 **/
 	public void doCutAsCommand() {
 		if (exportSelectionAs()) {
 			doCutCommand();
@@ -2332,9 +2721,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Paste From...".
-	 *
 	 **/
 	public void doPasteFromCommand() {
 		TMView view = getSelectedView();
@@ -2368,10 +2755,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Tile".
 	 * Code ruthlessly stolen from some guy on the Java forums. Thanks and sorry. :)
-	 *
 	 **/
 	public void doTileCommand() {
 		JInternalFrame[] frames = desktop.getAllFrames();
@@ -2408,10 +2793,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Cascade".
 	 * Code ruthlessly stolen from some guy on the Java forums. Thanks and sorry. :)
-	 *
 	 **/
 	public void doCascadeCommand() {
 		int FRAME_OFFSET = 30;
@@ -2432,9 +2815,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Arrange Icons".
-	 *
 	 **/
 	public void doArrangeIconsCommand() {
 		JInternalFrame[] frames = desktop.getAllFrames();
@@ -2451,9 +2832,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Help Topics".
-	 *
 	 **/
 	public void doHelpTopicsCommand() {
 		File localizedHelpFile = new File("docs/help_" + locale.toString() + ".htm");
@@ -2465,10 +2844,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "About".
 	 * Displays a small dialog with info about the program.
-	 *
 	 **/
 	public void doAboutCommand() {
 		JOptionPane.showMessageDialog(this,
@@ -2478,10 +2855,9 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Tile Codec".
 	 * Changes the tile codec for the current view to the specified one.
-	 *
+	 * @param codec tile codec used for encode/decode
 	 **/
 	public void doTileCodecCommand(TileCodec codec) {
 		TMView view = getSelectedView();
@@ -2494,10 +2870,9 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Zoom".
 	 * Zooms the current frame to the given scale (1.0 = 100%, 2.0 = 200% and so on)
-	 *
+	 * @param scale zoom factor applied to the canvas
 	 **/
 	public void doZoomCommand(double scale) {
 		TMView view = getSelectedView();
@@ -2507,10 +2882,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Zoom In".
 	 * Scale += 1.0
-	 *
 	 **/
 	public void doZoomInCommand() {
 		TMView view = getSelectedView();
@@ -2520,10 +2893,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Zoom Out".
 	 * Scale -= 1.0
-	 *
 	 **/
 	public void doZoomOutCommand() {
 		TMView view = getSelectedView();
@@ -2533,9 +2904,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Block Grid".
-	 *
 	 **/
 	public void doBlockGridCommand() {
 		TMView view = getSelectedView();
@@ -2547,9 +2916,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Tile Grid".
-	 *
 	 **/
 	public void doTileGridCommand() {
 		TMView view = getSelectedView();
@@ -2561,9 +2928,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Pixel Grid".
-	 *
 	 **/
 	public void doPixelGridCommand() {
 		TMView view = getSelectedView();
@@ -2575,10 +2940,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Statusbar".
 	 * Toggles the statusbar visibility.
-	 *
 	 **/
 	public void doStatusBarCommand() {
 		viewStatusBar = !viewStatusBar;
@@ -2588,10 +2951,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Toolbar".
 	 * Toggles the toolbar visibility.
-	 *
 	 **/
 	public void doToolBarCommand() {
 		viewToolBar = !viewToolBar;
@@ -2601,10 +2962,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Dark mode".
 	 * Toggles the dark mode theme.
-	 *
 	 **/
 	public void doDarkModeCommand() {
 		darkMode = !TMTheme.darkMode;
@@ -2613,11 +2972,9 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "New Window".
 	 * Creates a new view for the current one.
 	 * Duplicates view settings (offset, codec, width/height etc.)
-	 *
 	 **/
 	public void doNewWindowCommand() {
 		TMView view = getSelectedView();
@@ -2635,9 +2992,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Mirror".
-	 *
 	 **/
 	public void doMirrorCommand() {
 		TMView view = getSelectedView();
@@ -2647,9 +3002,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Flip".
-	 *
 	 **/
 	public void doFlipCommand() {
 		TMView view = getSelectedView();
@@ -2659,9 +3012,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Rotate +90".
-	 *
 	 **/
 	public void doRotateRightCommand() {
 		TMView view = getSelectedView();
@@ -2671,9 +3022,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Rotate Left".
-	 *
 	 **/
 	public void doRotateLeftCommand() {
 		TMView view = getSelectedView();
@@ -2683,9 +3032,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Shift Left".
-	 *
 	 **/
 	public void doShiftLeftCommand() {
 		TMView view = getSelectedView();
@@ -2695,9 +3042,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Shift Right".
-	 *
 	 **/
 	public void doShiftRightCommand() {
 		TMView view = getSelectedView();
@@ -2707,9 +3052,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Shift Up".
-	 *
 	 **/
 	public void doShiftUpCommand() {
 		TMView view = getSelectedView();
@@ -2719,9 +3062,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Shift Down".
-	 *
 	 **/
 	public void doShiftDownCommand() {
 		TMView view = getSelectedView();
@@ -2731,9 +3072,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Stretch".
-	 *
 	 **/
 	public void doStretchCommand() {
 		TMView view = getSelectedView();
@@ -2748,9 +3087,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Canvas Size".
-	 *
 	 **/
 	public void doCanvasSizeCommand() {
 		TMView view = getSelectedView();
@@ -2765,11 +3102,10 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Mode".
 	 * Switches to the specified tile mode for the current frame.
 	 * The valid modes are MODE_1D and MODE_2D.
-	 *
+	 * @param mode tile layout mode ({@link tm.tilecodecs.TileCodec#MODE_1D} or {@link tm.tilecodecs.TileCodec#MODE_2D})
 	 **/
 	public void doModeCommand(int mode) {
 		TMView view = getSelectedView();
@@ -2779,6 +3115,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "SizeBlockToCanvas" menu or toolbar command.
+	 **/
 	public void doSizeBlockToCanvasCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2787,6 +3126,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "CustomBlockSize" menu or toolbar command.
+	 **/
 	public void doCustomBlockSizeCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2800,6 +3142,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "RowInterleaveBlocks" menu or toolbar command.
+	 **/
 	public void doRowInterleaveBlocksCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2808,6 +3153,10 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "Reopen" menu or toolbar command.
+	 * @param recentFile recentFile value
+	 **/
 	public void doReopenCommand(File recentFile) {
 		if (recentFile.exists() && recentFile.canRead()) {
 			Vector<File> recentFiles = TileMolester.settings.getRecentFiles();
@@ -2819,9 +3168,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles the menu command "Custom Codec".
-	 *
 	 **/
 	public void doCustomCodecCommand() {
 		TMView view = getSelectedView();
@@ -2845,9 +3192,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Navigation button press handlers.
-	 *
 	 **/
 	public void doHomeCommand() {
 		TMView view = getSelectedView();
@@ -2856,6 +3201,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "MinusPage" menu or toolbar command.
+	 **/
 	public void doMinusPageCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2863,6 +3211,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "MinusRow" menu or toolbar command.
+	 **/
 	public void doMinusRowCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2870,6 +3221,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "MinusTile" menu or toolbar command.
+	 **/
 	public void doMinusTileCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2877,6 +3231,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "MinusByte" menu or toolbar command.
+	 **/
 	public void doMinusByteCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2884,6 +3241,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "PlusByte" menu or toolbar command.
+	 **/
 	public void doPlusByteCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2891,6 +3251,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "PlusTile" menu or toolbar command.
+	 **/
 	public void doPlusTileCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2898,6 +3261,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "PlusRow" menu or toolbar command.
+	 **/
 	public void doPlusRowCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2905,6 +3271,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "PlusPage" menu or toolbar command.
+	 **/
 	public void doPlusPageCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2912,6 +3281,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "End" menu or toolbar command.
+	 **/
 	public void doEndCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2920,9 +3292,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles the menu command "Add To Bookmarks".
-	 *
 	 **/
 	public void doAddToBookmarksCommand() {
 		TMView view = getSelectedView();
@@ -2952,9 +3322,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles the menu command "Organize Bookmarks".
-	 *
 	 **/
 	public void doOrganizeBookmarksCommand() {
 		TMView view = getSelectedView();
@@ -2967,9 +3335,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles the menu command "Add To Palettes".
-	 *
 	 **/
 	public void doAddToPalettesCommand() {
 		TMView view = getSelectedView();
@@ -2998,9 +3364,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles the menu command "Organize Palettes".
-	 *
 	 **/
 	public void doOrganizePalettesCommand() {
 		TMView view = getSelectedView();
@@ -3013,9 +3377,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles the menu command "Edit Colors".
-	 *
 	 **/
 	public void doEditColorsCommand() {
 		TMView view = getSelectedView();
@@ -3040,9 +3402,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles the menu command "Format Palette".
-	 *
+	 * @param codec tile codec used for encode/decode
 	 **/
 	public void doColorCodecCommand(ColorCodec codec) {
 		TMView view = getSelectedView();
@@ -3054,9 +3415,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles the menu command "Set Palette Size".
-	 *
 	 **/
 	public void doPaletteSizeCommand() {
 		TMView view = getSelectedView();
@@ -3072,9 +3431,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles the menu command "New Palette".
-	 *
 	 **/
 	public void doNewPaletteCommand() {
 		TMView view = getSelectedView();
@@ -3100,9 +3457,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles the menu command "Import Palette From This File".
-	 *
 	 **/
 	public void doImportInternalPaletteCommand() {
 		TMView view = getSelectedView();
@@ -3132,9 +3487,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles the menu command "Import Palette From Another File".
-	 *
 	 **/
 	public void doImportExternalPaletteCommand() {
 		TMView view = getSelectedView();
@@ -3196,6 +3549,12 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Reports whether csv palette import.
+	 * @return whether csv palette import
+	 * @param pf pf value
+	 * @param file file value
+	 **/
 	private boolean isCsvPaletteImport(TMPaletteFileFilter pf, File file) {
 		if (pf.getSize() == 0 && "CF01".equals(pf.getCodecID())) {
 			return true;
@@ -3204,6 +3563,10 @@ public class TMUI extends JFrame {
 		return name.endsWith(".csv");
 	}
 
+	/**
+	 * @param view file view associated with this component
+	 * @param file file value
+	 **/
 	private void importPaletteFromCsvFile(TMView view, File file) {
 		int[] rgb;
 		try {
@@ -3243,9 +3606,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Handles menu command "Palette Endianness".
-	 *
+	 * @param endianness endianness value
 	 **/
 	public void doPaletteEndiannessCommand(int endianness) {
 		TMView view = getSelectedView();
@@ -3255,9 +3617,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Called when user has selected a bookmark to jump to from the Navigate menu.
-	 *
+	 * @param bookmark bookmark value
 	 **/
 	public void doGotoBookmarkCommand(BookmarkItemNode bookmark) {
 		TMView view = getSelectedView();
@@ -3267,9 +3628,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Called when user has selected a palette to use from the Palette menu.
-	 *
+	 * @param palette palette whose colors are displayed or edited
 	 **/
 	public void doSelectPaletteCommand(TMPalette palette) {
 		TMView view = getSelectedView();
@@ -3281,6 +3641,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "DecreaseWidth" menu or toolbar command.
+	 **/
 	public void doDecreaseWidthCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3289,6 +3652,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "IncreaseWidth" menu or toolbar command.
+	 **/
 	public void doIncreaseWidthCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3297,6 +3663,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "DecreaseHeight" menu or toolbar command.
+	 **/
 	public void doDecreaseHeightCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3305,6 +3674,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the "IncreaseHeight" menu or toolbar command.
+	 **/
 	public void doIncreaseHeightCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3316,9 +3688,8 @@ public class TMUI extends JFrame {
 	//////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 *
 	 * Call this when a fileimage has been modified.
-	 *
+	 * @param img img value
 	 **/
 	public void fileImageModified(FileImage img) {
 		img.setModified(true);
@@ -3327,9 +3698,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Sets enabled state of save buttons.
-	 *
+	 * @param b b value
 	 **/
 	public void setSaveButtonsEnabled(boolean b) {
 		saveButton.setEnabled(b);
@@ -3337,9 +3707,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Sets enabled state of undo buttons.
-	 *
+	 * @param b b value
 	 **/
 	public void setUndoButtonsEnabled(boolean b) {
 		undoButton.setEnabled(b);
@@ -3347,9 +3716,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Sets enabled state of redo buttons.
-	 *
+	 * @param b b value
 	 **/
 	public void setRedoButtonsEnabled(boolean b) {
 		redoButton.setEnabled(b);
@@ -3357,9 +3725,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Hides/disables MDI-specific menus and buttons.
-	 *
 	 **/
 	public void disableMDIStuff() {
 		// Hide MDI menus
@@ -3404,9 +3770,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Shows/enables MDI-specific menus and buttons.
-	 *
 	 **/
 	public void enableMDIStuff() {
 		// Show MDI menus
@@ -3462,9 +3826,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Adds a codec to the list of available codecs and creates a menu item for it.
-	 *
+	 * @param codec tile codec used for encode/decode
 	 **/
 	public void addTileCodec(TileCodec codec) {
 		TileCodecMenuItem codecMenuItem = new TileCodecMenuItem(codec);
@@ -3474,9 +3837,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Menu item that represents a tile codec.
-	 *
 	 **/
 	private class TileCodecMenuItem extends JRadioButtonMenuItem {
 
@@ -3489,6 +3850,10 @@ public class TMUI extends JFrame {
 			// TODO: setToolTipText(exampleFormats)
 			addActionListener(
 					new ActionListener() {
+						/**
+						 * Invokes {@link #getSource()} in response to the user action.
+						 * @param e event from the AWT/Swing listener
+						 **/
 						public void actionPerformed(ActionEvent e) {
 							doTileCodecCommand(((TileCodecMenuItem) e.getSource()).getCodec());
 							setSelected(true);
@@ -3497,9 +3862,8 @@ public class TMUI extends JFrame {
 		}
 
 		/**
-		 *
 		 * Gets the codec that the menu item represents.
-		 *
+		 * @return active tile codec
 		 **/
 		public TileCodec getCodec() {
 			return codec;
@@ -3508,10 +3872,10 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Gets the "successor" of the given codec, which is the next codec in
 	 * the global list of codecs (with wraparound).
-	 *
+	 * @return tile codec successor
+	 * @param codec tile codec used for encode/decode
 	 **/
 	public TileCodec getTileCodecSuccessor(TileCodec codec) {
 		int i = tilecodecs.indexOf(codec);
@@ -3523,10 +3887,10 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Gets the "predecessor" of the given codec, which is the previous codec in
 	 * the global list of codecs (with wraparound).
-	 *
+	 * @return tile codec predecessor
+	 * @param codec tile codec used for encode/decode
 	 **/
 	public TileCodec getTileCodecPredecessor(TileCodec codec) {
 		int i = tilecodecs.indexOf(codec);
@@ -3538,10 +3902,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Just a JButton with very small insets, to avoid lots of whitespace around the
 	 * ImageIcon.
-	 *
 	 **/
 	private class ToolButton extends JButton {
 
@@ -3565,16 +3927,18 @@ public class TMUI extends JFrame {
 			}
 		}
 
+		/**
+		 * Gets the insets.
+		 * @return insets
+		 **/
 		public Insets getInsets() {
 			return insets;
 		}
 	}
 
 	/**
-	 *
 	 * Just a JToggleButton with very small insets, to avoid lots of whitespace
 	 * around the ImageIcon.
-	 *
 	 **/
 	private class ToolToggleButton extends JToggleButton {
 		Insets insets = null;
@@ -3597,15 +3961,18 @@ public class TMUI extends JFrame {
 			}
 		}
 
+		/**
+		 * Gets the insets.
+		 * @return insets
+		 **/
 		public Insets getInsets() {
 			return insets;
 		}
 	}
 
 	/**
-	 *
 	 * Gets the foreground color for the current view.
-	 *
+	 * @return foreground draw color
 	 **/
 	public int getFGColor() {
 		TMView view = getSelectedView();
@@ -3616,9 +3983,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Gets the background color for the current view.
-	 *
+	 * @return background draw color
 	 **/
 	public int getBGColor() {
 		TMView view = getSelectedView();
@@ -3629,9 +3995,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Sets the foreground color for the current view.
-	 *
+	 * @param fgColor foreground draw color as 32-bit ARGB
 	 **/
 	public void setFGColor(int fgColor) {
 		TMView view = getSelectedView();
@@ -3642,9 +4007,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Sets the background color for the current view.
-	 *
+	 * @param bgColor background color used to clear pixels
 	 **/
 	public void setBGColor(int bgColor) {
 		TMView view = getSelectedView();
@@ -3655,9 +4019,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Sets the palette index for the current view.
-	 *
+	 * @param palIndex palette page index
 	 **/
 	public void setPalIndex(int palIndex) {
 		TMView view = getSelectedView();
@@ -3667,23 +4030,27 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Gets the current tool.
-	 *
+	 * @return active drawing tool
 	 **/
 	public TMTools.ToolType getToolType() {
 		return toolType;
 	}
 
 	/**
-	 *
 	 * Gets the desktop.
-	 *
+	 * @return MDI desktop pane
 	 **/
 	public JDesktopPane getDesktop() {
 		return desktop;
 	}
 
+	/**
+	 * Gets the color index.
+	 * @return base palette index for the current page
+	 * @param palIndex palette page index
+	 * @param bpp bpp value
+	 **/
 	public static int getColorIndex(int palIndex, int bpp) {
 		if (bpp > 8)
 			bpp = 8;
@@ -3692,9 +4059,12 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Creates a view with the given resources/attributes.
-	 *
+	 * @return create view
+	 * @param img img value
+	 * @param tc tc value
+	 * @param pal pal value
+	 * @param mode tile layout mode ({@link tm.tilecodecs.TileCodec#MODE_1D} or {@link tm.tilecodecs.TileCodec#MODE_2D})
 	 **/
 	public TMView createView(FileImage img, TileCodec tc, TMPalette pal, int mode) {
 		TMView view = new TMView(this, img, tc);
@@ -3704,9 +4074,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Adds a view to the desktop.
-	 *
+	 * @param view file view associated with this component
 	 **/
 	public void addViewToDesktop(TMView view) {
 		desktop.add(view);
@@ -3725,10 +4094,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Initializes the View->Codec menu based on the tilecodecs present, and sets up
 	 * the fileOpenChooser accordingly.
-	 *
 	 **/
 	private void initTileCodecUIStuff() {
 		buildTileCodecsMenu();
@@ -3736,9 +4103,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Builds the View->Codec menu.
-	 *
 	 **/
 	private void buildTileCodecsMenu() {
 		tileCodecMenu.setMnemonic(KeyEvent.VK_C);
@@ -3750,9 +4115,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Builds the Palette->Format menu.
-	 *
 	 **/
 	private void buildColorCodecsMenu() {
 		colorCodecMenu.setMnemonic(KeyEvent.VK_F);
@@ -3763,9 +4126,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Adds a codec to the list of available codecs and creates a menu item for it.
-	 *
+	 * @param codec tile codec used for encode/decode
 	 **/
 	public void addColorCodec(ColorCodec codec) {
 		ColorCodecMenuItem codecMenuItem = new ColorCodecMenuItem(codec);
@@ -3775,9 +4137,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Menu item that represents a color codec.
-	 *
 	 **/
 	private class ColorCodecMenuItem extends JRadioButtonMenuItem {
 
@@ -3789,6 +4149,10 @@ public class TMUI extends JFrame {
 			this.codec = codec;
 			addActionListener(
 					new ActionListener() {
+						/**
+						 * Invokes {@link #getSource()} in response to the user action.
+						 * @param e event from the AWT/Swing listener
+						 **/
 						public void actionPerformed(ActionEvent e) {
 							doColorCodecCommand(((ColorCodecMenuItem) e.getSource()).getCodec());
 							setSelected(true);
@@ -3797,9 +4161,8 @@ public class TMUI extends JFrame {
 		}
 
 		/**
-		 *
 		 * Gets the codec that the menu item represents.
-		 *
+		 * @return active tile codec
 		 **/
 		public ColorCodec getCodec() {
 			return codec;
@@ -3808,9 +4171,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Sets up the file open chooser.
-	 *
 	 **/
 	private void initFileOpenChooser() {
 		fileOpenChooser.setAcceptAllFileFilterUsed(false);
@@ -3837,7 +4198,9 @@ public class TMUI extends JFrame {
 
 	/**
 	 * Loads tmspec.xml from the working directory, or from the classpath if missing.
-	 */
+	 * @return resolve tmspec file
+	 * @throws IOException if the operation fails
+	 **/
 	private static File resolveTmspecFile() throws IOException {
 		File cwdSpec = new File("tmspec.xml");
 		if (cwdSpec.isFile()) {
@@ -3864,9 +4227,9 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Sets up the palette open chooser.
-	 *
+	 * @return palette filter sort rank value
+	 * @param pff pff value
 	 **/
 	private static int paletteFilterSortRank(TMPaletteFileFilter pff) {
 		String ext = pff.getExtlist();
@@ -3885,6 +4248,9 @@ public class TMUI extends JFrame {
 		return 4;
 	}
 
+	/**
+	 *
+	 **/
 	private void initPaletteOpenChooser() {
 		paletteOpenChooser.setAcceptAllFileFilterUsed(false);
 		paletteOpenChooser.resetChoosableFileFilters();
@@ -3915,10 +4281,10 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Gets the color codec that has the specified ID, or null if no such codec
 	 * exists.
-	 *
+	 * @return color codec by id
+	 * @param codecID codecID value
 	 **/
 	public ColorCodec getColorCodecByID(String codecID) {
 		for (int i = 0; i < colorcodecs.size(); i++) {
@@ -3931,10 +4297,10 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Gets the tile codec that has the specified ID, or null if no such codec
 	 * exists.
-	 *
+	 * @return tile codec by id
+	 * @param codecID codecID value
 	 **/
 	public TileCodec getTileCodecByID(String codecID) {
 		for (int i = 0; i < tilecodecs.size(); i++) {
@@ -3947,10 +4313,10 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Gets the default tile codec file filter for the specified file
 	 * based on its extension.
-	 *
+	 * @return tile codec filter for file
+	 * @param file file value
 	 **/
 	private TMTileCodecFileFilter getTileCodecFilterForFile(File file) {
 		for (int i = 0; i < filefilters.size(); i++) {
@@ -3963,10 +4329,10 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Gets the default palette file filter for the specified file
 	 * based on its extension.
-	 *
+	 * @return palette filter for file
+	 * @param file file value
 	 **/
 	private TMPaletteFileFilter getPaletteFilterForFile(File file) {
 		for (int i = 0; i < palettefilters.size(); i++) {
@@ -3979,16 +4345,23 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Recognizes all files.
-	 *
 	 **/
 	private class AllFilter extends TMFileFilter {
 
+		/**
+		 * Accepts language resource files named language_xx_yy.properties.
+		 * @return whether the filename matches the language-properties pattern
+		 * @param f f value
+		 **/
 		public boolean accept(File f) {
 			return true;
 		}
 
+		/**
+		 * Gets the description.
+		 * @return description string
+		 **/
 		public String getDescription() {
 			return xlate("All_Files");
 		}
@@ -3996,9 +4369,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Builds the menu containing all the bookmarks.
-	 *
+	 * @param root root value
 	 **/
 	private void buildBookmarksMenu(FolderNode root) {
 		// remove old bookmark menuitems, if any
@@ -4019,10 +4391,10 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Recursive routine that adds the given node to the given menu.
 	 * If the node is internal it is expanded into a menu of its own.
-	 *
+	 * @param node node value
+	 * @param menu menu value
 	 **/
 	public void addToBookmarksMenu(TMTreeNode node, JMenu menu) {
 		if (node instanceof BookmarkItemNode) {
@@ -4047,9 +4419,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Menu item that represents a bookmark.
-	 *
 	 **/
 	private class BookmarkMenuItem extends JMenuItem {
 
@@ -4061,6 +4431,10 @@ public class TMUI extends JFrame {
 			this.bookmark = bookmark;
 			addActionListener(
 					new ActionListener() {
+						/**
+						 * Invokes {@link #getSource()} in response to the user action.
+						 * @param e event from the AWT/Swing listener
+						 **/
 						public void actionPerformed(ActionEvent e) {
 							doGotoBookmarkCommand(((BookmarkMenuItem) e.getSource()).getBookmark());
 						}
@@ -4068,6 +4442,10 @@ public class TMUI extends JFrame {
 			setToolTipText(bookmark.getToolTipText());
 		}
 
+		/**
+		 * Gets the bookmark.
+		 * @return bookmark
+		 **/
 		public BookmarkItemNode getBookmark() {
 			return bookmark;
 		}
@@ -4075,9 +4453,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Builds the menu containing all the palettes.
-	 *
+	 * @param root root value
 	 **/
 	private void buildPalettesMenu(FolderNode root) {
 		// remove old palette menuitems, if any
@@ -4102,10 +4479,10 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Recursive routine that adds the given node to the given menu.
 	 * If the node is internal it is expanded into a menu of its own.
-	 *
+	 * @param node node value
+	 * @param menu menu value
 	 **/
 	public void addToPalettesMenu(TMTreeNode node, JMenu menu) {
 		if (node instanceof PaletteItemNode) {
@@ -4135,9 +4512,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Menu item that represents a bookmark.
-	 *
 	 **/
 	private class PaletteMenuItem extends JRadioButtonMenuItem {
 
@@ -4149,6 +4524,10 @@ public class TMUI extends JFrame {
 			this.paletteNode = paletteNode;
 			addActionListener(
 					new ActionListener() {
+						/**
+						 * Invokes {@link #getSource()} in response to the user action.
+						 * @param e event from the AWT/Swing listener
+						 **/
 						public void actionPerformed(ActionEvent e) {
 							doSelectPaletteCommand(((PaletteMenuItem) e.getSource()).getPalette());
 						}
@@ -4156,6 +4535,10 @@ public class TMUI extends JFrame {
 			setToolTipText(paletteNode.getToolTipText());
 		}
 
+		/**
+		 * Gets the palette.
+		 * @return active palette
+		 **/
 		public TMPalette getPalette() {
 			return paletteNode.getPalette();
 		}
@@ -4163,10 +4546,9 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Updates various UI components (menus, statusbar, palette) to reflect the
 	 * settings of the current frame.
-	 *
+	 * @param view file view associated with this component
 	 **/
 	public void viewSelected(TMView view) {
 		setSaveButtonsEnabled(view.getFileImage().isModified());
@@ -4191,18 +4573,16 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Selects the correct menu item, according to the view's block size.
-	 *
+	 * @param view file view associated with this component
 	 **/
 	public void refreshBlockSizeSelection(TMView view) {
 		sizeBlockToCanvasMenuItem.setSelected(view.getSizeBlockToCanvas());
 	}
 
 	/**
-	 *
 	 * Selects the correct menu item, according to the view's mode.
-	 *
+	 * @param view file view associated with this component
 	 **/
 	public void refreshModeSelection(TMView view) {
 		// select the correct mode menu item
@@ -4214,18 +4594,15 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Selects the correct menu item, according to the view's tile codec.
-	 *
+	 * @param view file view associated with this component
 	 **/
 	public void refreshTileCodecSelection(TMView view) {
 		tileCodecButtonHashtable.get(view.getTileCodec()).setSelected(true);
 	}
 
 	/**
-	 *
 	 * Reloads the palette.
-	 *
 	 **/
 	public void refreshPalettePane() {
 		TMView view = getSelectedView();
@@ -4235,9 +4612,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Updates the Undo/Redo buttons text+status.
-	 *
 	 **/
 	public void refreshUndoRedo() {
 		TMView view = getSelectedView();
@@ -4261,9 +4636,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Sets the statusbar fields according to current view settings.
-	 *
 	 **/
 	public void refreshStatusBar() {
 		TMView view = getSelectedView();
@@ -4273,18 +4646,14 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Hide the statusbar coordenates.
-	 *
 	 **/
 	public void hideStatusBarCoords() {
 		statusBar.setCoords("");
 	}
 
 	/**
-	 *
 	 * Builds the bookmarks menu according to current file image.
-	 *
 	 **/
 	public void refreshBookmarksMenu() {
 		TMView view = getSelectedView();
@@ -4294,9 +4663,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Builds the palettes menu according to current file image.
-	 *
 	 **/
 	public void refreshPalettesMenu() {
 		TMView view = getSelectedView();
@@ -4309,9 +4676,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Refreshes the palette selection.
-	 *
+	 * @param view file view associated with this component
 	 **/
 	public void refreshPaletteSelection(TMView view) {
 		PaletteMenuItem item = paletteButtonHashtable.get(view.getPalette());
@@ -4323,9 +4689,8 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Refreshes the palette endianness.
-	 *
+	 * @param view file view associated with this component
 	 **/
 	public void refreshPaletteEndiannessSelection(TMView view) {
 		if (view.getPalette().getEndianness() == ColorCodec.LITTLE_ENDIAN) {
@@ -4336,18 +4701,16 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Selects the correct menu item, according to the view's color codec.
-	 *
+	 * @param view file view associated with this component
 	 **/
 	public void refreshColorCodecSelection(TMView view) {
 		colorCodecButtonHashtable.get(view.getPalette().getCodec()).setSelected(true);
 	}
 
 	/**
-	 *
 	 * Opens the specified file.
-	 *
+	 * @param file file value
 	 **/
 	public void openFile(File file) {
 		System.gc();
@@ -4446,9 +4809,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Builds the menu containing most recently opened (closed) files.
-	 *
 	 **/
 	public void buildReopenMenu() {
 		reopenMenu.removeAll();
@@ -4466,9 +4827,7 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Menu item that represents a recently opened (closed) file.
-	 *
 	 **/
 	private class RecentFileMenuItem extends JMenuItem {
 
@@ -4481,18 +4840,30 @@ public class TMUI extends JFrame {
 			this.recentFile = recentFile;
 			addActionListener(
 					new ActionListener() {
+						/**
+						 * Invokes {@link #getSource()} in response to the user action.
+						 * @param e event from the AWT/Swing listener
+						 **/
 						public void actionPerformed(ActionEvent e) {
 							doReopenCommand(((RecentFileMenuItem) e.getSource()).getRecentFile());
 						}
 					});
 		}
 
+		/**
+		 * Gets the recent file.
+		 * @return recent file
+		 **/
 		public File getRecentFile() {
 			return recentFile;
 		}
 
 	}
 
+	/**
+	 * Gets the color codecs.
+	 * @return color codecs
+	 **/
 	public ColorCodec[] getColorCodecs() {
 		ColorCodec[] ccs = new ColorCodec[colorcodecs.size()];
 		for (int i = 0; i < ccs.length; i++) {
@@ -4503,10 +4874,10 @@ public class TMUI extends JFrame {
 
 
 	/**
-	 *
 	 * Attempts to translate the given key string by consulting a ResourceBundle.
 	 * If no corresponding value is found, the key itself is returned.
-	 *
+	 * @return localized string for the given key, or the key itself if missing
+	 * @param key property key or translation key
 	 **/
 	public String xlate(String key) {
 		try {
@@ -4518,18 +4889,16 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 *
 	 * Gets the selected view frame.
-	 *
+	 * @return currently selected file view
 	 **/
 	public TMView getSelectedView() {
 		return (TMView) desktop.getSelectedFrame();
 	}
 
 	/**
-	 *
 	 * Adds the given file to the list of recently opened (closed) files.
-	 *
+	 * @param f f value
 	 **/
 	public void addToRecentFiles(File f) {
 		Vector<File> recentFiles = TileMolester.settings.getRecentFiles();

@@ -1,18 +1,24 @@
 package tm.tilecodecs;
 
+/**
+ * Fixed 3 bpp linear tile layout (codec id LN98).
+ * Packs eight 3-bit palette indices into three bytes per row.
+ **/
 public class _3BPPLinearTileCodec extends TileCodec {
 
     /**
-     * Constructor.
+     * Registers the built-in 3 bpp linear codec.
      **/
     public _3BPPLinearTileCodec() {
         super("LN98", 3, "3bpp linear");
     }
 
     /**
-     *
-     * Decodes a tile.
-     *
+     * Decodes one 3 bpp linear 8×8 tile (three bytes per row).
+     * @param bits file buffer
+     * @param ofs start offset of the tile
+     * @param stride row padding (multiplied by bytes-per-row internally)
+     * @return 64 palette indices (0–7)
      **/
     public int[] decode(byte[] bits, int ofs, int stride) {
         int pos=0;
@@ -37,9 +43,11 @@ public class _3BPPLinearTileCodec extends TileCodec {
     }
 
     /**
-     *
-     * Encodes a tile.
-     *
+     * Encodes one 3 bpp linear 8×8 tile into three bytes per row.
+     * @param pixels 64 palette indices (0–7)
+     * @param bits destination buffer
+     * @param ofs start offset of the tile
+     * @param stride row padding (multiplied by bytes-per-row internally)
      **/
     public void encode(int[] pixels, byte[] bits, int ofs, int stride) {
         int pos = 0;

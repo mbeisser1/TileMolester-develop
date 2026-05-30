@@ -24,9 +24,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- *
  * The dialog that's shown when user wants to create a new ("blank") file.
- *
  **/
 public class TMNewFileDialog extends TMModalDialog {
 
@@ -34,23 +32,23 @@ public class TMNewFileDialog extends TMModalDialog {
     private JTextField sizeField;
 
     /**
-     *
      * Creates the New File dialog.
-     *
      **/
     public TMNewFileDialog(Frame owner, tm.utils.Xlator xl) {
         super(owner, "New_File_Dialog_Title", xl);
     }
 
     /**
-     *
      * Gets the filesize given by the user.
-     *
      **/
     public int getFileSize() {
         return Integer.parseInt(sizeField.getText());
     }
 
+    /**
+     * Builds and returns the dialog content panel.
+     * @return dialog content panel
+     **/
     protected JPanel getDialogPane() {
         JPanel p = new JPanel();
         GridBagLayout gbl = new GridBagLayout();
@@ -74,10 +72,17 @@ public class TMNewFileDialog extends TMModalDialog {
         return p;
     }
 
+    /**
+     * Shows the dialog and waits for user confirmation.
+     * @return JOptionPane.OK_OPTION or JOptionPane.CANCEL_OPTION
+     **/
     public int showDialog() {
         sizeField.setText("");
         maybeEnableOKButton();
         SwingUtilities.invokeLater( new Runnable() {
+            /**
+             * Runs the deferred UI task.
+             **/
             public void run() {
                 sizeField.requestFocus();
             }
@@ -85,6 +90,10 @@ public class TMNewFileDialog extends TMModalDialog {
         return super.showDialog();
     }
 
+    /**
+     * Reports whether the current dialog input is valid for OK.
+     * @return true if dialog input is valid for OK
+     **/
     public boolean inputOK() {
         return !(sizeField.getText().equals("") || (getFileSize() == 0));
     }

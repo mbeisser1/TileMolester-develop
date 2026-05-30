@@ -24,12 +24,13 @@ import javax.swing.tree.*;
 import java.awt.*;
 
 /**
- *
  * A tree for showing treenodes.
- *
  **/
 public class TMTreeNodeTree extends JTree {
 
+    /**
+     * Creates the tree component.
+     **/
     public TMTreeNodeTree() {
         super();
         getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -37,10 +38,9 @@ public class TMTreeNodeTree extends JTree {
     }
 
     /**
-     *
-     * Loads the tree with root <code>rootNode</code>.
-     * @param loadLeaves If true, all nodes are loaded; if false, only internal nodes.
-     *
+     * Loads the tree with the given root node.
+     * @param rootNode root of the tree to display
+     * @param loadLeaves if true, all nodes are loaded; if false, only folder nodes
      **/
     public void loadTreeNodes(TMTreeNode rootNode, boolean loadLeaves) {
         if (loadLeaves) {
@@ -53,10 +53,8 @@ public class TMTreeNodeTree extends JTree {
     }
 
     /**
-     *
      * Gets the selected node.
      * If there is no selected node, the root is returned as default.
-     *
      **/
     public TMTreeNode getSelectedNode() {
         TMTreeNode n = (TMTreeNode)getLastSelectedPathComponent();
@@ -65,9 +63,7 @@ public class TMTreeNodeTree extends JTree {
     }
 
     /**
-     *
      * Expands the specified node.
-     *
      **/
     public void expandNode(DefaultMutableTreeNode node) {
         setExpandedState(new TreePath(node.getPath()), true);
@@ -82,6 +78,12 @@ public class TMTreeNodeTree extends JTree {
             mRoot= root;
         }
 
+        /**
+         * Gets a folder child at the given index.
+         * @param parent parent tree node object
+         * @param index child index under the parent
+         * @return child node at the folder-only index
+         **/
         public Object getChild(Object parent, int index) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)parent;
             int pos = 0;
@@ -96,6 +98,11 @@ public class TMTreeNodeTree extends JTree {
             return node.getChildAt(pos);
         }
 
+        /**
+         * Counts folder children of the given parent node.
+         * @param parent parent tree node object
+         * @return number of FolderNode children under the parent
+         **/
         public int getChildCount(Object parent) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)parent;
             int childCount = 0;

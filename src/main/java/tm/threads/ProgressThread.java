@@ -18,6 +18,15 @@
 
 package tm.threads;
 
+/**
+ * Abstract thread that reports progress as a percentage completed.
+ **/
 public abstract class ProgressThread extends Thread {
+
+    /**
+     * Returns how much of the current operation has finished.
+     * @return completion percentage from 0 to 100
+     **/
     public abstract int getPercentageCompleted();
+
 }

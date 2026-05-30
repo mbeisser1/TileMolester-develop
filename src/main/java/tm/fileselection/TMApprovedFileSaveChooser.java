@@ -24,14 +24,16 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.JOptionPane;
 
     /**
-     *
      * A filechooser that verifies that the selected file doesn't exist;
      * if it does, the user is asked whether he wants to overwrite it
      * before he can proceed.
-     *
      **/
     public class TMApprovedFileSaveChooser extends JFileChooser {
 
+        /**
+         * Confirms overwrite, ensures a writable file with a valid extension, then
+         * approves the selection.
+         **/
         public void approveSelection() {
             File file = getSelectedFile();
             // verify that it has proper extension

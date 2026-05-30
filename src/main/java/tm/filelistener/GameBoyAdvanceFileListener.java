@@ -19,9 +19,7 @@
 package tm.filelistener;
 
 /**
- *
  * Listener for Game Boy Advance (*.gba) files.
- *
  **/
 public class GameBoyAdvanceFileListener extends TMFileListener {
 
@@ -39,11 +37,12 @@ public class GameBoyAdvanceFileListener extends TMFileListener {
     } ;
 
     /**
-     *
      * Detects if this is a Game Boy Advance file.
      * The critera are that the extension is gba, that the Nintendo logo
      * character data is correct and that the byte at 0xB2 equals 0x96.
-     *
+     * @param data file contents in memory
+     * @param extension lowercase filename extension without dot
+     * @return {@code true} if the ROM header matches GBA format
      **/
     public boolean doFormatDetect(final byte[] data, String extension) {
         // verify extension
@@ -66,17 +65,17 @@ public class GameBoyAdvanceFileListener extends TMFileListener {
     }
 
     /**
-     *
      * Does nothing on file load.
-     *
+     * @param data file contents in memory
+     * @param extension lowercase filename extension without dot
      **/
     public void fileLoaded(byte[] data, String extension) {
     }
 
     /**
-     *
      * Recalculates the complement check and checksum on file save.
-     *
+     * @param data file contents about to be saved
+     * @param extension lowercase filename extension without dot
      **/
     public void fileSaving(byte[] data, String extension) {
         // update complement check

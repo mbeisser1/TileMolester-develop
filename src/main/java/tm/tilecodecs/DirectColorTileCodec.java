@@ -19,11 +19,9 @@
 package tm.tilecodecs;
 
 /**
- *
  * 16, 24, and 32-bit direct-color (ARGB) tile codec.
  * # of bits per color component must not exceed 8.
  * The color component masks must be directly adjacent.
- *
  **/
 public class DirectColorTileCodec extends TileCodec {
 
@@ -51,9 +49,14 @@ public class DirectColorTileCodec extends TileCodec {
     private int shiftStep;
 
     /**
-     *
-     * Creates a direct-color tile codec.
-     *
+     * Creates a direct-color (16/24/32-bit) tile codec with RGBA bit masks.
+     * @param id short codec identifier
+     * @param bpp total bits per pixel in the ROM format (16, 24, or 32)
+     * @param rmask red component bitmask in the packed pixel word
+     * @param gmask green component bitmask
+     * @param bmask blue component bitmask
+     * @param amask alpha component bitmask (0 if unused)
+     * @param description human-readable label
      **/
     public DirectColorTileCodec(String id, int bpp, int rmask, int gmask, int bmask, int amask, String description) {
         super(id, getByteIntegralBitCount(bpp), description);
@@ -72,7 +75,8 @@ public class DirectColorTileCodec extends TileCodec {
     }
 
     /**
-     * Sets the endianness.
+     * Sets byte order for multi-byte pixels ({@link #LITTLE_ENDIAN} or {@link #BIG_ENDIAN}).
+     * @param endianness {@link #LITTLE_ENDIAN} or {@link #BIG_ENDIAN}
      **/
     public void setEndianness(int endianness) {
         this.endianness = endianness;
@@ -88,7 +92,9 @@ public class DirectColorTileCodec extends TileCodec {
     }
 
     /**
-     * Gets the position of the most significant set bit in the given int.
+     * Returns the index of the highest set bit in a 32-bit mask.
+     * @param mask component bitmask
+     * @return bit index 0–31, or -1 if no bits set
      **/
     private static int msb(int mask) {
         for (int i=31; i>=0; i--) {
@@ -101,9 +107,11 @@ public class DirectColorTileCodec extends TileCodec {
     }
 
     /**
-     *
-     * Decodes a tile.
-     *
+     * Decodes one 8×8 direct-color tile into Java ARGB {@link #pixels}.
+     * @param bits file buffer
+     * @param ofs start offset of the tile
+     * @param stride row padding (multiplied by bytes-per-row internally)
+     * @return 64 ARGB pixels
      **/
     public int[] decode(byte[] bits, int ofs, int stride) {
         int v, r, g, b, a, s;
@@ -166,9 +174,11 @@ public class DirectColorTileCodec extends TileCodec {
     }
 
     /**
-     *
-     * Encodes a tile.
-     *
+     * Encodes one 8×8 tile from Java ARGB {@code pixels} into the ROM layout.
+     * @param pixels 64 ARGB values
+     * @param bits destination buffer
+     * @param ofs start offset of the tile
+     * @param stride row padding (multiplied by bytes-per-row internally)
      **/
     public void encode(int[] pixels, byte[] bits, int ofs, int stride) {
         int v, r, g, b, a, s, argb;
@@ -235,10 +245,9 @@ public class DirectColorTileCodec extends TileCodec {
     }
 
     /**
-     *
-     * Gets the least number of whole bytes that are required to store
-     * <code>bits</code> bits of information.
-     *
+     * Rounds a bit width up to the next whole number of bytes, expressed in bits.
+     * @param bits raw bit count from tmspec
+     * @return bit count aligned to byte boundary (e.g. 24 → 24, 12 → 16)
      **/
     private static int getByteIntegralBitCount(int bits) {
         int bytes = bits / 8;

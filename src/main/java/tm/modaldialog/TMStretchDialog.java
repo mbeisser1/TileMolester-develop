@@ -26,9 +26,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
- *
  * The dialog where user can enter new dimensions for the current selection.
- *
  **/
 public class TMStretchDialog extends TMModalDialog {
 
@@ -38,22 +36,32 @@ public class TMStretchDialog extends TMModalDialog {
     private JTextField rowsField;
 
     /**
-     *
      * Creates the stretch dialog.
-     *
      **/
     public TMStretchDialog(Frame owner, tm.utils.Xlator xl) {
         super(owner, "Stretch_Image_Dialog_Title", xl);
     }
 
+    /**
+     * Gets the number of columns entered by the user.
+     * @return column count entered by the user
+     **/
     public int getCols() {
         return Integer.parseInt(colsField.getText());
     }
 
+    /**
+     * Gets the number of rows entered by the user.
+     * @return row count entered by the user
+     **/
     public int getRows() {
         return Integer.parseInt(rowsField.getText());
     }
 
+    /**
+     * Builds and returns the dialog content panel.
+     * @return dialog content panel
+     **/
     protected JPanel getDialogPane() {
         colsLabel = new JLabel(xlate("Columns_Prompt"));
         rowsLabel = new JLabel(xlate("Rows_Prompt"));
@@ -100,11 +108,20 @@ public class TMStretchDialog extends TMModalDialog {
         return p;
     }
 
+    /**
+     * Shows the dialog and waits for user confirmation.
+     * @param initialCols initial column count shown in the dialog
+     * @param initialRows initial row count shown in the dialog
+     * @return JOptionPane.OK_OPTION or JOptionPane.CANCEL_OPTION
+     **/
     public int showDialog(int initialCols, int initialRows) {
         colsField.setText(Integer.toString(initialCols));
         rowsField.setText(Integer.toString(initialRows));
         maybeEnableOKButton();
         SwingUtilities.invokeLater( new Runnable() {
+            /**
+             * Runs the deferred UI task.
+             **/
             public void run() {
                 colsField.requestFocus();
             }
@@ -112,6 +129,10 @@ public class TMStretchDialog extends TMModalDialog {
         return super.showDialog();
     }
 
+    /**
+     * Reports whether the current dialog input is valid for OK.
+     * @return true if dialog input is valid for OK
+     **/
     public boolean inputOK() {
         return (!colsField.getText().equals("") && !rowsField.getText().equals("")
             && (getCols() > 0) && (getRows() > 0));

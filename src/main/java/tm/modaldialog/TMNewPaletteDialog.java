@@ -26,6 +26,9 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.util.Vector;
 
+/**
+ * Dialog for creating a new palette with size, format, and endianness.
+ **/
 public class TMNewPaletteDialog extends TMModalDialog {
 
     private JLabel sizeLabel;
@@ -36,14 +39,16 @@ public class TMNewPaletteDialog extends TMModalDialog {
     private JRadioButton bigRadio;
 
     /**
-     *
      * Creates the dialog.
-     *
      **/
     public TMNewPaletteDialog(Frame owner, tm.utils.Xlator xl) {
         super(owner, "New_Palette_Dialog_Title", xl);
     }
 
+    /**
+     * Builds and returns the dialog content panel.
+     * @return dialog content panel
+     **/
     protected JPanel getDialogPane() {
         sizeLabel = new JLabel(xlate("Size_Prompt"));
         sizeField = new JFormattedTextField();
@@ -94,18 +99,34 @@ public class TMNewPaletteDialog extends TMModalDialog {
         return p;
     }
 
+    /**
+     * Gets the palette size entered by the user.
+     * @return palette size entered by the user
+     **/
     public int getPaletteSize() {
         return Integer.parseInt(sizeField.getText());
     }
 
+    /**
+     * Gets the selected byte-order endianness.
+     * @return TODO: not yet implemented; always returns 0
+     **/
     public int getEndianness() {
         return littleRadio.isSelected() ? ColorCodec.LITTLE_ENDIAN : ColorCodec.BIG_ENDIAN;
     }
 
+    /**
+     * Gets the selected color codec.
+     * @return selected color codec
+     **/
     public ColorCodec getCodec() {
         return (ColorCodec)codecCombo.getSelectedItem();
     }
 
+    /**
+     * Populates the color codec combo box.
+     * @param codecs available color codecs for the combo box
+     **/
     public void setCodecs(Vector<ColorCodec> codecs) {
         codecCombo.removeAllItems();
         for (int i=0; i<codecs.size(); i++) {
@@ -114,10 +135,17 @@ public class TMNewPaletteDialog extends TMModalDialog {
         codecCombo.setSelectedIndex(0);
     }
 
+    /**
+     * Shows the dialog and waits for user confirmation.
+     * @return JOptionPane.OK_OPTION or JOptionPane.CANCEL_OPTION
+     **/
     public int showDialog() {
         //sizeField.setText("");
         maybeEnableOKButton();
         SwingUtilities.invokeLater( new Runnable() {
+            /**
+             * Runs the deferred UI task.
+             **/
             public void run() {
                 sizeField.requestFocus();
             }
@@ -125,6 +153,10 @@ public class TMNewPaletteDialog extends TMModalDialog {
         return super.showDialog();
     }
 
+    /**
+     * Reports whether the current dialog input is valid for OK.
+     * @return true if dialog input is valid for OK
+     **/
     public boolean inputOK() {
         return (!sizeField.getText().equals("") && (getPaletteSize() > 0));
     }

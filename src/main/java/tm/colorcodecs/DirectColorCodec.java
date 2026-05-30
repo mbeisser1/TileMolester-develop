@@ -19,12 +19,10 @@
 package tm.colorcodecs;
 
 /**
- *
  * A DirectColorCodec translates pixels exactly the same way as
  * a direct-color tile codec.
  * The composition of a pixel is described by Red, Green,
  * Blue and Alpha masks.
- *
  **/
 public class DirectColorCodec extends ColorCodec {
 
@@ -40,6 +38,16 @@ public class DirectColorCodec extends ColorCodec {
     private int bshift;
     private int ashift;
 
+    /**
+     * Creates a direct-color palette codec using RGBA bit masks (same rules as {@link tm.tilecodecs.DirectColorTileCodec}).
+     * @param id short codec identifier
+     * @param bitsPerPixel bits per palette entry in the file
+     * @param rmask red bitmask in the packed word
+     * @param gmask green bitmask
+     * @param bmask blue bitmask
+     * @param amask alpha bitmask (0 if unused)
+     * @param description human-readable label
+     **/
     public DirectColorCodec(String id, int bitsPerPixel, int rmask, int gmask, int bmask, int amask, String description) {
         super(id, bitsPerPixel, description);
         this.rmask = rmask;
@@ -66,6 +74,11 @@ public class DirectColorCodec extends ColorCodec {
         return -1;  // no bits set
     }
 
+    /**
+     * Expands a masked ROM color word to Java ARGB.
+     * @param value native encoded palette entry
+     * @return 32-bit ARGB
+     **/
     public int decode(int value) {
         int r, g, b, a;
         // decode R component
@@ -108,6 +121,11 @@ public class DirectColorCodec extends ColorCodec {
         return (a | r | g | b);
     }
 
+    /**
+     * Packs Java ARGB into the masked ROM color word.
+     * @param argb 32-bit ARGB color
+     * @return native encoded palette entry
+     **/
     public int encode(int argb) {
         int r, g, b, a;
         // encode R component

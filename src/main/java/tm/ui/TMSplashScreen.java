@@ -23,12 +23,14 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /**
- *
  * Tile Molester splash screen.
- *
  **/
 public class TMSplashScreen extends JWindow {
 
+    /**
+     * Creates and displays the splash screen centered on the display.
+     * @param owner owning frame
+     **/
     public TMSplashScreen(Frame owner) {
         super(owner);
         ClassLoader cl = getClass().getClassLoader();
@@ -44,6 +46,10 @@ public class TMSplashScreen extends JWindow {
         setLocation(insetx, insety);
 
         addMouseListener(new MouseAdapter() {
+            /**
+             * Dismisses the splash screen on double-click.
+             * @param e mouse event from the splash window
+             **/
             public void mousePressed(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     setVisible(false);
@@ -53,6 +59,9 @@ public class TMSplashScreen extends JWindow {
         });
 
         final Runnable closerRunner = new Runnable() {
+            /**
+             * Closes the splash screen after the display delay.
+             **/
             public void run() {
                 setVisible(false);
                 dispose();
@@ -60,6 +69,9 @@ public class TMSplashScreen extends JWindow {
         };
 
         Runnable waitRunner = new Runnable() {
+            /**
+             * Waits for the splash delay, then closes the splash on the EDT.
+             **/
             public void run() {
                 try {
                     Thread.sleep(4000);     // 4 secs

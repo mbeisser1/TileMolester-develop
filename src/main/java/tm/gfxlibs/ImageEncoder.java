@@ -33,24 +33,9 @@ import java.io.*;
 import java.awt.Image;
 import java.awt.image.*;
 
-/// Abstract class for writing out an image.
-// <P>
-// A framework for classes that encode and write out an image in
-// a particular file format.
-// <P>
-// This provides a simplified rendition of the ImageConsumer interface.
-// It always delivers the pixels as ints in the RGBdefault color model.
-// It always provides them in top-down left-right order.
-// If you want more flexibility you can always implement ImageConsumer
-// directly.
-// <P>
-// <A HREF="/resources/classes/Acme/JPM/Encoders/ImageEncoder.java">Fetch the software.</A><BR>
-// <A HREF="/resources/classes/Acme.tar.gz">Fetch the entire Acme package.</A>
-// <P>
-// @see GifEncoder
-// @see PpmEncoder
-// @see Acme.JPM.Decoders.ImageDecoder
-
+/**
+ * Abstract base for image encoders that consume ImageProducer pixels.
+ **/
 public abstract class ImageEncoder implements ImageConsumer
     {
 
@@ -66,17 +51,21 @@ public abstract class ImageEncoder implements ImageConsumer
     private static final ColorModel rgbModel = ColorModel.getRGBdefault();
     private Hashtable<?, ?> props = null;
 
-    /// Constructor.
-    // @param img The image to encode.
-    // @param out The stream to write the bytes to.
+    /**
+     * Creates an image encoder for the given image and output stream.
+     * @param img image whose pixels are encoded
+     * @param out destination output stream
+     **/
     public ImageEncoder( Image img, OutputStream out ) throws IOException
 	{
 	this( img.getSource(), out );
 	}
 
-    /// Constructor.
-    // @param producer The ImageProducer to encode.
-    // @param out The stream to write the bytes to.
+    /**
+     * Creates an image encoder for the given producer and output stream.
+     * @param producer image producer supplying pixel data
+     * @param out destination output stream
+     **/
     public ImageEncoder( ImageProducer producer, OutputStream out ) throws IOException
 	{
 	this.producer = producer;
@@ -84,26 +73,39 @@ public abstract class ImageEncoder implements ImageConsumer
 	}
 
 
-    // Methods that subclasses implement.
-
-    /// Subclasses implement this to initialize an encoding.
+    /**
+     * Subclass hook to write the image format header.
+     * @param w image width in pixels
+     * @param h image height in pixels
+     **/
     abstract void encodeStart( int w, int h ) throws IOException;
 
-    /// Subclasses implement this to actually write out some bits.  They
-    // are guaranteed to be delivered in top-down-left-right order.
-    // One int per pixel, index is row * scansize + off + col,
-    // RGBdefault (AARRGGBB) color model.
+    /**
+     * Subclass hook to write a rectangle of ARGB pixels.
+     * Pixels arrive in top-down left-right order using the RGBdefault color model.
+     * @param x horizontal pixel origin
+     * @param y vertical pixel origin
+     * @param w pixel region width
+     * @param h pixel region height
+     * @param rgbPixels ARGB pixel values
+     * @param off offset into the pixel array
+     * @param scansize row stride in the pixel array
+     **/
     abstract void encodePixels(
 	int x, int y, int w, int h, int[] rgbPixels, int off, int scansize )
 	throws IOException;
 
-    /// Subclasses implement this to finish an encoding.
+    /**
+     * Subclass hook to finalize the encoded image stream.
+     **/
     abstract void encodeDone() throws IOException;
 
 
     // Our own methods.
 
-    /// Call this after initialization to get things going.
+    /**
+     * Starts image production and blocks until encoding completes.
+     **/
     public synchronized void encode() throws IOException
 	{
 	encoding = true;
@@ -122,6 +124,9 @@ public abstract class ImageEncoder implements ImageConsumer
     private boolean accumulate = false;
     private int[] accumulator;
 
+    /**
+     * Buffers or forwards pixel rows to the encoder.
+     **/
     private void encodePixelsWrapper(
 	int x, int y, int w, int h, int[] rgbPixels, int off, int scansize )
 	throws IOException
@@ -146,6 +151,9 @@ public abstract class ImageEncoder implements ImageConsumer
 	    encodePixels( x, y, w, h, rgbPixels, off, scansize );
 	}
 
+    /**
+     * Flushes accumulated pixels before encoding completes.
+     **/
     private void encodeFinish() throws IOException
 	{
 	if ( accumulate )
@@ -156,6 +164,9 @@ public abstract class ImageEncoder implements ImageConsumer
 	    }
 	}
 
+    /**
+     * Stops the encode loop and notifies waiting threads.
+     **/
     private synchronized void stop()
 	{
 	encoding = false;
@@ -165,27 +176,47 @@ public abstract class ImageEncoder implements ImageConsumer
 
     // Methods from ImageConsumer.
 
+    /**
+     * Receives image width and height from the image producer.
+     * @param width image width in pixels
+     * @param height image height in pixels
+     **/
     public void setDimensions( int width, int height )
 	{
 	this.width = width;
 	this.height = height;
 	}
 
+    /**
+     * Receives image properties from the image producer.
+     * @param props image property hashtable
+     **/
     public void setProperties( Hashtable<?, ?> props )
 	{
 	this.props = props;
 	}
 
+    /**
+     * Receives the color model from the image producer.
+     * @param model source color model for pixel data
+     **/
     public void setColorModel( ColorModel model )
 	{
 	// Ignore.
 	}
 
+    /**
+     * Receives delivery hints from the image producer.
+     * @param hintflags image delivery hint flags
+     **/
     public void setHints( int hintflags )
 	{
 	this.hintflags = hintflags;
 	}
 
+    /**
+     * Receives pixel data from the image producer.
+     **/
     public void setPixels(
 	int x, int y, int w, int h, ColorModel model, byte[] pixels,
 	int off, int scansize )
@@ -209,6 +240,9 @@ public abstract class ImageEncoder implements ImageConsumer
 	    }
 	}
 
+    /**
+     * Receives pixel data from the image producer.
+     **/
     public void setPixels(
 	int x, int y, int w, int h, ColorModel model, int[] pixels,
 	int off, int scansize )
@@ -248,6 +282,10 @@ public abstract class ImageEncoder implements ImageConsumer
 	    }
 	}
 
+    /**
+     * Called when image production completes or aborts.
+     * @param status image production completion status
+     **/
     public void imageComplete( int status )
 	{
 	producer.removeConsumer( this );

@@ -25,9 +25,7 @@ import java.awt.*;
 import java.awt.image.*;
 
 /**
- *
  * A tile canvas is a surface where a grid of atomic tiles can be rendered.
- *
  **/
 public class TMTileCanvas extends TMPixelCanvas {
 
@@ -45,9 +43,7 @@ public class TMTileCanvas extends TMPixelCanvas {
     private boolean showTileGrid=false;
 
     /**
-     *
      * Creates a tile pane, with <code>bits</code> as the encoded tile data source.
-     *
      **/
     public TMTileCanvas(byte[] bits) {
         super(bits);
@@ -56,7 +52,6 @@ public class TMTileCanvas extends TMPixelCanvas {
     }
 
     /**
-     *
      * Creates a tile pane of the specified size, and with <code>bits</code>
      * as the encoded tile data source.
      * Doesn't work quite right?
@@ -68,82 +63,74 @@ public class TMTileCanvas extends TMPixelCanvas {
     }
 
     /**
-     *
      * Sets the tile mode. This determines how tile data is interpreted.
      * Valid modes are MODE_1D and MODE_2D.
-     *
+     * @param mode tile layout mode ({@link tm.tilecodecs.TileCodec#MODE_1D} or {@link tm.tilecodecs.TileCodec#MODE_2D})
      **/
     public void setMode(int mode) {
         this.mode = mode;
     }
 
     /**
-     *
      * Gets the mode.
-     *
+     * @return current tile layout mode
      **/
     public int getMode() {
         return mode;
     }
 
     /**
-     *
      * Sets the codec that's used for decoding+encoding individual tiles.
-     *
+     * @param codec tile codec used for encode/decode
      **/
     public void setCodec(TileCodec codec) {
         this.codec = codec;
     }
 
     /**
-     *
      * Gets the tile codec.
-     *
+     * @return active tile codec
      **/
     public TileCodec getCodec() {
         return codec;
     }
 
     /**
-     *
      * Sets the palette that's used for mapping colors when bitsPerPixel <= 8.
-     *
+     * @param palette palette whose colors are displayed or edited
      **/
     public void setPalette(TMPalette palette) {
         this.palette = palette;
     }
 
     /**
-     *
      * Gets the palette.
-     *
+     * @return active palette
      **/
     public TMPalette getPalette() {
         return palette;
     }
 
     /**
-     *
      * Sets the palette index.
-     *
+     * @param palIndex palette page index
      **/
     public void setPalIndex(int palIndex) {
         this.palIndex = palIndex;
     }
 
     /**
-     *
      * Gets the palette index.
-     *
+     * @return current palette page index
      **/
     public int getPalIndex() {
         return palIndex;
     }
 
     /**
-     *
      * Sets the size of the tile canvas.
-     *
+     * @param cols number of tile columns
+     * @param rows number of tile rows
      **/
     public void setGridSize(int cols, int rows) {
         setCanvasSize(cols*8, rows*8);
@@ -152,9 +139,9 @@ public class TMTileCanvas extends TMPixelCanvas {
     }
 
     /**
-     *
      * Encodes the specified tile. TODO
-     *
+     * @param x horizontal pixel or tile coordinate
+     * @param y vertical pixel or tile coordinate
      **/
     public void packTile(int x, int y) {
         int pixOfs;
@@ -193,27 +180,23 @@ public class TMTileCanvas extends TMPixelCanvas {
     }
 
     /**
-     *
      * Gets the number of columns in the tile grid.
-     *
+     * @return number of tile columns in the view
      **/
     public int getCols() {
         return cols;
     }
 
     /**
-     *
      * Gets the number of rows in the tile grid.
-     *
+     * @return number of tile rows in the view
      **/
     public int getRows() {
         return rows;
     }
 
     /**
-     *
      * Decodes tile data to pixel buffer.
-     *
      **/
     public void unpackPixels() {
         if (codec == null) return;
@@ -269,9 +252,7 @@ public class TMTileCanvas extends TMPixelCanvas {
     }
 
     /**
-     *
      * Encodes tile data.
-     *
      **/
     public void packPixels() {
         if (codec == null) return;
@@ -319,9 +300,8 @@ public class TMTileCanvas extends TMPixelCanvas {
     }
 
     /**
-     *
      * Paints tiles and grid.
-     *
+     * @param g graphics context used for drawing
      **/
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -332,9 +312,8 @@ public class TMTileCanvas extends TMPixelCanvas {
     }
 
     /**
-     *
      * Draws atomic tile grid.
-     *
+     * @param g graphics context used for drawing
      **/
     private void drawTileGrid(Graphics g) {
         g.setColor(Color.red);     // gridline color
@@ -349,37 +328,35 @@ public class TMTileCanvas extends TMPixelCanvas {
     }
 
     /**
-     *
      * Gets the length of a side (in pixels) in an 8x8 tile, subject to the current scaling.
-     *
+     * @return scaled side length of an 8x8 tile in pixels
      **/
     public int getScaledTileDim() {
         return (int)(scale*8);
     }
 
     /**
-     *
      * Turns the tile grid on (true) or off (false).
-     *
+     * @param showTileGrid whether the atomic tile grid overlay is visible
      **/
     public void setTileGridVisible(boolean showTileGrid) {
         this.showTileGrid = showTileGrid;
     }
 
     /**
-     *
      * Returns tile grid visibility.
-     *
+     * @return whether the tile grid is shown
      **/
     public boolean isTileGridVisible() {
         return showTileGrid;
     }
 
     /**
-     *
      * Gets the starting offset of the data for the tile at position (x,y)
      * in the grid.
-     *
+     * @return byte offset of tile data, or -1 if out of range
+     * @param x horizontal pixel or tile coordinate
+     * @param y vertical pixel or tile coordinate
      **/
     protected int getTileBitsOffset(int x, int y) {
         int relOfs = (y * getRowSize()) + (x * getTileIncrement());
@@ -397,9 +374,8 @@ public class TMTileCanvas extends TMPixelCanvas {
     }
 
     /**
-     *
      * Gets the size of one row of tiles.
-     *
+     * @return byte size of one row of tiles
      **/
     public int getRowSize() {
         if (codec != null)
@@ -409,9 +385,8 @@ public class TMTileCanvas extends TMPixelCanvas {
     }
 
     /**
-     *
      * Gets the size of one page of tiles (entire tile grid).
-     *
+     * @return byte size of the full tile grid
      **/
     public int getPageSize() {
         if (codec != null)
@@ -421,45 +396,41 @@ public class TMTileCanvas extends TMPixelCanvas {
     }
 
     /**
-     *
      * Gets the amount to increment data offset per tile.
-     *
+     * @return byte increment between adjacent tiles
      **/
     public int getTileIncrement() {
         return (mode == TileCodec.MODE_1D) ? codec.getTileSize() : codec.getBytesPerRow();
     }
 
     /**
-     *
      * Gets the amount to increment data offset per row.
-     *
+     * @return byte increment between adjacent rows
      **/
     public int getRowIncrement() {
         return codec.getTileSize() * cols;
     }
 
     /**
-     *
      * Gets the amount to increment data offset per page.
-     *
+     * @return byte increment between adjacent pages
      **/
     public int getPageIncrement() {
         return getRowIncrement() * rows;
     }
 
     /**
-     *
      * Gets the stride.
-     *
+     * @return codec stride for the current layout mode
      **/
     public int getStride() {
         return (mode == TileCodec.MODE_1D) ? 0 : cols-1;
     }
 
     /**
-     *
      * Stretches the canvas from current (cols,rows) to specified (cols,rows).
-     *
+     * @param cols number of tile columns
+     * @param rows number of tile rows
      **/
     public void stretchTo(int cols, int rows) {
         // get current pixels & dimensions
@@ -496,9 +467,7 @@ public class TMTileCanvas extends TMPixelCanvas {
     }
 
     /**
-     *
      * Rotates the grid of tiles 90 degrees left (counter-clockwise).
-     *
      **/
     public void rotateLeft() {
         int[] pix = getPixels();
@@ -514,9 +483,7 @@ public class TMTileCanvas extends TMPixelCanvas {
     }
 
     /**
-     *
      * Rotates the grid of tiles 90 degrees right (clockwise).
-     *
      **/
     public void rotateRight() {
         int[] pix = getPixels();
@@ -532,9 +499,14 @@ public class TMTileCanvas extends TMPixelCanvas {
     }
 
     /**
-     *
      * Copies a tile.
-     *
+     * @param from source byte buffer
+     * @param to destination byte buffer
+     * @param offsetFrom source byte offset for tile copy
+     * @param offsetTo destination byte offset for tile copy
+     * @param strideFrom source stride passed to tile copy
+     * @param strideTo destination stride passed to tile copy
+     * @param bytesPerRow number of bytes per tile row when copying
      **/
     public void copyTile(byte[] from, byte[] to, int offsetFrom, int offsetTo, int strideFrom, int strideTo, int bytesPerRow) {
         for (int i=0; i<8; i++) {

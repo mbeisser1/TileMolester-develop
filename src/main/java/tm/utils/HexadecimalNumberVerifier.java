@@ -8,8 +8,12 @@ import java.awt.event.KeyEvent;
 
 /**
  * Key adapter which only allows hexadecimal values in the field.
- */
+ **/
 public class HexadecimalNumberVerifier extends KeyAdapter {
+        /**
+         * Filters or handles key-typed input.
+         * @param e event object
+         **/
         public void keyTyped(KeyEvent e) {
             char c = e.getKeyChar();
             JTextField tf = (JTextField) e.getSource();

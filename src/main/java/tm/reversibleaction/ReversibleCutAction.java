@@ -22,9 +22,7 @@ import tm.canvases.TMSelectionCanvas;
 import tm.canvases.TMEditorCanvas;
 
 /**
- *
  * Allows undo/redo for the Cut operation.
- *
  **/
 public class ReversibleCutAction extends ReversibleAction {
 
@@ -32,6 +30,11 @@ public class ReversibleCutAction extends ReversibleAction {
     private TMEditorCanvas owner;
     private int x, y;
 
+    /**
+     * Records the cut selection and its grid position for undo/redo.
+     * @param selection selection canvas that was cut
+     * @param owner editor canvas that owned the selection
+     **/
     public ReversibleCutAction(TMSelectionCanvas selection, TMEditorCanvas owner) {
         super("Cut");   // i18n
         this.selection = selection;
@@ -40,16 +43,31 @@ public class ReversibleCutAction extends ReversibleAction {
         y = selection.getY() / selection.getScaledTileDim();
     }
 
+    /**
+     * Restores the selection on the editor canvas.
+     **/
     public void undo() {
         owner.showSelection(selection, x, y);
     }
 
+    /**
+     * Removes the selection from the editor canvas again.
+     **/
     public void redo() {
         owner.remove(selection);
         owner.repaint();
     }
 
+    /**
+     * Cut can always be undone.
+     * @return {@code true}
+     **/
     public boolean canUndo() { return true; }
+
+    /**
+     * Cut can always be redone.
+     * @return {@code true}
+     **/
     public boolean canRedo() { return true; }
 
 }

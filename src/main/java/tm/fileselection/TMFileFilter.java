@@ -23,10 +23,8 @@ import java.io.File;
 import java.util.StringTokenizer;
 
 /**
- *
  * A file filter that allows you to register a set of extensions with a common
  * description.
- *
  **/
 public class TMFileFilter extends FileFilter {
 
@@ -34,14 +32,17 @@ public class TMFileFilter extends FileFilter {
     private String[] extensions;
     private String extlist;
 
+    /**
+     * Creates an empty file filter.
+     **/
     public TMFileFilter() {
         super();
     }
 
     /**
-     *
-     * @param extlist    A comma-separated list of extensions
-     *
+     * Creates a file filter from a comma-separated extension list and description.
+     * @param extlist comma-separated list of extensions
+     * @param description human-readable filter label
      **/
     public TMFileFilter(String extlist, String description) {
         super();
@@ -49,6 +50,10 @@ public class TMFileFilter extends FileFilter {
         setDescription(description);
     }
 
+    /**
+     * Parses and stores the comma-separated extension list.
+     * @param extlist comma-separated list of extensions
+     **/
     public void setExtensions(String extlist) {
         this.extlist = extlist;
         StringTokenizer st = new StringTokenizer(extlist, ",");
@@ -58,26 +63,52 @@ public class TMFileFilter extends FileFilter {
         }
     }
 
+    /**
+     * Sets the human-readable description shown in the file chooser.
+     * @param description filter label text
+     **/
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Returns the registered filename extensions.
+     * @return extension strings without leading dots
+     **/
     public String[] getExtensions() {
         return extensions;
     }
 
+    /**
+     * Returns the original comma-separated extension list.
+     * @return extension list as passed to the constructor or {@link #setExtensions}
+     **/
     public String getExtlist() {
         return extlist;
     }
 
+    /**
+     * Returns the first registered extension, used as the default when appending.
+     * @return default extension string
+     **/
     public String getDefaultExtension() {
         return extensions[0];
     }
 
+    /**
+     * Returns the human-readable filter description.
+     * @return description text
+     **/
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Accepts directories and files whose extension matches one of the registered
+     * patterns ({@code ?} matches any character).
+     * @param f file or directory to test
+     * @return {@code true} if the file should be shown in the chooser
+     **/
     public boolean accept(File f) {
         if (f.isDirectory()) {
             return true;
@@ -106,9 +137,9 @@ public class TMFileFilter extends FileFilter {
     }
 
     /**
-     *
      * Gets the file extension.
-     *
+     * @param f file whose extension is needed
+     * @return lowercase extension without dot, or empty string if none
      **/
     public static String getExtension(File f) {
         String ext = "";

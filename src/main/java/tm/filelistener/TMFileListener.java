@@ -19,7 +19,6 @@
 package tm.filelistener;
 
 /**
- *
  * Abstract class that defines the interface for filelisteners.
  * A <code>filelistener</code> is an object that is notified when a file has
  * been fully loaded into memory, as well as when it is about to be saved.
@@ -28,32 +27,31 @@ package tm.filelistener;
  * The fileformatlistener also has to implement a method that determines if
  * the file being saved is indeed of a supported format. This usually involves
  * checking the header (verifying ID strings and such).
- *
  **/
 public abstract class TMFileListener {
 
     /**
-     *
-     * This method is invoked when a file has been loaded, to give the file
-     * listener a chance to detect the file format. If it returns <code>true</code>,
-     * this file listener will receive all subsequent fileLoaded() and fileSaved()
-     * events for the file.
-     *
+     * Invoked after a file is loaded to detect whether this listener handles the format.
+     * When this returns {@code true}, subsequent {@link #fileLoaded} and
+     * {@link #fileSaving} calls are routed to this listener.
+     * @param data file contents in memory
+     * @param extension lowercase filename extension without dot
+     * @return {@code true} if this listener should handle the file
      **/
     public abstract boolean doFormatDetect(final byte[] data, String extension);
 
     /**
-     *
-     * This method is invoked when the file has been loaded (and doFormatDetect() has
-     * already returned true.)
-     *
+     * Invoked after the file has been loaded and {@link #doFormatDetect} returned
+     * {@code true}.
+     * @param data file contents in memory
+     * @param extension lowercase filename extension without dot
      **/
     public abstract void fileLoaded(byte[] data, String extension);
 
     /**
-     *
-     * This method is invoked when the file is about to be saved.
-     *
+     * Invoked immediately before the file is written to disk.
+     * @param data file contents about to be saved
+     * @param extension lowercase filename extension without dot
      **/
     public abstract void fileSaving(byte[] data, String extension);
 

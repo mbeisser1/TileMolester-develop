@@ -27,6 +27,12 @@ public class BMPLoader
 
     // build an int from a byte array - convert little to big endian
 
+    /**
+     * Builds a 32-bit int from four little-endian bytes.
+     * @param in source byte array
+     * @param offset start index of the four bytes
+     * @return 32-bit integer from little-endian bytes
+     **/
     public static int constructInt(byte[] in,int offset) {
         int ret =          ((int)in[offset + 3] & 0xff);
         ret = (ret << 8) | ((int)in[offset + 2] & 0xff);
@@ -39,6 +45,12 @@ public class BMPLoader
 
     // set high order bytes to 0xfff
 
+    /**
+     * Builds a 24-bit RGB int from three little-endian bytes.
+     * @param in data input stream positioned at pixel data
+     * @param offset byte offset within a source array
+     * @return 24-bit RGB integer from three bytes
+     **/
     public static int constructInt3(byte[] in,int offset) {
         int ret =            0xff;
         ret = (ret << 8) | ((int)in[offset + 2] & 0xff);
@@ -51,6 +63,12 @@ public class BMPLoader
 
     // build an int from a byte array - convert little to big endian
 
+    /**
+     * Builds a 64-bit long from eight little-endian bytes.
+     * @param in data input stream positioned at pixel data
+     * @param offset byte offset within a source array
+     * @return 64-bit long from little-endian bytes
+     **/
     public static long constructLong(byte[] in,int offset) {
         long ret =          ((long)in[offset + 7] & 0xff);
         ret |= (ret << 8) | ((long)in[offset + 6] & 0xff);
@@ -69,6 +87,12 @@ public class BMPLoader
 
     // build an double from a byte array - convert little to big endian
 
+    /**
+     * Builds a double from eight little-endian bytes.
+     * @param in data input stream positioned at pixel data
+     * @param offset byte offset within a source array
+     * @return double value from eight little-endian bytes
+     **/
     public static double constructDouble(byte[] in,int offset) {
         long ret = constructLong(in,offset);
         return(Double.longBitsToDouble(ret));
@@ -78,6 +102,12 @@ public class BMPLoader
 
     // build an short from a byte array - convert little to big endian
 
+    /**
+     * Builds a 16-bit short from two little-endian bytes.
+     * @param in data input stream positioned at pixel data
+     * @param offset byte offset within a source array
+     * @return 16-bit short from two little-endian bytes
+     **/
     public static short constructShort(byte[] in,int offset) {
         short ret = (short)(in[(offset + 1)] & 0xFF);
         ret = (short)(ret << 8 | (short)(in[(offset + 0)] & 0xFF));
@@ -109,6 +139,10 @@ public class BMPLoader
 
         // read in the bitmap header
 
+        /**
+         * Reads a BMP file and returns an Image.
+         * @param fs BMP file input stream
+         **/
         public void read(FileInputStream fs) throws IOException
 
         {
@@ -179,6 +213,11 @@ public class BMPLoader
 
 
 
+  /**
+   * Reads a BMP file and returns an Image.
+   * @param fs BMP file input stream
+   * @return decoded Image, or null on failure
+   **/
   public static Image read(FileInputStream fs)
 
   {
@@ -221,10 +260,7 @@ public class BMPLoader
    * bh - header struct
    * Returns:
    * Image Object, be sure to check for (Image)null !!!!
-   */
-
-
-
+   **/
   protected static Image readMap32(FileInputStream fs,BitmapHeader bh) throws IOException
 
   {
@@ -270,10 +306,7 @@ public class BMPLoader
    * bh - header struct
    * Returns:
    * Image Object, be sure to check for (Image)null !!!!
-   */
-
-
-
+   **/
   protected static Image readMap24(FileInputStream fs,BitmapHeader bh) throws IOException
 
   {
@@ -318,8 +351,7 @@ public class BMPLoader
      * bh - header struct
      * Returns:
      * Image Object, be sure to check for (Image)null !!!!
-     */
-
+     **/
     protected static Image readMap8(FileInputStream fs,BitmapHeader bh) throws IOException
 
       {
@@ -424,8 +456,7 @@ public class BMPLoader
      * getDirectory() and getFile() methods.
      * Returns:
      * Image Object, be sure to check for (Image)null !!!!
-     */
-
+     **/
     public static Image  load(String sdir, String sfile) {
   return(load(sdir + sfile));
  }
@@ -440,8 +471,7 @@ public class BMPLoader
      * sdir - full path name
      * Returns:
      * Image Object, be sure to check for (Image)null !!!!
-     */
-
+     **/
     public static Image  load(String sdir)
 
  {
@@ -460,6 +490,10 @@ public class BMPLoader
 
 
 
+/**
+ * Entry point for standalone testing.
+ * @param args command-line arguments
+ **/
 public static void main(String[] args) throws IOException
 
 {

@@ -21,11 +21,9 @@ package tm.reversibleaction;
 import java.util.Date;
 
 /**
- *
  * Abstract class for handling reversible actions (undoable/redoable).
  * Every type of action needs to subclass this class and implement the
  * below methods.
- *
  **/
 public abstract class ReversibleAction {
 
@@ -33,9 +31,8 @@ public abstract class ReversibleAction {
     private Date timeStamp;
 
     /**
-     *
      * Creates a reversible action with the given presentation name.
-     *
+     * @param presentationName text shown after Undo/Redo in the menu
      **/
     public ReversibleAction(String presentationName) {
         this.presentationName = presentationName;
@@ -43,30 +40,40 @@ public abstract class ReversibleAction {
     }
 
     /**
-     *
-     * Subclasses must implement these.
-     *
+     * Reverts the action to its prior state.
      **/
     public abstract void undo();
+
+    /**
+     * Re-applies the action after an undo.
+     **/
     public abstract void redo();
+
+    /**
+     * Reports whether this action can be undone.
+     * @return {@code true} if undo is permitted
+     **/
     public abstract boolean canUndo();
+
+    /**
+     * Reports whether this action can be redone.
+     * @return {@code true} if redo is permitted
+     **/
     public abstract boolean canRedo();
 
     /**
-     *
      * Gets the presentation name.
      * The presentation name is the text that is displayed after "Undo"/"Redo"
      * when this action can be undone/redone.
-     *
+     * @return menu label fragment for this action
      **/
     public String getPresentationName() {
         return presentationName;
     }
 
     /**
-     *
      * Gets the timestamp for this action, i.e. when it was first executed.
-     *
+     * @return time when the action was created
      **/
     public Date getTimeStamp() {
         return timeStamp;

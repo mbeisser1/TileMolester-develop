@@ -33,10 +33,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
- *
  * Holds resources for a file image.
  * Resources include bookmarks and palettes.
- *
  **/
 public class TMFileResources {
 
@@ -47,9 +45,9 @@ public class TMFileResources {
 	private TMUI ui;
 
 	/**
-	 *
 	 * Create initial resources for the specified fileimage.
-	 *
+	 * @param fileImage file image to attach resources to
+	 * @param ui main UI used for localized folder names
 	 **/
 	public TMFileResources(FileImage fileImage, TMUI ui) {
 		this.bookmarkRoot = new FolderNode(ui.xlate("Bookmarks"));
@@ -58,9 +56,7 @@ public class TMFileResources {
 	}
 
 	/**
-	 *
 	 * Loads resources for a fileimage from an XML document.
-	 *
 	 * Resources are in an XML tree structure like so:
 	 * +resources
 	 * +resourcetype1
@@ -69,7 +65,12 @@ public class TMFileResources {
 	 * +resourcetype2
 	 * ....
 	 * +resourcetype3
-	 *
+	 * @param file XML resource file to load
+	 * @param fileImage file image to attach resources to
+	 * @param ui main UI used for codec lookup and localized folder names
+	 * @throws SAXException if the XML document is invalid
+	 * @throws ParserConfigurationException if a parser cannot be created
+	 * @throws IOException if the file cannot be read
 	 **/
 	public TMFileResources(File file, FileImage fileImage, TMUI ui)
 			throws SAXException, ParserConfigurationException, IOException {
@@ -97,7 +98,6 @@ public class TMFileResources {
 	}
 
 	/**
-	 *
 	 * Parses the bookmarks into a tree of TMTreeNodes.
 	 * Bookmarks are in an XML tree structure like so:
 	 * +folder1
@@ -107,7 +107,8 @@ public class TMFileResources {
 	 * +folder3
 	 * +bookmark1
 	 * ...
-	 *
+	 * @param root root element of the resource XML document
+	 * @return root folder node of the bookmark tree
 	 **/
 	public FolderNode parseBookmarks(Element root) {
 		Element e = getChildTag(root, "bookmarks", 0);
@@ -125,9 +126,9 @@ public class TMFileResources {
 	}
 
 	/**
-	 *
 	 * Recursively adds folders and bookmarks to tree.
-	 *
+	 * @param e XML element representing a folder or bookmark
+	 * @param folder parent folder node to add children to
 	 **/
 	public void addToBookmarksTree(Element e, FolderNode folder) {
 		if (e.getTagName().equals("folder")) {
@@ -176,10 +177,10 @@ public class TMFileResources {
 	}
 
 	/**
-	 *
 	 * Parses the palettes into a tree of TMTreeNodes.
 	 * Highly analoguous to bookmark parsing.
-	 *
+	 * @param root root element of the resource XML document
+	 * @return root folder node of the palette tree
 	 **/
 	public FolderNode parsePalettes(Element root) {
 		Element e = getChildTag(root, "palettes", 0);
@@ -197,9 +198,9 @@ public class TMFileResources {
 	}
 
 	/**
-	 *
 	 * Recursively processes and adds folders and palettes to tree.
-	 *
+	 * @param e XML element representing a folder or palette
+	 * @param folder parent folder node to add children to
 	 **/
 	public void addToPalettesTree(Element e, FolderNode folder) {
 		if (e.getTagName().equals("folder")) {
@@ -246,27 +247,24 @@ public class TMFileResources {
 	}
 
 	/**
-	 *
 	 * Gets the root of the tree of bookmarks & bookmark folders.
-	 *
+	 * @return root folder node of the bookmark tree
 	 **/
 	public FolderNode getBookmarksRoot() {
 		return bookmarkRoot;
 	}
 
 	/**
-	 *
 	 * Gets the root of the tree of palettes & palette folders.
-	 *
+	 * @return root folder node of the palette tree
 	 **/
 	public FolderNode getPalettesRoot() {
 		return paletteRoot;
 	}
 
 	/**
-	 *
 	 * Returns XML representation of resources.
-	 *
+	 * @return complete XML document for bookmarks and palettes
 	 **/
 	public String toXML() {
 		StringBuffer sb = new StringBuffer();
@@ -282,9 +280,8 @@ public class TMFileResources {
 	}
 
 	/**
-	 *
 	 * Return XML representation of bookmarks.
-	 *
+	 * @return XML fragment for the bookmark tree
 	 **/
 	public String bookmarksToXML() {
 		StringBuffer sb = new StringBuffer();
@@ -298,9 +295,8 @@ public class TMFileResources {
 	}
 
 	/**
-	 *
 	 * Returns XML representation of palettes.
-	 *
+	 * @return XML fragment for the palette tree
 	 **/
 	public String palettesToXML() {
 		StringBuffer sb = new StringBuffer();
@@ -314,10 +310,10 @@ public class TMFileResources {
 	}
 
 	/**
-	 *
 	 * Gets the default resource filename for the given file.
 	 * Currently, this is [filename-extension+".xml"]
-	 *
+	 * @param file source file whose companion resource file is needed
+	 * @return default resource file in the resources directory
 	 **/
 	public static File getResourceFileFor(File file) {
 		// determine name of XML resource file based on filename
@@ -330,6 +326,13 @@ public class TMFileResources {
 		return new File("./resources/" + name);
 	}
 
+	/**
+	 * Gets the nth child element with the given tag name.
+	 * @param e parent XML element
+	 * @param Tag tag name to search for
+	 * @param i zero-based index of the matching child
+	 * @return child element, or null if not found
+	 **/
 	private Element getChildTag(Element e, String Tag, int i) {
 		return (Element) e.getElementsByTagName(Tag).item(i);
 	}

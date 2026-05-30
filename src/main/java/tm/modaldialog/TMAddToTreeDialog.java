@@ -25,6 +25,9 @@ import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * Dialog for choosing a folder and description when adding a tree item.
+ **/
 public class TMAddToTreeDialog extends TMModalDialog {
 
     private TMTreeNodeTree tree;
@@ -36,15 +39,20 @@ public class TMAddToTreeDialog extends TMModalDialog {
     private JScrollPane scrollPane;
 
     /**
-     *
      * Creates the dialog.
-     *
+     * @param owner parent frame for the dialog
+     * @param title dialog title key
+     * @param xl translator for dialog strings
      **/
     public TMAddToTreeDialog(Frame owner, String title, tm.utils.Xlator xl) {
         super(owner, title, xl);
         newFolderDialog = new TMNewFolderDialog(owner, xl);
     }
 
+    /**
+     * Builds the folder tree and description input panel.
+     * @return dialog content panel
+     **/
     protected JPanel getDialogPane() {
         descLabel = new JLabel(xlate("Description_Prompt"));
         descField = new JTextField();
@@ -54,6 +62,10 @@ public class TMAddToTreeDialog extends TMModalDialog {
         newFolderButton = new JButton(xlate("New_Folder"));
         newFolderButton.addActionListener(
             new ActionListener() {
+                /**
+                 * Handles New Folder button click.
+                 * @param e action event
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     doNewFolderCommand();
                 }
@@ -96,10 +108,8 @@ public class TMAddToTreeDialog extends TMModalDialog {
     }
 
     /**
-     *
      * Prompts the user for a folder name, then inserts a folder node with that name
      * as a subfolder of the currently selected node in the tree.
-     *
      **/
     public void doNewFolderCommand() {
         newFolderDialog.setName("");    // clear previous input, if any
@@ -118,18 +128,18 @@ public class TMAddToTreeDialog extends TMModalDialog {
     }
 
     /**
-     *
      * Gets the folder where the new item is to be inserted.
-     *
+     * Gets the folder where the new item is to be inserted.
+     * @return selected folder node
      **/
     public FolderNode getFolder() {
         return (FolderNode)tree.getSelectedNode();
     }
 
     /**
-     *
      * Gets the description that the user entered for the item.
-     *
+     * Gets the description that the user entered for the item.
+     * @return description text from the input field
      **/
     public String getDescription() {
         return descField.getText();
@@ -137,17 +147,28 @@ public class TMAddToTreeDialog extends TMModalDialog {
 
     private class FolderCellRenderer extends DefaultTreeCellRenderer {
 
+        /**
+         * Creates a tree cell renderer that shows folders as expandable nodes.
+         **/
         public FolderCellRenderer() {
             super();
             setLeafIcon(openIcon);
         }
     }
 
+    /**
+     * Loads the tree and shows the add-to-tree dialog.
+     * @param root root node of the tree to display
+     * @return JOptionPane.OK_OPTION or JOptionPane.CANCEL_OPTION
+     **/
     public int showDialog(TMTreeNode root) {
         tree.loadTreeNodes(root, false);
         descField.setText("");
         maybeEnableOKButton();
         SwingUtilities.invokeLater( new Runnable() {
+            /**
+             * Requests focus on the description field when the dialog opens.
+             **/
             public void run() {
                 descField.requestFocus();
             }
@@ -155,6 +176,10 @@ public class TMAddToTreeDialog extends TMModalDialog {
         return super.showDialog();
     }
 
+    /**
+     * Reports whether a non-empty description has been entered.
+     * @return true if description field is not blank
+     **/
     public boolean inputOK() {
         return !(descField.getText().trim().equals(""));
     }

@@ -27,6 +27,9 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.util.Vector;
 
+/**
+ * Dialog for importing a palette stored inside the current file.
+ **/
 public class TMImportInternalPaletteDialog extends TMModalDialog {
 
     private JLabel offsetLabel;
@@ -40,14 +43,16 @@ public class TMImportInternalPaletteDialog extends TMModalDialog {
     private JCheckBox copyCheck;
 
     /**
-     *
      * Creates the dialog.
-     *
      **/
     public TMImportInternalPaletteDialog(Frame owner, tm.utils.Xlator xl) {
         super(owner, "Import_Internal_Palette_Dialog_Title", xl);
     }
 
+    /**
+     * Builds and returns the dialog content panel.
+     * @return dialog content panel
+     **/
     protected JPanel getDialogPane() {
         offsetLabel = new JLabel(xlate("Offset_Prompt"));
         offsetField = new JTextField();
@@ -113,26 +118,50 @@ public class TMImportInternalPaletteDialog extends TMModalDialog {
         return p;
     }
 
+    /**
+     * Gets the file offset entered by the user.
+     * @return file offset entered by the user
+     **/
     public int getOffset() {
         return Integer.parseInt(offsetField.getText(), 16);
     }
 
+    /**
+     * Gets the palette size entered by the user.
+     * @return palette size entered by the user
+     **/
     public int getPaletteSize() {
         return Integer.parseInt(sizeField.getText());
     }
 
+    /**
+     * Gets the selected byte-order endianness.
+     * @return TODO: not yet implemented; always returns 0
+     **/
     public int getEndianness() {
         return littleRadio.isSelected() ? ColorCodec.LITTLE_ENDIAN : ColorCodec.BIG_ENDIAN;
     }
 
+    /**
+     * Gets the selected color codec.
+     * @return selected color codec
+     **/
     public ColorCodec getCodec() {
         return (ColorCodec)codecCombo.getSelectedItem();
     }
 
+    /**
+     * Reports whether the copy option is selected.
+     * @return true if copy option is selected
+     **/
     public boolean getCopy() {
         return copyCheck.isSelected();
     }
 
+    /**
+     * Populates the color codec combo box.
+     * @param codecs available color codecs for the combo box
+     **/
     public void setCodecs(Vector<ColorCodec> codecs) {
         codecCombo.removeAllItems();
         for (int i=0; i<codecs.size(); i++) {
@@ -141,11 +170,18 @@ public class TMImportInternalPaletteDialog extends TMModalDialog {
         codecCombo.setSelectedIndex(0);
     }
 
+    /**
+     * Shows the dialog and waits for user confirmation.
+     * @return JOptionPane.OK_OPTION or JOptionPane.CANCEL_OPTION
+     **/
     public int showDialog() {
 //        offsetField.setText("");
 //        sizeField.setText("");
         maybeEnableOKButton();
         SwingUtilities.invokeLater( new Runnable() {
+            /**
+             * Runs the deferred UI task.
+             **/
             public void run() {
                 offsetField.requestFocus();
             }
@@ -153,6 +189,10 @@ public class TMImportInternalPaletteDialog extends TMModalDialog {
         return super.showDialog();
     }
 
+    /**
+     * Reports whether the current dialog input is valid for OK.
+     * @return true if dialog input is valid for OK
+     **/
     public boolean inputOK() {
         return (!offsetField.getText().equals("") && !sizeField.getText().equals("")
             && (getPaletteSize() > 0));

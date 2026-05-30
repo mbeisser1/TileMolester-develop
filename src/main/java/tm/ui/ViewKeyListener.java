@@ -24,18 +24,14 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyAdapter;
 
 /**
- *
  * Class for handling keypresses in the window.
- *
  **/
 public class ViewKeyListener extends KeyAdapter {
 
     private TMView view;
 
     /**
-     *
      * Creates the listener.
-     *
      **/
     public ViewKeyListener(TMView view) {
         super();
@@ -43,9 +39,8 @@ public class ViewKeyListener extends KeyAdapter {
     }
 
     /**
-     *
      * Handles a keypress.
-     *
+     * @param e event from the AWT/Swing listener
      **/
     public void keyPressed(KeyEvent e) {
         // check that the event should indeed be processed

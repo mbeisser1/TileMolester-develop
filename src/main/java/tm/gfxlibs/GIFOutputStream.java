@@ -37,19 +37,35 @@ import java.awt.image.*;
 import java.util.Hashtable;
 import java.util.Enumeration;
 
+/**
+ * Writes GIF89a image data to an output stream with optional palette reduction.
+ * Compression is run-length based (GIF-compatible, not LZW). See the file header
+ * comment for authorship and licensing.
+ **/
 public class GIFOutputStream extends FilterOutputStream
 {
+   /** Keep original image colors (up to 256 unique RGB values). **/
    public static final int ORIGINAL_COLOR = 0;
+   /** Map pixels to black and white. **/
    public static final int BLACK_AND_WHITE = 1;
+   /** Map pixels to a 16-level grayscale palette. **/
    public static final int GRAYSCALE_16 = 2;
+   /** Map pixels to a 256-level grayscale palette. **/
    public static final int GRAYSCALE_256 = 3;
+   /** Map pixels to the built-in 16-color VGA palette. **/
    public static final int STANDARD_16_COLORS = 4;
+   /** Map pixels to the built-in 256-color palette. **/
    public static final int STANDARD_256_COLORS = 5;
+   /** Map pixels to 216 colors with ordered dithering. **/
    public static final int DITHERED_216_COLORS = 6;
 
+   /** Last write completed without error. **/
    public static final int NO_ERROR = 0;
+   /** Pixel grab failed or was aborted. **/
    public static final int IMAGE_LOAD_FAILED = 1;
+   /** ORIGINAL_COLOR mode had more than 256 distinct colors. **/
    public static final int TOO_MANY_COLORS = 2;
+   /** Unrecognized colorMode argument. **/
    public static final int INVALID_COLOR_MODE = 3;
 
    protected static final int BLACK_INDEX = 0;
@@ -110,16 +126,37 @@ public class GIFOutputStream extends FilterOutputStream
       }
    }
 
+   /**
+    * Writes a GIF to the stream using {@link #ORIGINAL_COLOR} and no transparency.
+    * @param out destination stream (closed after write)
+    * @param image source image
+    * @return error status ({@link #NO_ERROR} on success)
+    **/
    public static int writeGIF(OutputStream out, Image image) throws IOException
    {
       return writeGIF(out, image, ORIGINAL_COLOR, null);
    }
 
+   /**
+    * Writes a GIF to the stream with the given color reduction mode.
+    * @param out destination stream (closed after write)
+    * @param image source image
+    * @param colorMode one of the ORIGINAL_COLOR … DITHERED_216_COLORS constants
+    * @return error status ({@link #NO_ERROR} on success)
+    **/
    public static int writeGIF(OutputStream out, Image image, int colorMode) throws IOException
    {
       return writeGIF(out, image, colorMode, null);
    }
 
+   /**
+    * Writes a GIF to the stream with color mode and optional transparent color.
+    * @param out destination stream (closed after write)
+    * @param image source image
+    * @param colorMode one of the ORIGINAL_COLOR … DITHERED_216_COLORS constants
+    * @param transparentColor color treated as transparent, or null for opaque
+    * @return error status ({@link #NO_ERROR} on success)
+    **/
    public static int writeGIF(OutputStream out, Image image, int colorMode, Color transparentColor) throws IOException
    {
       GIFOutputStream   gifOut = new GIFOutputStream(out);
@@ -133,28 +170,57 @@ public class GIFOutputStream extends FilterOutputStream
        return res;
    }
 
+   /**
+    * Creates a GIF writer wrapping the given output stream.
+    * @param out destination stream
+    **/
    public GIFOutputStream(OutputStream out)
    {
       super(out);
    }
 
+   /**
+    * Returns the error code from the last {@link #write(Image, int, Color)} call.
+    * @return {@link #NO_ERROR} or another NO_ERROR … INVALID_COLOR_MODE constant
+    **/
    public int getErrorStatus() { return errorStatus; }
 
+   /**
+    * Encodes the image as a GIF using {@link #ORIGINAL_COLOR}.
+    * @param image source image
+    **/
    public void write(Image image) throws IOException
    {
       write(image, ORIGINAL_COLOR, null);
    }
 
+   /**
+    * Encodes the image as a GIF with the given color reduction mode.
+    * @param image source image
+    * @param colorMode one of the ORIGINAL_COLOR … DITHERED_216_COLORS constants
+    **/
    public void write(Image image, int colorMode) throws IOException
    {
       write(image, colorMode, null);
    }
 
+   /**
+    * Encodes the image as a GIF with optional transparency.
+    * @param image source image
+    * @param transparentColor color treated as transparent, or null for opaque
+    **/
    public void write(Image image, Color transparentColor) throws IOException
    {
       write(image, ORIGINAL_COLOR, transparentColor);
    }
 
+   /**
+    * Encodes the image as a GIF stream (header, palette, compressed raster).
+    * Sets {@link #errorStatus} when pixel grab fails, too many colors, or mode is invalid.
+    * @param image source image
+    * @param colorMode one of the ORIGINAL_COLOR … DITHERED_216_COLORS constants
+    * @param transparentColor color treated as transparent, or null for opaque
+    **/
    public void write(Image image, int colorMode, Color transparentColor) throws IOException
    {
       errorStatus = NO_ERROR;
@@ -272,6 +338,11 @@ public class GIFOutputStream extends FilterOutputStream
       write(0x3B); // GIF file terminator.
    }
 
+   /**
+    * Collects distinct 24-bit RGB colors from pixel data and assigns palette indices.
+    * @param pixels ARGB pixel array from a PixelGrabber
+    * @return map from RGB integer to palette index (0 … n-1)
+    **/
    protected Hashtable<Integer, Integer> getColorSet(int[] pixels)
    {
       Hashtable<Integer, Integer>   colorSet = new Hashtable<>();
@@ -311,6 +382,12 @@ public class GIFOutputStream extends FilterOutputStream
       return colorSet;
    }
 
+   /**
+    * Builds a GIF color table from a color-set map.
+    * @param colorSet RGB to index map from {@link #getColorSet}
+    * @param colorCount number of entries in the table
+    * @return palette entries as 0xRRGGBB integers
+    **/
    protected int[] createColorTable(Hashtable<Integer, Integer> colorSet, int colorCount)
    {
       int[]    colorTable = new int[colorCount];
@@ -324,6 +401,12 @@ public class GIFOutputStream extends FilterOutputStream
       return colorTable;
    }
 
+   /**
+    * Converts true-color pixels to palette indices using a color-set map.
+    * @param pixels ARGB source pixels
+    * @param colorSet RGB to index map from {@link #getColorSet}
+    * @return one byte per pixel (palette index)
+    **/
    protected byte[] createBytePixels(int[] pixels, Hashtable<Integer, Integer> colorSet)
    {
       byte[]   bytePixels = new byte[pixels.length];
@@ -339,6 +422,10 @@ public class GIFOutputStream extends FilterOutputStream
       return bytePixels;
    }
 
+   /**
+    * Returns the two-entry black/white palette.
+    * @return color table of length 2
+    **/
    protected int[] createBWTable()
    {
       int[]    colorTable = new int[2];
@@ -349,6 +436,11 @@ public class GIFOutputStream extends FilterOutputStream
       return colorTable;
    }
 
+   /**
+    * Quantizes pixels to black or white by luminance threshold.
+    * @param pixels ARGB source pixels
+    * @return palette indices (BLACK_INDEX or WHITE_INDEX)
+    **/
    protected byte[] createBWBytePixels(int[] pixels)
    {
       byte[]   bytePixels = new byte[pixels.length];
@@ -363,6 +455,10 @@ public class GIFOutputStream extends FilterOutputStream
       return bytePixels;
    }
 
+   /**
+    * Returns the 16-level grayscale palette (0x000000 … 0xEEEEEE step 0x111111).
+    * @return color table of length 16
+    **/
    protected int[] create16GrayTable()
    {
       int[]    colorTable = new int[16];
@@ -373,6 +469,11 @@ public class GIFOutputStream extends FilterOutputStream
       return colorTable;
    }
 
+   /**
+    * Maps each pixel to one of 16 gray levels.
+    * @param pixels ARGB source pixels
+    * @return palette indices 0 … 15
+    **/
    protected byte[] create16GrayBytePixels(int[] pixels)
    {
       byte[]   bytePixels = new byte[pixels.length];
@@ -384,6 +485,10 @@ public class GIFOutputStream extends FilterOutputStream
       return bytePixels;
    }
 
+   /**
+    * Returns the 256-level grayscale palette.
+    * @return color table of length 256
+    **/
    protected int[] create256GrayTable()
    {
       int[]    colorTable = new int[256];
@@ -394,6 +499,11 @@ public class GIFOutputStream extends FilterOutputStream
       return colorTable;
    }
 
+   /**
+    * Maps each pixel to an 8-bit gray value.
+    * @param pixels ARGB source pixels
+    * @return palette indices 0 … 255
+    **/
    protected byte[] create256GrayBytePixels(int[] pixels)
    {
       byte[]   bytePixels = new byte[pixels.length];
@@ -405,6 +515,10 @@ public class GIFOutputStream extends FilterOutputStream
       return bytePixels;
    }
 
+   /**
+    * Returns a copy of the built-in 16-color VGA palette.
+    * @return color table of length 16
+    **/
    protected int[] createStd16ColorTable()
    {
       int[]    colorTable = new int[16];
@@ -414,6 +528,11 @@ public class GIFOutputStream extends FilterOutputStream
       return colorTable;
    }
 
+   /**
+    * Maps each pixel to the nearest standard 16-color entry.
+    * @param pixels ARGB source pixels
+    * @return palette indices 0 … 15
+    **/
    protected byte[] createStd16ColorBytePixels(int[] pixels)
    {
       byte[]   bytePixels = new byte[pixels.length];
@@ -440,6 +559,10 @@ public class GIFOutputStream extends FilterOutputStream
       return bytePixels;
    }
 
+   /**
+    * Returns a copy of the built-in 256-color palette.
+    * @return color table of length 256
+    **/
    protected int[] createStd256ColorTable()
    {
       int[]    colorTable = new int[256];
@@ -449,6 +572,10 @@ public class GIFOutputStream extends FilterOutputStream
       return colorTable;
    }
 
+   /**
+    * Returns the 216-color web-safe subset used for dithered output.
+    * @return color table of length 216
+    **/
    protected int[] createStd216ColorTable()
    {
       int[]    colorTable = new int[216];
@@ -460,6 +587,13 @@ public class GIFOutputStream extends FilterOutputStream
       return colorTable;
    }
 
+   /**
+    * Maps pixels to the standard 256-color palette, optionally with 4×4 ordered dithering.
+    * @param pixels ARGB source pixels
+    * @param width image width in pixels (for dither pattern indexing)
+    * @param dither when true, use {@link #DITHERED_216_COLORS} cube mapping; otherwise nearest match
+    * @return palette indices
+    **/
    protected byte[] createStd256ColorBytePixels(int[] pixels, int width, boolean dither)
    {
       byte[]   bytePixels = new byte[pixels.length];
@@ -568,6 +702,11 @@ public class GIFOutputStream extends FilterOutputStream
       return bytePixels;
    }
 
+   /**
+    * Computes weighted luminance (30% R, 59% G, 11% B) for an RGB color.
+    * @param color 0xRRGGBB color (alpha ignored)
+    * @return gray level 0 … 255
+    **/
    protected int grayscaleValue(int color)
    {
       int   r = (color & 0xFF0000) >> 16;
@@ -577,6 +716,12 @@ public class GIFOutputStream extends FilterOutputStream
       return (r * 30 + g * 59 + b * 11) / 100;
    }
 
+   /**
+    * Returns a weighted squared distance between two RGB colors (perceptual match metric).
+    * @param color1 first 0xRRGGBB color
+    * @param color2 second 0xRRGGBB color
+    * @return error value; lower is a closer match
+    **/
    protected int colorMatchError(int color1, int color2)
    {
       int   r1 = (color1 & 0xFF0000) >> 16;
@@ -592,6 +737,12 @@ public class GIFOutputStream extends FilterOutputStream
       return (dr * dr + dg * dg + db * db) / 100;
    }
 
+   /**
+    * Writes the GIF89a signature, logical screen descriptor, and global color-table flag.
+    * @param width image width in pixels
+    * @param height image height in pixels
+    * @param bitsPerPixel color depth (log2 of palette size)
+    **/
    protected void writeGIFHeader(int width, int height, int bitsPerPixel) throws IOException
    {
       write((int) 'G');
@@ -615,6 +766,11 @@ public class GIFOutputStream extends FilterOutputStream
       write(0); // Aspect ratio index -- not specified.
    }
 
+   /**
+    * Writes the global color table, padding to 2^bitsPerPixel entries.
+    * @param colorTable palette RGB values
+    * @param bitsPerPixel color depth determining table size
+    **/
    protected void writeColorTable(int[] colorTable, int bitsPerPixel) throws IOException
    {
       int   colorCount = 1 << bitsPerPixel;
@@ -627,6 +783,11 @@ public class GIFOutputStream extends FilterOutputStream
       }
    }
 
+   /**
+    * Writes a graphic control extension if transparentColor appears in the palette.
+    * @param transparentColor RGB color to mark transparent
+    * @param colorTable palette used for the image
+    **/
    protected void writeGraphicControlExtension(Color transparentColor,
       int[] colorTable) throws IOException
    {
@@ -645,6 +806,11 @@ public class GIFOutputStream extends FilterOutputStream
       }
    }
 
+   /**
+    * Writes the image descriptor (position, size, no local color table).
+    * @param width image width in pixels
+    * @param height image height in pixels
+    **/
    protected void writeImageDescriptor(int width, int height) throws IOException
    {
       write(0x2C); // Image descriptor identifier;
@@ -657,22 +823,38 @@ public class GIFOutputStream extends FilterOutputStream
       write(0); // No local color table, not interlaced.
    }
 
+   /**
+    * Writes a 16-bit little-endian value.
+    * @param word value to write
+    **/
    protected void writeGIFWord(short word) throws IOException
    {
       writeGIFWord((int) word);
    }
 
+   /**
+    * Writes a 16-bit little-endian value.
+    * @param word value to write
+    **/
    protected void writeGIFWord(int word) throws IOException
    {
       write(word & 0xFF);
       write((word & 0xFF00) >> 8);
    }
 
+   /**
+    * Writes one palette entry as three RGB bytes.
+    * @param color AWT color (alpha ignored)
+    **/
    protected void writeGIFColor(Color color) throws IOException
    {
       writeGIFColor(color.getRGB());
    }
 
+   /**
+    * Writes one palette entry as three RGB bytes.
+    * @param color 0xRRGGBB value
+    **/
    protected void writeGIFColor(int color) throws IOException
    {
       write((color & 0xFF0000) >> 16);
@@ -718,6 +900,11 @@ public class GIFOutputStream extends FilterOutputStream
 
    protected final static int GIFBITS = 12;
 
+   /**
+    * Compresses and writes image data using the imported run-length GIF encoder below.
+    * @param bytePixels palette indices, one byte per pixel
+    * @param bitsPerPixel color depth passed to the LZW-style code stream
+    **/
    protected void writeCompressedImageData(byte[] bytePixels, int bitsPerPixel)
       throws IOException
    {
@@ -771,6 +958,9 @@ public class GIFOutputStream extends FilterOutputStream
    }
 
 
+   /**
+    * Flushes the current 255-byte compression sub-block to the stream.
+    **/
    protected void write_block() throws IOException
    {
       write(oblen);
@@ -778,6 +968,10 @@ public class GIFOutputStream extends FilterOutputStream
       oblen = 0;
    }
 
+   /**
+    * Appends one byte to the compression sub-block buffer.
+    * @param c byte value
+    **/
    protected void block_out(int c) throws IOException
    {
       oblock[oblen++] = (byte) c;
@@ -785,12 +979,19 @@ public class GIFOutputStream extends FilterOutputStream
          write_block();
    }
 
+   /**
+    * Writes any remaining bytes in the compression sub-block buffer.
+    **/
    protected void block_flush() throws IOException
    {
       if (oblen > 0)
          write_block();
    }
 
+   /**
+    * Queues a variable-width code bit pattern into the output buffer.
+    * @param val code value to emit
+    **/
    protected void output(int val) throws IOException
    {
       obuf |= val << obits;
@@ -802,6 +1003,9 @@ public class GIFOutputStream extends FilterOutputStream
       }
    }
 
+   /**
+    * Flushes pending bits and the current sub-block after compression.
+    **/
    protected void output_flush() throws IOException
    {
       if (obits > 0)
@@ -809,6 +1013,9 @@ public class GIFOutputStream extends FilterOutputStream
       block_flush();
    }
 
+   /**
+    * Resets encoder state after a clear code.
+    **/
    protected void did_clear() throws IOException
    {
       out_bits = out_bits_init;
@@ -819,6 +1026,10 @@ public class GIFOutputStream extends FilterOutputStream
       just_cleared = true;
    }
 
+   /**
+    * Emits a literal code and updates dynamic code-size state.
+    * @param c code value to emit
+    **/
    protected void output_plain(int c) throws IOException
    {
       just_cleared = false;
@@ -834,6 +1045,11 @@ public class GIFOutputStream extends FilterOutputStream
       }
    }
 
+   /**
+    * Integer square root used by run-length cost estimation.
+    * @param x non-negative value
+    * @return floor(sqrt(x)) for x >= 2, else x
+    **/
    protected int isqrt(int x)
    {
       int   r;
@@ -852,6 +1068,12 @@ public class GIFOutputStream extends FilterOutputStream
       }
    }
 
+   /**
+    * Estimates output codes needed to represent a run of identical pixels.
+    * @param count run length
+    * @param nrepcodes number of repeat codes available
+    * @return estimated code count
+    **/
    protected int compute_triangle_count(int count, int nrepcodes)
    {
       int   perrep;
@@ -875,11 +1097,17 @@ public class GIFOutputStream extends FilterOutputStream
       return cost;
    }
 
+   /**
+    * Raises the clear threshold to the maximum opcode limit.
+    **/
    protected void max_out_clear()
    {
       out_clear = max_ocodes;
    }
 
+   /**
+    * Restores the clear threshold and emits a clear code if the table is full.
+    **/
    protected void reset_out_clear() throws IOException
    {
       out_clear = out_clear_init;
@@ -889,6 +1117,10 @@ public class GIFOutputStream extends FilterOutputStream
       }
    }
 
+   /**
+    * Flushes a run immediately after a clear code using plain pixel codes.
+    * @param count run length to encode
+    **/
    protected void rl_flush_fromclear(int count) throws IOException
    {
       int   n;
@@ -927,6 +1159,10 @@ public class GIFOutputStream extends FilterOutputStream
       reset_out_clear();
    }
 
+   /**
+    * Flushes a run by either issuing a clear code or repeating plain pixel codes.
+    * @param count run length to encode
+    **/
    protected void rl_flush_clearorrep(int count) throws IOException
    {
       int   withclr;
@@ -943,6 +1179,10 @@ public class GIFOutputStream extends FilterOutputStream
       }
    }
 
+   /**
+    * Flushes a run using the repeat-code table when cheaper than clear+plain.
+    * @param count run length to encode
+    **/
    protected void rl_flush_withtable(int count) throws IOException
    {
       int   repmax;
@@ -982,6 +1222,9 @@ public class GIFOutputStream extends FilterOutputStream
       reset_out_clear();
    }
 
+   /**
+    * Encodes and clears the current run-length pixel sequence ({@link #rl_count}).
+    **/
    protected void rl_flush() throws IOException
    {
       int   table_reps;

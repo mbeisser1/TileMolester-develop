@@ -21,9 +21,7 @@ package tm.threads;
 import java.io.*;
 
 /**
- *
  * Thread for writing a buffer to a file.
- *
  **/
 public class FileSaverThread extends ProgressThread {
 
@@ -32,6 +30,13 @@ public class FileSaverThread extends ProgressThread {
     private int bytesLeft;
     private byte[] contents;
 
+    /**
+     * Opens the destination file for writing and prepares chunked output.
+     * @param contents data to write
+     * @param file destination file
+     * @throws FileNotFoundException if the file cannot be opened
+     * @throws IOException if seeking or opening fails
+     **/
     public FileSaverThread(byte[] contents, File file)
         throws FileNotFoundException, IOException {
         super();
@@ -50,11 +55,18 @@ public class FileSaverThread extends ProgressThread {
         this.setPriority(NORM_PRIORITY);
     }
 
+    /**
+     * Returns how much of the buffer has been written so far.
+     * @return completion percentage from 0 to 100
+     **/
     public int getPercentageCompleted() {
         int result = (int)(((long)contents.length - (long)bytesLeft) * 100 / (long)contents.length);
         return result;
     }
 
+    /**
+     * Writes the buffer in {@link #CHUNK_SIZE} chunks until complete, then closes the file.
+     **/
     public void run() {
         while (bytesLeft > 0) {
             if (bytesLeft > CHUNK_SIZE) {

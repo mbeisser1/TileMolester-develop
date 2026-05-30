@@ -23,15 +23,18 @@ import tm.colorcodecs.ColorCodec;
 import tm.utils.HexStringConverter;
 
 /**
- *
  * A palette node.
- *
  **/
 public class PaletteItemNode extends TMTreeNode {
 
     private TMPalette palette;
     private String description;
 
+    /**
+     * Creates a PaletteItemNode instance.
+     * @param palette palette value
+     * @param description description value
+     **/
     public PaletteItemNode(TMPalette palette, String description) {
         super();
         this.palette = palette;
@@ -39,27 +42,21 @@ public class PaletteItemNode extends TMTreeNode {
     }
 
     /**
-     *
      * Gets the palette represented by this node.
-     *
      **/
     public TMPalette getPalette() {
         return palette;
     }
 
     /**
-     *
      * Gets the palette description.
-     *
      **/
     public String getDescription() {
         return description;
     }
 
     /**
-     *
      * Sets the palette description.
-     *
      **/
     public void setDescription(String description) {
         this.description = description;
@@ -67,9 +64,7 @@ public class PaletteItemNode extends TMTreeNode {
     }
 
     /**
-     *
      * Returns the XML-equivalent of this palette node.
-     *
      **/
     public String toXML() {
         StringBuffer s = new StringBuffer();
@@ -98,27 +93,21 @@ public class PaletteItemNode extends TMTreeNode {
     }
 
     /**
-     *
      * Returns the string representation of this node.
-     *
      **/
     public String toString() {
         return description;
     }
 
     /**
-     *
      * Sets the text of this node.
-     *
      **/
     public void setText(String text) {
         setDescription(text);
     }
 
     /**
-     *
      * Gets the tooltiptext of this node.
-     *
      **/
     public String getToolTipText() {
         return "Size: "+palette.getSize()+" ... Format: "+palette.getCodec().getDescription();

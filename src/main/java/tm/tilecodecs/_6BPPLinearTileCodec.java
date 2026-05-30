@@ -1,18 +1,24 @@
 package tm.tilecodecs;
 
+/**
+ * Fixed 6 bpp linear tile layout (codec id LN99).
+ * Packs eight 6-bit palette indices into six bytes per row (reverse-order packing).
+ **/
 public class _6BPPLinearTileCodec extends TileCodec {
 
     /**
-     * Constructor.
+     * Registers the built-in 6 bpp linear codec.
      **/
     public _6BPPLinearTileCodec() {
         super("LN99", 6, "6bpp linear, reverse-order");
     }
 
     /**
-     *
-     * Decodes a tile.
-     *
+     * Decodes one 6 bpp linear 8×8 tile (six bytes per row).
+     * @param bits file buffer
+     * @param ofs start offset of the tile
+     * @param stride row padding (multiplied by bytes-per-row internally)
+     * @return 64 palette indices (0–63)
      **/
     public int[] decode(byte[] bits, int ofs, int stride) {
         int pos=0;
@@ -53,9 +59,11 @@ public class _6BPPLinearTileCodec extends TileCodec {
     }
 
     /**
-     *
-     * Encodes a tile.
-     *
+     * Encodes one 6 bpp linear 8×8 tile into six bytes per row.
+     * @param pixels 64 palette indices (0–63)
+     * @param bits destination buffer
+     * @param ofs start offset of the tile
+     * @param stride row padding (multiplied by bytes-per-row internally)
      **/
     public void encode(int[] pixels, byte[] bits, int ofs, int stride) {
         int pos = 0;

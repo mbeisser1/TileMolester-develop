@@ -23,9 +23,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- *
  * The dialog that's shown when user wants to define a new codec.
- *
  **/
 public class TMCustomCodecDialog extends JDialog {
 
@@ -50,9 +48,7 @@ public class TMCustomCodecDialog extends JDialog {
     private JButton cancelButton = new JButton("Cancel");
 
     /**
-     *
      * Creates the custom codec dialog.
-     *
      **/
     public TMCustomCodecDialog(Frame owner, String title, boolean modal) {
         super(owner, title, modal);
@@ -74,6 +70,10 @@ public class TMCustomCodecDialog extends JDialog {
 
         okButton.addActionListener(
             new ActionListener() {
+                /**
+                 * Handles a UI action event.
+                 * @param e event object
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     okClicked();
                 }
@@ -81,6 +81,10 @@ public class TMCustomCodecDialog extends JDialog {
         );
         cancelButton.addActionListener(
             new ActionListener() {
+                /**
+                 * Handles a UI action event.
+                 * @param e event object
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     cancelClicked();
                 }
@@ -88,43 +92,81 @@ public class TMCustomCodecDialog extends JDialog {
         );
     }
 
+    /**
+     * TODO: Not yet implemented.
+     * @return TODO: not yet implemented; always returns 0
+     **/
     public int getBitsPerPixel() {
         return 0;
     }
 
+    /**
+     * TODO: Not yet implemented.
+     * @return TODO: not yet implemented; always returns 0
+     **/
     public int getRedMask() {
         return 0;
     }
 
+    /**
+     * TODO: Not yet implemented.
+     * @return TODO: not yet implemented; always returns 0
+     **/
     public int getGreenMask() {
         return 0;
     }
 
+    /**
+     * TODO: Not yet implemented.
+     * @return TODO: not yet implemented; always returns 0
+     **/
     public int getBlueMask() {
         return 0;
     }
 
+    /**
+     * TODO: Not yet implemented.
+     * @return TODO: not yet implemented; always returns 0
+     **/
     public int getAlphaMask() {
         return 0;
     }
 
+    /**
+     * Gets the selected byte-order endianness.
+     * @return TODO: not yet implemented; always returns 0
+     **/
     public int getEndianness() {
         return 0;
     }
 
+    /**
+     * Gets the description entered by the user.
+     * @return description text from the input field
+     **/
     public String getDescription() {
         return "";
     }
 
+    /**
+     * Handles OK button click.
+     **/
     public void okClicked() {
         result = JOptionPane.OK_OPTION;
         setVisible(false);
     }
 
+    /**
+     * Handles Cancel button click.
+     **/
     public void cancelClicked() {
         setVisible(false);
     }
 
+    /**
+     * Shows the dialog and waits for user confirmation.
+     * @return JOptionPane.OK_OPTION or JOptionPane.CANCEL_OPTION
+     **/
     public int showDialog() {
         result = JOptionPane.CANCEL_OPTION;
         setVisible(true);

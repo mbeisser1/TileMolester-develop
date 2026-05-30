@@ -23,9 +23,7 @@ import java.awt.datatransfer.*;
 /**
  * Custom Transferable class for TMTreeNodes.
  * Makes it possible to drag and drop such nodes.
- *
- */
-
+ **/
 public class TMTreeNodeTransferable implements Transferable {
 
     public static DataFlavor localTMTreeNodeFlavor=null;
@@ -37,20 +35,38 @@ public class TMTreeNodeTransferable implements Transferable {
 
     private TMTreeNode node;
 
+    /**
+     * Creates a TMTreeNodeTransferable instance.
+     * @param node tree node reference
+     **/
     public TMTreeNodeTransferable(TMTreeNode node) {
         this.node = node;
     }
 
+    /**
+     * Returns supported data flavors for drag-and-drop.
+     * @return supported DataFlavor array
+     **/
     public synchronized DataFlavor[] getTransferDataFlavors() {
         DataFlavor[] flavors = new DataFlavor[1];
         flavors[0] = localTMTreeNodeFlavor;
         return flavors;
     }
 
+    /**
+     * Reports whether the flavor is supported.
+     * @param flavor requested data flavor
+     * @return true if the flavor is supported
+     **/
     public boolean isDataFlavorSupported(DataFlavor flavor) {
         return (flavor == localTMTreeNodeFlavor);
     }
 
+    /**
+     * Returns the transferable tree node data.
+     * @param flavor requested data flavor
+     * @return TMTreeNode being dragged
+     **/
     public Object getTransferData(DataFlavor flavor)
     throws UnsupportedFlavorException {
         return this.node;

@@ -41,6 +41,11 @@ import java.io.InputStream;
 
 public class XMLParser {
 
+	/**
+	 * Parses an XML file into a DOM document.
+	 * @param file file to read or parse
+	 * @return parsed XML Document
+	 **/
 	public static Document parse(File file)
 			throws SAXException, SAXParseException, ParserConfigurationException, IOException {
 		Document document = null;
@@ -54,17 +59,29 @@ public class XMLParser {
 
 			builder.setErrorHandler(
 					new org.xml.sax.ErrorHandler() { // ignore fatal errors (an exception is guaranteed)
+						/**
+						 * SAX fatal error handler (ignored).
+						 * @param exception SAX parse exception
+						 **/
 						public void fatalError(SAXParseException exception)
 								throws SAXException {
 						}
 
 						// treat validation errors as fatal
+						/**
+						 * SAX validation error handler.
+						 * @param e event object
+						 **/
 						public void error(SAXParseException e)
 								throws SAXParseException {
 							throw e;
 						}
 
 						// dump warnings too
+						/**
+						 * SAX warning handler.
+						 * @param err SAX warning exception
+						 **/
 						public void warning(SAXParseException err)
 								throws SAXParseException {
 							System.out.println("** Warning"
@@ -87,6 +104,11 @@ public class XMLParser {
 		return document;
 	}
 
+	/**
+	 * Extracts concatenated text content from a DOM node.
+	 * @param n DOM node whose text content is extracted
+	 * @return concatenated text node content
+	 **/
 	public static String getNodeValue(Node n) {
 		String value = "";
 		if (n != null) {

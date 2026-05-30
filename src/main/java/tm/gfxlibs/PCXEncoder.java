@@ -1,17 +1,13 @@
 /**
- *
  * @author Kent Hansen
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
  **/
 package tm.gfxlibs;
 
@@ -24,6 +20,11 @@ public class PCXEncoder {
 
     private static ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
+    /**
+     * Encodes the image to the output format.
+     * @param image source image to encode or write
+     * @return encoded byte array, or null on failure
+     **/
     public static byte[] encode(Image image) {
         // get width and height of image
         int w = image.getWidth(null);
@@ -91,33 +92,64 @@ public class PCXEncoder {
         return baos.toByteArray();
     }
 
+    /**
+     * Writes one byte to the PCX output buffer.
+     * @param b byte value to write
+     **/
     private static void emitByte(int b) {
         baos.write(b);
     }
 
+    /**
+     * Writes a 16-bit little-endian integer to the PCX buffer.
+     * @param i 32-bit value in Intel byte order
+     **/
     private static void emitInt(int i) {
         baos.write(i & 0xFF);
         baos.write((i >> 8) & 0xFF);
     }
 
+    /**
+     * Writes a run of zero bytes to the PCX buffer.
+     * @param c repeat count or color component value
+     **/
     private static void emitZeroes(int c) {
         for (int i=0; i<c; i++) {
             emitByte(0x00);
         }
     }
 
+    /**
+     * Extracts the red component from an ARGB pixel.
+     * @param rgb packed ARGB pixel value
+     * @return red component 0-255
+     **/
     private static int getRed(int rgb) {
         return (rgb >> 16) & 0xFF;
     }
 
+    /**
+     * Extracts the green component from an ARGB pixel.
+     * @param rgb packed ARGB pixel value
+     * @return green component 0-255
+     **/
     private static int getGreen(int rgb) {
         return (rgb >> 8) & 0xFF;
     }
 
+    /**
+     * Extracts the blue component from an ARGB pixel.
+     * @param rgb packed ARGB pixel value
+     * @return blue component 0-255
+     **/
     private static int getBlue(int rgb) {
         return rgb & 0xFF;
     }
 
+    /**
+     * RLE-encodes one color plane into the PCX buffer.
+     * @param plane single color plane scanline to encode
+     **/
     private static void encodePlane(int[] plane) {
         int i=0;
         while (i < plane.length) {

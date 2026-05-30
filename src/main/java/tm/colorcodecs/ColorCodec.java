@@ -19,11 +19,9 @@
 package tm.colorcodecs;
 
 /**
- *
  * Abstract superclass for color codecs.
  * A "color codec" defines how values of a particular format are translated
  * to 32-bit ARGB pixel values (decoded), and back again (encoded).
- *
  **/
 public abstract class ColorCodec {
 
@@ -41,9 +39,10 @@ public abstract class ColorCodec {
     private int shiftStep;
 
     /**
-     *
-     * Creates a ColorCodec with the given id, bits per pixel and description.
-     *
+     * Initializes palette entry encoding for a ROM color format.
+     * @param id short codec identifier (from tmspec)
+     * @param bitsPerPixel bits per palette entry in the file
+     * @param description human-readable label
      **/
     public ColorCodec(String id, int bitsPerPixel, String description) {
         this.id = id;
@@ -54,8 +53,8 @@ public abstract class ColorCodec {
     }
 
     /**
-     * Sets the endianness.
-     * It determines the byte order related to methods toBytes() and fromBytes().
+     * Sets byte order for {@link #toBytes} and {@link #fromBytes}.
+     * @param endianness {@link #LITTLE_ENDIAN}, {@link #BIG_ENDIAN}, or {@link #MIDDLE_ENDIAN} (TODO: middle endian use)
      **/
     public void setEndianness(int endianness) {
         this.endianness = endianness;
@@ -71,63 +70,57 @@ public abstract class ColorCodec {
     }
 
     /**
-     *
-     * Gets the ID.
-     *
+     * Returns the short codec identifier.
+     * @return codec id
      **/
     public String getID() {
         return id;
     }
 
     /**
-     *
-     * Gets the number of bits per pixel.
-     *
+     * Returns bits per palette entry in the ROM.
+     * @return bits per pixel
      **/
     public int getBitsPerPixel() {
         return bitsPerPixel;
     }
 
     /**
-     *
-     * Gets the number of bytes required to hold one pixel.
-     *
+     * Returns whole bytes used to store one palette entry.
+     * @return bytes per entry
      **/
     public int getBytesPerPixel() {
         return bytesPerPixel;
     }
 
     /**
-     *
-     * Gets the description.
-     *
+     * Returns the human-readable codec description.
+     * @return description text
      **/
     public String getDescription() {
         return description;
     }
 
     /**
-     *
-     * This method takes a value assumed to be in the color codec's native format
-     * and returns the equivalent 32-bit ARGB value.
-     *
+     * Converts a native palette value to Java ARGB.
+     * @param value encoded entry from the file (already assembled into an int)
+     * @return 32-bit ARGB color
      **/
     public abstract int decode(int value);
 
     /**
-     *
-     * This method takes a value assumed to be in 32-bit ARGB format and returns
-     * the equivalent native format value.
-     *
+     * Converts Java ARGB to a native palette value.
+     * @param argb 32-bit ARGB color
+     * @return encoded entry for the file
      **/
     public abstract int encode(int argb);
 
     /**
-     *
-     * Converts given value to a series of bytes, according to current endianness.
-     * @param bytes Array to store resulting bytes in
-     * @param offset Starting offset in array
-     *
+     * Writes a native value into a byte array using the current endianness.
+     * @param value encoded palette value
+     * @param bytes destination array
+     * @param offset start index in {@code bytes}
+     * @return {@code bytes} for chaining
      **/
     public byte[] toBytes(int value, byte[] bytes, int offset) {
         int shift = startShift;
@@ -139,10 +132,10 @@ public abstract class ColorCodec {
     }
 
     /**
-     *
-     * Converts bytes from given array to a value, according to current endianness.
-     * @param offset Where to start reading the bytes that make up the value.
-     *
+     * Reads a native palette value from a byte array using the current endianness.
+     * @param bytes source array
+     * @param offset start index in {@code bytes}
+     * @return assembled encoded value
      **/
     public int fromBytes(byte[] bytes, int offset) {
         int shift = startShift;
@@ -155,10 +148,8 @@ public abstract class ColorCodec {
     }
 
     /**
-     *
      * Gets the least number of whole bytes that are required to store
      * <code>bits</code> bits of information.
-     *
      **/
     private static int getBytesRequired(int bits) {
         int bytes = bits / 8;
@@ -167,6 +158,10 @@ public abstract class ColorCodec {
         return bytes;
     }
 
+    /**
+     * Returns the description (same as {@link #getDescription()}).
+     * @return description text
+     **/
     public String toString() {
         return description;
     }

@@ -25,6 +25,11 @@ public class Xlator {
 
     private ResourceBundle rb;
 
+    /**
+     * Creates a Xlator instance.
+     * @param baseName resource bundle base name
+     * @param locale locale for resource bundle loading
+     **/
     public Xlator(String baseName, Locale locale) throws Exception {
         rb = null;
         try {
@@ -35,6 +40,11 @@ public class Xlator {
         }
     }
 
+    /**
+     * Translates a resource key.
+     * @param key resource bundle lookup key
+     * @return translated string, or the key if lookup fails
+     **/
     public String xlate(String key) {
         try {
             String value = rb.getString(key);
@@ -45,6 +55,11 @@ public class Xlator {
         }
     }
 
+    /**
+     * Translates a resource key (alias for xlate).
+     * @param key resource bundle lookup key
+     * @return translated string, or the key if lookup fails
+     **/
     public String trans(String key) {
         return xlate(key);
     }

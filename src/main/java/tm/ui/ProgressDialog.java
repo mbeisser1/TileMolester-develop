@@ -24,11 +24,9 @@ import java.awt.event.*;
 import tm.threads.ProgressThread;
 
 /**
- *
  * Modal dialog that takes a worker thread and runs it in the background while
  * updating a progress bar to reflect how far along the work is.
  * The dialog unblocks when the work is completely done.
- *
  **/
 public class ProgressDialog extends JDialog implements ActionListener {
 
@@ -37,9 +35,7 @@ public class ProgressDialog extends JDialog implements ActionListener {
     private Timer timer;
 
     /**
-     *
      * Creates a ProgressDialog for the given ProgressThread.
-     *
      **/
     public ProgressDialog(Frame owner, ProgressThread thread) {
         super(owner);
@@ -63,9 +59,7 @@ public class ProgressDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * Centers the dialog.
-     *
      **/
     private void center() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -76,9 +70,8 @@ public class ProgressDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * Updates the progress bar every timer tick.
-     *
+     * @param e event from the AWT/Swing listener
      **/
     public void actionPerformed(ActionEvent e) {
         progressBar.setValue(thread.getPercentageCompleted());

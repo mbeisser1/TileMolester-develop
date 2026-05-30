@@ -21,11 +21,9 @@ package tm.treenodes;
 import tm.tilecodecs.TileCodec;
 
 /**
- *
  * A file bookmark.
  * Records all info required to restore the view presented to the user at the
  * time the bookmark was added.
- *
  **/
 public class BookmarkItemNode extends TMTreeNode {
 
@@ -42,6 +40,9 @@ public class BookmarkItemNode extends TMTreeNode {
     private String paletteID;
     private int palIndex;
 
+    /**
+     * Creates a BookmarkItemNode instance.
+     **/
     public BookmarkItemNode(int offset,
                             int cols,
                             int rows,
@@ -69,98 +70,86 @@ public class BookmarkItemNode extends TMTreeNode {
     }
 
     /**
-     *
      * Gets the file offset that marks the beginning of the bookmark.
-     *
      **/
     public int getOffset() {
         return offset;
     }
 
     /**
-     *
      * Gets the # of columns.
-     *
      **/
     public int getCols() {
         return cols;
     }
 
     /**
-     *
      * Gets the # of rows.
-     *
      **/
     public int getRows() {
         return rows;
     }
 
     /**
-     *
      * Gets the block width.
-     *
      **/
     public int getBlockWidth() {
         return blockWidth;
     }
 
     /**
-     *
      * Gets the block height.
-     *
      **/
     public int getBlockHeight() {
         return blockHeight;
     }
 
+    /**
+     * Reports whether row interleaving is enabled for the bookmark.
+     * @return true if row interleaving is enabled
+     **/
     public boolean getRowInterleaved() {
         return rowInterleaved;
     }
 
+    /**
+     * Reports whether block size follows canvas size for the bookmark.
+     * @return true if block size follows canvas
+     **/
     public boolean getSizeBlockToCanvas() {
         return sizeBlockToCanvas;
     }
 
     /**
-     *
      * Gets the mode.
-     *
      **/
     public int getMode() {
         return mode;
     }
 
     /**
-     *
      * Gets the palette index.
-     *
      **/
     public int getPalIndex() {
         return palIndex;
     }
 
     /**
-     *
      * Gets the codec.
-     *
      **/
     public TileCodec getCodec() {
         return codec;
     }
 
     /**
-     *
      * Gets the bookmark description.
-     *
      **/
     public String getDescription() {
         return description;
     }
 
     /**
-     *
      * Sets the bookmark description.
-     *
      **/
     public void setDescription(String description) {
         this.description = description;
@@ -168,9 +157,7 @@ public class BookmarkItemNode extends TMTreeNode {
     }
 
     /**
-     *
      * Returns the XML-equivalent of this bookmark.
-     *
      **/
     public String toXML() {
         StringBuffer s = new StringBuffer();
@@ -199,14 +186,26 @@ public class BookmarkItemNode extends TMTreeNode {
         return s.toString();
     }
 
+    /**
+     * Returns the string representation of this object.
+     * @return display string for this object
+     **/
     public String toString() {
         return description;
     }
 
+    /**
+     * Sets the display text of this node.
+     * @param text new display text for the node
+     **/
     public void setText(String text) {
         this.description = text;
     }
 
+    /**
+     * Gets tooltip text summarizing this node.
+     * @return summary tooltip string for the node
+     **/
     public String getToolTipText() {
         return "Offset: "+offset+" ... Columns: "+cols+" ... Rows: "+rows+" ... Codec: "+codec.getDescription();
     }

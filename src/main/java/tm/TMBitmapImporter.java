@@ -29,18 +29,18 @@ import java.awt.*;
 import java.awt.image.*;
 
 /**
- *
  * Allows a bitmap to be loaded and converted to a tile canvas.
- *
  **/
 public class TMBitmapImporter {
 
     /**
-     *
-     * Static method that takes a file, tries to load the file as a bitmap and
-     * convert it to a tile canvas. The file extension is used to determine what
-     * bitmap format to use when loading the file.
-     *
+     * Loads a bitmap file and builds a 32-bit direct-color tile canvas from it.
+     * BMP uses the osbaldeston decoder; PCX uses {@link PCXReader}; other extensions use {@link ImageIcon}.
+     * Canvas size is derived from image dimensions (8×8 tiles).
+     * @param file image file to open
+     * @return new tile canvas containing the bitmap pixels as tiles
+     * @throws Exception if the image cannot be loaded or pixel grab fails
+     * @throws InterruptedException if pixel grabbing is interrupted
      **/
     public static TMTileCanvas loadTileCanvasFromFile(File file)
         throws Exception {
@@ -109,9 +109,9 @@ public class TMBitmapImporter {
     }
 
     /**
-     *
-     * Gets file extension.
-     *
+     * Returns the lowercase extension after the last dot in the file name.
+     * @param f file to inspect
+     * @return extension without dot, or empty string if none
      **/
     public static String getExtension(File f) {
         String ext = "";

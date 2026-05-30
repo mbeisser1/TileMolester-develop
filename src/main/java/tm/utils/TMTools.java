@@ -17,6 +17,10 @@ public class TMTools {
             this.fallbackInt = fallbackInt;
         }
 
+        /**
+         * Gets the integer fallback value for this tool type.
+         * @return integer identifier for the tool type
+         **/
         public int fallbackInt() {
             return fallbackInt;
         }

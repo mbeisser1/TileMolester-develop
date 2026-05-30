@@ -21,9 +21,7 @@ package tm;
 import tm.colorcodecs.*;
 
 /**
- *
  * Custom palette class.
- *
  **/
 public class TMPalette {
 
@@ -162,9 +160,11 @@ public class TMPalette {
     private boolean modified;
 
     /**
-     *
      * Creates a new palette with given format and size.
-     *
+     * @param id unique identifier for this palette
+     * @param size number of palette entries
+     * @param codec color codec used to convert entries to and from native format
+     * @param endianness byte order used when reading and writing palette data
      **/
     public TMPalette(String id, int size, ColorCodec codec, int endianness) {
         this.id = id;
@@ -182,9 +182,12 @@ public class TMPalette {
     }
 
     /**
-     *
      * Creates a new palette with given format and entries.
-     *
+     * @param id unique identifier for this palette
+     * @param entries native-format palette values
+     * @param codec color codec used to convert entries to and from native format
+     * @param endianness byte order used when reading and writing palette data
+     * @param direct whether palette data is stored directly rather than in a file image
      **/
     public TMPalette(String id, int[] entries, ColorCodec codec, int endianness, boolean direct) {
         this.id = id;
@@ -201,9 +204,15 @@ public class TMPalette {
     }
 
     /**
-     *
-     * Creates a new palette with given format and entries.
-     *
+     * Creates a new palette by reading entries from a byte buffer.
+     * @param id unique identifier for this palette
+     * @param bytes source buffer containing encoded palette data
+     * @param offset byte offset in the buffer where palette data starts
+     * @param size number of palette entries to read
+     * @param codec color codec used to convert entries to and from native format
+     * @param endianness byte order used when reading palette data
+     * @param direct whether palette data is stored directly rather than in a file image
+     * @param modified initial modified state for this palette
      **/
     public TMPalette(String id, byte[] bytes, int offset, int size, ColorCodec codec, int endianness, boolean direct, boolean modified) {
         this.id = id;
@@ -221,11 +230,9 @@ public class TMPalette {
     }
 
     /**
-     *
      * Creates a new palette from an existing palette.
      * The settings and entries are copied from the given palette.
-     * TODO: How to create unique ID??
-     *
+     * @param palette palette to copy settings and entries from
      **/
     public TMPalette(TMPalette palette) {
         id = "PAL" + (palNum++);    // TODO
@@ -243,30 +250,27 @@ public class TMPalette {
     }
 
     /**
-     *
      * Gets the file offset where this palette was loaded from (0 if it wasn't
      * loaded from a file.)
-     *
+     * @return byte offset in the source file, or 0 if not loaded from a file
      **/
     public int getOffset() {
         return offset;
     }
 
     /**
-     *
      * Returns whether this palette is "direct".
-     *
+     * @return true if palette data is stored directly rather than in a file image
      **/
     public boolean isDirect() {
         return direct;
     }
 
     /**
-     *
      * Sets the endianness.
      * This is needed when converting the array of entries from/to an
      * array of bytes.
-     *
+     * @param endianness byte order used when reading and writing palette data
      **/
     public void setEndianness(int endianness) {
         this.endianness = endianness;
@@ -274,27 +278,25 @@ public class TMPalette {
     }
 
     /**
-     *
      * Gets the endianness.
-     *
+     * @return byte order used when reading and writing palette data
      **/
     public int getEndianness() {
         return endianness;
     }
 
     /**
-     *
      * Gets the ID for this palette.
-     *
+     * @return unique identifier for this palette
      **/
     public String getID() {
         return id;
     }
 
     /**
-     *
      * Sets a palette entry.
-     *
+     * @param index palette entry index
+     * @param value native-format color value for the entry
      **/
     public void setEntry(int index, int value) {
         entries[index] = value;
@@ -303,9 +305,9 @@ public class TMPalette {
     }
 
     /**
-     *
      * Sets a palette entry by RGB value.
-     *
+     * @param index palette entry index
+     * @param rgb 24-bit RGB color value
      **/
     public void setEntryRGB(int index, int rgb) {
         entries[index] = codec.encode(rgb);
@@ -314,9 +316,9 @@ public class TMPalette {
     }
 
     /**
-     *
      * Gets a palette entry.
-     *
+     * @param index palette entry index
+     * @return native-format color value for the entry, or 0 if index is out of range
      **/
     public int getEntry(int index) {
         if (index >= entries.length) {
@@ -327,9 +329,10 @@ public class TMPalette {
     }
 
     /**
-     *
      * Gets a palette entry's 24-bit RGB value.
-     *
+     * @param index palette entry index
+     * @return 24-bit RGB color value for the entry
+     * @throws ArrayIndexOutOfBoundsException if index is out of range; returns 0 instead
      **/
     public int getEntryRGB(int index) throws ArrayIndexOutOfBoundsException {
         int val = 0;
@@ -342,9 +345,10 @@ public class TMPalette {
     }
 
     /**
-     *
      * Gets the palette entry as a byte array.
-     *
+     * @param index palette entry index
+     * @return encoded bytes for the entry in the current endianness
+     * @throws ArrayIndexOutOfBoundsException if index is out of range; returns empty bytes instead
      **/
     public byte[] getEntryBytes(int index) throws ArrayIndexOutOfBoundsException {
         byte[] bytes = new byte[codec.getBytesPerPixel()];
@@ -358,9 +362,10 @@ public class TMPalette {
     }
 
     /**
-     *
      * Gets index of rgb value _relative_ to startIndex.
-     *
+     * @param startIndex first palette entry to search from
+     * @param rgbval 24-bit RGB color value to find
+     * @return index relative to startIndex, or -1 if not found
      **/
     public int indexOf(int startIndex, int rgbval) {
         for (int i=0; i<entries.length-startIndex; i++) {
@@ -373,27 +378,24 @@ public class TMPalette {
     }
 
     /**
-     *
      * Gets the array of palette entries.
-     *
+     * @return native-format palette entry values
      **/
     public int[] getEntries() {
         return entries;
     }
 
     /**
-     *
      * Gets the size of the palette.
-     *
+     * @return number of palette entries
      **/
     public int getSize() {
         return entries.length;
     }
 
     /**
-     *
      * Resizes the palette.
-     *
+     * @param size new number of palette entries
      **/
     public void setSize(int size) {
         int[] tempEntries = new int[size];
@@ -423,9 +425,8 @@ public class TMPalette {
     }
 
     /**
-     *
      * Sets the color codec. Converts entries to the new format.
-     *
+     * @param codec new color codec for this palette
      **/
     public void setCodec(ColorCodec codec) {
         this.codec = codec;
@@ -437,20 +438,21 @@ public class TMPalette {
     }
 
     /**
-     *
      * Gets the color codec for this palette.
-     *
+     * @return color codec used to convert entries to and from native format
      **/
     public ColorCodec getCodec() {
         return codec;
     }
 
     /**
-     *
      * Returns the palette entry # whose RGB components match the given value the closest.
      * startIndex..colorCount is the range of colors that are tried.
      * PS: The returned index is RELATIVE to startIndex.
-     *
+     * @param startIndex first palette entry to consider
+     * @param colorCount number of consecutive entries to search
+     * @param argb target color whose RGB components are matched
+     * @return index of the closest matching entry, relative to startIndex
      **/
     public int closestMatchingEntry(int startIndex, int colorCount, int argb) {
         int targetR = (argb & 0x00FF0000) >> 16;
@@ -472,19 +474,20 @@ public class TMPalette {
     }
 
     /**
-     *
      * Convenience method for getting the actual RGB value of the closest matching
      * entry, instead of the palette index.
-     *
+     * @param startIndex first palette entry to consider
+     * @param colorCount number of consecutive entries to search
+     * @param argb target color whose RGB components are matched
+     * @return 24-bit RGB value of the closest matching entry
      **/
     public int closestMatchingEntryRGB(int startIndex, int colorCount, int argb) {
         return getEntryRGB(startIndex + closestMatchingEntry(startIndex, colorCount, argb));
     }
 
     /**
-     *
      * Returns the palette entries as a byte array.
-     *
+     * @return encoded palette data in the current endianness
      **/
     public byte[] entriesToBytes() {
         byte[] bytes = new byte[entries.length * codec.getBytesPerPixel()];
@@ -496,18 +499,16 @@ public class TMPalette {
     }
 
     /**
-     *
      * Sets the modified state of this palette.
-     *
+     * @param modified new modified state
      **/
     public void setModified(boolean modified) {
         this.modified = modified;
     }
 
     /**
-     *
      * Gets the modified state of this palette.
-     *
+     * @return true if the palette has unsaved changes
      **/
     public boolean isModified() {
         return modified;

@@ -23,9 +23,7 @@ import javax.swing.event.*;
 import java.awt.*;
 
 /**
- *
  * The dialog that's shown when user wants to create a new folder.
- *
  **/
 public class TMNewFolderDialog extends TMModalDialog {
 
@@ -33,27 +31,31 @@ public class TMNewFolderDialog extends TMModalDialog {
     private JTextField nameField;
 
     /**
-     *
      * Creates the New Folder dialog.
-     *
      **/
     public TMNewFolderDialog(Frame owner, tm.utils.Xlator xl) {
         super(owner, "New_Folder_Dialog_Title", xl);
     }
 
     /**
-     *
      * Gets the folder name given by the user.
-     *
      **/
     public String getName() {
         return nameField.getText();
     }
 
+    /**
+     * Sets the folder name field text.
+     * @param name folder or node name
+     **/
     public void setName(String name) {
         nameField.setText(name);
     }
 
+    /**
+     * Builds and returns the dialog content panel.
+     * @return dialog content panel
+     **/
     protected JPanel getDialogPane() {
         JPanel p = new JPanel();
         nameLabel = new JLabel(xlate("Folder_Name_Prompt"));
@@ -67,10 +69,17 @@ public class TMNewFolderDialog extends TMModalDialog {
         return p;
     }
 
+    /**
+     * Shows the dialog and waits for user confirmation.
+     * @return JOptionPane.OK_OPTION or JOptionPane.CANCEL_OPTION
+     **/
     public int showDialog() {
         nameField.setText("");
         maybeEnableOKButton();
         SwingUtilities.invokeLater( new Runnable() {
+            /**
+             * Runs the deferred UI task.
+             **/
             public void run() {
                 nameField.requestFocus();
             }
@@ -78,6 +87,10 @@ public class TMNewFolderDialog extends TMModalDialog {
         return super.showDialog();
     }
 
+    /**
+     * Reports whether the current dialog input is valid for OK.
+     * @return true if dialog input is valid for OK
+     **/
     public boolean inputOK() {
         return !(nameField.getText().trim().equals(""));
     }

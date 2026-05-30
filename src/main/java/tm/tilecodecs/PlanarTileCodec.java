@@ -19,11 +19,9 @@
 package tm.tilecodecs;
 
 /**
- *
  * Planar, palette-indexed 8x8 tile codec. Max. 8 bitplanes.
  * bitsPerPixel must be a power of 2. (1, 2, 4, 8) (why??)
  * Planes for each row must be stored sequentially.
- *
  **/
 public class PlanarTileCodec extends TileCodec {
 
@@ -32,11 +30,10 @@ public class PlanarTileCodec extends TileCodec {
     protected static int[][][] bitsToPixelsLookup=null;
 
     /**
-     *
-     * Constructor.
-     *
-     * @param bpOffsets  Relative offsets for the bitplane values in a row (8 pixels) of encoded tile data. The length of this array is the number of bitplanes in a tile row, which is equal to the # of bits per pixel.
-     *
+     * Creates a planar tile codec with per-row bitplane layout.
+     * @param id short codec identifier
+     * @param bpOffsets byte offsets of each bitplane within one encoded row (length equals bits per pixel)
+     * @param description human-readable label
      **/
     public PlanarTileCodec(String id, int[] bpOffsets, String description) {
         super(id, bpOffsets.length, description);
@@ -60,12 +57,11 @@ public class PlanarTileCodec extends TileCodec {
     }
 
     /**
-     *
-     * Decodes a tile.
-     *
-     * @param bits   An array of ints holding encoded tile data in each LSB
-     * @param ofs    Where to start decoding from in the array
-     *
+     * Decodes one planar 8×8 tile by combining bitplanes per pixel.
+     * @param bits file buffer
+     * @param ofs start offset of the tile
+     * @param stride row padding (incremented by one row stride unit internally)
+     * @return 64 palette indices
      **/
     public int[] decode(byte[] bits, int ofs, int stride) {
         int pos=0;
@@ -92,9 +88,11 @@ public class PlanarTileCodec extends TileCodec {
     }
 
     /**
-     *
-     * Encodes a bitplaned tile.
-     *
+     * Encodes one planar 8×8 tile into separate bitplane bytes per row.
+     * @param pixels 64 palette indices
+     * @param bits destination buffer
+     * @param ofs start offset of the tile
+     * @param stride row padding (incremented by one row stride unit internally)
      **/
     public void encode(int[] pixels, byte[] bits, int ofs, int stride) {
         int pos=0;

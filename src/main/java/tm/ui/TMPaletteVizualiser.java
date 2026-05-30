@@ -23,9 +23,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- *
  * Panel where a TMPalette is visualized.
- *
  **/
 public class TMPaletteVizualiser extends JPanel {
 
@@ -36,18 +34,16 @@ public class TMPaletteVizualiser extends JPanel {
 	private int lastIndex = 0;
 
     /**
-     *
      * Sets the palette that is to be displayed.
-     *
+     * @param palette palette whose colors are displayed or edited
      **/
     public void setPalette(TMPalette palette) {
         this.palette = palette;
     }
 
     /**
-     *
      * Sets the palette index.
-     *
+     * @param palIndex palette page index
      **/
     public void setPalIndex(int palIndex) {
         this.palIndex = palIndex;
@@ -57,18 +53,16 @@ public class TMPaletteVizualiser extends JPanel {
     }
 
     /**
-     *
      * Gets the last palette index.
-     *
+     * @return last palette index chosen by the user
      **/
     public int getLastIndex() {
         return this.lastIndex;
     }
 
     /**
-     *
      * Sets the bit depth.
-     *
+     * @param bitDepth bits per pixel determining how many colors are shown
      **/
     public void setBitDepth(int bitDepth) {
         if (bitDepth > 8)
@@ -78,9 +72,8 @@ public class TMPaletteVizualiser extends JPanel {
     }
 
     /**
-     *
      * Paints the palette.
-     *
+     * @param g graphics context used for drawing
      **/
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -122,9 +115,10 @@ public class TMPaletteVizualiser extends JPanel {
     }
 
     /**
-     *
      * Gets the index of the color whose rectangle contains the point (x,y).
-     *
+     * @return absolute palette index for the color at (x, y)
+     * @param x horizontal pixel or tile coordinate
+     * @param y vertical pixel or tile coordinate
      **/
     public int getIndexOfColorAt(int x, int y) {
         int colorIndex = palIndex * colorCount;
@@ -139,9 +133,10 @@ public class TMPaletteVizualiser extends JPanel {
     }
 
     /**
-     *
      * Gets the RGB value of the color whose rectangle contains the point (x,y).
-     *
+     * @return 32-bit RGB value for the color at (x, y)
+     * @param x horizontal pixel or tile coordinate
+     * @param y vertical pixel or tile coordinate
      **/
     public int getColorAt(int x, int y) {
         int i = getIndexOfColorAt(x, y);
@@ -149,9 +144,8 @@ public class TMPaletteVizualiser extends JPanel {
     }
 
     /**
-     *
      * Gets the height of a color rectangle according to bitdepth.
-     *
+     * @return width of one palette color swatch
      **/
     public int getBoxWidth() {
         switch (bitDepth) {
@@ -172,9 +166,8 @@ public class TMPaletteVizualiser extends JPanel {
     }
 
     /**
-     *
      * Gets the width of a color rectangle according to bitdepth.
-     *
+     * @return height of one palette color swatch
      **/
     public int getBoxHeight() {
         switch (bitDepth) {

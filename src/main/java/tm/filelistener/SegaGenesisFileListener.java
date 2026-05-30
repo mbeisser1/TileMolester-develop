@@ -19,9 +19,7 @@
 package tm.filelistener;
 
 /**
- *
  * Listener for Sega Genesis / Master System / 32X (*.smd) files.
- *
  **/
 public class SegaGenesisFileListener extends TMFileListener {
 
@@ -44,9 +42,12 @@ public class SegaGenesisFileListener extends TMFileListener {
     };
 
     /**
-     *
      * Detect if this is a Sega Genesis / Master System / 32X file.
-     *
+     * For {@code smd}, verifies interleaved console ID strings and that
+     * {@code (length - 512) % 16384 == 0}.
+     * @param data file contents in memory
+     * @param extension lowercase filename extension without dot
+     * @return {@code true} if the file matches SMD/MD format rules
      **/
     public boolean doFormatDetect(final byte[] data, String extension) {
         // verify extension
@@ -93,9 +94,9 @@ public class SegaGenesisFileListener extends TMFileListener {
     }
 
     /**
-     *
      * Deinterleaves the data on file load.
-     *
+     * @param data file contents in memory
+     * @param extension lowercase filename extension without dot
      **/
     public void fileLoaded(byte[] data, String extension) {
         if (extension.equals("smd")) {
@@ -125,9 +126,9 @@ public class SegaGenesisFileListener extends TMFileListener {
     }
 
     /**
-     *
-     * Reinterleaves the data on file save.
-     *
+     * Reinterleaves the data and updates the checksum on file save.
+     * @param data file contents about to be saved
+     * @param extension lowercase filename extension without dot
      **/
     public void fileSaving(byte[] data, String extension) {
         if (extension.equals("smd")) {

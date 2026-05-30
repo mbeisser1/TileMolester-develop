@@ -20,8 +20,7 @@
  * 2014-05-06
  * Added the shift palette functionality
  * Mewster
- */
-
+ **/
 package tm.ui;
 
 import tm.TMPalette;
@@ -39,14 +38,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
  * The palette pane contains the following components:
  * - Foreground color box
  * - Background color box
  * - Palette vizualiser (see TMPaletteVizualiser)
  * - FG/BG swap button
  * - Arrow up/down for switching palette index
- *
  **/
 public class TMPalettePane extends JPanel implements MouseInputListener {
 
@@ -68,13 +65,13 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
 	
 	private JTextField shiftValueField = new JTextField("1");
 
-    /** Baseline native palette entries per palIndex, captured on first rotate. */
+    /**
+     * Baseline native palette entries per palIndex, captured on first rotate.
+     **/
     private Map<Integer, int[]> palettePageBaseline = new HashMap<>();
 
     /**
-     *
      * Creates a palette pane.
-     *
      **/
     public TMPalettePane(TMUI ui) {
         this.ui = ui;
@@ -131,6 +128,10 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         swapButton.setFocusable(false);
         swapButton.addActionListener(
             new ActionListener() {
+                /**
+                 * Invokes {@link #swapColors()} in response to the user action.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     swapColors();
                 }
@@ -139,6 +140,10 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         decButton.setFocusable(false);
         decButton.addActionListener(
             new ActionListener() {
+                /**
+                 * Invokes {@link #setPreviousPalIndex()} in response to the user action.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     setPreviousPalIndex();
                 }
@@ -147,6 +152,10 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         incButton.setFocusable(false);
         incButton.addActionListener(
             new ActionListener() {
+                /**
+                 * Invokes {@link #setNextPalIndex()} in response to the user action.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     setNextPalIndex();
                 }
@@ -157,6 +166,10 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         rotatePaletteRightButton.setFocusable(false);
         rotatePaletteRightButton.addActionListener(
             new ActionListener() {
+                /**
+                 * Invokes {@link #shiftCurrentPalettePageRight()} in response to the user action.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     shiftCurrentPalettePageRight();
                 }
@@ -167,6 +180,10 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         rotatePaletteLeftButton.setFocusable(false);
         rotatePaletteLeftButton.addActionListener(
             new ActionListener() {
+                /**
+                 * Invokes {@link #shiftCurrentPalettePageLeft()} in response to the user action.
+                 * @param e event from the AWT/Swing listener
+                 **/
                 public void actionPerformed(ActionEvent e) {
                     shiftCurrentPalettePageLeft();
                 }
@@ -176,6 +193,10 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         leftShiftButton.setFocusable(false);
         leftShiftButton.addActionListener(
                 new ActionListener() {
+                    /**
+                     * Invokes {@link #getShift()} in response to the user action.
+                     * @param e event from the AWT/Swing listener
+                     **/
                     public void actionPerformed(ActionEvent e) {
                         shiftPalette(-getShift());
                     }
@@ -185,6 +206,10 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         rightShiftButton.setFocusable(false);
         rightShiftButton.addActionListener(
                 new ActionListener() {
+                    /**
+                     * Invokes {@link #getShift()} in response to the user action.
+                     * @param e event from the AWT/Swing listener
+                     **/
                     public void actionPerformed(ActionEvent e) {
                         shiftPalette(+getShift());
                     }
@@ -197,9 +222,8 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
     }
 
     /**
-     *
      * Sets the palette to be rendered.
-     *
+     * @param palette palette whose colors are displayed or edited
      **/
     public void setPalette(TMPalette palette) {
         if (palette.isDirect()) { lockShiftButtons(); }
@@ -208,46 +232,41 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
     }
 
     /**
-     *
      * Sets the palette index from which to start displaying colors.
-     *
+     * @param palIndex palette page index
      **/
     public void setPalIndex(int palIndex) {
         vizualiser.setPalIndex(palIndex);
     }
 
     /**
-     *
      * Sets the bitdepth, i.e. how many colors to display.
-     *
+     * @param bitDepth bits per pixel determining how many colors are shown
      **/
     public void setBitDepth(int bitDepth) {
         vizualiser.setBitDepth(bitDepth);
     }
 
     /**
-     *
      * Sets the foreground color.
-     *
+     * @param fgColor foreground draw color as 32-bit ARGB
      **/
     public void setFGColor(int fgColor) {
         fgColorBox.setColor(fgColor);
     }
 
     /**
-     *
      * Sets the background color.
-     *
+     * @param bgColor background color used to clear pixels
      **/
     public void setBGColor(int bgColor) {
         bgColorBox.setColor(bgColor);
     }
 
     /**
-     *
      * Called when a view has been selected.
      * Loads and displays the view's palette according to current settings.
-     *
+     * @param view file view associated with this component
      **/
     public void viewSelected(TMView view) {
         if (this.view != view) {
@@ -267,10 +286,9 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
     }
 
     /**
-     *
      * Called when user clicked on a color.
      * Set the color as foreground or background color depending on which button was pressed.
-     *
+     * @param e event from the AWT/Swing listener
      **/
     public void mousePressed(MouseEvent e) {
         // get the color
@@ -288,6 +306,10 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
 
 // Other mouse events, not used yet...
 
+    /**
+     * Opens the color chooser on double-click to edit a palette entry.
+     * @param e event from the AWT/Swing listener
+     **/
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
             // let user edit the color
@@ -330,30 +352,54 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         }
     }
 
+    /**
+     * @param e event from the AWT/Swing listener
+     **/
     public void mouseDragged(MouseEvent e) { }
+    /**
+     * @param e event from the AWT/Swing listener
+     **/
     public void mouseMoved(MouseEvent e) { }
+    /**
+     * @param e event from the AWT/Swing listener
+     **/
     public void mouseEntered(MouseEvent e) { }
+    /**
+     * @param e event from the AWT/Swing listener
+     **/
     public void mouseExited(MouseEvent e) { }
+    /**
+     * @param e event from the AWT/Swing listener
+     **/
     public void mouseReleased(MouseEvent e) { }
 
     /**
-     *
      * A "color box" is merely a label that is painted with a color.
-     *
      **/
     private class ColorBox extends JLabel {
 
         private int color;
 
+        /**
+         * Sets the color shown in the color box and repaints it.
+         * @param color 32-bit ARGB color value
+         **/
         public void setColor(int color) {
             this.color = color;
             repaint();
         }
 
+        /**
+         * Gets the color currently shown in the color box.
+         * @return 32-bit ARGB color stored in the color box
+         **/
         public int getColor() {
             return color;
         }
 
+        /**
+         * @param g graphics context used for drawing
+         **/
         public void paintComponent(Graphics g) {
             g.setColor(new Color(color));
             g.fillRect(0, 0, getWidth(), getHeight());
@@ -362,10 +408,8 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
     }
 
     /**
-     *
      * Switches to the previous palette index.
      * Wrap-around is employed if the current index is the first one (0).
-     *
      **/
     public void setPreviousPalIndex() {
         view.setKeysEnabled(false);
@@ -381,10 +425,8 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
     }
 
     /**
-     *
      * Switches to the next palette index.
      * Wrap-around is employed if the current index is the last one (maximum).
-     *
      **/
     public void setNextPalIndex() {
         view.setKeysEnabled(false);
@@ -400,9 +442,7 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
     }
 
     /**
-     *
      * Swaps the foreground and background colors.
-     *
      **/
     public void swapColors() {
         int fg = fgColorBox.getColor();
@@ -413,7 +453,9 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
     /**
      * Gets the number inside the shiftValueField
      * @return the shift to perform
-     */
+     * Gets the shift.
+     * @return palette shift amount entered by the user
+     **/
     public int getShift() {
         try {
             return Integer.parseInt(shiftValueField.getText());
@@ -424,11 +466,16 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
 
 	/**
 	 * Gets the current vizualiser
-	 */
+	 * Gets the vizualiser.
+	 * @return palette visualization panel
+	 **/
 	public TMPaletteVizualiser getVizualiser() {
 		return vizualiser;
 	}
 
+    /**
+     * @param shift number of palette entries to shift by
+     **/
     public void shiftPalette(int shift) {
         view.setKeysEnabled(false);
         //
@@ -465,7 +512,7 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
 
     /**
      * Locks the palette shifting buttons
-     */
+     **/
     public void lockShiftButtons() {
         leftShiftButton.setEnabled(false);
         rightShiftButton.setEnabled(false);
@@ -473,12 +520,18 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
 
     /**
      * Unlocks the palette shifting buttons
-     */
+     **/
     public void unlockShiftButtons() {
         leftShiftButton.setEnabled(true);
         rightShiftButton.setEnabled(true);
     }
 
+    /**
+     * @param palIndex palette page index
+     * @param palette palette whose colors are displayed or edited
+     * @param base base value
+     * @param count count value
+     **/
     private void ensureBaseline(int palIndex, TMPalette palette, int base, int count) {
         if (!palettePageBaseline.containsKey(palIndex)) {
             int[] baseline = new int[count];
@@ -489,6 +542,11 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         }
     }
 
+    /**
+     * @param palette palette whose colors are displayed or edited
+     * @param base base value
+     * @param count count value
+     **/
     private void syncPalettePageToFile(TMPalette palette, int base, int count) {
         if (palette.isDirect()) {
             return;
@@ -503,6 +561,9 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         ui.fileImageModified(view.getFileImage());
     }
 
+    /**
+     *
+     **/
     private void updateDrawColorsForCurrentPage() {
         if (view.getTileCodec().getBitsPerPixel() > 8) {
             return;
@@ -521,6 +582,11 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         }
     }
 
+    /**
+     * @param palette palette whose colors are displayed or edited
+     * @param base base value
+     * @param entries entries value
+     **/
     private void applyPageEntries(TMPalette palette, int base, int[] entries) {
         for (int i = 0; i < entries.length; i++) {
             palette.setEntry(base + i, entries[i]);
@@ -531,6 +597,9 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         viewSelected(view);
     }
 
+    /**
+     * @param palIndex palette page index
+     **/
     public void resetPalettePageRotation(int palIndex) {
         if (view == null || view.getTileCodec().getBitsPerPixel() > 8) {
             return;
@@ -544,14 +613,23 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         applyPageEntries(palette, base, baseline);
     }
 
+    /**
+     *
+     **/
     public void shiftCurrentPalettePageRight() {
         shiftCurrentPalettePage(+1);
     }
 
+    /**
+     *
+     **/
     public void shiftCurrentPalettePageLeft() {
         shiftCurrentPalettePage(-1);
     }
 
+    /**
+     * @param direction rotation direction (+1 right, -1 left)
+     **/
     private void shiftCurrentPalettePage(int direction) {
         if (view == null || view.getTileCodec().getBitsPerPixel() > 8) {
             return;

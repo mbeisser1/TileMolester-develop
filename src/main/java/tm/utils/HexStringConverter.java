@@ -18,6 +18,9 @@
 
 package tm.utils;
 
+/**
+ * Converts between byte arrays and hexadecimal strings.
+ **/
 public class HexStringConverter {
 
     private static final String[] hexLookupTable =
@@ -57,10 +60,8 @@ public class HexStringConverter {
 
     /**
      * Converts a byte array to a hex string.
-     *
      * @param buffer    The byte array to convert
-     */
-
+     **/
     public static String bytesToHexString(byte[] buffer) {
         int numBytes = buffer.length;
         StringBuffer hexData = new StringBuffer();
@@ -74,10 +75,8 @@ public class HexStringConverter {
      * Converts a string of hex digits to a byte array.
      * The string should contain an even number of digits, since every
      * pair of digits in the string is converted into one byte (range 0x00..0xFF).
-     *
      * @param hexString   The string to convert
-     */
-
+     **/
     public static byte[] hexStringToBytes(String hexString) {
         int numBytes = hexString.length()/2;
         byte[] buffer = new byte[numBytes];
