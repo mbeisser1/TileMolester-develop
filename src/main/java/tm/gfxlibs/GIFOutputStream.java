@@ -68,9 +68,12 @@ public class GIFOutputStream extends FilterOutputStream
    /** Unrecognized colorMode argument. **/
    public static final int INVALID_COLOR_MODE = 3;
 
+   /** Palette index for black in {@link #BLACK_AND_WHITE} mode. **/
    protected static final int BLACK_INDEX = 0;
+   /** Palette index for white in {@link #BLACK_AND_WHITE} mode. **/
    protected static final int WHITE_INDEX = 1;
 
+   /** Built-in 16-color VGA palette (0xRRGGBB). **/
    protected static final int[] standard16 =
    {
       0x000000,
@@ -82,13 +85,16 @@ public class GIFOutputStream extends FilterOutputStream
       0xFFFFFF
    };
 
+   /** Built-in 256-color palette; populated in the static initializer. **/
    protected static final int[] standard256 = new int[256];
 
+   /** 4×4 ordered-dither thresholds for {@link #DITHERED_216_COLORS}. **/
    protected static int ditherPattern[][] = {{  8, 184, 248, 216},
                                              {120,  56, 152,  88},
                                              { 40, 232,  24, 200},
                                              {168, 104, 136,  72}};
 
+   /** Result code from the most recent encode ({@link #NO_ERROR} initially). **/
    protected int     errorStatus = NO_ERROR;
 
    static
@@ -1248,5 +1254,5 @@ public class GIFOutputStream extends FilterOutputStream
       rl_count = 0;
    }
 
-   /******** END OF IMPORTED GIF COMPRESSION CODE ********/
+   // END OF IMPORTED GIF COMPRESSION CODE
 }
