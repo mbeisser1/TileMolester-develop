@@ -29,21 +29,19 @@ import java.awt.*;
 import java.awt.image.*;
 
 /**
-*
-* Allows a bitmap to be loaded and converted to a tile canvas.
-*
-**/
-
+ *
+ * Allows a bitmap to be loaded and converted to a tile canvas.
+ *
+ **/
 public class TMBitmapImporter {
 
-/**
-*
-* Static method that takes a file, tries to load the file as a bitmap and
-* convert it to a tile canvas. The file extension is used to determine what
-* bitmap format to use when loading the file.
-*
-**/
-
+    /**
+     *
+     * Static method that takes a file, tries to load the file as a bitmap and
+     * convert it to a tile canvas. The file extension is used to determine what
+     * bitmap format to use when loading the file.
+     *
+     **/
     public static TMTileCanvas loadTileCanvasFromFile(File file)
         throws Exception {
         Image img = null;
@@ -110,12 +108,11 @@ public class TMBitmapImporter {
         return tc;
     }
 
-/**
-*
-* Gets file extension.
-*
-**/
-
+    /**
+     *
+     * Gets file extension.
+     *
+     **/
     public static String getExtension(File f) {
         String ext = "";
         String s = f.getName();

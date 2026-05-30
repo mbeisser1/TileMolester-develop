@@ -26,11 +26,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
-*
-* The dialog where user can enter new dimensions for the current selection.
-*
-**/
-
+ *
+ * The dialog where user can enter new dimensions for the current selection.
+ *
+ **/
 public class TMStretchDialog extends TMModalDialog {
 
     private JLabel colsLabel;
@@ -38,41 +37,22 @@ public class TMStretchDialog extends TMModalDialog {
     private JTextField colsField;
     private JTextField rowsField;
 
-/**
-*
-* Creates the stretch dialog.
-*
-**/
-
+    /**
+     *
+     * Creates the stretch dialog.
+     *
+     **/
     public TMStretchDialog(Frame owner, tm.utils.Xlator xl) {
         super(owner, "Stretch_Image_Dialog_Title", xl);
     }
-
-/**
-*
-*
-*
-**/
 
     public int getCols() {
         return Integer.parseInt(colsField.getText());
     }
 
-/**
-*
-*
-*
-**/
-
     public int getRows() {
         return Integer.parseInt(rowsField.getText());
     }
-
-/**
-*
-*
-*
-**/
 
     protected JPanel getDialogPane() {
         colsLabel = new JLabel(xlate("Columns_Prompt"));

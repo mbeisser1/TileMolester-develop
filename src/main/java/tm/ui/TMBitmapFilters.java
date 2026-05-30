@@ -21,11 +21,10 @@ package tm.ui;
 import tm.fileselection.TMFileFilter;
 
 /**
-*
-* File filters for the open+save bitmap dialog.
-*
-**/
-
+ *
+ * File filters for the open+save bitmap dialog.
+ *
+ **/
 public class TMBitmapFilters {
 
     public final BMPFilter bmp = new BMPFilter();
@@ -36,12 +35,11 @@ public class TMBitmapFilters {
     public final TIFFFilter tiff = new TIFFFilter();
     public final SupportedFilter supported = new SupportedFilter();
 
-/**
-*
-* Recognizes *.bmp files.
-*
-**/
-
+    /**
+     *
+     * Recognizes *.bmp files.
+     *
+     **/
     private class BMPFilter extends TMFileFilter {
 
         public BMPFilter() {
@@ -50,12 +48,11 @@ public class TMBitmapFilters {
 
     }
 
-/**
-*
-* Recognizes *.pcx files.
-*
-**/
-
+    /**
+     *
+     * Recognizes *.pcx files.
+     *
+     **/
     private class PCXFilter extends TMFileFilter {
 
         public PCXFilter() {
@@ -64,12 +61,11 @@ public class TMBitmapFilters {
 
     }
 
-/**
-*
-* Recognizes *.jpg files.
-*
-**/
-
+    /**
+     *
+     * Recognizes *.jpg files.
+     *
+     **/
     private class JPEGFilter extends TMFileFilter {
 
         public JPEGFilter() {
@@ -78,12 +74,11 @@ public class TMBitmapFilters {
 
     }
 
-/**
-*
-* Recognizes *.gif files.
-*
-**/
-
+    /**
+     *
+     * Recognizes *.gif files.
+     *
+     **/
     private class GIFFilter extends TMFileFilter {
 
         public GIFFilter() {
@@ -92,12 +87,11 @@ public class TMBitmapFilters {
 
     }
 
-/**
-*
-* Recognizes *.tiff files.
-*
-**/
-
+    /**
+     *
+     * Recognizes *.tiff files.
+     *
+     **/
     private class TIFFFilter extends TMFileFilter {
 
         public TIFFFilter() {
@@ -106,12 +100,11 @@ public class TMBitmapFilters {
 
     }
 
-/**
-*
-* Recognizes *.png files.
-*
-**/
-
+    /**
+     *
+     * Recognizes *.png files.
+     *
+     **/
     private class PNGFilter extends TMFileFilter {
 
         public PNGFilter() {
@@ -120,12 +113,11 @@ public class TMBitmapFilters {
 
     }
 
-/**
-*
-* Recognizes all the above file formats.
-*
-**/
-
+    /**
+     *
+     * Recognizes all the above file formats.
+     *
+     **/
     private class SupportedFilter extends TMFileFilter {
 
         public SupportedFilter() {

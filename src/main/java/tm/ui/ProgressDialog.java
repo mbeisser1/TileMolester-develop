@@ -24,25 +24,23 @@ import java.awt.event.*;
 import tm.threads.ProgressThread;
 
 /**
-*
-* Modal dialog that takes a worker thread and runs it in the background while
-* updating a progress bar to reflect how far along the work is.
-* The dialog unblocks when the work is completely done.
-*
-**/
-
+ *
+ * Modal dialog that takes a worker thread and runs it in the background while
+ * updating a progress bar to reflect how far along the work is.
+ * The dialog unblocks when the work is completely done.
+ *
+ **/
 public class ProgressDialog extends JDialog implements ActionListener {
 
     private JProgressBar progressBar = new JProgressBar(0, 100);
     private ProgressThread thread;
     private Timer timer;
 
-/**
-*
-* Creates a ProgressDialog for the given ProgressThread.
-*
-**/
-
+    /**
+     *
+     * Creates a ProgressDialog for the given ProgressThread.
+     *
+     **/
     public ProgressDialog(Frame owner, ProgressThread thread) {
         super(owner);
         this.thread = thread;
@@ -64,12 +62,11 @@ public class ProgressDialog extends JDialog implements ActionListener {
         setVisible(true);
     }
 
-/**
-*
-* Centers the dialog.
-*
-**/
-
+    /**
+     *
+     * Centers the dialog.
+     *
+     **/
     private void center() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int insetx = (screenSize.width - getWidth()) / 2;
@@ -78,12 +75,11 @@ public class ProgressDialog extends JDialog implements ActionListener {
                   getWidth(), getHeight());
     }
 
-/**
-*
-* Updates the progress bar every timer tick.
-*
-**/
-
+    /**
+     *
+     * Updates the progress bar every timer tick.
+     *
+     **/
     public void actionPerformed(ActionEvent e) {
         progressBar.setValue(thread.getPercentageCompleted());
         if (thread.getPercentageCompleted() == 100) {

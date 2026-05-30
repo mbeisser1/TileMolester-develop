@@ -23,14 +23,13 @@ import tm.treenodes.BookmarkItemNode;
 import tm.canvases.TMEditorCanvas;
 
 /**
-*
-* Allows undo/redo of drawing operations.
-* Records the view settings when the edit was done,
-* the grid coordinates of the tiles that were modified,
-* the old pixels, and the new pixels.
-*
-**/
-
+ *
+ * Allows undo/redo of drawing operations.
+ * Records the view settings when the edit was done,
+ * the grid coordinates of the tiles that were modified,
+ * the old pixels, and the new pixels.
+ *
+ **/
 public class ReversibleTileModifyAction extends ReversibleAction {
 
     TMEditorCanvas canvas;

@@ -23,12 +23,11 @@ import java.io.File;
 import java.util.StringTokenizer;
 
 /**
-*
-* A file filter that allows you to register a set of extensions with a common
-* description.
-*
-**/
-
+ *
+ * A file filter that allows you to register a set of extensions with a common
+ * description.
+ *
+ **/
 public class TMFileFilter extends FileFilter {
 
     private String description;
@@ -39,23 +38,16 @@ public class TMFileFilter extends FileFilter {
         super();
     }
 
-/**
-*
-* @param extlist    A comma-separated list of extensions
-*
-**/
-
+    /**
+     *
+     * @param extlist    A comma-separated list of extensions
+     *
+     **/
     public TMFileFilter(String extlist, String description) {
         super();
         setExtensions(extlist);
         setDescription(description);
     }
-
-/**
-*
-*
-*
-**/
 
     public void setExtensions(String extlist) {
         this.extlist = extlist;
@@ -66,61 +58,25 @@ public class TMFileFilter extends FileFilter {
         }
     }
 
-/**
-*
-*
-*
-**/
-
     public void setDescription(String description) {
         this.description = description;
     }
-
-/**
-*
-*
-*
-**/
 
     public String[] getExtensions() {
         return extensions;
     }
 
-/**
-*
-*
-*
-**/
-
     public String getExtlist() {
         return extlist;
     }
-
-/**
-*
-*
-*
-**/
 
     public String getDefaultExtension() {
         return extensions[0];
     }
 
-/**
-*
-*
-*
-**/
-
     public String getDescription() {
         return description;
     }
-
-/**
-*
-*
-*
-**/
 
     public boolean accept(File f) {
         if (f.isDirectory()) {
@@ -149,12 +105,11 @@ public class TMFileFilter extends FileFilter {
         return false;
     }
 
-/**
-*
-* Gets the file extension.
-*
-**/
-
+    /**
+     *
+     * Gets the file extension.
+     *
+     **/
     public static String getExtension(File f) {
         String ext = "";
         String s = f.getName();

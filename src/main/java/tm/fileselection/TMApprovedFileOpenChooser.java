@@ -23,13 +23,12 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.JOptionPane;
 
-/**
-*
-* A filechooser that verifies that the selected file exists and
-* that it is readable before it lets the user proceed.
-*
-**/
-
+    /**
+     *
+     * A filechooser that verifies that the selected file exists and
+     * that it is readable before it lets the user proceed.
+     *
+     **/
     public  class TMApprovedFileOpenChooser extends JFileChooser {
 
         public void approveSelection() {

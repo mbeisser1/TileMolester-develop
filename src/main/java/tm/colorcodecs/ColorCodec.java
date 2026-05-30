@@ -19,13 +19,12 @@
 package tm.colorcodecs;
 
 /**
-*
-* Abstract superclass for color codecs.
-* A "color codec" defines how values of a particular format are translated
-* to 32-bit ARGB pixel values (decoded), and back again (encoded).
-*
-**/
-
+ *
+ * Abstract superclass for color codecs.
+ * A "color codec" defines how values of a particular format are translated
+ * to 32-bit ARGB pixel values (decoded), and back again (encoded).
+ *
+ **/
 public abstract class ColorCodec {
 
     public static final int LITTLE_ENDIAN=1;
@@ -41,12 +40,11 @@ public abstract class ColorCodec {
     private int startShift;
     private int shiftStep;
 
-/**
-*
-* Creates a ColorCodec with the given id, bits per pixel and description.
-*
-**/
-
+    /**
+     *
+     * Creates a ColorCodec with the given id, bits per pixel and description.
+     *
+     **/
     public ColorCodec(String id, int bitsPerPixel, String description) {
         this.id = id;
         this.bitsPerPixel = bitsPerPixel;
@@ -55,11 +53,10 @@ public abstract class ColorCodec {
         setEndianness(LITTLE_ENDIAN);   // default
     }
 
-/**
-* Sets the endianness.
-* It determines the byte order related to methods toBytes() and fromBytes().
-**/
-
+    /**
+     * Sets the endianness.
+     * It determines the byte order related to methods toBytes() and fromBytes().
+     **/
     public void setEndianness(int endianness) {
         this.endianness = endianness;
         if (endianness == LITTLE_ENDIAN) {
@@ -73,72 +70,65 @@ public abstract class ColorCodec {
         }
     }
 
-/**
-*
-* Gets the ID.
-*
-**/
-
+    /**
+     *
+     * Gets the ID.
+     *
+     **/
     public String getID() {
         return id;
     }
 
-/**
-*
-* Gets the number of bits per pixel.
-*
-**/
-
+    /**
+     *
+     * Gets the number of bits per pixel.
+     *
+     **/
     public int getBitsPerPixel() {
         return bitsPerPixel;
     }
 
-/**
-*
-* Gets the number of bytes required to hold one pixel.
-*
-**/
-
+    /**
+     *
+     * Gets the number of bytes required to hold one pixel.
+     *
+     **/
     public int getBytesPerPixel() {
         return bytesPerPixel;
     }
 
-/**
-*
-* Gets the description.
-*
-**/
-
+    /**
+     *
+     * Gets the description.
+     *
+     **/
     public String getDescription() {
         return description;
     }
 
-/**
-*
-* This method takes a value assumed to be in the color codec's native format
-* and returns the equivalent 32-bit ARGB value.
-*
-**/
-
+    /**
+     *
+     * This method takes a value assumed to be in the color codec's native format
+     * and returns the equivalent 32-bit ARGB value.
+     *
+     **/
     public abstract int decode(int value);
 
-/**
-*
-* This method takes a value assumed to be in 32-bit ARGB format and returns
-* the equivalent native format value.
-*
-**/
-
+    /**
+     *
+     * This method takes a value assumed to be in 32-bit ARGB format and returns
+     * the equivalent native format value.
+     *
+     **/
     public abstract int encode(int argb);
 
-/**
-*
-* Converts given value to a series of bytes, according to current endianness.
-* @param bytes Array to store resulting bytes in
-* @param offset Starting offset in array
-*
-**/
-
+    /**
+     *
+     * Converts given value to a series of bytes, according to current endianness.
+     * @param bytes Array to store resulting bytes in
+     * @param offset Starting offset in array
+     *
+     **/
     public byte[] toBytes(int value, byte[] bytes, int offset) {
         int shift = startShift;
         for (int i=0; i<bytesPerPixel; i++) {
@@ -148,13 +138,12 @@ public abstract class ColorCodec {
         return bytes;
     }
 
-/**
-*
-* Converts bytes from given array to a value, according to current endianness.
-* @param offset Where to start reading the bytes that make up the value.
-*
-**/
-
+    /**
+     *
+     * Converts bytes from given array to a value, according to current endianness.
+     * @param offset Where to start reading the bytes that make up the value.
+     *
+     **/
     public int fromBytes(byte[] bytes, int offset) {
         int shift = startShift;
         int value = 0;
@@ -165,13 +154,12 @@ public abstract class ColorCodec {
         return value;
     }
 
-/**
-*
-* Gets the least number of whole bytes that are required to store
-* <code>bits</code> bits of information.
-*
-**/
-
+    /**
+     *
+     * Gets the least number of whole bytes that are required to store
+     * <code>bits</code> bits of information.
+     *
+     **/
     private static int getBytesRequired(int bits) {
         int bytes = bits / 8;
         int extrabits = bits % 8;

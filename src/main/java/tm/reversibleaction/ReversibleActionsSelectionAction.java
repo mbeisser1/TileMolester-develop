@@ -24,12 +24,11 @@ import tm.canvases.TMEditorCanvas;
 
 
 /**
-*
-* Allows undo/redo of an action that modifies the entire image/selection,
-* such as flip and rotate.
-*
-**/
-
+ *
+ * Allows undo/redo of an action that modifies the entire image/selection,
+ * such as flip and rotate.
+ *
+ **/
 public class ReversibleActionsSelectionAction extends ReversibleAction {
 
     public static final int FLIP_ACTION = 1;

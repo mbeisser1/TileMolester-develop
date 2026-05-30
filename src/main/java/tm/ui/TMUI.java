@@ -58,7 +58,6 @@ import org.xml.sax.SAXParseException;
  * 2) providing action handlers for menu items and tool buttons.
  *
  **/
-
 public class TMUI extends JFrame {
 	public static boolean isWindows = SystemInfo.isWindows;
 
@@ -318,7 +317,6 @@ public class TMUI extends JFrame {
 	 * Creates a Tile Molester UI.
 	 *
 	 **/
-
 	public TMUI() {
 		super("Tile Molester");
 
@@ -642,7 +640,6 @@ public class TMUI extends JFrame {
 	 * Sets up the toolbar.
 	 *
 	 **/
-
 	private void initToolBar() {
 		// toolBar.setBorder(null);
 
@@ -806,7 +803,6 @@ public class TMUI extends JFrame {
 	 * Sets up the navigation bar.
 	 *
 	 **/
-
 	public void initNavBar() {
 		// navBar.setBorder(null);
 
@@ -902,7 +898,6 @@ public class TMUI extends JFrame {
 	 * Sets up the tool palette.
 	 *
 	 **/
-
 	private void initToolPalette() {
 		toolPalette.setBorder(null);
 		// Selection
@@ -1012,7 +1007,6 @@ public class TMUI extends JFrame {
 	 * Deselects all tools in the tool palette.
 	 *
 	 **/
-
 	public void deselectToolPalette() {
 		selectButton.setSelected(false);
 		zoomButton.setSelected(false);
@@ -1029,7 +1023,6 @@ public class TMUI extends JFrame {
 	 * Sets up the selection palette.
 	 *
 	 **/
-
 	public void initSelectionToolBar() {
 		selectionToolBar.setBorder(null);
 		// Mirror
@@ -1123,7 +1116,6 @@ public class TMUI extends JFrame {
 	 * Sets up the menu bar.
 	 *
 	 **/
-
 	private void initMenuBar() {
 		// File menu
 		fileMenu.setMnemonic(KeyEvent.VK_F);
@@ -1839,7 +1831,6 @@ public class TMUI extends JFrame {
 	 * FileImage and a default view + palette.
 	 *
 	 **/
-
 	public void doNewCommand() {
 		// Show dialog for creating new file
 		// TMNewFileDialog newFileDialog = new TMNewFileDialog(this, xl);
@@ -1863,7 +1854,6 @@ public class TMUI extends JFrame {
 	 * opened and a default view + palette is assigned.
 	 *
 	 **/
-
 	public void doOpenCommand() {
 		// set to directory of selected file, if there is one
 		TMView view = getSelectedView();
@@ -1894,7 +1884,6 @@ public class TMUI extends JFrame {
 	 * and the file is modified, the user is prompted to save the file.
 	 *
 	 **/
-
 	public void doCloseCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -1956,7 +1945,6 @@ public class TMUI extends JFrame {
 	 * Saves the resources for the given fileimage to a file in XML format.
 	 *
 	 **/
-
 	public void saveResources(FileImage img) {
 		// TODO: should only save if # bookmarks | # of palettes > 0?
 		File resourceFile = TMFileResources.getResourceFileFor(img.getFile());
@@ -1992,7 +1980,6 @@ public class TMUI extends JFrame {
 	 * Does the same as "Close", only for all the current frames.
 	 *
 	 **/
-
 	public void doCloseAllCommand() {
 		JInternalFrame[] frames = desktop.getAllFrames();
 		for (int i = 0; i < frames.length; i++) {
@@ -2051,7 +2038,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Save".
 	 *
 	 **/
-
 	public void doSaveCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2108,7 +2094,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Save As...".
 	 *
 	 **/
-
 	public void doSaveAsCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2130,7 +2115,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Save All".
 	 *
 	 **/
-
 	public void doSaveAllCommand() {
 		JInternalFrame[] frames = desktop.getAllFrames();
 		for (int i = 0; i < frames.length; i++) {
@@ -2152,7 +2136,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Exit".
 	 *
 	 **/
-
 	public void doExitCommand() {
 		doCloseAllCommand();
 		// if all frames were closed, the operation was successful and we can exit.
@@ -2169,7 +2152,6 @@ public class TMUI extends JFrame {
 	 * Moves the item to the Redo stack.
 	 *
 	 **/
-
 	public void doUndoCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2186,7 +2168,6 @@ public class TMUI extends JFrame {
 	 * Moves the item to the Undo stack.
 	 *
 	 **/
-
 	public void doRedoCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2203,7 +2184,6 @@ public class TMUI extends JFrame {
 	 * central selection.
 	 *
 	 **/
-
 	public void doCutCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2220,7 +2200,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Copy".
 	 *
 	 **/
-
 	public void doCopyCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2237,7 +2216,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Paste".
 	 *
 	 **/
-
 	public void doPasteCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2253,7 +2231,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Clear".
 	 *
 	 **/
-
 	public void doClearCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2268,7 +2245,6 @@ public class TMUI extends JFrame {
 	 * file offset to jump to. Then jumps to that offset.
 	 *
 	 **/
-
 	public void doGoToCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2291,7 +2267,6 @@ public class TMUI extends JFrame {
 	 * Only applicable when the preceding "Go To..." was of relative type.
 	 *
 	 **/
-
 	public void doGoToAgainCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2309,7 +2284,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Select All".
 	 *
 	 **/
-
 	public void doSelectAllCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2322,7 +2296,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Save Selection As...".
 	 *
 	 **/
-
 	public boolean exportSelectionAs() {
 		TMView view = getSelectedView();
 		if (view == null) {
@@ -2363,7 +2336,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Paste From...".
 	 *
 	 **/
-
 	public void doPasteFromCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2401,7 +2373,6 @@ public class TMUI extends JFrame {
 	 * Code ruthlessly stolen from some guy on the Java forums. Thanks and sorry. :)
 	 *
 	 **/
-
 	public void doTileCommand() {
 		JInternalFrame[] frames = desktop.getAllFrames();
 		// count frames that aren't iconized
@@ -2442,7 +2413,6 @@ public class TMUI extends JFrame {
 	 * Code ruthlessly stolen from some guy on the Java forums. Thanks and sorry. :)
 	 *
 	 **/
-
 	public void doCascadeCommand() {
 		int FRAME_OFFSET = 30;
 		int xpos = 0, ypos = 0;
@@ -2466,7 +2436,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Arrange Icons".
 	 *
 	 **/
-
 	public void doArrangeIconsCommand() {
 		JInternalFrame[] frames = desktop.getAllFrames();
 		int xpos = 0;
@@ -2486,7 +2455,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Help Topics".
 	 *
 	 **/
-
 	public void doHelpTopicsCommand() {
 		File localizedHelpFile = new File("docs/help_" + locale.toString() + ".htm");
 		if (localizedHelpFile.exists()) {
@@ -2502,7 +2470,6 @@ public class TMUI extends JFrame {
 	 * Displays a small dialog with info about the program.
 	 *
 	 **/
-
 	public void doAboutCommand() {
 		JOptionPane.showMessageDialog(this,
 				"Tile Molester v0.21\n\nby SnowBro 2003-2005 (v0.16)\nby Dr. MefistO 2013 (v0.17.2)\nby Mewster 2014-2015 (v0.19)\nby toruzz 2020-2024 (v0.21)",
@@ -2516,7 +2483,6 @@ public class TMUI extends JFrame {
 	 * Changes the tile codec for the current view to the specified one.
 	 *
 	 **/
-
 	public void doTileCodecCommand(TileCodec codec) {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2533,7 +2499,6 @@ public class TMUI extends JFrame {
 	 * Zooms the current frame to the given scale (1.0 = 100%, 2.0 = 200% and so on)
 	 *
 	 **/
-
 	public void doZoomCommand(double scale) {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2547,7 +2512,6 @@ public class TMUI extends JFrame {
 	 * Scale += 1.0
 	 *
 	 **/
-
 	public void doZoomInCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2561,7 +2525,6 @@ public class TMUI extends JFrame {
 	 * Scale -= 1.0
 	 *
 	 **/
-
 	public void doZoomOutCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2574,7 +2537,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Block Grid".
 	 *
 	 **/
-
 	public void doBlockGridCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2589,7 +2551,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Tile Grid".
 	 *
 	 **/
-
 	public void doTileGridCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2604,7 +2565,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Pixel Grid".
 	 *
 	 **/
-
 	public void doPixelGridCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2620,7 +2580,6 @@ public class TMUI extends JFrame {
 	 * Toggles the statusbar visibility.
 	 *
 	 **/
-
 	public void doStatusBarCommand() {
 		viewStatusBar = !viewStatusBar;
 		TileMolester.settings.setViewStatusBar(viewStatusBar);
@@ -2634,7 +2593,6 @@ public class TMUI extends JFrame {
 	 * Toggles the toolbar visibility.
 	 *
 	 **/
-
 	public void doToolBarCommand() {
 		viewToolBar = !viewToolBar;
 		TileMolester.settings.setViewToolBar(viewToolBar);
@@ -2648,7 +2606,6 @@ public class TMUI extends JFrame {
 	 * Toggles the dark mode theme.
 	 *
 	 **/
-
 	public void doDarkModeCommand() {
 		darkMode = !TMTheme.darkMode;
 		darkModeMenuItem.setSelected(darkMode);
@@ -2662,7 +2619,6 @@ public class TMUI extends JFrame {
 	 * Duplicates view settings (offset, codec, width/height etc.)
 	 *
 	 **/
-
 	public void doNewWindowCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2683,7 +2639,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Mirror".
 	 *
 	 **/
-
 	public void doMirrorCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2696,7 +2651,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Flip".
 	 *
 	 **/
-
 	public void doFlipCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2709,7 +2663,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Rotate +90".
 	 *
 	 **/
-
 	public void doRotateRightCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2722,7 +2675,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Rotate Left".
 	 *
 	 **/
-
 	public void doRotateLeftCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2735,7 +2687,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Shift Left".
 	 *
 	 **/
-
 	public void doShiftLeftCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2748,7 +2699,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Shift Right".
 	 *
 	 **/
-
 	public void doShiftRightCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2761,7 +2711,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Shift Up".
 	 *
 	 **/
-
 	public void doShiftUpCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2774,7 +2723,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Shift Down".
 	 *
 	 **/
-
 	public void doShiftDownCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2787,7 +2735,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Stretch".
 	 *
 	 **/
-
 	public void doStretchCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2805,7 +2752,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Canvas Size".
 	 *
 	 **/
-
 	public void doCanvasSizeCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2825,7 +2771,6 @@ public class TMUI extends JFrame {
 	 * The valid modes are MODE_1D and MODE_2D.
 	 *
 	 **/
-
 	public void doModeCommand(int mode) {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2834,12 +2779,6 @@ public class TMUI extends JFrame {
 		}
 	}
 
-	/**
-	*
-	*
-	*
-	**/
-
 	public void doSizeBlockToCanvasCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2847,12 +2786,6 @@ public class TMUI extends JFrame {
 			sizeBlockToCanvasMenuItem.setSelected(view.getSizeBlockToCanvas());
 		}
 	}
-
-	/**
-	*
-	*
-	*
-	**/
 
 	public void doCustomBlockSizeCommand() {
 		TMView view = getSelectedView();
@@ -2867,12 +2800,6 @@ public class TMUI extends JFrame {
 		}
 	}
 
-	/**
-	*
-	*
-	*
-	**/
-
 	public void doRowInterleaveBlocksCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2880,12 +2807,6 @@ public class TMUI extends JFrame {
 			rowInterleaveBlocksMenuItem.setSelected(view.getRowInterleaveBlocks());
 		}
 	}
-
-	/**
-	*
-	*
-	*
-	**/
 
 	public void doReopenCommand(File recentFile) {
 		if (recentFile.exists() && recentFile.canRead()) {
@@ -2902,7 +2823,6 @@ public class TMUI extends JFrame {
 	 * Handles the menu command "Custom Codec".
 	 *
 	 **/
-
 	public void doCustomCodecCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -2929,7 +2849,6 @@ public class TMUI extends JFrame {
 	 * Navigation button press handlers.
 	 *
 	 **/
-
 	public void doHomeCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3005,7 +2924,6 @@ public class TMUI extends JFrame {
 	 * Handles the menu command "Add To Bookmarks".
 	 *
 	 **/
-
 	public void doAddToBookmarksCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3038,7 +2956,6 @@ public class TMUI extends JFrame {
 	 * Handles the menu command "Organize Bookmarks".
 	 *
 	 **/
-
 	public void doOrganizeBookmarksCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3054,7 +2971,6 @@ public class TMUI extends JFrame {
 	 * Handles the menu command "Add To Palettes".
 	 *
 	 **/
-
 	public void doAddToPalettesCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3086,7 +3002,6 @@ public class TMUI extends JFrame {
 	 * Handles the menu command "Organize Palettes".
 	 *
 	 **/
-
 	public void doOrganizePalettesCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3102,7 +3017,6 @@ public class TMUI extends JFrame {
 	 * Handles the menu command "Edit Colors".
 	 *
 	 **/
-
 	public void doEditColorsCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3130,7 +3044,6 @@ public class TMUI extends JFrame {
 	 * Handles the menu command "Format Palette".
 	 *
 	 **/
-
 	public void doColorCodecCommand(ColorCodec codec) {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3145,7 +3058,6 @@ public class TMUI extends JFrame {
 	 * Handles the menu command "Set Palette Size".
 	 *
 	 **/
-
 	public void doPaletteSizeCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3164,7 +3076,6 @@ public class TMUI extends JFrame {
 	 * Handles the menu command "New Palette".
 	 *
 	 **/
-
 	public void doNewPaletteCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3193,7 +3104,6 @@ public class TMUI extends JFrame {
 	 * Handles the menu command "Import Palette From This File".
 	 *
 	 **/
-
 	public void doImportInternalPaletteCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3226,7 +3136,6 @@ public class TMUI extends JFrame {
 	 * Handles the menu command "Import Palette From Another File".
 	 *
 	 **/
-
 	public void doImportExternalPaletteCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3338,7 +3247,6 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Palette Endianness".
 	 *
 	 **/
-
 	public void doPaletteEndiannessCommand(int endianness) {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3351,7 +3259,6 @@ public class TMUI extends JFrame {
 	 * Called when user has selected a bookmark to jump to from the Navigate menu.
 	 *
 	 **/
-
 	public void doGotoBookmarkCommand(BookmarkItemNode bookmark) {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3364,7 +3271,6 @@ public class TMUI extends JFrame {
 	 * Called when user has selected a palette to use from the Palette menu.
 	 *
 	 **/
-
 	public void doSelectPaletteCommand(TMPalette palette) {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3375,12 +3281,6 @@ public class TMUI extends JFrame {
 		}
 	}
 
-	/**
-	*
-	*
-	*
-	**/
-
 	public void doDecreaseWidthCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3388,12 +3288,6 @@ public class TMUI extends JFrame {
 			view.setScale(view.getScale());
 		}
 	}
-
-	/**
-	*
-	*
-	*
-	**/
 
 	public void doIncreaseWidthCommand() {
 		TMView view = getSelectedView();
@@ -3403,12 +3297,6 @@ public class TMUI extends JFrame {
 		}
 	}
 
-	/**
-	*
-	*
-	*
-	**/
-
 	public void doDecreaseHeightCommand() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3416,12 +3304,6 @@ public class TMUI extends JFrame {
 			view.setScale(view.getScale());
 		}
 	}
-
-	/**
-	*
-	*
-	*
-	**/
 
 	public void doIncreaseHeightCommand() {
 		TMView view = getSelectedView();
@@ -3438,7 +3320,6 @@ public class TMUI extends JFrame {
 	 * Call this when a fileimage has been modified.
 	 *
 	 **/
-
 	public void fileImageModified(FileImage img) {
 		img.setModified(true);
 		setSaveButtonsEnabled(true);
@@ -3450,7 +3331,6 @@ public class TMUI extends JFrame {
 	 * Sets enabled state of save buttons.
 	 *
 	 **/
-
 	public void setSaveButtonsEnabled(boolean b) {
 		saveButton.setEnabled(b);
 		saveMenuItem.setEnabled(b);
@@ -3461,7 +3341,6 @@ public class TMUI extends JFrame {
 	 * Sets enabled state of undo buttons.
 	 *
 	 **/
-
 	public void setUndoButtonsEnabled(boolean b) {
 		undoButton.setEnabled(b);
 		undoMenuItem.setEnabled(b);
@@ -3472,7 +3351,6 @@ public class TMUI extends JFrame {
 	 * Sets enabled state of redo buttons.
 	 *
 	 **/
-
 	public void setRedoButtonsEnabled(boolean b) {
 		redoButton.setEnabled(b);
 		redoMenuItem.setEnabled(b);
@@ -3483,7 +3361,6 @@ public class TMUI extends JFrame {
 	 * Hides/disables MDI-specific menus and buttons.
 	 *
 	 **/
-
 	public void disableMDIStuff() {
 		// Hide MDI menus
 		menuBar.remove(editMenu);
@@ -3531,7 +3408,6 @@ public class TMUI extends JFrame {
 	 * Shows/enables MDI-specific menus and buttons.
 	 *
 	 **/
-
 	public void enableMDIStuff() {
 		// Show MDI menus
 		menuBar.remove(helpMenu);
@@ -3590,7 +3466,6 @@ public class TMUI extends JFrame {
 	 * Adds a codec to the list of available codecs and creates a menu item for it.
 	 *
 	 **/
-
 	public void addTileCodec(TileCodec codec) {
 		TileCodecMenuItem codecMenuItem = new TileCodecMenuItem(codec);
 		tileCodecMenu.add(codecMenuItem);
@@ -3603,7 +3478,6 @@ public class TMUI extends JFrame {
 	 * Menu item that represents a tile codec.
 	 *
 	 **/
-
 	private class TileCodecMenuItem extends JRadioButtonMenuItem {
 
 		private TileCodec codec;
@@ -3627,7 +3501,6 @@ public class TMUI extends JFrame {
 		 * Gets the codec that the menu item represents.
 		 *
 		 **/
-
 		public TileCodec getCodec() {
 			return codec;
 		}
@@ -3640,7 +3513,6 @@ public class TMUI extends JFrame {
 	 * the global list of codecs (with wraparound).
 	 *
 	 **/
-
 	public TileCodec getTileCodecSuccessor(TileCodec codec) {
 		int i = tilecodecs.indexOf(codec);
 		if (i == tilecodecs.size() - 1) {
@@ -3656,7 +3528,6 @@ public class TMUI extends JFrame {
 	 * the global list of codecs (with wraparound).
 	 *
 	 **/
-
 	public TileCodec getTileCodecPredecessor(TileCodec codec) {
 		int i = tilecodecs.indexOf(codec);
 		if (i == 0) {
@@ -3672,7 +3543,6 @@ public class TMUI extends JFrame {
 	 * ImageIcon.
 	 *
 	 **/
-
 	private class ToolButton extends JButton {
 
 		Insets insets = null;
@@ -3706,7 +3576,6 @@ public class TMUI extends JFrame {
 	 * around the ImageIcon.
 	 *
 	 **/
-
 	private class ToolToggleButton extends JToggleButton {
 		Insets insets = null;
 
@@ -3738,7 +3607,6 @@ public class TMUI extends JFrame {
 	 * Gets the foreground color for the current view.
 	 *
 	 **/
-
 	public int getFGColor() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3752,7 +3620,6 @@ public class TMUI extends JFrame {
 	 * Gets the background color for the current view.
 	 *
 	 **/
-
 	public int getBGColor() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3766,7 +3633,6 @@ public class TMUI extends JFrame {
 	 * Sets the foreground color for the current view.
 	 *
 	 **/
-
 	public void setFGColor(int fgColor) {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3780,7 +3646,6 @@ public class TMUI extends JFrame {
 	 * Sets the background color for the current view.
 	 *
 	 **/
-
 	public void setBGColor(int bgColor) {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3794,7 +3659,6 @@ public class TMUI extends JFrame {
 	 * Sets the palette index for the current view.
 	 *
 	 **/
-
 	public void setPalIndex(int palIndex) {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -3816,7 +3680,6 @@ public class TMUI extends JFrame {
 	 * Gets the desktop.
 	 *
 	 **/
-
 	public JDesktopPane getDesktop() {
 		return desktop;
 	}
@@ -3833,7 +3696,6 @@ public class TMUI extends JFrame {
 	 * Creates a view with the given resources/attributes.
 	 *
 	 **/
-
 	public TMView createView(FileImage img, TileCodec tc, TMPalette pal, int mode) {
 		TMView view = new TMView(this, img, tc);
 		view.setMode(mode);
@@ -3846,7 +3708,6 @@ public class TMUI extends JFrame {
 	 * Adds a view to the desktop.
 	 *
 	 **/
-
 	public void addViewToDesktop(TMView view) {
 		desktop.add(view);
 		try {
@@ -3869,7 +3730,6 @@ public class TMUI extends JFrame {
 	 * the fileOpenChooser accordingly.
 	 *
 	 **/
-
 	private void initTileCodecUIStuff() {
 		buildTileCodecsMenu();
 		initFileOpenChooser();
@@ -3880,7 +3740,6 @@ public class TMUI extends JFrame {
 	 * Builds the View->Codec menu.
 	 *
 	 **/
-
 	private void buildTileCodecsMenu() {
 		tileCodecMenu.setMnemonic(KeyEvent.VK_C);
 		tileCodecMenu.removeAll();
@@ -3895,7 +3754,6 @@ public class TMUI extends JFrame {
 	 * Builds the Palette->Format menu.
 	 *
 	 **/
-
 	private void buildColorCodecsMenu() {
 		colorCodecMenu.setMnemonic(KeyEvent.VK_F);
 		colorCodecMenu.removeAll();
@@ -3909,7 +3767,6 @@ public class TMUI extends JFrame {
 	 * Adds a codec to the list of available codecs and creates a menu item for it.
 	 *
 	 **/
-
 	public void addColorCodec(ColorCodec codec) {
 		ColorCodecMenuItem codecMenuItem = new ColorCodecMenuItem(codec);
 		colorCodecMenu.add(codecMenuItem);
@@ -3922,7 +3779,6 @@ public class TMUI extends JFrame {
 	 * Menu item that represents a color codec.
 	 *
 	 **/
-
 	private class ColorCodecMenuItem extends JRadioButtonMenuItem {
 
 		private ColorCodec codec;
@@ -3945,7 +3801,6 @@ public class TMUI extends JFrame {
 		 * Gets the codec that the menu item represents.
 		 *
 		 **/
-
 		public ColorCodec getCodec() {
 			return codec;
 		}
@@ -3957,7 +3812,6 @@ public class TMUI extends JFrame {
 	 * Sets up the file open chooser.
 	 *
 	 **/
-
 	private void initFileOpenChooser() {
 		fileOpenChooser.setAcceptAllFileFilterUsed(false);
 		fileOpenChooser.resetChoosableFileFilters();
@@ -4014,7 +3868,6 @@ public class TMUI extends JFrame {
 	 * Sets up the palette open chooser.
 	 *
 	 **/
-
 	private static int paletteFilterSortRank(TMPaletteFileFilter pff) {
 		String ext = pff.getExtlist();
 		if ("csv".equals(ext)) {
@@ -4067,7 +3920,6 @@ public class TMUI extends JFrame {
 	 * exists.
 	 *
 	 **/
-
 	public ColorCodec getColorCodecByID(String codecID) {
 		for (int i = 0; i < colorcodecs.size(); i++) {
 			ColorCodec cc = colorcodecs.get(i);
@@ -4084,7 +3936,6 @@ public class TMUI extends JFrame {
 	 * exists.
 	 *
 	 **/
-
 	public TileCodec getTileCodecByID(String codecID) {
 		for (int i = 0; i < tilecodecs.size(); i++) {
 			TileCodec tc = tilecodecs.get(i);
@@ -4101,7 +3952,6 @@ public class TMUI extends JFrame {
 	 * based on its extension.
 	 *
 	 **/
-
 	private TMTileCodecFileFilter getTileCodecFilterForFile(File file) {
 		for (int i = 0; i < filefilters.size(); i++) {
 			TMTileCodecFileFilter cff = filefilters.get(i);
@@ -4118,7 +3968,6 @@ public class TMUI extends JFrame {
 	 * based on its extension.
 	 *
 	 **/
-
 	private TMPaletteFileFilter getPaletteFilterForFile(File file) {
 		for (int i = 0; i < palettefilters.size(); i++) {
 			TMPaletteFileFilter pff = palettefilters.get(i);
@@ -4134,7 +3983,6 @@ public class TMUI extends JFrame {
 	 * Recognizes all files.
 	 *
 	 **/
-
 	private class AllFilter extends TMFileFilter {
 
 		public boolean accept(File f) {
@@ -4152,7 +4000,6 @@ public class TMUI extends JFrame {
 	 * Builds the menu containing all the bookmarks.
 	 *
 	 **/
-
 	private void buildBookmarksMenu(FolderNode root) {
 		// remove old bookmark menuitems, if any
 		while (navigateMenu.getItemCount() > 5) {
@@ -4177,7 +4024,6 @@ public class TMUI extends JFrame {
 	 * If the node is internal it is expanded into a menu of its own.
 	 *
 	 **/
-
 	public void addToBookmarksMenu(TMTreeNode node, JMenu menu) {
 		if (node instanceof BookmarkItemNode) {
 			menu.add(new BookmarkMenuItem((BookmarkItemNode) node));
@@ -4205,7 +4051,6 @@ public class TMUI extends JFrame {
 	 * Menu item that represents a bookmark.
 	 *
 	 **/
-
 	private class BookmarkMenuItem extends JMenuItem {
 
 		private BookmarkItemNode bookmark;
@@ -4234,7 +4079,6 @@ public class TMUI extends JFrame {
 	 * Builds the menu containing all the palettes.
 	 *
 	 **/
-
 	private void buildPalettesMenu(FolderNode root) {
 		// remove old palette menuitems, if any
 		while (paletteMenu.getItemCount() > 10) {
@@ -4263,7 +4107,6 @@ public class TMUI extends JFrame {
 	 * If the node is internal it is expanded into a menu of its own.
 	 *
 	 **/
-
 	public void addToPalettesMenu(TMTreeNode node, JMenu menu) {
 		if (node instanceof PaletteItemNode) {
 			// palette
@@ -4296,7 +4139,6 @@ public class TMUI extends JFrame {
 	 * Menu item that represents a bookmark.
 	 *
 	 **/
-
 	private class PaletteMenuItem extends JRadioButtonMenuItem {
 
 		private PaletteItemNode paletteNode;
@@ -4326,7 +4168,6 @@ public class TMUI extends JFrame {
 	 * settings of the current frame.
 	 *
 	 **/
-
 	public void viewSelected(TMView view) {
 		setSaveButtonsEnabled(view.getFileImage().isModified());
 
@@ -4354,7 +4195,6 @@ public class TMUI extends JFrame {
 	 * Selects the correct menu item, according to the view's block size.
 	 *
 	 **/
-
 	public void refreshBlockSizeSelection(TMView view) {
 		sizeBlockToCanvasMenuItem.setSelected(view.getSizeBlockToCanvas());
 	}
@@ -4364,7 +4204,6 @@ public class TMUI extends JFrame {
 	 * Selects the correct menu item, according to the view's mode.
 	 *
 	 **/
-
 	public void refreshModeSelection(TMView view) {
 		// select the correct mode menu item
 		if (view.getMode() == TileCodec.MODE_1D) {
@@ -4379,7 +4218,6 @@ public class TMUI extends JFrame {
 	 * Selects the correct menu item, according to the view's tile codec.
 	 *
 	 **/
-
 	public void refreshTileCodecSelection(TMView view) {
 		tileCodecButtonHashtable.get(view.getTileCodec()).setSelected(true);
 	}
@@ -4389,7 +4227,6 @@ public class TMUI extends JFrame {
 	 * Reloads the palette.
 	 *
 	 **/
-
 	public void refreshPalettePane() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -4402,7 +4239,6 @@ public class TMUI extends JFrame {
 	 * Updates the Undo/Redo buttons text+status.
 	 *
 	 **/
-
 	public void refreshUndoRedo() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -4429,7 +4265,6 @@ public class TMUI extends JFrame {
 	 * Sets the statusbar fields according to current view settings.
 	 *
 	 **/
-
 	public void refreshStatusBar() {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -4442,7 +4277,6 @@ public class TMUI extends JFrame {
 	 * Hide the statusbar coordenates.
 	 *
 	 **/
-
 	public void hideStatusBarCoords() {
 		statusBar.setCoords("");
 	}
@@ -4452,7 +4286,6 @@ public class TMUI extends JFrame {
 	 * Builds the bookmarks menu according to current file image.
 	 *
 	 **/
-
 	public void refreshBookmarksMenu() {
 		TMView view = getSelectedView();
 		if (view != null && view.getFileImage().getResources() != null) {
@@ -4465,7 +4298,6 @@ public class TMUI extends JFrame {
 	 * Builds the palettes menu according to current file image.
 	 *
 	 **/
-
 	public void refreshPalettesMenu() {
 		TMView view = getSelectedView();
 		if (view != null && view.getFileImage().getResources() != null) {
@@ -4481,7 +4313,6 @@ public class TMUI extends JFrame {
 	 * Refreshes the palette selection.
 	 *
 	 **/
-
 	public void refreshPaletteSelection(TMView view) {
 		PaletteMenuItem item = paletteButtonHashtable.get(view.getPalette());
 		if (item != null) {
@@ -4496,7 +4327,6 @@ public class TMUI extends JFrame {
 	 * Refreshes the palette endianness.
 	 *
 	 **/
-
 	public void refreshPaletteEndiannessSelection(TMView view) {
 		if (view.getPalette().getEndianness() == ColorCodec.LITTLE_ENDIAN) {
 			paletteLittleEndianMenuItem.setSelected(true);
@@ -4510,7 +4340,6 @@ public class TMUI extends JFrame {
 	 * Selects the correct menu item, according to the view's color codec.
 	 *
 	 **/
-
 	public void refreshColorCodecSelection(TMView view) {
 		colorCodecButtonHashtable.get(view.getPalette().getCodec()).setSelected(true);
 	}
@@ -4520,7 +4349,6 @@ public class TMUI extends JFrame {
 	 * Opens the specified file.
 	 *
 	 **/
-
 	public void openFile(File file) {
 		System.gc();
 		// read file
@@ -4622,7 +4450,6 @@ public class TMUI extends JFrame {
 	 * Builds the menu containing most recently opened (closed) files.
 	 *
 	 **/
-
 	public void buildReopenMenu() {
 		reopenMenu.removeAll();
 		Vector<File> recentFiles = TileMolester.settings.getRecentFiles();
@@ -4643,7 +4470,6 @@ public class TMUI extends JFrame {
 	 * Menu item that represents a recently opened (closed) file.
 	 *
 	 **/
-
 	private class RecentFileMenuItem extends JMenuItem {
 
 		private File recentFile;
@@ -4667,12 +4493,6 @@ public class TMUI extends JFrame {
 
 	}
 
-	/**
-	*
-	*
-	*
-	**/
-
 	public ColorCodec[] getColorCodecs() {
 		ColorCodec[] ccs = new ColorCodec[colorcodecs.size()];
 		for (int i = 0; i < ccs.length; i++) {
@@ -4688,7 +4508,6 @@ public class TMUI extends JFrame {
 	 * If no corresponding value is found, the key itself is returned.
 	 *
 	 **/
-
 	public String xlate(String key) {
 		try {
 			String value = xl.xlate(key);
@@ -4703,7 +4522,6 @@ public class TMUI extends JFrame {
 	 * Gets the selected view frame.
 	 *
 	 **/
-
 	public TMView getSelectedView() {
 		return (TMView) desktop.getSelectedFrame();
 	}

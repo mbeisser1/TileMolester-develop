@@ -27,12 +27,6 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.util.Vector;
 
-/**
-*
-*
-*
-**/
-
 public class TMImportInternalPaletteDialog extends TMModalDialog {
 
     private JLabel offsetLabel;
@@ -45,21 +39,14 @@ public class TMImportInternalPaletteDialog extends TMModalDialog {
     private JRadioButton bigRadio;
     private JCheckBox copyCheck;
 
-/**
-*
-* Creates the dialog.
-*
-**/
-
+    /**
+     *
+     * Creates the dialog.
+     *
+     **/
     public TMImportInternalPaletteDialog(Frame owner, tm.utils.Xlator xl) {
         super(owner, "Import_Internal_Palette_Dialog_Title", xl);
     }
-
-/**
-*
-*
-*
-**/
 
     protected JPanel getDialogPane() {
         offsetLabel = new JLabel(xlate("Offset_Prompt"));
@@ -146,12 +133,6 @@ public class TMImportInternalPaletteDialog extends TMModalDialog {
         return copyCheck.isSelected();
     }
 
-/**
-*
-*
-*
-**/
-
     public void setCodecs(Vector<ColorCodec> codecs) {
         codecCombo.removeAllItems();
         for (int i=0; i<codecs.size(); i++) {
@@ -159,12 +140,6 @@ public class TMImportInternalPaletteDialog extends TMModalDialog {
         }
         codecCombo.setSelectedIndex(0);
     }
-
-/**
-*
-*
-*
-**/
 
     public int showDialog() {
 //        offsetField.setText("");

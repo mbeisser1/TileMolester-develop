@@ -24,41 +24,32 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
-*
-* The dialog that's shown when user wants to create a new ("blank") file.
-*
-**/
-
+ *
+ * The dialog that's shown when user wants to create a new ("blank") file.
+ *
+ **/
 public class TMNewFileDialog extends TMModalDialog {
 
     private JLabel sizeLabel;
     private JTextField sizeField;
 
-/**
-*
-* Creates the New File dialog.
-*
-**/
-
+    /**
+     *
+     * Creates the New File dialog.
+     *
+     **/
     public TMNewFileDialog(Frame owner, tm.utils.Xlator xl) {
         super(owner, "New_File_Dialog_Title", xl);
     }
 
-/**
-*
-* Gets the filesize given by the user.
-*
-**/
-
+    /**
+     *
+     * Gets the filesize given by the user.
+     *
+     **/
     public int getFileSize() {
         return Integer.parseInt(sizeField.getText());
     }
-
-/**
-*
-*
-*
-**/
 
     protected JPanel getDialogPane() {
         JPanel p = new JPanel();

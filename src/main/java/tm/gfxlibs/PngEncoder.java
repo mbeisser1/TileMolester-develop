@@ -3,24 +3,24 @@
  * The Image is presumed to use the DirectColorModel.
  *
  * Thanks to Jay Denny at KeyPoint Software
- *    http://www.keypoint.com/
+ * http://www.keypoint.com/
  * who let me develop this code on company time.
  *
  * You may contact me with (probably very-much-needed) improvements,
  * comments, and bug fixes at:
  *
- *   david@catcode.com
+ * david@catcode.com
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -275,7 +275,7 @@ public class PngEncoder extends Object
      * @param array The original array.
      * @param newLength The length you wish the new array to have.
      * @return Array of newly desired length. If shorter than the
-     *         original, the trailing elements are truncated.
+     * original, the trailing elements are truncated.
      */
     protected byte[] resizeByteArray( byte[] array, int newLength )
     {

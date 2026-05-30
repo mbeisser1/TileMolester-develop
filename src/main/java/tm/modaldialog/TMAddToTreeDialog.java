@@ -25,11 +25,6 @@ import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.*;
 
-/**
-*
-*
-**/
-
 public class TMAddToTreeDialog extends TMModalDialog {
 
     private TMTreeNodeTree tree;
@@ -40,22 +35,15 @@ public class TMAddToTreeDialog extends TMModalDialog {
     private TMNewFolderDialog newFolderDialog;
     private JScrollPane scrollPane;
 
-/**
-*
-* Creates the dialog.
-*
-**/
-
+    /**
+     *
+     * Creates the dialog.
+     *
+     **/
     public TMAddToTreeDialog(Frame owner, String title, tm.utils.Xlator xl) {
         super(owner, title, xl);
         newFolderDialog = new TMNewFolderDialog(owner, xl);
     }
-
-/**
-*
-*
-*
-**/
 
     protected JPanel getDialogPane() {
         descLabel = new JLabel(xlate("Description_Prompt"));
@@ -107,13 +95,12 @@ public class TMAddToTreeDialog extends TMModalDialog {
         return p;
     }
 
-/**
-*
-* Prompts the user for a folder name, then inserts a folder node with that name
-* as a subfolder of the currently selected node in the tree.
-*
-**/
-
+    /**
+     *
+     * Prompts the user for a folder name, then inserts a folder node with that name
+     * as a subfolder of the currently selected node in the tree.
+     *
+     **/
     public void doNewFolderCommand() {
         newFolderDialog.setName("");    // clear previous input, if any
         int retVal = newFolderDialog.showDialog();  // prompt user for folder name
@@ -130,31 +117,23 @@ public class TMAddToTreeDialog extends TMModalDialog {
         }
     }
 
-/**
-*
-* Gets the folder where the new item is to be inserted.
-*
-**/
-
+    /**
+     *
+     * Gets the folder where the new item is to be inserted.
+     *
+     **/
     public FolderNode getFolder() {
         return (FolderNode)tree.getSelectedNode();
     }
 
-/**
-*
-* Gets the description that the user entered for the item.
-*
-**/
-
+    /**
+     *
+     * Gets the description that the user entered for the item.
+     *
+     **/
     public String getDescription() {
         return descField.getText();
     }
-
-/**
-*
-*
-*
-**/
 
     private class FolderCellRenderer extends DefaultTreeCellRenderer {
 
@@ -163,12 +142,6 @@ public class TMAddToTreeDialog extends TMModalDialog {
             setLeafIcon(openIcon);
         }
     }
-
-/**
-*
-*
-*
-**/
 
     public int showDialog(TMTreeNode root) {
         tree.loadTreeNodes(root, false);
@@ -181,12 +154,6 @@ public class TMAddToTreeDialog extends TMModalDialog {
         });
         return super.showDialog();
     }
-
-/**
-*
-*
-*
-**/
 
     public boolean inputOK() {
         return !(descField.getText().trim().equals(""));

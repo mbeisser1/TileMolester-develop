@@ -27,11 +27,10 @@ import java.awt.event.*;
 import javax.swing.border.*;
 
 /**
-*
-* Tile Molester status bar.
-*
-**/
-
+ *
+ * Tile Molester status bar.
+ *
+ **/
 public class TMStatusBar extends JPanel {
 
     private JLabel offsetLabel = new JLabel(" ");
@@ -42,12 +41,11 @@ public class TMStatusBar extends JPanel {
     private JLabel tilesLabel = new JLabel(" ");
     private JLabel messageLabel = new JLabel(" ");
 
-/**
-*
-* Creates the status bar.
-*
-**/
-
+    /**
+     *
+     * Creates the status bar.
+     *
+     **/
     public TMStatusBar() {
         super();
         JPanel p1 = new JPanel();
@@ -80,22 +78,20 @@ public class TMStatusBar extends JPanel {
         //tilesLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
     }
 
-/**
-*
-* Sets the text for general message.
-*
-**/
-
+    /**
+     *
+     * Sets the text for general message.
+     *
+     **/
     public void setMessage(String s) {
         messageLabel.setText(" "+s+" ");
     }
 
-/**
-*
-* Sets the hex text that indicates the file position.
-*
-**/
-
+    /**
+     *
+     * Sets the hex text that indicates the file position.
+     *
+     **/
     public void setOffset(int offset) {
         String hexOffset = Integer.toHexString(offset).toUpperCase();
         while (hexOffset.length() < 8) {
@@ -104,21 +100,14 @@ public class TMStatusBar extends JPanel {
         offsetLabel.setText(" "+hexOffset+" "); // i18n
     }
 
-/**
-*
-* Sets the coordinates.
-*
-**/
-
+    /**
+     *
+     * Sets the coordinates.
+     *
+     **/
     public void setCoords(int x, int y) {
         coordsLabel.setText(" ("+x+","+y+") ");
     }
-
-/**
-*
-*
-*
-**/
 
     public void setSelectionCoords(int x1, int y1, int x2, int y2) {
         int w = Math.abs(x1 - x2) + 1;
@@ -126,24 +115,22 @@ public class TMStatusBar extends JPanel {
         coordsLabel.setText(" ("+x1+","+y1+") -> ("+x2+","+y2+") = ("+w+","+h+")");
     }
 
-/**
-*
-* Sets the text that indicates the graphics codec in use.
-*
-**/
-
+    /**
+     *
+     * Sets the text that indicates the graphics codec in use.
+     *
+     **/
     public void setCodec(String s) {
         codecLabel.setText(" "+s+" ");   // i18n
     }
 
 
 
-/**
-*
-* Sets the text that indicates the graphics codec in use.
-*
-**/
-
+    /**
+     *
+     * Sets the text that indicates the graphics codec in use.
+     *
+     **/
     public void setPalOffset(int offset) {
         String hexOffset = Integer.toHexString(offset).toUpperCase();
         while (hexOffset.length() < 8) {
@@ -153,12 +140,11 @@ public class TMStatusBar extends JPanel {
     }
 
 
-/**
-*
-* Sets the text that indicates the current mode.
-*
-**/
-
+    /**
+     *
+     * Sets the text that indicates the current mode.
+     *
+     **/
     public void setMode(int mode) {
         if (mode == TileCodec.MODE_1D)
             modeLabel.setText(" 1-Dimensional "); // i18n
@@ -166,22 +152,20 @@ public class TMStatusBar extends JPanel {
             modeLabel.setText(" 2-Dimensional "); // i18n
     }
 
-/**
-*
-* Sets the text that indicates how many tiles are shown.
-*
-**/
-
+    /**
+     *
+     * Sets the text that indicates how many tiles are shown.
+     *
+     **/
     public void setTiles(int w, int h) {
         tilesLabel.setText(" "+w+"x"+h+" tiles ");  // i18n
     }
 
-/**
-*
-* Called when a view has been selected.
-*
-**/
-
+    /**
+     *
+     * Called when a view has been selected.
+     *
+     **/
     public void viewSelected(TMView view) {
         TMEditorCanvas ec = view.getEditorCanvas();
         setMessage("");
@@ -206,11 +190,11 @@ public class TMStatusBar extends JPanel {
         setTiles(view.getCols(), view.getRows());
     }
 
-/**
- *
- * Convenience method for setting various fields of gridbagconstraints.
- *
- */
+    /**
+     *
+     * Convenience method for setting various fields of gridbagconstraints.
+     *
+     */
 
     protected static void buildConstraints(GridBagConstraints gbc, int gx, int gy, int gw, int gh, int wx, int wy) {
         gbc.gridx = gx;

@@ -24,11 +24,10 @@ import java.io.File;
 import java.util.Vector;
 
 /**
-*
-* A FileImage object represents a file that has been loaded into the editor.
-*
-**/
-
+ *
+ * A FileImage object represents a file that has been loaded into the editor.
+ *
+ **/
 public class FileImage {
 
     private byte[] contents;
@@ -38,14 +37,13 @@ public class FileImage {
     private boolean modified;
     private TMFileResources resources;
 
-/**
-*
-* Creates a FileImage from a file on disk.
-*
-* The contents of the file have already been read into buffer contents.
-*
-**/
-
+    /**
+     *
+     * Creates a FileImage from a file on disk.
+     *
+     * The contents of the file have already been read into buffer contents.
+     *
+     **/
     public FileImage(File file, byte[] contents) {
         this.file = file;
         this.contents = contents;
@@ -53,12 +51,11 @@ public class FileImage {
         setModified(false);
     }
 
-/**
-*
-* Creates a blank FileImage of the requested size.
-*
-**/
-
+    /**
+     *
+     * Creates a blank FileImage of the requested size.
+     *
+     **/
     public FileImage(int size) throws OutOfMemoryError {
         file = new File(System.getProperty("user.dir") + (fileNum++));
         this.resources = null;
@@ -75,62 +72,56 @@ public class FileImage {
         setModified(false);
     }
 
-/**
-*
-* Sets the file.
-*
-**/
-
+    /**
+     *
+     * Sets the file.
+     *
+     **/
     public void setFile(File file) {
         this.file = file;
     }
 
-/**
-*
-* Gets the file.
-*
-**/
-
+    /**
+     *
+     * Gets the file.
+     *
+     **/
     public File getFile() {
         return file;
     }
 
-/**
-*
-* Gets the binary contents of this FileImage.
-*
-**/
-
+    /**
+     *
+     * Gets the binary contents of this FileImage.
+     *
+     **/
     public byte[] getContents() {
         return contents;
     }
 
-/**
-*
-* Gets the size (in # of bytes) of the file contents.
-*
-**/
-
+    /**
+     *
+     * Gets the size (in # of bytes) of the file contents.
+     *
+     **/
     public int getSize() {
         return contents.length;
     }
 
-/**
-*
-* Gets the name of the file.
-*
-**/
-
+    /**
+     *
+     * Gets the name of the file.
+     *
+     **/
     public String getName() {
         return file.getName();
     }
 
-/**
-*
-* Gets the TMViews associated with this FileImage.
-*
-**/
-
+    /**
+     *
+     * Gets the TMViews associated with this FileImage.
+     *
+     **/
     public TMView[] getViews() {
         TMView[] vs = new TMView[views.size()];
         for (int i=0; i<vs.length; i++) {
@@ -139,22 +130,20 @@ public class FileImage {
         return vs;
     }
 
-/**
-*
-* Adds a TMView to this FileImage.
-*
-**/
-
+    /**
+     *
+     * Adds a TMView to this FileImage.
+     *
+     **/
     public void addView(TMView view) {
         views.add(view);
     }
 
-/**
-*
-* Removes a TMView for this FileImage.
-*
-**/
-
+    /**
+     *
+     * Removes a TMView for this FileImage.
+     *
+     **/
     public void removeView(TMView view) {
         views.remove(view);
         if (views.size() == 0) {
@@ -164,12 +153,11 @@ public class FileImage {
         }
     }
 
-/**
-*
-* Sets the modified flag.
-*
-**/
-
+    /**
+     *
+     * Sets the modified flag.
+     *
+     **/
     public void setModified(boolean modified) {
         this.modified = modified;
         // update view titles
@@ -187,33 +175,30 @@ public class FileImage {
         }
     }
 
-/**
-*
-* Gets the modified flag.
-*
-**/
-
+    /**
+     *
+     * Gets the modified flag.
+     *
+     **/
     public boolean isModified() {
         return modified;
     }
 
-/**
-*
-* Sets the resources associated with this fileimage.
-* The resources contain bookmarks and palettes.
-*
-**/
-
+    /**
+     *
+     * Sets the resources associated with this fileimage.
+     * The resources contain bookmarks and palettes.
+     *
+     **/
     public void setResources(TMFileResources resources) {
         this.resources = resources;
     }
 
-/**
-*
-* Gets the resources related to this fileimage.
-*
-**/
-
+    /**
+     *
+     * Gets the resources related to this fileimage.
+     *
+     **/
     public TMFileResources getResources() {
         return resources;
     }

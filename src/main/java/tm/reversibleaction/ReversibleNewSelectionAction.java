@@ -22,11 +22,10 @@ import tm.canvases.TMEditorCanvas;
 import tm.canvases.TMSelectionCanvas;
 
 /**
-*
-* Allows undo/redo of making a new selection.
-*
-**/
-
+ *
+ * Allows undo/redo of making a new selection.
+ *
+ **/
 public class ReversibleNewSelectionAction extends ReversibleAction {
     private TMSelectionCanvas newSelection;
     private TMEditorCanvas owner;

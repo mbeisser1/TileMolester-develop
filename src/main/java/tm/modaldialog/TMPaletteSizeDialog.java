@@ -24,41 +24,32 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
-*
-* The dialog that's shown when user wants to change the size of current palette.
-*
-**/
-
+ *
+ * The dialog that's shown when user wants to change the size of current palette.
+ *
+ **/
 public class TMPaletteSizeDialog extends TMModalDialog {
 
     private JLabel sizeLabel;
     private JTextField sizeField;
 
-/**
-*
-* Creates the Palette Size dialog.
-*
-**/
-
+    /**
+     *
+     * Creates the Palette Size dialog.
+     *
+     **/
     public TMPaletteSizeDialog(Frame owner, tm.utils.Xlator xl) {
         super(owner, "Palette_Size_Dialog_Title", xl);
     }
 
-/**
-*
-* Gets the palette size given by the user.
-*
-**/
-
+    /**
+     *
+     * Gets the palette size given by the user.
+     *
+     **/
     public int getPaletteSize() {
         return Integer.parseInt(sizeField.getText());
     }
-
-/**
-*
-*
-*
-**/
 
     protected JPanel getDialogPane() {
         JPanel p = new JPanel();

@@ -21,21 +21,9 @@ package tm.utils;
 import java.util.ResourceBundle;
 import java.util.Locale;
 
-/**
-*
-*
-*
-**/
-
 public class Xlator {
 
     private ResourceBundle rb;
-
-/**
-*
-*
-*
-**/
 
     public Xlator(String baseName, Locale locale) throws Exception {
         rb = null;
@@ -46,12 +34,6 @@ public class Xlator {
             throw e;
         }
     }
-
-/**
-*
-*
-*
-**/
 
     public String xlate(String key) {
         try {

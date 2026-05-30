@@ -19,12 +19,11 @@
 package tm.tilecodecs;
 
 /**
-*
-* Abstract class for 8x8 ("atomic") tile codecs.
-* To add a new tile format, simply extend this class and implement decode() and encode().
-*
-**/
-
+ *
+ * Abstract class for 8x8 ("atomic") tile codecs.
+ * To add a new tile format, simply extend this class and implement decode() and encode().
+ *
+ **/
 public abstract class TileCodec {
 
     public static final int MODE_1D=1;
@@ -38,14 +37,13 @@ public abstract class TileCodec {
     protected long colorCount;
     protected int tileSize;     // size of one encoded tile
 
-/**
-*
-* Constructor. Every subclass must call this with argument bitsPerPixel.
-*
-* @param bitsPerPixel   Duh!
-*
-**/
-
+    /**
+     *
+     * Constructor. Every subclass must call this with argument bitsPerPixel.
+     *
+     * @param bitsPerPixel   Duh!
+     *
+     **/
     public TileCodec(String id, int bitsPerPixel, String description) {
         this.id = id;
         this.bitsPerPixel = bitsPerPixel;
@@ -56,52 +54,43 @@ public abstract class TileCodec {
         pixels = new int[8*8];
     }
 
-/**
-*
-* Decodes a tile.
-*
-* @param bits   An array of encoded tile data
-* @param ofs    Start offset of tile in bits array
-*
-**/
-
+    /**
+     *
+     * Decodes a tile.
+     *
+     * @param bits   An array of encoded tile data
+     * @param ofs    Start offset of tile in bits array
+     *
+     **/
     public abstract int[] decode(byte[] bits, int ofs, int stride);
 
-/**
-*
-* Encodes a tile.
-*
-* @param pixels An array of decoded tile data
-*
-**/
-
+    /**
+     *
+     * Encodes a tile.
+     *
+     * @param pixels An array of decoded tile data
+     *
+     **/
     public abstract void encode(int[] pixels, byte[] bits, int ofs, int stride);
 
-/**
-*
-* Gets the # of bits per pixel for the tile format.
-*
-**/
-
+    /**
+     *
+     * Gets the # of bits per pixel for the tile format.
+     *
+     **/
     public int getBitsPerPixel() {
         return bitsPerPixel;
     }
 
-/**
-*
-* Gets the # of bytes per row (8 pixels) for the tile format.
-*
-**/
-
+    /**
+     *
+     * Gets the # of bytes per row (8 pixels) for the tile format.
+     *
+     **/
     public int getBytesPerRow() {
         return bytesPerRow;
     }
 
-/**
-*
-*
-*
-**/
 /*
     public long getColorCount() {
         return colorCount;
@@ -113,32 +102,29 @@ public abstract class TileCodec {
         return 256;
     }
 
-/**
-*
-* Gets the size in bytes of one tile encoded in this format.
-*
-**/
-
+    /**
+     *
+     * Gets the size in bytes of one tile encoded in this format.
+     *
+     **/
     public int getTileSize() {
         return tileSize;
     }
 
-/**
-*
-* Gets the description of the codec.
-*
-**/
-
+    /**
+     *
+     * Gets the description of the codec.
+     *
+     **/
     public String getDescription() {
         return description;
     }
 
-/**
-*
-* Gets the codec id.
-*
-**/
-
+    /**
+     *
+     * Gets the codec id.
+     *
+     **/
     public String getID() {
         return id;
     }

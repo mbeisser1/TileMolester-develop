@@ -23,51 +23,36 @@ import javax.swing.event.*;
 import java.awt.*;
 
 /**
-*
-* The dialog that's shown when user wants to create a new folder.
-*
-**/
-
+ *
+ * The dialog that's shown when user wants to create a new folder.
+ *
+ **/
 public class TMNewFolderDialog extends TMModalDialog {
 
     private JLabel nameLabel;
     private JTextField nameField;
 
-/**
-*
-* Creates the New Folder dialog.
-*
-**/
-
+    /**
+     *
+     * Creates the New Folder dialog.
+     *
+     **/
     public TMNewFolderDialog(Frame owner, tm.utils.Xlator xl) {
         super(owner, "New_Folder_Dialog_Title", xl);
     }
 
-/**
-*
-* Gets the folder name given by the user.
-*
-**/
-
+    /**
+     *
+     * Gets the folder name given by the user.
+     *
+     **/
     public String getName() {
         return nameField.getText();
     }
 
-/**
-*
-*
-*
-**/
-
     public void setName(String name) {
         nameField.setText(name);
     }
-
-/**
-*
-*
-*
-**/
 
     protected JPanel getDialogPane() {
         JPanel p = new JPanel();
@@ -81,12 +66,6 @@ public class TMNewFolderDialog extends TMModalDialog {
 
         return p;
     }
-
-/**
-*
-*
-*
-**/
 
     public int showDialog() {
         nameField.setText("");

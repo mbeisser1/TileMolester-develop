@@ -695,7 +695,6 @@ public class GIFOutputStream extends FilterOutputStream
    |  kerry@shetline.com                                                |
    |                                                                    |
    \********************************************************************/
-
    protected int        rl_pixel;
    protected int        rl_basecode;
    protected int        rl_count;

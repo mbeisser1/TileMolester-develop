@@ -22,11 +22,10 @@ import tm.TMPalette;
 import tm.ui.TMView;
 
 /**
-*
-* Allows undo/redo of a palette entry modification.
-*
-**/
-
+ *
+ * Allows undo/redo of a palette entry modification.
+ *
+ **/
 public class ReversiblePaletteEditAction extends ReversibleAction {
 
     private int colorIndex;

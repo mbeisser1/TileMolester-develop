@@ -22,11 +22,10 @@ import tm.canvases.TMSelectionCanvas;
 import tm.canvases.TMEditorCanvas;
 
 /**
-*
-* Allows undo/redo for the Cut operation.
-*
-**/
-
+ *
+ * Allows undo/redo for the Cut operation.
+ *
+ **/
 public class ReversibleCutAction extends ReversibleAction {
 
     private TMSelectionCanvas selection;

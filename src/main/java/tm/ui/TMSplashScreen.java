@@ -23,11 +23,10 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /**
-*
-* Tile Molester splash screen.
-*
-**/
-
+ *
+ * Tile Molester splash screen.
+ *
+ **/
 public class TMSplashScreen extends JWindow {
 
     public TMSplashScreen(Frame owner) {

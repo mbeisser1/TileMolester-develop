@@ -31,14 +31,13 @@ import java.awt.dnd.*;
 import java.awt.datatransfer.*;
 
 /**
-*
-* Dialog where the user can organize treenodes.
-* Items and folders can be moved, renamed and deleted.
-* New folders can be created.
-* Items can be sorted (?)
-*
-**/
-
+ *
+ * Dialog where the user can organize treenodes.
+ * Items and folders can be moved, renamed and deleted.
+ * New folders can be created.
+ * Items can be sorted (?)
+ *
+ **/
 public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
 
     private TMTreeNodeTree tree = new TMTreeNodeTree();
@@ -51,12 +50,6 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
     private JButton deleteButton;
     private JButton closeButton;
     private Xlator xl;
-
-/**
-*
-*
-*
-**/
 
     public TMOrganizeTreeDialog(Frame owner, String title, Xlator xl) {
         super(owner, xl != null ? xl.xlate(title) : title, true);
@@ -156,12 +149,6 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
         );
     }
 
-/**
-*
-*
-*
-**/
-
     public void doNewFolderCommand() {
         newFolderDialog.setName("");    // clear previous input, if any
         int retVal = newFolderDialog.showDialog();  // prompt user for folder name
@@ -185,23 +172,11 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
         }
     }
 
-/**
-*
-*
-*
-**/
-
     public void doRenameCommand() {
         DefaultMutableTreeNode node = tree.getSelectedNode();
         if (node.isRoot()) return;
         tree.startEditingAtPath(tree.getSelectionPath());
     }
-
-/**
-*
-*
-*
-**/
 
     public void doMoveCommand() {
         JOptionPane.showMessageDialog(
@@ -211,12 +186,6 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
             JOptionPane.INFORMATION_MESSAGE
         );
     }
-
-/**
-*
-*
-*
-**/
 
     public void doDeleteCommand() {
         TMTreeNode node = tree.getSelectedNode();
@@ -237,22 +206,15 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
         }
     }
 
-/**
-*
-*
-*
-**/
-
     public void doCloseCommand() {
         setVisible(false);
     }
 
-/**
-*
-* Shows the dialog.
-*
-**/
-
+    /**
+     *
+     * Shows the dialog.
+     *
+     **/
     public void showDialog(FolderNode root) {
         tree.loadTreeNodes(root, true);
         tree.getModel().addTreeModelListener(this);
@@ -285,12 +247,6 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
     public void treeStructureChanged(TreeModelEvent e) {
     }
 
-/**
-*
-*
-*
-**/
-
     public String xlate(String key) {
         try {
             String value = xl.xlate(key);
@@ -300,12 +256,6 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
             return key;
         }
     }
-
-/**
-*
-*
-*
-**/
 
     private class MyDragGestureListener implements DragGestureListener {
 
@@ -317,12 +267,6 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
         }
 
     }
-
-/**
-*
-*
-*
-**/
 
     private class MyDropTargetListener extends DropTargetAdapter {
 

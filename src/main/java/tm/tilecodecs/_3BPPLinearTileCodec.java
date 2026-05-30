@@ -2,20 +2,18 @@ package tm.tilecodecs;
 
 public class _3BPPLinearTileCodec extends TileCodec {
 
-/**
-* Constructor.
-**/
-
+    /**
+     * Constructor.
+     **/
     public _3BPPLinearTileCodec() {
         super("LN98", 3, "3bpp linear");
     }
 
-/**
-*
-* Decodes a tile.
-*
-**/
-
+    /**
+     *
+     * Decodes a tile.
+     *
+     **/
     public int[] decode(byte[] bits, int ofs, int stride) {
         int pos=0;
         int b1, b2, b3;
@@ -38,12 +36,11 @@ public class _3BPPLinearTileCodec extends TileCodec {
         return pixels;
     }
 
-/**
-*
-* Encodes a tile.
-*
-**/
-
+    /**
+     *
+     * Encodes a tile.
+     *
+     **/
     public void encode(int[] pixels, byte[] bits, int ofs, int stride) {
         int pos = 0;
         int b1, b2, b3;

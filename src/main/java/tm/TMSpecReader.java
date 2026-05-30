@@ -35,12 +35,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
-*
-* This class has methods for reading an XML document containing specifications
-* for the various program resources.
-*
-**/
-
+ *
+ * This class has methods for reading an XML document containing specifications
+ * for the various program resources.
+ *
+ **/
 public class TMSpecReader {
 
     private static Vector<ColorCodec> colorcodecs;
@@ -50,12 +49,11 @@ public class TMSpecReader {
     private static Vector<TMFileListener> filelisteners;
     private static Element tmspec;
 
-/**
-*
-* Reads specs from the specified file.
-*
-**/
-
+    /**
+     *
+     * Reads specs from the specified file.
+     *
+     **/
     public static void readSpecsFromFile(File file)
     throws SAXException, ParserConfigurationException, IOException {
         colorcodecs = new Vector<>();
@@ -92,12 +90,11 @@ public class TMSpecReader {
         readFileListeners();
     }
 
-/**
-*
-* Reads the directcolor format tags and creates directcolorcodecs for them.
-*
-**/
-
+    /**
+     *
+     * Reads the directcolor format tags and creates directcolorcodecs for them.
+     *
+     **/
     private static void readDirectColorFormats() {
         NodeList directColorTags = tmspec.getElementsByTagName("directcolor");
         for (int i=0; i<directColorTags.getLength(); i++) {
@@ -115,12 +112,11 @@ public class TMSpecReader {
         }
     }
 
-/**
-*
-* Reads the indexedcolor format tags and creates indexedcolorcodecs for them.
-*
-**/
-
+    /**
+     *
+     * Reads the indexedcolor format tags and creates indexedcolorcodecs for them.
+     *
+     **/
     private static void readIndexedColorFormats() {
         NodeList indexedColorTags = tmspec.getElementsByTagName("indexedcolor");
         for (int i=0; i<indexedColorTags.getLength(); i++) {
@@ -144,12 +140,11 @@ public class TMSpecReader {
         }
     }
 
-/**
-*
-* Reads the planartile format tags and creates planartilecodecs for them.
-*
-**/
-
+    /**
+     *
+     * Reads the planartile format tags and creates planartilecodecs for them.
+     *
+     **/
     private static void readPlanarTileFormats() {
         NodeList planarTileTags = tmspec.getElementsByTagName("planartile");
         for (int i=0; i<planarTileTags.getLength(); i++) {
@@ -166,12 +161,11 @@ public class TMSpecReader {
         }
     }
 
-/**
-*
-* Reads the lineartile tags and creates lineartilecodecs for them.
-*
-**/
-
+    /**
+     *
+     * Reads the lineartile tags and creates lineartilecodecs for them.
+     *
+     **/
     private static void readLinearTileFormats() {
         NodeList linearTileTags = tmspec.getElementsByTagName("lineartile");
         for (int i=0; i<linearTileTags.getLength(); i++) {
@@ -186,12 +180,11 @@ public class TMSpecReader {
         }
     }
 
-/**
-*
-* Reads the directcolortile tags and creates directcolortilecodecs for them.
-*
-**/
-
+    /**
+     *
+     * Reads the directcolortile tags and creates directcolortilecodecs for them.
+     *
+     **/
     private static void readDirectColorTileFormats() {
         NodeList directColorTileTags = tmspec.getElementsByTagName("directcolortile");
         for (int i=0; i<directColorTileTags.getLength(); i++) {
@@ -210,12 +203,11 @@ public class TMSpecReader {
         }
     }
 
-/**
-*
-* Reads the compositetile tags and creates compositetilecodecs for them.
-*
-**/
-
+    /**
+     *
+     * Reads the compositetile tags and creates compositetilecodecs for them.
+     *
+     **/
     private static void readCompositeTileFormats() {
         NodeList compositeTileTags = tmspec.getElementsByTagName("compositetile");
         for (int i=0; i<compositeTileTags.getLength(); i++) {
@@ -245,12 +237,11 @@ public class TMSpecReader {
         }
     }
 
-/**
-*
-* Reads the filefilter tags and creates TMTileCodecFilters for them.
-*
-**/
-
+    /**
+     *
+     * Reads the filefilter tags and creates TMTileCodecFilters for them.
+     *
+     **/
     private static void readFileFilters() {
         NodeList fftags = tmspec.getElementsByTagName("filefilter");
         for (int i=0; i<fftags.getLength(); i++) {
@@ -265,12 +256,11 @@ public class TMSpecReader {
         }
     }
 
-/**
-*
-* Reads the palettefilter tags and creates TMPaletteFilters for them.
-*
-**/
-
+    /**
+     *
+     * Reads the palettefilter tags and creates TMPaletteFilters for them.
+     *
+     **/
     private static void readPaletteFilters() {
         NodeList pftags = tmspec.getElementsByTagName("palettefilter");
         for (int i=0; i<pftags.getLength(); i++) {
@@ -288,12 +278,11 @@ public class TMSpecReader {
         }
     }
 
-/**
-*
-* Reads the filelistener tags and creates TMFileListeners for them.
-*
-**/
-
+    /**
+     *
+     * Reads the filelistener tags and creates TMFileListeners for them.
+     *
+     **/
     private static void readFileListeners() {
         ClassLoader loader = ClassLoader.getSystemClassLoader();
         NodeList fltags = tmspec.getElementsByTagName("filelistener");
@@ -321,52 +310,47 @@ public class TMSpecReader {
         }
     }
 
-/**
-*
-* Gets the vector of color codecs that's been created based on the XML.
-*
-**/
-
+    /**
+     *
+     * Gets the vector of color codecs that's been created based on the XML.
+     *
+     **/
     public static Vector<ColorCodec> getColorCodecs() {
         return colorcodecs;
     }
 
-/**
-*
-* Gets the vector of tile codecs that's been created based on the XML.
-*
-**/
-
+    /**
+     *
+     * Gets the vector of tile codecs that's been created based on the XML.
+     *
+     **/
     public static Vector<TileCodec> getTileCodecs() {
         return tilecodecs;
     }
 
-/**
-*
-* Gets the vector of file filters that's been created based on the XML.
-*
-**/
-
+    /**
+     *
+     * Gets the vector of file filters that's been created based on the XML.
+     *
+     **/
     public static Vector<TMTileCodecFileFilter> getFileFilters() {
         return filefilters;
     }
 
-/**
-*
-* Gets the vector of palette filters that's been created based on the XML.
-*
-**/
-
+    /**
+     *
+     * Gets the vector of palette filters that's been created based on the XML.
+     *
+     **/
     public static Vector<TMPaletteFileFilter> getPaletteFilters() {
         return palettefilters;
     }
 
-/**
-*
-* Gets the vector of file listeners that's been created based on the XML.
-*
-**/
-
+    /**
+     *
+     * Gets the vector of file listeners that's been created based on the XML.
+     *
+     **/
     public static Vector<TMFileListener> getFileListeners() {
         return filelisteners;
     }

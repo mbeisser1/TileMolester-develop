@@ -39,16 +39,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
-*
-* The palette pane contains the following components:
-* - Foreground color box
-* - Background color box
-* - Palette vizualiser (see TMPaletteVizualiser)
-* - FG/BG swap button
-* - Arrow up/down for switching palette index
-*
-**/
-
+ *
+ * The palette pane contains the following components:
+ * - Foreground color box
+ * - Background color box
+ * - Palette vizualiser (see TMPaletteVizualiser)
+ * - FG/BG swap button
+ * - Arrow up/down for switching palette index
+ *
+ **/
 public class TMPalettePane extends JPanel implements MouseInputListener {
 
     private TMView view;
@@ -72,12 +71,11 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
     /** Baseline native palette entries per palIndex, captured on first rotate. */
     private Map<Integer, int[]> palettePageBaseline = new HashMap<>();
 
-	/**
-*
-* Creates a palette pane.
-*
-**/
-
+    /**
+     *
+     * Creates a palette pane.
+     *
+     **/
     public TMPalettePane(TMUI ui) {
         this.ui = ui;
         vizualiser = new TMPaletteVizualiser();
@@ -198,65 +196,59 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
        setPreferredSize(new Dimension(2048, 80));
     }
 
-/**
-*
-* Sets the palette to be rendered.
-*
-**/
-
+    /**
+     *
+     * Sets the palette to be rendered.
+     *
+     **/
     public void setPalette(TMPalette palette) {
         if (palette.isDirect()) { lockShiftButtons(); }
         else { unlockShiftButtons(); }
         vizualiser.setPalette(palette);
     }
 
-/**
-*
-* Sets the palette index from which to start displaying colors.
-*
-**/
-
+    /**
+     *
+     * Sets the palette index from which to start displaying colors.
+     *
+     **/
     public void setPalIndex(int palIndex) {
         vizualiser.setPalIndex(palIndex);
     }
 
-/**
-*
-* Sets the bitdepth, i.e. how many colors to display.
-*
-**/
-
+    /**
+     *
+     * Sets the bitdepth, i.e. how many colors to display.
+     *
+     **/
     public void setBitDepth(int bitDepth) {
         vizualiser.setBitDepth(bitDepth);
     }
 
-/**
-*
-* Sets the foreground color.
-*
-**/
-
+    /**
+     *
+     * Sets the foreground color.
+     *
+     **/
     public void setFGColor(int fgColor) {
         fgColorBox.setColor(fgColor);
     }
 
-/**
-*
-* Sets the background color.
-*
-**/
-
+    /**
+     *
+     * Sets the background color.
+     *
+     **/
     public void setBGColor(int bgColor) {
         bgColorBox.setColor(bgColor);
     }
 
-/**
-*
-* Called when a view has been selected.
-* Loads and displays the view's palette according to current settings.
-*
-**/
-
+    /**
+     *
+     * Called when a view has been selected.
+     * Loads and displays the view's palette according to current settings.
+     *
+     **/
     public void viewSelected(TMView view) {
         if (this.view != view) {
             palettePageBaseline.clear();
@@ -274,13 +266,12 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         repaint();
     }
 
-/**
-*
-* Called when user clicked on a color.
-* Set the color as foreground or background color depending on which button was pressed.
-*
-**/
-
+    /**
+     *
+     * Called when user clicked on a color.
+     * Set the color as foreground or background color depending on which button was pressed.
+     *
+     **/
     public void mousePressed(MouseEvent e) {
         // get the color
         int color = vizualiser.getColorAt(e.getX(), e.getY());
@@ -345,12 +336,11 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
     public void mouseExited(MouseEvent e) { }
     public void mouseReleased(MouseEvent e) { }
 
-/**
-*
-* A "color box" is merely a label that is painted with a color.
-*
-**/
-
+    /**
+     *
+     * A "color box" is merely a label that is painted with a color.
+     *
+     **/
     private class ColorBox extends JLabel {
 
         private int color;
@@ -371,13 +361,12 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
 
     }
 
-/**
-*
-* Switches to the previous palette index.
-* Wrap-around is employed if the current index is the first one (0).
-*
-**/
-
+    /**
+     *
+     * Switches to the previous palette index.
+     * Wrap-around is employed if the current index is the first one (0).
+     *
+     **/
     public void setPreviousPalIndex() {
         view.setKeysEnabled(false);
         //
@@ -391,13 +380,12 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         view.setKeysEnabled(true);
     }
 
-/**
-*
-* Switches to the next palette index.
-* Wrap-around is employed if the current index is the last one (maximum).
-*
-**/
-
+    /**
+     *
+     * Switches to the next palette index.
+     * Wrap-around is employed if the current index is the last one (maximum).
+     *
+     **/
     public void setNextPalIndex() {
         view.setKeysEnabled(false);
         //
@@ -411,12 +399,11 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         view.setKeysEnabled(true);
     }
 
-/**
-*
-* Swaps the foreground and background colors.
-*
-**/
-
+    /**
+     *
+     * Swaps the foreground and background colors.
+     *
+     **/
     public void swapColors() {
         int fg = fgColorBox.getColor();
         ui.setFGColor(bgColorBox.getColor());
@@ -436,8 +423,8 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
     }
 
 	/**
-     * Gets the current vizualiser
-     */
+	 * Gets the current vizualiser
+	 */
 	public TMPaletteVizualiser getVizualiser() {
 		return vizualiser;
 	}

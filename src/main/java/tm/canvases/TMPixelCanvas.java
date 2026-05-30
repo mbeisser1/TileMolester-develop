@@ -23,15 +23,14 @@ import java.awt.*;
 import java.awt.image.*;
 
 /**
-*
-* Provides a surface where decoded graphics data can be rendered.
-* This is an abstract class: Subclasses are required to implement the
-* unpackPixels() and packPixels() methods for decoding and encoding
-* graphics data, respectively.
-* Pixels must be decoded to 32-bit ARGB format (see implementation details below).
-*
-**/
-
+ *
+ * Provides a surface where decoded graphics data can be rendered.
+ * This is an abstract class: Subclasses are required to implement the
+ * unpackPixels() and packPixels() methods for decoding and encoding
+ * graphics data, respectively.
+ * Pixels must be decoded to 32-bit ARGB format (see implementation details below).
+ *
+ **/
 public abstract class TMPixelCanvas extends JPanel {
 
     protected int canvasWidth;
@@ -48,12 +47,11 @@ public abstract class TMPixelCanvas extends JPanel {
 
     private boolean showPixelGrid=false;
 
-/**
-*
-* Creates a pixel pane using <code>bits</code> as the graphics source.
-*
-**/
-
+    /**
+     *
+     * Creates a pixel pane using <code>bits</code> as the graphics source.
+     *
+     **/
     public TMPixelCanvas(byte[] bits) {
         super();
         this.bits = bits;
@@ -65,12 +63,11 @@ public abstract class TMPixelCanvas extends JPanel {
         setScale(1.0);
     }
 
-/**
-*
-* Creates a pixel pane of the specified size and using <code>bits</code> as the graphics source.
-*
-**/
-
+    /**
+     *
+     * Creates a pixel pane of the specified size and using <code>bits</code> as the graphics source.
+     *
+     **/
     public TMPixelCanvas(byte[] bits, int canvasWidth, int canvasHeight) {
         super();
         this.bits = bits;
@@ -82,12 +79,11 @@ public abstract class TMPixelCanvas extends JPanel {
         setScale(1.0);
     }
 
-/**
-*
-* Sets the size of the canvas in pixels.
-*
-**/
-
+    /**
+     *
+     * Sets the size of the canvas in pixels.
+     *
+     **/
     public void setCanvasSize(int canvasWidth, int canvasHeight) {
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
@@ -101,32 +97,29 @@ public abstract class TMPixelCanvas extends JPanel {
         setScale(scale);
     }
 
-/**
-*
-* Sets the offset into the buffer from which tile data is unpacked/packed.
-*
-**/
-
+    /**
+     *
+     * Sets the offset into the buffer from which tile data is unpacked/packed.
+     *
+     **/
     public void setOffset(int offset) {
         this.offset = offset;
     }
 
-/**
-*
-* Gets the offset.
-*
-**/
-
+    /**
+     *
+     * Gets the offset.
+     *
+     **/
     public int getOffset() {
         return offset;
     }
 
-/**
-*
-* Sets the scale.
-*
-**/
-
+    /**
+     *
+     * Sets the scale.
+     *
+     **/
     public void setScale(double scale) {
         if (scale < 1.0) scale = 1.0;   // minimum
         else if (scale > 32.0) scale = 32.0;  // maximum
@@ -138,41 +131,37 @@ public abstract class TMPixelCanvas extends JPanel {
         setSize(scaledWidth, scaledHeight);
     }
 
-/**
-*
-* Gets the scale.
-*
-**/
-
+    /**
+     *
+     * Gets the scale.
+     *
+     **/
     public double getScale() {
         return scale;
     }
 
-/**
-*
-* Subclasses required to implement this method. It is responsible for
-* filling the canvas with pixels, by decoding data starting at
-* &bits[offset].
-*
-**/
-
+    /**
+     *
+     * Subclasses required to implement this method. It is responsible for
+     * filling the canvas with pixels, by decoding data starting at
+     * &bits[offset].
+     *
+     **/
     protected abstract void unpackPixels();
 
-/**
-*
-* Subclasses required to implement this method. It is responsible for
-* encoding the canvas's pixels into some format.
-*
-**/
-
+    /**
+     *
+     * Subclasses required to implement this method. It is responsible for
+     * encoding the canvas's pixels into some format.
+     *
+     **/
     protected abstract void packPixels();
 
-/**
-*
-* Paints pixels and grid(s).
-*
-**/
-
+    /**
+     *
+     * Paints pixels and grid(s).
+     *
+     **/
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
@@ -182,12 +171,11 @@ public abstract class TMPixelCanvas extends JPanel {
         }
     }
 
-/**
-*
-* Draws pixel grid.
-*
-**/
-
+    /**
+     *
+     * Draws pixel grid.
+     *
+     **/
     private void drawPixelGrid(Graphics g) {
         if (scale < 8.0) return;    // don't show it for scales less than 8
         g.setColor(Color.gray);
@@ -201,133 +189,120 @@ public abstract class TMPixelCanvas extends JPanel {
         }
     }
 
-/**
-*
-* Turns the pixel grid on (true) or off (false).
-*
-**/
-
+    /**
+     *
+     * Turns the pixel grid on (true) or off (false).
+     *
+     **/
     public void setPixelGridVisible(boolean showPixelGrid) {
         this.showPixelGrid = showPixelGrid;
     }
 
-/**
-*
-* Returns pixel grid visibility.
-*
-**/
-
+    /**
+     *
+     * Returns pixel grid visibility.
+     *
+     **/
     public boolean isPixelGridVisible() {
         return showPixelGrid;
     }
 
-/**
-*
-* Sets the pixel at location (x, y) in the image to the specified value.
-*
-**/
-
+    /**
+     *
+     * Sets the pixel at location (x, y) in the image to the specified value.
+     *
+     **/
     public void setPixel(int x, int y, int argb) {
         pixels[(y*canvasWidth)+x] = argb;
     }
 
-/**
-*
-* Gets the pixel at location (x, y) in the image.
-*
-**/
-
+    /**
+     *
+     * Gets the pixel at location (x, y) in the image.
+     *
+     **/
     protected int getPixel(int x, int y) {
         return pixels[(y*canvasWidth)+x];
     }
 
-/**
-*
-* Inverts the pixel at (x,y).
-*
-**/
-
+    /**
+     *
+     * Inverts the pixel at (x,y).
+     *
+     **/
     protected void xorPixel(int x, int y) {
         setPixel(x, y, getPixel(x, y) ^ 0xFFFFFF);
     }
 
-/**
-*
-* Gets the buffer containing the currently rendered pixels.
-*
-**/
-
+    /**
+     *
+     * Gets the buffer containing the currently rendered pixels.
+     *
+     **/
     protected int[] getPixels() {
         return pixels;
     }
 
-/**
-*
-* Gets the width of the canvas image.
-*
-**/
-
+    /**
+     *
+     * Gets the width of the canvas image.
+     *
+     **/
     public int getCanvasWidth() {
         return canvasWidth;
     }
 
-/**
-*
-* Gets the height of the canvas image.
-*
-**/
-
+    /**
+     *
+     * Gets the height of the canvas image.
+     *
+     **/
     public int getCanvasHeight() {
         return canvasHeight;
     }
 
-/**
-*
-* Sets the data buffer that will be used to fetch/encode native graphics data.
-*
-**/
-
+    /**
+     *
+     * Sets the data buffer that will be used to fetch/encode native graphics data.
+     *
+     **/
     public void setBits(byte[] bits) {
         this.bits = bits;
     }
 
-/**
-*
-* Gets the native graphics data buffer.
-*
-**/
-
+    /**
+     *
+     * Gets the native graphics data buffer.
+     *
+     **/
     public byte[] getBits() {
         return bits;
     }
 
-/**
-*
-* Updates the pixels and repaints the canvas.
-*
-**/
-
+    /**
+     *
+     * Updates the pixels and repaints the canvas.
+     *
+     **/
     public void redraw() {
         source.newPixels();
         repaint();
     }
 
-/**
-*
-* Gets the image where the pixels are rendered.
-*
-**/
-
+    /**
+     *
+     * Gets the image where the pixels are rendered.
+     *
+     **/
     public Image getImage() {
         return image;
     }
 
-/**
-*
-* Mirrors the canvas (flips horizontally).
-*
-**/
-
+    /**
+     *
+     * Mirrors the canvas (flips horizontally).
+     *
+     **/
     public void mirror() {
         for (int y=0; y<canvasHeight; y++) {
             for (int x=0; x<canvasWidth/2; x++) {
@@ -340,12 +315,11 @@ public abstract class TMPixelCanvas extends JPanel {
         packPixels();
     }
 
-/**
-*
-* Flips the canvas (vertically).
-*
-**/
-
+    /**
+     *
+     * Flips the canvas (vertically).
+     *
+     **/
     public void flip() {
         for (int y=0; y<canvasHeight/2; y++) {
             for (int x=0; x<canvasWidth; x++) {
@@ -358,12 +332,11 @@ public abstract class TMPixelCanvas extends JPanel {
         packPixels();
     }
 
-/**
-*
-* Rotates the canvas 90 degrees left (counter-clockwise).
-*
-**/
-
+    /**
+     *
+     * Rotates the canvas 90 degrees left (counter-clockwise).
+     *
+     **/
     public void rotateLeft() {
         int[] pix = getPixels();
         setCanvasSize(canvasHeight, canvasWidth);
@@ -377,12 +350,11 @@ public abstract class TMPixelCanvas extends JPanel {
         setScale(scale);
     }
 
-/**
-*
-* Rotates the canvas 90 degrees right (clockwise).
-*
-**/
-
+    /**
+     *
+     * Rotates the canvas 90 degrees right (clockwise).
+     *
+     **/
     public void rotateRight() {
         int[] pix = getPixels();
         setCanvasSize(canvasHeight, canvasWidth);
@@ -396,12 +368,11 @@ public abstract class TMPixelCanvas extends JPanel {
         setScale(scale);
     }
 
-/**
-*
-* Shifts the canvas one column left.
-*
-**/
-
+    /**
+     *
+     * Shifts the canvas one column left.
+     *
+     **/
     public void shiftLeft() {
         for (int y=0; y<canvasHeight; y++) {
             int p0 = getPixel(0, y);
@@ -413,12 +384,11 @@ public abstract class TMPixelCanvas extends JPanel {
         packPixels();
     }
 
-/**
-*
-* Shifts the canvas one column right.
-*
-**/
-
+    /**
+     *
+     * Shifts the canvas one column right.
+     *
+     **/
     public void shiftRight() {
         for (int y=0; y<canvasHeight; y++) {
             int p0 = getPixel(canvasWidth-1, y);
@@ -430,12 +400,11 @@ public abstract class TMPixelCanvas extends JPanel {
         packPixels();
     }
 
-/**
-*
-* Shifts the canvas one row up.
-*
-**/
-
+    /**
+     *
+     * Shifts the canvas one row up.
+     *
+     **/
     public void shiftUp() {
         for (int x=0; x<canvasWidth; x++) {
             int p0 = getPixel(x, 0);
@@ -447,12 +416,11 @@ public abstract class TMPixelCanvas extends JPanel {
         packPixels();
     }
 
-/**
-*
-* Shifts the canvas one row down.
-*
-**/
-
+    /**
+     *
+     * Shifts the canvas one row down.
+     *
+     **/
     public void shiftDown() {
         for (int x=0; x<canvasWidth; x++) {
             int p0 = getPixel(x, canvasHeight-1);

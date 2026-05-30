@@ -21,11 +21,10 @@ package tm.reversibleaction;
 import tm.canvases.TMSelectionCanvas;
 
 /**
-*
-* Allows undo/redo of moving a selection.
-*
-**/
-
+ *
+ * Allows undo/redo of moving a selection.
+ *
+ **/
 public class ReversibleMoveSelectionAction extends ReversibleAction {
 
     private TMSelectionCanvas selection;

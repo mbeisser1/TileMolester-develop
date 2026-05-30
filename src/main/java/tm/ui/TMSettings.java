@@ -95,7 +95,6 @@ public class TMSettings extends JFrame {
 	 * Loads program settings from file.
 	 *
 	 **/
-
 	public void loadSettings() {
 		boolean loadedLocale = false;
 		Document doc = null;
@@ -149,12 +148,11 @@ public class TMSettings extends JFrame {
 	}
 
 
-	/**
-	 *
-	 * Lets the user select a locale from a combobox.
-	 *
-	 **/
-
+	 /**
+	  *
+	  * Lets the user select a locale from a combobox.
+	  *
+	  **/
 	 public void selectLanguage() {
 		// figure out available translations
 		File dir = new File("languages");
@@ -203,7 +201,6 @@ public class TMSettings extends JFrame {
 	 * Saves program settings to file.
 	 *
 	 **/
-
 	public void saveSettings() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
@@ -246,19 +243,17 @@ public class TMSettings extends JFrame {
 	 * Makes a property tag with the given key and value.
 	 *
 	 **/
-
 	public String makePropertyTag(String key, String value) {
 		return "  <property key=\"" + key + "\" value=\"" + value + "\"/>\n";
 	}
 
 
-	/**
-	 *
-	 * Attempts to translate the given key string by consulting a ResourceBundle.
-	 * If no corresponding value is found, the key itself is returned.
-	 *
-	 **/
-
+	 /**
+	  *
+	  * Attempts to translate the given key string by consulting a ResourceBundle.
+	  * If no corresponding value is found, the key itself is returned.
+	  *
+	  **/
 	 public String xlate(String key) {
 		try {
 			String value = xl.xlate(key);
@@ -275,7 +270,6 @@ public class TMSettings extends JFrame {
 	 * language_xx_yy.properties
 	 *
 	 **/
-
 	private class PropertiesFilter implements FilenameFilter {
 		public boolean accept(File dir, String name) {
 			return (name.toLowerCase().startsWith("language")

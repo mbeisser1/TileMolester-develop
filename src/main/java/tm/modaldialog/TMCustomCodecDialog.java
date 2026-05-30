@@ -23,11 +23,10 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
-*
-* The dialog that's shown when user wants to define a new codec.
-*
-**/
-
+ *
+ * The dialog that's shown when user wants to define a new codec.
+ *
+ **/
 public class TMCustomCodecDialog extends JDialog {
 
     int result;
@@ -50,12 +49,11 @@ public class TMCustomCodecDialog extends JDialog {
     private JButton okButton = new JButton("OK");
     private JButton cancelButton = new JButton("Cancel");
 
-/**
-*
-* Creates the custom codec dialog.
-*
-**/
-
+    /**
+     *
+     * Creates the custom codec dialog.
+     *
+     **/
     public TMCustomCodecDialog(Frame owner, String title, boolean modal) {
         super(owner, title, modal);
         JPanel pane = new JPanel();
@@ -90,102 +88,42 @@ public class TMCustomCodecDialog extends JDialog {
         );
     }
 
-/**
-*
-*
-*
-**/
-
     public int getBitsPerPixel() {
         return 0;
     }
-
-/**
-*
-*
-*
-**/
 
     public int getRedMask() {
         return 0;
     }
 
-/**
-*
-*
-*
-**/
-
     public int getGreenMask() {
         return 0;
     }
-
-/**
-*
-*
-*
-**/
 
     public int getBlueMask() {
         return 0;
     }
 
-/**
-*
-*
-*
-**/
-
     public int getAlphaMask() {
         return 0;
     }
-
-/**
-*
-*
-*
-**/
 
     public int getEndianness() {
         return 0;
     }
 
-/**
-*
-*
-*
-**/
-
     public String getDescription() {
         return "";
     }
-
-/**
-*
-*
-*
-**/
 
     public void okClicked() {
         result = JOptionPane.OK_OPTION;
         setVisible(false);
     }
 
-/**
-*
-*
-*
-**/
-
     public void cancelClicked() {
         setVisible(false);
     }
-
-/**
-*
-*
-*
-**/
 
     public int showDialog() {
         result = JOptionPane.CANCEL_OPTION;

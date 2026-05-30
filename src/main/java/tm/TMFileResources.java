@@ -38,7 +38,6 @@ import org.xml.sax.SAXException;
  * Resources include bookmarks and palettes.
  *
  **/
-
 public class TMFileResources {
 
 	private FolderNode bookmarkRoot;
@@ -52,7 +51,6 @@ public class TMFileResources {
 	 * Create initial resources for the specified fileimage.
 	 *
 	 **/
-
 	public TMFileResources(FileImage fileImage, TMUI ui) {
 		this.bookmarkRoot = new FolderNode(ui.xlate("Bookmarks"));
 		this.paletteRoot = new FolderNode(ui.xlate("Palettes"));
@@ -73,7 +71,6 @@ public class TMFileResources {
 	 * +resourcetype3
 	 *
 	 **/
-
 	public TMFileResources(File file, FileImage fileImage, TMUI ui)
 			throws SAXException, ParserConfigurationException, IOException {
 		Document doc = null;
@@ -112,7 +109,6 @@ public class TMFileResources {
 	 * ...
 	 *
 	 **/
-
 	public FolderNode parseBookmarks(Element root) {
 		Element e = getChildTag(root, "bookmarks", 0);
 		FolderNode bookmarkRoot = new FolderNode(ui.xlate("Bookmarks"));
@@ -133,7 +129,6 @@ public class TMFileResources {
 	 * Recursively adds folders and bookmarks to tree.
 	 *
 	 **/
-
 	public void addToBookmarksTree(Element e, FolderNode folder) {
 		if (e.getTagName().equals("folder")) {
 			// subfolder
@@ -186,7 +181,6 @@ public class TMFileResources {
 	 * Highly analoguous to bookmark parsing.
 	 *
 	 **/
-
 	public FolderNode parsePalettes(Element root) {
 		Element e = getChildTag(root, "palettes", 0);
 		FolderNode paletteRoot = new FolderNode(ui.xlate("Palettes"));
@@ -207,7 +201,6 @@ public class TMFileResources {
 	 * Recursively processes and adds folders and palettes to tree.
 	 *
 	 **/
-
 	public void addToPalettesTree(Element e, FolderNode folder) {
 		if (e.getTagName().equals("folder")) {
 			// subfolder
@@ -257,7 +250,6 @@ public class TMFileResources {
 	 * Gets the root of the tree of bookmarks & bookmark folders.
 	 *
 	 **/
-
 	public FolderNode getBookmarksRoot() {
 		return bookmarkRoot;
 	}
@@ -267,7 +259,6 @@ public class TMFileResources {
 	 * Gets the root of the tree of palettes & palette folders.
 	 *
 	 **/
-
 	public FolderNode getPalettesRoot() {
 		return paletteRoot;
 	}
@@ -277,7 +268,6 @@ public class TMFileResources {
 	 * Returns XML representation of resources.
 	 *
 	 **/
-
 	public String toXML() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
@@ -296,7 +286,6 @@ public class TMFileResources {
 	 * Return XML representation of bookmarks.
 	 *
 	 **/
-
 	public String bookmarksToXML() {
 		StringBuffer sb = new StringBuffer();
 		sb.append(" <bookmarks>\n");
@@ -313,7 +302,6 @@ public class TMFileResources {
 	 * Returns XML representation of palettes.
 	 *
 	 **/
-
 	public String palettesToXML() {
 		StringBuffer sb = new StringBuffer();
 		sb.append(" <palettes>\n");
@@ -331,7 +319,6 @@ public class TMFileResources {
 	 * Currently, this is [filename-extension+".xml"]
 	 *
 	 **/
-
 	public static File getResourceFileFor(File file) {
 		// determine name of XML resource file based on filename
 		String name = file.getName();

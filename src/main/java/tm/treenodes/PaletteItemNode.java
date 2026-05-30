@@ -23,11 +23,10 @@ import tm.colorcodecs.ColorCodec;
 import tm.utils.HexStringConverter;
 
 /**
-*
-* A palette node.
-*
-**/
-
+ *
+ * A palette node.
+ *
+ **/
 public class PaletteItemNode extends TMTreeNode {
 
     private TMPalette palette;
@@ -39,43 +38,39 @@ public class PaletteItemNode extends TMTreeNode {
         this.description = description;
     }
 
-/**
-*
-* Gets the palette represented by this node.
-*
-**/
-
+    /**
+     *
+     * Gets the palette represented by this node.
+     *
+     **/
     public TMPalette getPalette() {
         return palette;
     }
 
-/**
-*
-* Gets the palette description.
-*
-**/
-
+    /**
+     *
+     * Gets the palette description.
+     *
+     **/
     public String getDescription() {
         return description;
     }
 
-/**
-*
-* Sets the palette description.
-*
-**/
-
+    /**
+     *
+     * Sets the palette description.
+     *
+     **/
     public void setDescription(String description) {
         this.description = description;
         setModified(true);
     }
 
-/**
-*
-* Returns the XML-equivalent of this palette node.
-*
-**/
-
+    /**
+     *
+     * Returns the XML-equivalent of this palette node.
+     *
+     **/
     public String toXML() {
         StringBuffer s = new StringBuffer();
         s.append(getIndent());
@@ -102,32 +97,29 @@ public class PaletteItemNode extends TMTreeNode {
         return s.toString();
     }
 
-/**
-*
-* Returns the string representation of this node.
-*
-**/
-
+    /**
+     *
+     * Returns the string representation of this node.
+     *
+     **/
     public String toString() {
         return description;
     }
 
-/**
-*
-* Sets the text of this node.
-*
-**/
-
+    /**
+     *
+     * Sets the text of this node.
+     *
+     **/
     public void setText(String text) {
         setDescription(text);
     }
 
-/**
-*
-* Gets the tooltiptext of this node.
-*
-**/
-
+    /**
+     *
+     * Gets the tooltiptext of this node.
+     *
+     **/
     public String getToolTipText() {
         return "Size: "+palette.getSize()+" ... Format: "+palette.getCodec().getDescription();
     }

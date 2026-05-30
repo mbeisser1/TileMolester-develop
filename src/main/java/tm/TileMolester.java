@@ -37,7 +37,6 @@ import java.util.logging.Logger;
  * This class just gets the show started.
  *
  **/
-
 public class TileMolester {
 
 	/**
@@ -45,7 +44,6 @@ public class TileMolester {
 	 * Constructor.
 	 *
 	 **/
-
 	Logger mLog = Logger.getGlobal();
 	ClassLoader cl = getClass().getClassLoader();
 	public static TMSettings settings;
@@ -79,7 +77,6 @@ public class TileMolester {
 	 * Starts up the program.
 	 *
 	 **/
-
 	public static void main(String[] args) {
 		new TileMolester();
 	}

@@ -35,12 +35,12 @@ public class mxScrollableDesktop extends JDesktopPane {
 		
     }
 
-/**
-* Set the preferred size of the desktop to the right-bottom-corner of the
-* internal-frame with the "largest" right-bottom-corner.
-*
-* @return The preferred desktop dimension.
-*/
+    /**
+     * Set the preferred size of the desktop to the right-bottom-corner of the
+     * internal-frame with the "largest" right-bottom-corner.
+     *
+     * @return The preferred desktop dimension.
+     */
     public Dimension getPreferredSize() {
         JInternalFrame [] array = getAllFrames();
         int maxX = 0;

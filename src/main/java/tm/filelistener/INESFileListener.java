@@ -18,11 +18,6 @@
 
 package tm.filelistener;
 
-/**
-*
-*
-**/
-
 public class INESFileListener extends TMFileListener {
 
     private static int[] iNES_ID = { 0x4E,0x45,0x53,0x1A };

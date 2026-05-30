@@ -24,32 +24,29 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyAdapter;
 
 /**
-*
-* Class for handling keypresses in the window.
-*
-**/
-
+ *
+ * Class for handling keypresses in the window.
+ *
+ **/
 public class ViewKeyListener extends KeyAdapter {
 
     private TMView view;
 
-/**
-*
-* Creates the listener.
-*
-**/
-
+    /**
+     *
+     * Creates the listener.
+     *
+     **/
     public ViewKeyListener(TMView view) {
         super();
         this.view = view;
     }
 
-/**
-*
-* Handles a keypress.
-*
-**/
-
+    /**
+     *
+     * Handles a keypress.
+     *
+     **/
     public void keyPressed(KeyEvent e) {
         // check that the event should indeed be processed
         if (!view.getKeysEnabled()) return;

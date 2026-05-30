@@ -21,11 +21,10 @@ package tm.threads;
 import java.io.*;
 
 /**
-*
-* Thread for writing a buffer to a file.
-*
-**/
-
+ *
+ * Thread for writing a buffer to a file.
+ *
+ **/
 public class FileSaverThread extends ProgressThread {
 
     private static final int CHUNK_SIZE = 16384;

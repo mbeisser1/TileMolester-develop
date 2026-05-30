@@ -214,25 +214,14 @@ public class BMPLoader
         return(null);
     }
 
-    /**
-
-        readMap24 internal routine to read the bytes in a 24 bit bitmap
-
-
-
-        Arguments:
-
-           fs - file stream
-
-           bh - header struct
-
-        Returns:
-
-            Image Object, be sure to check for (Image)null !!!!
-
-
-
-    */
+  /**
+   * readMap24 internal routine to read the bytes in a 24 bit bitmap
+   * Arguments:
+   * fs - file stream
+   * bh - header struct
+   * Returns:
+   * Image Object, be sure to check for (Image)null !!!!
+   */
 
 
 
@@ -274,25 +263,14 @@ public class BMPLoader
 
 
 
-    /**
-
-        readMap24 internal routine to read the bytes in a 24 bit bitmap
-
-
-
-        Arguments:
-
-           fs - file stream
-
-           bh - header struct
-
-        Returns:
-
-            Image Object, be sure to check for (Image)null !!!!
-
-
-
-    */
+  /**
+   * readMap24 internal routine to read the bytes in a 24 bit bitmap
+   * Arguments:
+   * fs - file stream
+   * bh - header struct
+   * Returns:
+   * Image Object, be sure to check for (Image)null !!!!
+   */
 
 
 
@@ -333,25 +311,14 @@ public class BMPLoader
         return(image);
     }
 
-      /**
-
-        readMap8 internal routine to read the bytes in a 8 bit bitmap
-
-
-
-        Arguments:
-
-           fs - file stream
-
-           bh - header struct
-
-        Returns:
-
-            Image Object, be sure to check for (Image)null !!!!
-
-
-
-    */
+    /**
+     * readMap8 internal routine to read the bytes in a 8 bit bitmap
+     * Arguments:
+     * fs - file stream
+     * bh - header struct
+     * Returns:
+     * Image Object, be sure to check for (Image)null !!!!
+     */
 
     protected static Image readMap8(FileInputStream fs,BitmapHeader bh) throws IOException
 
@@ -451,26 +418,13 @@ public class BMPLoader
 
 
     /**
-
-        load method - see read for details
-
-
-
-        Arguments:
-
-            sdir and sfile are the result of the FileDialog()
-
-            getDirectory() and getFile() methods.
-
-
-
-        Returns:
-
-            Image Object, be sure to check for (Image)null !!!!
-
-
-
-    */
+     * load method - see read for details
+     * Arguments:
+     * sdir and sfile are the result of the FileDialog()
+     * getDirectory() and getFile() methods.
+     * Returns:
+     * Image Object, be sure to check for (Image)null !!!!
+     */
 
     public static Image  load(String sdir, String sfile) {
   return(load(sdir + sfile));
@@ -480,25 +434,13 @@ public class BMPLoader
 
 
 
-     /**
-
-        load method - see read for details
-
-
-
-        Arguments:
-
-            sdir - full path name
-
-
-
-        Returns:
-
-            Image Object, be sure to check for (Image)null !!!!
-
-
-
-    */
+    /**
+     * load method - see read for details
+     * Arguments:
+     * sdir - full path name
+     * Returns:
+     * Image Object, be sure to check for (Image)null !!!!
+     */
 
     public static Image  load(String sdir)
 

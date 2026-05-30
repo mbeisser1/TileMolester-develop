@@ -28,11 +28,10 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
-*
-* A tile canvas that can be moved around.
-*
-**/
-
+ *
+ * A tile canvas that can be moved around.
+ *
+ **/
 public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListener {
 
     private TMUI ui;
@@ -43,12 +42,11 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
     private int oldX;
     private int oldY;
 
-/**
-*
-* Creates a selection canvas by copying the specified tile grid.
-*
-**/
-
+    /**
+     *
+     * Creates a selection canvas by copying the specified tile grid.
+     *
+     **/
     public TMSelectionCanvas(TMUI ui, TMTileCanvas canvas, int x1, int y1, int w, int h) {
         super(null);
         this.ui = ui;
@@ -80,12 +78,11 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         packPixels();
     }
 
-/**
-*
-* Sets up the selection popup menu.
-*
-**/
-
+    /**
+     *
+     * Sets up the selection popup menu.
+     *
+     **/
     private void initSelectionPopup() {
         selectionPopup = new JPopupMenu();
         JMenuItem menuItem;
@@ -275,12 +272,11 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         selectionPopup.add(menuItem);
     }
 
-/**
-*
-* Paints the selection.
-*
-**/
-
+    /**
+     *
+     * Paints the selection.
+     *
+     **/
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         // draw frame
@@ -288,23 +284,21 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         g.drawRect(0, 0, getWidth()-1, getHeight()-1);
    }
 
-/**
-*
-* Called when user has pressed mouse button and is moving mouse.
-*
-**/
-
+    /**
+     *
+     * Called when user has pressed mouse button and is moving mouse.
+     *
+     **/
     public void mouseDragged(MouseEvent e) {
         // reposition
         setLocation(getX()+e.getX()-dx, getY()+e.getY()-dy);
     }
 
-/**
-*
-* Mouse event handlers.
-*
-**/
-
+    /**
+     *
+     * Mouse event handlers.
+     *
+     **/
     public void mouseMoved(MouseEvent e) { }
 
     public void mouseClicked(MouseEvent e) { }
@@ -340,22 +334,21 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         // support popup on all platforms (some send on release)
         maybeShowPopup(e);
     }
-/**
- *
- * Checks if the selection has been moved
- *
- **/
+    /**
+     *
+     * Checks if the selection has been moved
+     *
+     **/
     public boolean hasMoved()
     {
         return (oldX != getX() && oldY != getY());
     }
 
-/**
-*
-* Aligns the selection to a tile boundary.
-*
-**/
-
+    /**
+     *
+     * Aligns the selection to a tile boundary.
+     *
+     **/
     public void snapToGrid() {
         int dim = getScaledTileDim();
         // snap to atomic tile grid
@@ -364,12 +357,11 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
         setLocation((x / dim) * dim, (y / dim) * dim); //TODO: fix the snapping
     }
 
-/**
-*
-* Shows the popup menu if the mouse event was a popup trigger.
-*
-**/
-
+    /**
+     *
+     * Shows the popup menu if the mouse event was a popup trigger.
+     *
+     **/
     public void maybeShowPopup(MouseEvent e) {
         if (e.isPopupTrigger()) {
             selectionPopup.show(e.getComponent(), e.getX(), e.getY());

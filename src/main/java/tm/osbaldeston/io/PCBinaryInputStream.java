@@ -1,12 +1,12 @@
 package tm.osbaldeston.io;
 
-/** 
-  * PCBinaryInputStream
-  *
-  * @author Richard J.Osbaldeston
-  * @version 1.1 02/08/98
-  * @copyright Richard J.Osbaldeston (http://www.osbald.co.uk)
-  */
+/**
+ * PCBinaryInputStream
+ *
+ * @author Richard J.Osbaldeston
+ * @version 1.1 02/08/98
+ * @copyright Richard J.Osbaldeston (http://www.osbald.co.uk)
+ */
 
 import java.io.*;
 import java.net.URL;

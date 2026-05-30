@@ -19,11 +19,10 @@
 package tm.filelistener;
 
 /**
-*
-* Listener for Game Boy (*.gb, *.gbc) files.
-*
-**/
-
+ *
+ * Listener for Game Boy (*.gb, *.gbc) files.
+ *
+ **/
 public class GameBoyFileListener extends TMFileListener {
 
     private static final int[] scrollingNintendoGraphic = {
@@ -55,14 +54,13 @@ public class GameBoyFileListener extends TMFileListener {
     private static final int SIZE_10M = 0x53;
     private static final int SIZE_12M = 0x54;
 
-/**
-*
-* Detects if this is a GameBoy file.
-* The criteria is that the extension is either gb, gbc or sgb and that
-* the scrolling Nintendo graphic data is correct.
-*
-**/
-
+    /**
+     *
+     * Detects if this is a GameBoy file.
+     * The criteria is that the extension is either gb, gbc or sgb and that
+     * the scrolling Nintendo graphic data is correct.
+     *
+     **/
     public boolean doFormatDetect(final byte[] data, String extension) {
         // verify extension
         if (!(extension.equals("gb")
@@ -118,21 +116,19 @@ public class GameBoyFileListener extends TMFileListener {
         return true;
     }
 
-/**
-*
-* Does nothing on file load.
-*
-**/
-
+    /**
+     *
+     * Does nothing on file load.
+     *
+     **/
     public void fileLoaded(byte[] data, String extension) {
     }
 
-/**
-*
-* Recalculates the complement check and checksum on file save.
-*
-**/
-
+    /**
+     *
+     * Recalculates the complement check and checksum on file save.
+     *
+     **/
     public void fileSaving(byte[] data, String extension) {
         // update complement check
         int r = 25;

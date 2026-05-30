@@ -19,46 +19,43 @@
 package tm.tilecodecs;
 
 /**
-*
-* Composite tile codec.
-* A <code>composite</code> tile is a tile that is built up of several
-* standard tiles. As an example, consider a 3bpp tile that consists
-* of a single 2bpp non-interleaved tile followed by a single 1bpp tile.
-* Such a format cannot be accommodated by the standard planar tile codec
-* (PlanarTileCodec). However, it can be accommodated by instantiating several
-* PlanarTileCodecs, decoding planar tiles separately and then "overlaying" them
-* on top of each other. This class provides just this kind of functionality.
-* It allows more flexibility in the tile formats, but is probably a bit
-* slower.
-*
-**/
-
+ *
+ * Composite tile codec.
+ * A <code>composite</code> tile is a tile that is built up of several
+ * standard tiles. As an example, consider a 3bpp tile that consists
+ * of a single 2bpp non-interleaved tile followed by a single 1bpp tile.
+ * Such a format cannot be accommodated by the standard planar tile codec
+ * (PlanarTileCodec). However, it can be accommodated by instantiating several
+ * PlanarTileCodecs, decoding planar tiles separately and then "overlaying" them
+ * on top of each other. This class provides just this kind of functionality.
+ * It allows more flexibility in the tile formats, but is probably a bit
+ * slower.
+ *
+ **/
 public class CompositeTileCodec extends TileCodec {
 
     private TileCodec[] codecs;
 
-/**
-*
-* Creates a composite tile codec.
-* <code>codecs</code> is an array of codecs that will be used to build
-* a tile, going from low to high bitplanes.
-*
-**/
-
+    /**
+     *
+     * Creates a composite tile codec.
+     * <code>codecs</code> is an array of codecs that will be used to build
+     * a tile, going from low to high bitplanes.
+     *
+     **/
     public CompositeTileCodec(String id, int bpp, TileCodec[] codecs, String description) {
         super(id, bpp, description);
         this.codecs = codecs;
     }
 
-/**
-*
-* Decodes a tile.
-*
-* @param bits   An array of ints holding encoded tile data in each LSB
-* @param ofs    Where to start decoding from in the array
-*
-**/
-
+    /**
+     *
+     * Decodes a tile.
+     *
+     * @param bits   An array of ints holding encoded tile data in each LSB
+     * @param ofs    Where to start decoding from in the array
+     *
+     **/
     public int[] decode(byte[] bits, int ofs, int stride) {
         // decode the first sub-tile
         int[] tilePixels = codecs[0].decode(bits, ofs, stride);
@@ -77,12 +74,11 @@ public class CompositeTileCodec extends TileCodec {
         return pixels;
     }
 
-/**
-*
-* Encodes a bitplaned tile.
-*
-**/
-
+    /**
+     *
+     * Encodes a bitplaned tile.
+     *
+     **/
     public void encode(int[] pixels, byte[] bits, int ofs, int stride) {
         // encode the first sub-tile
         codecs[0].encode(pixels, bits, ofs, stride);

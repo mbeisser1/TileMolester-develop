@@ -19,12 +19,11 @@
 package tm.colorcodecs;
 
 /**
-*
-* An IndexedColorCodec translates pixels according to a
-* pre-defined array of 32-bit ARGB values.
-*
-**/
-
+ *
+ * An IndexedColorCodec translates pixels according to a
+ * pre-defined array of 32-bit ARGB values.
+ *
+ **/
 public class IndexedColorCodec extends ColorCodec {
 
     private int[] colorTable;   // table of pre-defined ARGB values
@@ -34,12 +33,11 @@ public class IndexedColorCodec extends ColorCodec {
         this.colorTable = colorTable;
     }
 
-/**
-*
-* To decode, simply look up the table.
-*
-**/
-
+    /**
+     *
+     * To decode, simply look up the table.
+     *
+     **/
     public int decode(int value) {
         if (value < colorTable.length) {
             return colorTable[value];
@@ -47,12 +45,11 @@ public class IndexedColorCodec extends ColorCodec {
         return 0;   // undefined
     }
 
-/**
-*
-* To encode, find the closest match in the table.
-*
-**/
-
+    /**
+     *
+     * To encode, find the closest match in the table.
+     *
+     **/
     public int encode(int argb) {
         int targetR = (argb & 0x00FF0000) >> 16;
         int targetG = (argb & 0x0000FF00) >> 8;

@@ -21,11 +21,10 @@ package tm.reversibleaction;
 import tm.treenodes.*;
 
 /**
-*
-* Allows undo/redo of a bookmark addition.
-*
-**/
-
+ *
+ * Allows undo/redo of a bookmark addition.
+ *
+ **/
 public class ReversibleAddBookmarkAction extends ReversibleAction {
 
     private BookmarkItemNode bookmark;

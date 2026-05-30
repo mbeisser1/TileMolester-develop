@@ -19,11 +19,10 @@
 package tm.filelistener;
 
 /**
-*
-* Listener for Game Boy Advance (*.gba) files.
-*
-**/
-
+ *
+ * Listener for Game Boy Advance (*.gba) files.
+ *
+ **/
 public class GameBoyAdvanceFileListener extends TMFileListener {
 
     private static final int[] nintendoLogo = {
@@ -39,14 +38,13 @@ public class GameBoyAdvanceFileListener extends TMFileListener {
         0xD6,0x25,0xE4,0x8B,0x38,0x0A,0xAC,0x72,0x21,0xD4,0xF8,0x07
     } ;
 
-/**
-*
-* Detects if this is a Game Boy Advance file.
-* The critera are that the extension is gba, that the Nintendo logo
-* character data is correct and that the byte at 0xB2 equals 0x96.
-*
-**/
-
+    /**
+     *
+     * Detects if this is a Game Boy Advance file.
+     * The critera are that the extension is gba, that the Nintendo logo
+     * character data is correct and that the byte at 0xB2 equals 0x96.
+     *
+     **/
     public boolean doFormatDetect(final byte[] data, String extension) {
         // verify extension
         if (!extension.equals("gba")) {
@@ -67,21 +65,19 @@ public class GameBoyAdvanceFileListener extends TMFileListener {
         return true;
     }
 
-/**
-*
-* Does nothing on file load.
-*
-**/
-
+    /**
+     *
+     * Does nothing on file load.
+     *
+     **/
     public void fileLoaded(byte[] data, String extension) {
     }
 
-/**
-*
-* Recalculates the complement check and checksum on file save.
-*
-**/
-
+    /**
+     *
+     * Recalculates the complement check and checksum on file save.
+     *
+     **/
     public void fileSaving(byte[] data, String extension) {
         // update complement check
         int complementCheck = 0xE7;

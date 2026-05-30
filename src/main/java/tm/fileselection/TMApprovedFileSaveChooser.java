@@ -23,14 +23,13 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.JOptionPane;
 
-/**
-*
-* A filechooser that verifies that the selected file doesn't exist;
-* if it does, the user is asked whether he wants to overwrite it
-* before he can proceed.
-*
-**/
-
+    /**
+     *
+     * A filechooser that verifies that the selected file doesn't exist;
+     * if it does, the user is asked whether he wants to overwrite it
+     * before he can proceed.
+     *
+     **/
     public class TMApprovedFileSaveChooser extends JFileChooser {
 
         public void approveSelection() {

@@ -51,7 +51,6 @@ import java.util.Vector;
  * shown in the titlebar, along with a * when the file has been modified.
  *
  **/
-
 public class TMView extends JInternalFrame {
 	private static int frameCount = 0;
 	private JPanel contentPane = new JPanel();
@@ -86,7 +85,6 @@ public class TMView extends JInternalFrame {
 	 * Constructs a TMView for the given FileImage.
 	 *
 	 **/
-
 	public TMView(TMUI ui, FileImage fileImage, TileCodec tileCodec) {
 		super(fileImage.getName(), true, true, true, true);	
 		this.ui = ui;
@@ -186,7 +184,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the FileImage associated with this TMView.
 	 *
 	 **/
-
 	public FileImage getFileImage() {
 		return fileImage;
 	}
@@ -199,7 +196,6 @@ public class TMView extends JInternalFrame {
 	 * from, say, 4-bit to 2-bit codec).
 	 *
 	 **/
-
 	public void setTileCodec(TileCodec codec) {
 		// map fg+bg colors according to old and new color range
 		mapDrawColors(codec);
@@ -223,7 +219,6 @@ public class TMView extends JInternalFrame {
 	 * The palette index must be converted also!!
 	 *
 	 **/
-
 	public void mapDrawColors(TileCodec codec) {
 		TileCodec oldCodec = editorCanvas.getCodec();
 		if ((oldCodec != null)
@@ -253,7 +248,6 @@ public class TMView extends JInternalFrame {
 	 * corresponding indexes in the new palette range.
 	 *
 	 **/
-
 	public void mapDrawColorsToPalIndex(int newPalIndex) {
 		TileCodec codec = getTileCodec();
 		if (codec.getBitsPerPixel() <= 8) {
@@ -277,7 +271,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the tile codec for this view.
 	 *
 	 **/
-
 	public TileCodec getTileCodec() {
 		return editorCanvas.getCodec();
 	}
@@ -287,7 +280,6 @@ public class TMView extends JInternalFrame {
 	 * Sets the palette for this view.
 	 *
 	 **/
-
 	public void setPalette(TMPalette palette) {
 		editorCanvas.setPalette(palette);
 		editorCanvas.setPalIndex(0);
@@ -329,7 +321,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the palette for this view.
 	 *
 	 **/
-
 	public TMPalette getPalette() {
 		return editorCanvas.getPalette();
 	}
@@ -339,7 +330,6 @@ public class TMView extends JInternalFrame {
 	 * Sets the palette index for this view.
 	 *
 	 **/
-
 	public void setPalIndex(int palIndex) {
 		editorCanvas.setPalIndex(palIndex);
 		editorCanvas.unpackPixels();
@@ -353,7 +343,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the palette index for this view.
 	 *
 	 **/
-
 	public int getPalIndex() {
 		return editorCanvas.getPalIndex();
 	}
@@ -363,7 +352,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the maximum palette index, given the palette size and current codec.
 	 *
 	 **/
-
 	public int getPalIndexMaximum() {
 		TileCodec codec = getTileCodec();
 		int cc = 256; // assume >= 8 bpp
@@ -380,7 +368,6 @@ public class TMView extends JInternalFrame {
 	 * Can be 1-dimensional (MODE_1D) or 2-dimensional (MODE_2D).
 	 *
 	 **/
-
 	public void setMode(int mode) {
 		editorCanvas.setMode(mode);
 		editorCanvas.unpackPixels();
@@ -397,7 +384,6 @@ public class TMView extends JInternalFrame {
 	 * Updates the tick size of the slider according to current tile settings.
 	 *
 	 **/
-
 	private void updateSlider() {
 		slider.setMinimum(minOffset); // not here
 		// set slider tick spacings and maximum
@@ -420,7 +406,6 @@ public class TMView extends JInternalFrame {
 	 * Sets the size of the tile grid.
 	 *
 	 **/
-
 	public void setGridSize(int cols, int rows) {
 		if (cols < 1)
 			cols = 1;
@@ -447,7 +432,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the current position in the file.
 	 *
 	 **/
-
 	public int getOffset() {
 		return editorCanvas.getOffset();
 	}
@@ -457,7 +441,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the minimum file scroll offset.
 	 *
 	 **/
-
 	public int getMinOffset() {
 		return minOffset;
 	}
@@ -467,7 +450,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the maximum file scroll offset.
 	 *
 	 **/
-
 	public int getMaxOffset() {
 		return maxOffset;
 	}
@@ -477,7 +459,6 @@ public class TMView extends JInternalFrame {
 	 * Sets the position in the file, relative to start of file.
 	 *
 	 **/
-
 	public void setAbsoluteOffset(int absOfs) {
 		if (absOfs < minOffset) {
 			absOfs = minOffset; // lower boundary
@@ -498,7 +479,6 @@ public class TMView extends JInternalFrame {
 	 * Sets the position in the file, relative to current (previous) offset.
 	 *
 	 **/
-
 	public void setRelativeOffset(int relOfs) {
 		setAbsoluteOffset(relOfs + editorCanvas.getOffset());
 	}
@@ -508,7 +488,6 @@ public class TMView extends JInternalFrame {
 	 * Sets the drawing scale.
 	 *
 	 **/
-
 	public void setScale(double scale) {
 		editorCanvas.setScale(scale);
 
@@ -527,7 +506,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the drawing scale.
 	 *
 	 **/
-
 	public double getScale() {
 		return editorCanvas.getScale();
 	}
@@ -537,7 +515,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the # of tiles per row.
 	 *
 	 **/
-
 	public int getCols() {
 		return editorCanvas.getCols();
 	}
@@ -547,7 +524,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the # of tiles per column.
 	 *
 	 **/
-
 	public int getRows() {
 		return editorCanvas.getRows();
 	}
@@ -557,7 +533,6 @@ public class TMView extends JInternalFrame {
 	 * Turns the block grid on or off.
 	 *
 	 **/
-
 	public void setBlockGridVisible(boolean showBlockGrid) {
 		editorCanvas.setBlockGridVisible(showBlockGrid);
 	}
@@ -567,7 +542,6 @@ public class TMView extends JInternalFrame {
 	 * Turns the simple tile grid on or off.
 	 *
 	 **/
-
 	public void setTileGridVisible(boolean showTileGrid) {
 		editorCanvas.setTileGridVisible(showTileGrid);
 	}
@@ -577,7 +551,6 @@ public class TMView extends JInternalFrame {
 	 * Turns the pixel tile grid on or off.
 	 *
 	 **/
-
 	public void setPixelGridVisible(boolean showPixelGrid) {
 		editorCanvas.setPixelGridVisible(showPixelGrid);
 	}
@@ -587,7 +560,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the visibility status of the block grid.
 	 *
 	 **/
-
 	public boolean isBlockGridVisible() {
 		return editorCanvas.isBlockGridVisible();
 	}
@@ -597,7 +569,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the visibility status of the simple tile grid.
 	 *
 	 **/
-
 	public boolean isTileGridVisible() {
 		return editorCanvas.isTileGridVisible();
 	}
@@ -607,7 +578,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the visibility status of the pixel tile grid.
 	 *
 	 **/
-
 	public boolean isPixelGridVisible() {
 		return editorCanvas.isPixelGridVisible();
 	}
@@ -617,7 +587,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the scroll pane.
 	 *
 	 **/
-
 	public JScrollPane getScrollPane() {
 		return scrollPane;
 	}
@@ -627,7 +596,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the tile pane.
 	 *
 	 **/
-
 	public TMEditorCanvas getEditorCanvas() {
 		return editorCanvas;
 	}
@@ -637,7 +605,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the TMUI.
 	 *
 	 **/
-
 	public TMUI getTMUI() {
 		return ui;
 	}
@@ -647,7 +614,6 @@ public class TMView extends JInternalFrame {
 	 * Sets the foreground color.
 	 *
 	 **/
-
 	public void setFGColor(int fgColor) {
 		this.fgColor = fgColor;
 	}
@@ -657,7 +623,6 @@ public class TMView extends JInternalFrame {
 	 * Sets the background color.
 	 *
 	 **/
-
 	public void setBGColor(int bgColor) {
 		this.bgColor = bgColor;
 	}
@@ -667,7 +632,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the current foreground color.
 	 *
 	 **/
-
 	public int getFGColor() {
 		return fgColor;
 	}
@@ -677,7 +641,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the current background color.
 	 *
 	 **/
-
 	public int getBGColor() {
 		return bgColor;
 	}
@@ -702,7 +665,6 @@ public class TMView extends JInternalFrame {
 	 * fire events at that time.
 	 *
 	 **/
-
 	public void setKeysEnabled(boolean keysEnabled) {
 		this.keysEnabled = keysEnabled;
 	}
@@ -716,7 +678,6 @@ public class TMView extends JInternalFrame {
 	 * 2) When the user is adjusting the position of the slider with the mouse.
 	 *
 	 **/
-
 	public boolean getKeysEnabled() {
 		if (slider.getValueIsAdjusting()) {
 			return false; // don't respond to key presses when slider is being adjusting
@@ -739,11 +700,6 @@ public class TMView extends JInternalFrame {
 		return editorCanvas.getMode();
 	}
 
-	/**
-	*
-	*
-	*
-	**/
 	/*
 	 * public void mouseWheelMoved(MouseWheelEvent e) {
 	 * int units = e.getUnitsToScroll();
@@ -767,7 +723,6 @@ public class TMView extends JInternalFrame {
 	 * Undoes the last action.
 	 *
 	 **/
-
 	public void undo() {
 		if (!undoableActions.isEmpty()) {
 			ReversibleAction ra = undoableActions.remove(undoableActions.size() - 1);
@@ -781,7 +736,6 @@ public class TMView extends JInternalFrame {
 	 * Redoes a previously undone action.
 	 *
 	 **/
-
 	public void redo() {
 		if (!redoableActions.isEmpty()) {
 			ReversibleAction ra = redoableActions.remove(redoableActions.size() - 1);
@@ -795,7 +749,6 @@ public class TMView extends JInternalFrame {
 	 * Adds a undoable/redoable action.
 	 *
 	 **/
-
 	public void addReversibleAction(ReversibleAction ra) {
 		if (undoableActions.size() > 32) {
 			undoableActions.remove(0);
@@ -806,21 +759,9 @@ public class TMView extends JInternalFrame {
 		ui.refreshUndoRedo();
 	}
 
-	/**
-	*
-	*
-	*
-	**/
-
 	public boolean canUndo() {
 		return !undoableActions.isEmpty();
 	}
-
-	/**
-	*
-	*
-	*
-	**/
 
 	public boolean canRedo() {
 		return !redoableActions.isEmpty();
@@ -831,7 +772,6 @@ public class TMView extends JInternalFrame {
 	 * Goes to the specified bookmark.
 	 *
 	 **/
-
 	public void gotoBookmark(BookmarkItemNode bookmark) {
 		editorCanvas.setGridSize(bookmark.getCols(), bookmark.getRows());
 		editorCanvas.setBlockDimensions(bookmark.getBlockWidth(), bookmark.getBlockHeight());
@@ -853,7 +793,6 @@ public class TMView extends JInternalFrame {
 	 * Creates a bookmark based on current view settings.
 	 *
 	 **/
-
 	public BookmarkItemNode createBookmark(String description) {
 		return new BookmarkItemNode(
 				getOffset(),
@@ -874,7 +813,6 @@ public class TMView extends JInternalFrame {
 	 * Closes the view.
 	 *
 	 **/
-
 	private void doCloseCommand() {
 		ui.doCloseCommand();
 	}
@@ -884,16 +822,9 @@ public class TMView extends JInternalFrame {
 	 * Notifies UI that this view has been selected.
 	 *
 	 **/
-
 	private void doViewSelected() {
 		ui.viewSelected(this);
 	}
-
-	/**
-	*
-	*
-	*
-	**/
 
 	public void fitTilesInWindow() {
 		contentPane.setSize(slider.getWidth() + editorCanvas.getWidth(), editorCanvas.getHeight());
@@ -906,7 +837,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the first undoable action.
 	 *
 	 **/
-
 	public ReversibleAction getFirstUndoableAction() {
 		return undoableActions.lastElement();
 	}
@@ -916,7 +846,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the first redoable action.
 	 *
 	 **/
-
 	public ReversibleAction getFirstRedoableAction() {
 		return redoableActions.lastElement();
 	}
@@ -926,7 +855,6 @@ public class TMView extends JInternalFrame {
 	 * Disposes of the view.
 	 *
 	 **/
-
 	public void dispose() {
 		contentPane.removeKeyListener(contentPane.getKeyListeners()[0]);
 		removeInternalFrameListener(getInternalFrameListeners()[0]);
@@ -944,7 +872,6 @@ public class TMView extends JInternalFrame {
 	 * Sets the block dimensions.
 	 *
 	 **/
-
 	public void setBlockDimensions(int blockWidth, int blockHeight) {
 		if (blockWidth > getCols()) {
 			blockWidth = getCols();
@@ -966,7 +893,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the block width.
 	 *
 	 **/
-
 	public int getBlockWidth() {
 		return editorCanvas.getBlockWidth();
 	}
@@ -976,7 +902,6 @@ public class TMView extends JInternalFrame {
 	 * Gets the block height.
 	 *
 	 **/
-
 	public int getBlockHeight() {
 		return editorCanvas.getBlockHeight();
 	}
@@ -986,7 +911,6 @@ public class TMView extends JInternalFrame {
 	 * Gets whether blocks should be row-interleaved.
 	 *
 	 **/
-
 	public boolean getRowInterleaveBlocks() {
 		return editorCanvas.getRowInterleaveBlocks();
 	}
@@ -996,7 +920,6 @@ public class TMView extends JInternalFrame {
 	 * Sets whether blocks should be row-interleaved.
 	 *
 	 **/
-
 	public void setRowInterleaveBlocks(boolean rowInterleaved) {
 		editorCanvas.setRowInterleaveBlocks(rowInterleaved);
 		editorCanvas.unpackPixels();
@@ -1008,7 +931,6 @@ public class TMView extends JInternalFrame {
 	 * Sets whether the block size should follow the canvas size.
 	 *
 	 **/
-
 	public void setSizeBlockToCanvas(boolean sizeBlockToCanvas) {
 		this.sizeBlockToCanvas = sizeBlockToCanvas;
 		if (sizeBlockToCanvas) {
@@ -1021,7 +943,6 @@ public class TMView extends JInternalFrame {
 	 * Gets whether the block size should follow the canvas size.
 	 *
 	 **/
-
 	public boolean getSizeBlockToCanvas() {
 		return sizeBlockToCanvas;
 	}

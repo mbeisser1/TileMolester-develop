@@ -19,14 +19,13 @@
 package tm.colorcodecs;
 
 /**
-*
-* A DirectColorCodec translates pixels exactly the same way as
-* a direct-color tile codec.
-* The composition of a pixel is described by Red, Green,
-* Blue and Alpha masks.
-*
-**/
-
+ *
+ * A DirectColorCodec translates pixels exactly the same way as
+ * a direct-color tile codec.
+ * The composition of a pixel is described by Red, Green,
+ * Blue and Alpha masks.
+ *
+ **/
 public class DirectColorCodec extends ColorCodec {
 
     private int rmask;      // bitmask for Red component
@@ -54,10 +53,9 @@ public class DirectColorCodec extends ColorCodec {
         ashift = 31 - msb(amask);
     }
 
-/**
-* Gets the position of the most significant set bit in the given int.
-**/
-
+    /**
+     * Gets the position of the most significant set bit in the given int.
+     **/
     private static int msb(int mask) {
         for (int i=31; i>=0; i--) {
             if ((mask & 0x80000000) != 0) {
@@ -67,11 +65,6 @@ public class DirectColorCodec extends ColorCodec {
         }
         return -1;  // no bits set
     }
-
-/**
-*
-*
-**/
 
     public int decode(int value) {
         int r, g, b, a;
@@ -114,11 +107,6 @@ public class DirectColorCodec extends ColorCodec {
         // final pixel
         return (a | r | g | b);
     }
-
-/**
-*
-*
-**/
 
     public int encode(int argb) {
         int r, g, b, a;

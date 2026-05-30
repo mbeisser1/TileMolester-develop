@@ -24,18 +24,11 @@ import javax.swing.tree.*;
 import java.awt.*;
 
 /**
-*
-* A tree for showing treenodes.
-*
-**/
-
+ *
+ * A tree for showing treenodes.
+ *
+ **/
 public class TMTreeNodeTree extends JTree {
-
-/**
-*
-*
-*
-**/
 
     public TMTreeNodeTree() {
         super();
@@ -43,13 +36,12 @@ public class TMTreeNodeTree extends JTree {
         setShowsRootHandles(true);
     }
 
-/**
-*
-* Loads the tree with root <code>rootNode</code>.
-* @param loadLeaves If true, all nodes are loaded; if false, only internal nodes.
-*
-**/
-
+    /**
+     *
+     * Loads the tree with root <code>rootNode</code>.
+     * @param loadLeaves If true, all nodes are loaded; if false, only internal nodes.
+     *
+     **/
     public void loadTreeNodes(TMTreeNode rootNode, boolean loadLeaves) {
         if (loadLeaves) {
             setModel(new DefaultTreeModel(rootNode));
@@ -60,34 +52,26 @@ public class TMTreeNodeTree extends JTree {
 //        model.addTreeModelListener(this);
     }
 
-/**
-*
-* Gets the selected node.
-* If there is no selected node, the root is returned as default.
-*
-**/
-
+    /**
+     *
+     * Gets the selected node.
+     * If there is no selected node, the root is returned as default.
+     *
+     **/
     public TMTreeNode getSelectedNode() {
         TMTreeNode n = (TMTreeNode)getLastSelectedPathComponent();
         if (n != null) return n;
         return (TMTreeNode)getModel().getRoot();
     }
 
-/**
-*
-* Expands the specified node.
-*
-**/
-
+    /**
+     *
+     * Expands the specified node.
+     *
+     **/
     public void expandNode(DefaultMutableTreeNode node) {
         setExpandedState(new TreePath(node.getPath()), true);
     }
-
-/**
-*
-*
-*
-**/
 
     private class FolderTreeModel extends DefaultTreeModel {
 

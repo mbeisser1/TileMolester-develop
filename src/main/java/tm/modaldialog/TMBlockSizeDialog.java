@@ -26,11 +26,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
-*
-* The dialog where user can enter new dimensions for the block.
-*
-**/
-
+ *
+ * The dialog where user can enter new dimensions for the block.
+ *
+ **/
 public class TMBlockSizeDialog extends TMModalDialog {
 
     private JLabel colsLabel;
@@ -38,41 +37,22 @@ public class TMBlockSizeDialog extends TMModalDialog {
     private JTextField colsField;
     private JTextField rowsField;
 
-/**
-*
-* Creates the block size dialog.
-*
-**/
-
+    /**
+     *
+     * Creates the block size dialog.
+     *
+     **/
     public TMBlockSizeDialog(Frame owner, tm.utils.Xlator xl) {
         super(owner, "Block_Size_Dialog_Title", xl);
     }
-
-/**
-*
-*
-*
-**/
 
     public int getCols() {
         return Integer.parseInt(colsField.getText());
     }
 
-/**
-*
-*
-*
-**/
-
     public int getRows() {
         return Integer.parseInt(rowsField.getText());
     }
-
-/**
-*
-*
-*
-**/
 
     protected JPanel getDialogPane() {
         colsLabel = new JLabel(xlate("Columns_Prompt"));

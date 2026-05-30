@@ -31,20 +31,18 @@ import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 
 /**
-*
-* Allows a tile canvas to be saved to a bitmap.
-*
-**/
-
+ *
+ * Allows a tile canvas to be saved to a bitmap.
+ *
+ **/
 public class TMBitmapExporter {
 
-/**
-*
-* Static method that takes a tile canvas and a file and saves the tiles as a
-* bitmap. The bitmap format is determined by the extension of the file.
-*
-**/
-
+    /**
+     *
+     * Static method that takes a tile canvas and a file and saves the tiles as a
+     * bitmap. The bitmap format is determined by the extension of the file.
+     *
+     **/
     public static void saveTileCanvasToFile(TMTileCanvas canvas, File file)
         throws Exception {
         Image img = canvas.getImage();
@@ -102,12 +100,11 @@ public class TMBitmapExporter {
         }
     }
 
-/**
-*
-* Gets file extension.
-*
-**/
-
+    /**
+     *
+     * Gets file extension.
+     *
+     **/
     public static String getExtension(File f) {
         String ext = "";
         String s = f.getName();
@@ -119,12 +116,11 @@ public class TMBitmapExporter {
         return ext;
     }
 
-/**
-*
-* Converts an Image to a RenderedImage so that it can be fed to the JPEG encoder.
-*
-**/
-
+    /**
+     *
+     * Converts an Image to a RenderedImage so that it can be fed to the JPEG encoder.
+     *
+     **/
     public static RenderedImage convertToRenderedImage(Image img) {
         BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = bi.createGraphics();

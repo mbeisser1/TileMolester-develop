@@ -19,27 +19,25 @@
 package tm.tilecodecs;
 
 /**
-*
-* Planar, palette-indexed 8x8 tile codec. Max. 8 bitplanes.
-* bitsPerPixel must be a power of 2. (1, 2, 4, 8) (why??)
-* Planes for each row must be stored sequentially.
-*
-**/
-
+ *
+ * Planar, palette-indexed 8x8 tile codec. Max. 8 bitplanes.
+ * bitsPerPixel must be a power of 2. (1, 2, 4, 8) (why??)
+ * Planes for each row must be stored sequentially.
+ *
+ **/
 public class PlanarTileCodec extends TileCodec {
 
     protected int[] bpOffsets;
     protected int[] bp;
     protected static int[][][] bitsToPixelsLookup=null;
 
-/**
-*
-* Constructor.
-*
-* @param bpOffsets  Relative offsets for the bitplane values in a row (8 pixels) of encoded tile data. The length of this array is the number of bitplanes in a tile row, which is equal to the # of bits per pixel.
-*
-**/
-
+    /**
+     *
+     * Constructor.
+     *
+     * @param bpOffsets  Relative offsets for the bitplane values in a row (8 pixels) of encoded tile data. The length of this array is the number of bitplanes in a tile row, which is equal to the # of bits per pixel.
+     *
+     **/
     public PlanarTileCodec(String id, int[] bpOffsets, String description) {
         super(id, bpOffsets.length, description);
         this.bpOffsets = bpOffsets;
@@ -61,15 +59,14 @@ public class PlanarTileCodec extends TileCodec {
         }
     }
 
-/**
-*
-* Decodes a tile.
-*
-* @param bits   An array of ints holding encoded tile data in each LSB
-* @param ofs    Where to start decoding from in the array
-*
-**/
-
+    /**
+     *
+     * Decodes a tile.
+     *
+     * @param bits   An array of ints holding encoded tile data in each LSB
+     * @param ofs    Where to start decoding from in the array
+     *
+     **/
     public int[] decode(byte[] bits, int ofs, int stride) {
         int pos=0;
         stride++;
@@ -94,12 +91,11 @@ public class PlanarTileCodec extends TileCodec {
         return pixels;
     }
 
-/**
-*
-* Encodes a bitplaned tile.
-*
-**/
-
+    /**
+     *
+     * Encodes a bitplaned tile.
+     *
+     **/
     public void encode(int[] pixels, byte[] bits, int ofs, int stride) {
         int pos=0;
         stride++;

@@ -26,11 +26,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
-*
-* The dialog where user can enter new dimensions for the current view.
-*
-**/
-
+ *
+ * The dialog where user can enter new dimensions for the current view.
+ *
+ **/
 public class TMCanvasSizeDialog extends TMModalDialog {
 
     private JLabel colsLabel;
@@ -38,41 +37,22 @@ public class TMCanvasSizeDialog extends TMModalDialog {
     private JTextField colsField;
     private JTextField rowsField;
 
-/**
-*
-* Creates the canvas size dialog.
-*
-**/
-
+    /**
+     *
+     * Creates the canvas size dialog.
+     *
+     **/
     public TMCanvasSizeDialog(Frame owner, tm.utils.Xlator xl) {
         super(owner, "Canvas_Size_Dialog_Title", xl);
     }
-
-/**
-*
-*
-*
-**/
 
     public int getCols() {
         return Integer.parseInt(colsField.getText());
     }
 
-/**
-*
-*
-*
-**/
-
     public int getRows() {
         return Integer.parseInt(rowsField.getText());
     }
-
-/**
-*
-*
-*
-**/
 
     protected JPanel getDialogPane() {
         colsLabel = new JLabel(xlate("Columns_Prompt"));

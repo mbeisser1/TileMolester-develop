@@ -26,15 +26,14 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
-*
-* A class providing a general framework for modal dialogs.
-* It has an OK and Cancel button. Must be subclassed to
-* provide the getDialogPane() method, which creates and
-* returns a panel with the actual dialog components where
-* input can be given by the user.
-*
-**/
-
+ *
+ * A class providing a general framework for modal dialogs.
+ * It has an OK and Cancel button. Must be subclassed to
+ * provide the getDialogPane() method, which creates and
+ * returns a panel with the actual dialog components where
+ * input can be given by the user.
+ *
+ **/
 public abstract class TMModalDialog extends JDialog {
 
     private int result;
@@ -42,12 +41,6 @@ public abstract class TMModalDialog extends JDialog {
     private JButton cancelButton;
     private Xlator xl;
     private JPanel dialogPane;
-
-/**
-*
-*
-*
-**/
 
     public TMModalDialog(Frame owner, String title, Xlator xl) {
         super(owner, xl != null ? xl.xlate(title) : title, true);
@@ -102,12 +95,11 @@ public abstract class TMModalDialog extends JDialog {
 
     }
 
-/**
-*
-* Shows the dialog.
-*
-**/
-
+    /**
+     *
+     * Shows the dialog.
+     *
+     **/
     public int showDialog() {
         // center the dialog
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -121,41 +113,22 @@ public abstract class TMModalDialog extends JDialog {
         return result;
     }
 
-/**
-*
-*
-*
-**/
-
     protected void approveInput() {
         result = JOptionPane.OK_OPTION;
         setVisible(false);
     }
-
-/**
-*
-*
-*
-**/
 
     protected void cancelInput() {
         result = JOptionPane.CANCEL_OPTION;
         setVisible(false);
     }
 
-/**
-*
-* Method that provides the real content pane of the dialog.
-*
-**/
-
+    /**
+     *
+     * Method that provides the real content pane of the dialog.
+     *
+     **/
     protected abstract JPanel getDialogPane();
-
-/**
-*
-*
-*
-**/
 
     protected static void buildConstraints(GridBagConstraints gbc, int gx, int gy, int gw, int gh, int wx, int wy) {
         gbc.gridx = gx;
@@ -166,14 +139,13 @@ public abstract class TMModalDialog extends JDialog {
         gbc.weighty = wy;
     }
 
-/**
-*
-* Sets enabled state of OK button.
-* Subclasses can use this to keep the user from OK'ing the input when it
-* isn't valid/completed.
-*
-**/
-
+    /**
+     *
+     * Sets enabled state of OK button.
+     * Subclasses can use this to keep the user from OK'ing the input when it
+     * isn't valid/completed.
+     *
+     **/
     public void maybeEnableOKButton() {
         okButton.setEnabled(inputOK());
     }

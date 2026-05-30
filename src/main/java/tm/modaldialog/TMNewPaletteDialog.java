@@ -26,11 +26,6 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.util.Vector;
 
-/**
-*
-*
-**/
-
 public class TMNewPaletteDialog extends TMModalDialog {
 
     private JLabel sizeLabel;
@@ -40,21 +35,14 @@ public class TMNewPaletteDialog extends TMModalDialog {
     private JRadioButton littleRadio;
     private JRadioButton bigRadio;
 
-/**
-*
-* Creates the dialog.
-*
-**/
-
+    /**
+     *
+     * Creates the dialog.
+     *
+     **/
     public TMNewPaletteDialog(Frame owner, tm.utils.Xlator xl) {
         super(owner, "New_Palette_Dialog_Title", xl);
     }
-
-/**
-*
-*
-*
-**/
 
     protected JPanel getDialogPane() {
         sizeLabel = new JLabel(xlate("Size_Prompt"));
@@ -118,12 +106,6 @@ public class TMNewPaletteDialog extends TMModalDialog {
         return (ColorCodec)codecCombo.getSelectedItem();
     }
 
-/**
-*
-*
-*
-**/
-
     public void setCodecs(Vector<ColorCodec> codecs) {
         codecCombo.removeAllItems();
         for (int i=0; i<codecs.size(); i++) {
@@ -131,12 +113,6 @@ public class TMNewPaletteDialog extends TMModalDialog {
         }
         codecCombo.setSelectedIndex(0);
     }
-
-/**
-*
-*
-*
-**/
 
     public int showDialog() {
         //sizeField.setText("");

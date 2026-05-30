@@ -6,7 +6,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 
- /**
+/**
  * Key adapter which only allows hexadecimal values in the field.
  */
 public class HexadecimalNumberVerifier extends KeyAdapter {

@@ -22,11 +22,10 @@ import tm.canvases.TMSelectionCanvas;
 import tm.canvases.TMEditorCanvas;
 
 /**
-*
-* Allows undo/redo of the Clear operation.
-*
-**/
-
+ *
+ * Allows undo/redo of the Clear operation.
+ *
+ **/
 public class ReversibleClearAction extends ReversibleAction {
 
     private TMSelectionCanvas selection;

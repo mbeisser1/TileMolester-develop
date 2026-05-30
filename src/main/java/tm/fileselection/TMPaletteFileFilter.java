@@ -18,24 +18,12 @@
 
 package tm.fileselection;
 
-/**
-*
-*
-*
-**/
-
 public class TMPaletteFileFilter extends TMFileFilter {
 
     private String codecID; // color codec
     private int size;
     private int offset;
     private int endianness;
-
-/**
-*
-*
-*
-**/
 
     public TMPaletteFileFilter(String extlist, String description, String codecID, int size, int offset, int endianness) {
         super(extlist, description);
@@ -45,41 +33,17 @@ public class TMPaletteFileFilter extends TMFileFilter {
         this.endianness = endianness;
     }
 
-/**
-*
-*
-*
-**/
-
     public String getCodecID() {
         return codecID;
     }
-
-/**
-*
-*
-*
-**/
 
     public int getSize() {
         return size;
     }
 
-/**
-*
-*
-*
-**/
-
     public int getOffset() {
         return offset;
     }
-
-/**
-*
-*
-*
-**/
 
     public int getEndianness() {
         return endianness;

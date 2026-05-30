@@ -1,19 +1,19 @@
 package tm.osbaldeston.image;
 
 /**
-  * BMP - Wrapper Class  for the loading & saving of uncompressed BMP files.
-  *
-  * Known problems/issues:
-  *     Only 24 bit BMP files are output, images get converted to 24-bit 
-  *     which corresponds to Java's default colour model, output from 
-  *     PixelGrabber in Java 1.1.x.
-  *
-  * @see PCBinaryInputStream, PCBinaryOutputStream
-  *
-  * @author Richard J.Osbaldeston
-  * @version 1.1 02/08/98
-  * @copyright Richard J.Osbaldeston (http://www.osbald.co.uk)
-  */
+ * BMP - Wrapper Class  for the loading & saving of uncompressed BMP files.
+ *
+ * Known problems/issues:
+ * Only 24 bit BMP files are output, images get converted to 24-bit 
+ * which corresponds to Java's default colour model, output from 
+ * PixelGrabber in Java 1.1.x.
+ *
+ * @see PCBinaryInputStream, PCBinaryOutputStream
+ *
+ * @author Richard J.Osbaldeston
+ * @version 1.1 02/08/98
+ * @copyright Richard J.Osbaldeston (http://www.osbald.co.uk)
+ */
 
 import java.awt.Image;
 import java.awt.image.*;
@@ -305,8 +305,8 @@ public class BMP {
     }
 
     /**
-    * .BMP InfoHeader
-    */
+     * .BMP InfoHeader
+     */
 
     class BmpInfoHeader {
         int   biSize = 40;                  /* InfoHeader Offset*/
@@ -384,8 +384,8 @@ public class BMP {
     }
 
     /**
-    * .BMP FileHeader
-    */
+     * .BMP FileHeader
+     */
 
     class BmpFileheader {
         byte    bfType[] = {'B','M'};       /* Type */
@@ -428,8 +428,8 @@ public class BMP {
     }
 
     /**
-    * .BMP Palette
-    */
+     * .BMP Palette
+     */
 
     class BmpPalette {
         int length;

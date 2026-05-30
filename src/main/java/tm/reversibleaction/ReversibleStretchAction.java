@@ -21,11 +21,10 @@ package tm.reversibleaction;
 import tm.canvases.TMSelectionCanvas;
 
 /**
-*
-* Allows undo/redo of selection stretching.
-*
-**/
-
+ *
+ * Allows undo/redo of selection stretching.
+ *
+ **/
 public class ReversibleStretchAction extends ReversibleAction {
 
     private TMSelectionCanvas canvas;

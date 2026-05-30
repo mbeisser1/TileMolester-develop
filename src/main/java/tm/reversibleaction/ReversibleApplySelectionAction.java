@@ -8,7 +8,6 @@ import tm.canvases.TMSelectionCanvas;
  * Allows the deletion of a selection
  *
  **/
-
 public class ReversibleApplySelectionAction extends ReversibleAction {
     private TMSelectionCanvas selection;
     private TMEditorCanvas owner;

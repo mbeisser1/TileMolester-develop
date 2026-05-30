@@ -26,11 +26,10 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
-*
-* The dialog where user can enter desired file offset.
-*
-**/
-
+ *
+ * The dialog where user can enter desired file offset.
+ *
+ **/
 public class TMGoToDialog extends TMModalDialog {
 
     // available modes
@@ -43,43 +42,34 @@ public class TMGoToDialog extends TMModalDialog {
     private JRadioButton absButton;
     private JRadioButton relButton;
 
-/**
-*
-* Creates the goto dialog.
-*
-**/
-
+    /**
+     *
+     * Creates the goto dialog.
+     *
+     **/
     public TMGoToDialog(Frame owner, tm.utils.Xlator xl) {
         super(owner, "Go_To_Dialog_Title", xl);
     }
 
-/**
-*
-* Gets the selected mode.
-*
-**/
-
+    /**
+     *
+     * Gets the selected mode.
+     *
+     **/
     public int getMode() {
         return (absButton.isSelected()) ? ABSOLUTE_MODE : RELATIVE_MODE;
     }
 
-/**
-*
-* Gets the offset that was entered.
-*
-**/
-
+    /**
+     *
+     * Gets the offset that was entered.
+     *
+     **/
     public int getOffset() {
         if (inputOK())
             return Integer.parseInt(ofsField.getText(), getRadix());
         return 0;
     }
-
-/**
-*
-*
-*
-**/
 
     protected JPanel getDialogPane() {
         JPanel p = new JPanel();
@@ -168,12 +158,6 @@ public class TMGoToDialog extends TMModalDialog {
 
         return p;
     }
-
-/**
-*
-*
-*
-**/
 
     public int showDialog() {
         ofsField.setText("");

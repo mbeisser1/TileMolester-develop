@@ -23,11 +23,10 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
-*
-* Panel where a TMPalette is visualized.
-*
-**/
-
+ *
+ * Panel where a TMPalette is visualized.
+ *
+ **/
 public class TMPaletteVizualiser extends JPanel {
 
     private TMPalette palette=null;
@@ -36,22 +35,20 @@ public class TMPaletteVizualiser extends JPanel {
     private int colorCount;
 	private int lastIndex = 0;
 
-/**
-*
-* Sets the palette that is to be displayed.
-*
-**/
-
+    /**
+     *
+     * Sets the palette that is to be displayed.
+     *
+     **/
     public void setPalette(TMPalette palette) {
         this.palette = palette;
     }
 
-/**
-*
-* Sets the palette index.
-*
-**/
-
+    /**
+     *
+     * Sets the palette index.
+     *
+     **/
     public void setPalIndex(int palIndex) {
         this.palIndex = palIndex;
         // keep lastIndex in same page when palette page changes
@@ -59,22 +56,20 @@ public class TMPaletteVizualiser extends JPanel {
         this.lastIndex = this.palIndex * this.colorCount;
     }
 
-/**
-*
-* Gets the last palette index.
-*
-**/
-
+    /**
+     *
+     * Gets the last palette index.
+     *
+     **/
     public int getLastIndex() {
         return this.lastIndex;
     }
 
-/**
-*
-* Sets the bit depth.
-*
-**/
-
+    /**
+     *
+     * Sets the bit depth.
+     *
+     **/
     public void setBitDepth(int bitDepth) {
         if (bitDepth > 8)
             bitDepth = 8;
@@ -82,12 +77,11 @@ public class TMPaletteVizualiser extends JPanel {
         colorCount = 1 << bitDepth;
     }
 
-/**
-*
-* Paints the palette.
-*
-**/
-
+    /**
+     *
+     * Paints the palette.
+     *
+     **/
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (palette != null) {
@@ -127,12 +121,11 @@ public class TMPaletteVizualiser extends JPanel {
         }
     }
 
-/**
-*
-* Gets the index of the color whose rectangle contains the point (x,y).
-*
-**/
-
+    /**
+     *
+     * Gets the index of the color whose rectangle contains the point (x,y).
+     *
+     **/
     public int getIndexOfColorAt(int x, int y) {
         int colorIndex = palIndex * colorCount;
         int w = getBoxWidth();
@@ -145,23 +138,21 @@ public class TMPaletteVizualiser extends JPanel {
         return lastIndex;
     }
 
-/**
-*
-* Gets the RGB value of the color whose rectangle contains the point (x,y).
-*
-**/
-
+    /**
+     *
+     * Gets the RGB value of the color whose rectangle contains the point (x,y).
+     *
+     **/
     public int getColorAt(int x, int y) {
         int i = getIndexOfColorAt(x, y);
         return palette.getEntryRGB(i);
     }
 
-/**
-*
-* Gets the height of a color rectangle according to bitdepth.
-*
-**/
-
+    /**
+     *
+     * Gets the height of a color rectangle according to bitdepth.
+     *
+     **/
     public int getBoxWidth() {
         switch (bitDepth) {
             case 1:
@@ -180,12 +171,11 @@ public class TMPaletteVizualiser extends JPanel {
         return getWidth();
     }
 
-/**
-*
-* Gets the width of a color rectangle according to bitdepth.
-*
-**/
-
+    /**
+     *
+     * Gets the width of a color rectangle according to bitdepth.
+     *
+     **/
     public int getBoxHeight() {
         switch (bitDepth) {
             case 1:

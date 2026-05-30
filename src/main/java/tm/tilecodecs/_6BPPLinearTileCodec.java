@@ -2,20 +2,18 @@ package tm.tilecodecs;
 
 public class _6BPPLinearTileCodec extends TileCodec {
 
-/**
-* Constructor.
-**/
-
+    /**
+     * Constructor.
+     **/
     public _6BPPLinearTileCodec() {
         super("LN99", 6, "6bpp linear, reverse-order");
     }
 
-/**
-*
-* Decodes a tile.
-*
-**/
-
+    /**
+     *
+     * Decodes a tile.
+     *
+     **/
     public int[] decode(byte[] bits, int ofs, int stride) {
         int pos=0;
         int b1, b2, b3, b4, b5, b6;
@@ -54,12 +52,11 @@ public class _6BPPLinearTileCodec extends TileCodec {
         return pixels;
     }
 
-/**
-*
-* Encodes a tile.
-*
-**/
-
+    /**
+     *
+     * Encodes a tile.
+     *
+     **/
     public void encode(int[] pixels, byte[] bits, int ofs, int stride) {
         int pos = 0;
         int b1, b2, b3, b4, b5, b6;

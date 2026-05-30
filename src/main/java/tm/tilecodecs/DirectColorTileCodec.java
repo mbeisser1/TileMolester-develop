@@ -19,13 +19,12 @@
 package tm.tilecodecs;
 
 /**
-*
-* 16, 24, and 32-bit direct-color (ARGB) tile codec.
-* # of bits per color component must not exceed 8.
-* The color component masks must be directly adjacent.
-*
-**/
-
+ *
+ * 16, 24, and 32-bit direct-color (ARGB) tile codec.
+ * # of bits per color component must not exceed 8.
+ * The color component masks must be directly adjacent.
+ *
+ **/
 public class DirectColorTileCodec extends TileCodec {
 
     public static final int LITTLE_ENDIAN=1;
@@ -51,12 +50,11 @@ public class DirectColorTileCodec extends TileCodec {
     private int startShift;
     private int shiftStep;
 
-/**
-*
-* Creates a direct-color tile codec.
-*
-**/
-
+    /**
+     *
+     * Creates a direct-color tile codec.
+     *
+     **/
     public DirectColorTileCodec(String id, int bpp, int rmask, int gmask, int bmask, int amask, String description) {
         super(id, getByteIntegralBitCount(bpp), description);
         bytesPerPixel = bitsPerPixel / 8;   // 2, 3 or 4
@@ -73,10 +71,9 @@ public class DirectColorTileCodec extends TileCodec {
         setEndianness(LITTLE_ENDIAN);   // default
     }
 
-/**
-* Sets the endianness.
-**/
-
+    /**
+     * Sets the endianness.
+     **/
     public void setEndianness(int endianness) {
         this.endianness = endianness;
         if (endianness == LITTLE_ENDIAN) {
@@ -90,10 +87,9 @@ public class DirectColorTileCodec extends TileCodec {
         }
     }
 
-/**
-* Gets the position of the most significant set bit in the given int.
-**/
-
+    /**
+     * Gets the position of the most significant set bit in the given int.
+     **/
     private static int msb(int mask) {
         for (int i=31; i>=0; i--) {
             if ((mask & 0x80000000) != 0) {
@@ -104,12 +100,11 @@ public class DirectColorTileCodec extends TileCodec {
         return -1;  // no bits set
     }
 
-/**
-*
-* Decodes a tile.
-*
-**/
-
+    /**
+     *
+     * Decodes a tile.
+     *
+     **/
     public int[] decode(byte[] bits, int ofs, int stride) {
         int v, r, g, b, a, s;
         int pos=0;
@@ -170,12 +165,11 @@ public class DirectColorTileCodec extends TileCodec {
         return pixels;
     }
 
-/**
-*
-* Encodes a tile.
-*
-**/
-
+    /**
+     *
+     * Encodes a tile.
+     *
+     **/
     public void encode(int[] pixels, byte[] bits, int ofs, int stride) {
         int v, r, g, b, a, s, argb;
         int pos=0;
@@ -240,13 +234,12 @@ public class DirectColorTileCodec extends TileCodec {
         }
     }
 
-/**
-*
-* Gets the least number of whole bytes that are required to store
-* <code>bits</code> bits of information.
-*
-**/
-
+    /**
+     *
+     * Gets the least number of whole bytes that are required to store
+     * <code>bits</code> bits of information.
+     *
+     **/
     private static int getByteIntegralBitCount(int bits) {
         int bytes = bits / 8;
         int extrabits = bits % 8;

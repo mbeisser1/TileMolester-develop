@@ -21,32 +21,24 @@ package tm.treenodes;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
-*
-* Generic treenode class.
-*
-**/
-
+ *
+ * Generic treenode class.
+ *
+ **/
 public abstract class TMTreeNode extends DefaultMutableTreeNode {
 
     private boolean modified;
     private TMTreeNode parent;
 
-/**
-*
-* Creates a treenode.
-*
-**/
-
+    /**
+     *
+     * Creates a treenode.
+     *
+     **/
     public TMTreeNode() {
         super();
         modified = false;
     }
-
-/**
-*
-*
-*
-**/
 
     public TMTreeNode[] getChildren() {
         TMTreeNode[] ch = new TMTreeNode[getChildCount()];
@@ -55,12 +47,6 @@ public abstract class TMTreeNode extends DefaultMutableTreeNode {
         }
         return ch;
     }
-
-/**
-*
-*
-*
-**/
 
     public String getIndent() {
         StringBuffer sb = new StringBuffer();

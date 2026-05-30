@@ -21,11 +21,10 @@ package tm.threads;
 import java.io.*;
 
 /**
-*
-* Thread for reading a file into a buffer.
-*
-**/
-
+ *
+ * Thread for reading a file into a buffer.
+ *
+ **/
 public class FileLoaderThread extends ProgressThread {
 
     private static final int CHUNK_SIZE = 16384;

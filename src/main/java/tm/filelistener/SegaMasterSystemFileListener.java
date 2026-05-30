@@ -19,23 +19,21 @@
 package tm.filelistener;
 
 /**
-*
-* Listener for Sega Master System (*.sms) files.
-*
-**/
-
+ *
+ * Listener for Sega Master System (*.sms) files.
+ *
+ **/
 public class SegaMasterSystemFileListener extends TMFileListener {
 
     private static final int[] tmr_Sega = { 0x54,0x4D,0x52,0x20,0x53,0x45,0x47,0x41 };
 
-/**
-*
-* Detects if this is a Sega Master System file.
-* The criteria are that the extension is either sms or gg and that the string
-* "TMR SEGA" appears at offset 0x7FF0.
-*
-**/
-
+    /**
+     *
+     * Detects if this is a Sega Master System file.
+     * The criteria are that the extension is either sms or gg and that the string
+     * "TMR SEGA" appears at offset 0x7FF0.
+     *
+     **/
     public boolean doFormatDetect(final byte[] data, String extension) {
         // verify extension
         if (!(extension.equals("sms")
@@ -53,21 +51,19 @@ public class SegaMasterSystemFileListener extends TMFileListener {
         return true;
     }
 
-/**
-*
-* Does nothing on file load.
-*
-**/
-
+    /**
+     *
+     * Does nothing on file load.
+     *
+     **/
     public void fileLoaded(byte[] data, String extension) {
     }
 
-/**
-*
-* Recalculates the checksum on file save.
-*
-**/
-
+    /**
+     *
+     * Recalculates the checksum on file save.
+     *
+     **/
     public void fileSaving(byte[] data, String extension) {
         // update checksum
         int checkSum = 0;

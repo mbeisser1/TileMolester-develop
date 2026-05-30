@@ -23,53 +23,23 @@ public class TMTileCodecFileFilter extends TMFileFilter {
     private int defaultMode;
     private String codecID;
 
-/**
-*
-*
-*
-**/
-
     public TMTileCodecFileFilter(String extlist, String description, String codecID, int defaultMode) {
         super(extlist, description);
         setCodecID(codecID);
         setDefaultMode(defaultMode);
     }
 
-/**
-*
-*
-*
-**/
-
     public void setCodecID(String codecID) {
         this.codecID = codecID;
     }
-
-/**
-*
-*
-*
-**/
 
     public void setDefaultMode(int defaultMode) {
         this.defaultMode = defaultMode;
     }
 
-/**
-*
-*
-*
-**/
-
     public int getDefaultMode() {
         return defaultMode;
     }
-
-/**
-*
-*
-*
-**/
 
     public String getCodecID() {
         return codecID;
