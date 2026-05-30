@@ -272,7 +272,7 @@ public class TMSpecReader {
             Element fl = (Element)fltags.item(i);
             String extlist = fl.getAttribute("extensions");
             String classname = fl.getAttribute("classname");
-            Class c;
+            Class<?> c;
             try {
                 c = loader.loadClass(classname);
             }
@@ -281,7 +281,7 @@ public class TMSpecReader {
             }
             Object o;
             try {
-                o = c.newInstance();
+                o = c.getDeclaredConstructor().newInstance();
             }
             catch (Exception e) {
                 continue;

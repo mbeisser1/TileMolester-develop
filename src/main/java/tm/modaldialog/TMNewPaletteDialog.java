@@ -34,7 +34,7 @@ public class TMNewPaletteDialog extends TMModalDialog {
     private JLabel sizeLabel;
     private JFormattedTextField sizeField;
     private JLabel formatLabel;
-    private JComboBox codecCombo;
+    private JComboBox<ColorCodec> codecCombo;
     private JRadioButton littleRadio;
     private JRadioButton bigRadio;
 
@@ -53,7 +53,7 @@ public class TMNewPaletteDialog extends TMModalDialog {
         sizeLabel = new JLabel(xlate("Size_Prompt"));
         sizeField = new JFormattedTextField();
         formatLabel = new JLabel(xlate("Format"));
-        codecCombo = new JComboBox();
+        codecCombo = new JComboBox<>();
 
         sizeField.setColumns(5);
         sizeField.getDocument().addDocumentListener(new TMDocumentListener());
@@ -120,7 +120,7 @@ public class TMNewPaletteDialog extends TMModalDialog {
      * @return selected color codec
      **/
     public ColorCodec getCodec() {
-        return (ColorCodec)codecCombo.getSelectedItem();
+        return codecCombo.getItemAt(codecCombo.getSelectedIndex());
     }
 
     /**

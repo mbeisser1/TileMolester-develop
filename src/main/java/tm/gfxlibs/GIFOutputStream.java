@@ -34,8 +34,8 @@ package tm.gfxlibs;
 import java.io.*;
 import java.awt.*;
 import java.awt.image.*;
-import java.util.Hashtable;
-import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Writes GIF89a image data to an output stream with optional palette reduction.
@@ -267,7 +267,7 @@ public class GIFOutputStream extends FilterOutputStream
 
       switch (colorMode) {
          case ORIGINAL_COLOR:
-            Hashtable<Integer, Integer>   colorSet = getColorSet(pixels);
+            Map<Integer, Integer>   colorSet = getColorSet(pixels);
             colorCount = colorSet.size();
             if (colorCount > 256) {
                errorStatus = TOO_MANY_COLORS;
@@ -349,14 +349,13 @@ public class GIFOutputStream extends FilterOutputStream
     * @param pixels ARGB pixel array from a PixelGrabber
     * @return map from RGB integer to palette index (0 … n-1)
     **/
-   protected Hashtable<Integer, Integer> getColorSet(int[] pixels)
+   protected Map<Integer, Integer> getColorSet(int[] pixels)
    {
-      Hashtable<Integer, Integer>   colorSet = new Hashtable<>();
+      Map<Integer, Integer>   colorSet = new HashMap<>();
       boolean[]   checked = new boolean[pixels.length];
       int         needsChecking = pixels.length;
       int         color;
       int         colorIndex = 0;
-      Integer     key;
 
       for (int j = 0; j < pixels.length && needsChecking > 0; ++j) {
          if (!checked[j]) {
@@ -364,8 +363,7 @@ public class GIFOutputStream extends FilterOutputStream
             checked[j] = true;
             --needsChecking;
 
-            key = new Integer(color);
-            colorSet.put(key, new Integer(colorIndex));
+            colorSet.put(color, colorIndex);
             if (++colorIndex > 256)
                break;
 
@@ -379,10 +377,10 @@ public class GIFOutputStream extends FilterOutputStream
       }
 
       if (colorIndex == 1) {
-         if (colorSet.get(new Integer(0)) == null)
-            colorSet.put(new Integer(0), new Integer(1));
+         if (colorSet.get(0) == null)
+            colorSet.put(0, 1);
          else
-            colorSet.put(new Integer(0xFFFFFF), new Integer(1));
+            colorSet.put(0xFFFFFF, 1);
       }
 
       return colorSet;
@@ -394,14 +392,12 @@ public class GIFOutputStream extends FilterOutputStream
     * @param colorCount number of entries in the table
     * @return palette entries as 0xRRGGBB integers
     **/
-   protected int[] createColorTable(Hashtable<Integer, Integer> colorSet, int colorCount)
+   protected int[] createColorTable(Map<Integer, Integer> colorSet, int colorCount)
    {
       int[]    colorTable = new int[colorCount];
-      Integer  key;
 
-      for (Enumeration<Integer> e = colorSet.keys(); e.hasMoreElements(); ) {
-         key = e.nextElement();
-         colorTable[colorSet.get(key).intValue()] = key.intValue();
+      for (Map.Entry<Integer, Integer> entry : colorSet.entrySet()) {
+         colorTable[entry.getValue()] = entry.getKey();
       }
 
       return colorTable;
@@ -413,15 +409,13 @@ public class GIFOutputStream extends FilterOutputStream
     * @param colorSet RGB to index map from {@link #getColorSet}
     * @return one byte per pixel (palette index)
     **/
-   protected byte[] createBytePixels(int[] pixels, Hashtable<Integer, Integer> colorSet)
+   protected byte[] createBytePixels(int[] pixels, Map<Integer, Integer> colorSet)
    {
       byte[]   bytePixels = new byte[pixels.length];
-      Integer  key;
       int      colorIndex;
 
       for (int j = 0; j < pixels.length; ++j) {
-         key = new Integer(pixels[j] & 0x00FFFFFF);
-         colorIndex = ((Integer) colorSet.get(key)).intValue();
+         colorIndex = colorSet.get(pixels[j] & 0x00FFFFFF);
          bytePixels[j] = (byte) colorIndex;
       }
 
