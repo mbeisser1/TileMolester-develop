@@ -8,7 +8,8 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -28,7 +29,7 @@ public class TMSettings extends JFrame {
 	public boolean viewToolBar = true;
 	private boolean darkMode;
 	public int maxRecentFiles = 10;
-	public Vector<File> recentFiles = new Vector<>();
+	public List<File> recentFiles = new ArrayList<>();
 	public String lastPath = "";
 
 	public TMSettings() {
@@ -122,7 +123,7 @@ public class TMSettings extends JFrame {
 					continue;
 				String language = st.nextToken();
 				String country = st.nextToken();
-				locale = new Locale(language, country);
+				locale = Locale.forLanguageTag(language + "-" + country);
 				loadedLocale = true;
 			}
 			if (key.equals("viewStatusBar")) {
@@ -161,7 +162,7 @@ public class TMSettings extends JFrame {
 				String name = files[i].getName();
 				String language = name.substring(name.indexOf('_') + 1, name.lastIndexOf('_'));
 				String country = name.substring(name.lastIndexOf('_') + 1, name.lastIndexOf('.'));
-				locales[i] = new Locale(language, country);
+				locales[i] = Locale.forLanguageTag(language + "-" + country);
 				displayNames[i] = locales[i].getDisplayName();
 				if (language.equals("en"))
 					defaultIndex = i;
@@ -290,7 +291,7 @@ public class TMSettings extends JFrame {
 	 * Sets the recent files.
 	 * @param newRecentFiles replacement list of recently opened files
 	 **/
-	public void setRecentFiles(Vector<File> newRecentFiles) {
+	public void setRecentFiles(List<File> newRecentFiles) {
 		recentFiles = newRecentFiles;
 	}
 
@@ -298,7 +299,7 @@ public class TMSettings extends JFrame {
 	 * Gets the recent files.
 	 * @return list of recently opened files
 	 **/
-	public Vector<File> getRecentFiles() {
+	public List<File> getRecentFiles() {
 		return recentFiles;
 	}
 

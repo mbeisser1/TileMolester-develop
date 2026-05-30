@@ -27,7 +27,8 @@ import tm.reversibleaction.*;
 import tm.utils.TMTools;
 
 import java.nio.IntBuffer;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
@@ -63,8 +64,8 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     private Point moveMousePoint;
 
     private int[] tempPixels = new int[8*8];
-    private Vector<Point> modifiedTiles = new Vector<>(); // tiles modified by operation
-    private Vector<IntBuffer> modifiedPixels = new Vector<>();
+    private List<Point> modifiedTiles = new ArrayList<>(); // tiles modified by operation
+    private List<IntBuffer> modifiedPixels = new ArrayList<>();
     private Point[][] gridCoords;
 
     private int blockWidth=1;
@@ -350,6 +351,7 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
                         redraw();
                     }
                 }
+                break;
             case MOVE_TOOL:
                 Point p = e.getPoint();
                 int dx = p.x - moveMousePoint.x;
@@ -473,7 +475,7 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
      * @param y vertical pixel or tile coordinate
      **/
     public void floodFill(int x, int y) {
-        Vector<Point> seeds = new Vector<>();
+        List<Point> seeds = new ArrayList<>();
         seeds.add(new Point(x, y));
         while (!seeds.isEmpty()) {
             Point p = seeds.remove(0);
@@ -702,10 +704,10 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
         int[] newPix = new int[pts.length * 8*8];
 
         for (int i=0; i<modifiedTiles.size(); i++) {
-            Point p = modifiedTiles.elementAt(i);
+            Point p = modifiedTiles.get(i);
             pts[i] = new Point(p);
 
-            IntBuffer ib = modifiedPixels.elementAt(i);
+            IntBuffer ib = modifiedPixels.get(i);
             System.arraycopy(ib.array(), 0, oldPix, i * 8*8, 8*8);
 
             copyTilePixelsToBuffer(p.x, p.y, newPix, i * 8*8);

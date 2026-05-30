@@ -34,7 +34,7 @@ public abstract class ColorCodec {
     protected String id;
     protected String description;
 
-    private static int endianness;
+    protected int endianness;
     private int startShift;
     private int shiftStep;
 
@@ -49,7 +49,7 @@ public abstract class ColorCodec {
         this.bitsPerPixel = bitsPerPixel;
         this.description = description;
         bytesPerPixel = getBytesRequired(bitsPerPixel);
-        setEndianness(LITTLE_ENDIAN);   // default
+        setEndianness(ColorCodec.LITTLE_ENDIAN);   // default
     }
 
     /**
@@ -58,12 +58,12 @@ public abstract class ColorCodec {
      **/
     public void setEndianness(int endianness) {
         this.endianness = endianness;
-        if (endianness == LITTLE_ENDIAN) {
+        if (endianness == ColorCodec.LITTLE_ENDIAN) {
             startShift = 0;
             shiftStep = 8;
         }
         else {
-            // BIG_ENDIAN
+            // ColorCodec.BIG_ENDIAN
             startShift = (bytesPerPixel-1) * 8;
             shiftStep = -8;
         }

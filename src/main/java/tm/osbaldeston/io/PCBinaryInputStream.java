@@ -11,7 +11,7 @@ package tm.osbaldeston.io;
 import java.io.*;
 import java.net.URL;
 
-public class PCBinaryInputStream {
+public class PCBinaryInputStream implements AutoCloseable {
 
     DataInputStream file;
 
@@ -58,12 +58,5 @@ public class PCBinaryInputStream {
         file=null;
     }
 
-    public void finalize() {
-        if (file != null) {
-            try {
-                close();
-            } catch (IOException e) {}
-        }
-    }
 }
 

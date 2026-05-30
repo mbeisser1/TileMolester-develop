@@ -28,7 +28,7 @@ public class DirectColorTileCodec extends TileCodec {
     public static final int LITTLE_ENDIAN=1;
     public static final int BIG_ENDIAN=2;
 
-    private static int endianness;   // LITTLE_ENDIAN | BIG_ENDIAN
+    private int endianness;   // LITTLE_ENDIAN | BIG_ENDIAN
 
     private int rmask;      // bitmask for Red component
     private int gmask;      // bitmask for Green component
@@ -80,7 +80,7 @@ public class DirectColorTileCodec extends TileCodec {
      **/
     public void setEndianness(int endianness) {
         this.endianness = endianness;
-        if (endianness == LITTLE_ENDIAN) {
+        if (endianness == DirectColorTileCodec.LITTLE_ENDIAN) {
             startShift = 0;
             shiftStep = 8;
         }

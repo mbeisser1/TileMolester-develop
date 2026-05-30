@@ -25,7 +25,7 @@ import tm.utils.HexadecimalNumberVerifier;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
-import java.util.Vector;
+import java.util.List;
 
 /**
  * Dialog for importing a palette stored inside the current file.
@@ -162,7 +162,7 @@ public class TMImportInternalPaletteDialog extends TMModalDialog {
      * Populates the color codec combo box.
      * @param codecs available color codecs for the combo box
      **/
-    public void setCodecs(Vector<ColorCodec> codecs) {
+    public void setCodecs(List<ColorCodec> codecs) {
         codecCombo.removeAllItems();
         for (int i=0; i<codecs.size(); i++) {
             codecCombo.addItem(codecs.get(i));

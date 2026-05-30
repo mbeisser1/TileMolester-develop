@@ -39,7 +39,8 @@ import com.formdev.flatlaf.ui.FlatInternalFrameTitlePane;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Map;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A graphical view of a file image.
@@ -65,8 +66,8 @@ public class TMView extends JInternalFrame {
 
 	private boolean keysEnabled = true;
 
-	private Vector<ReversibleAction> undoableActions = new Vector<>();
-	private Vector<ReversibleAction> redoableActions = new Vector<>();
+	private List<ReversibleAction> undoableActions = new ArrayList<>();
+	private List<ReversibleAction> redoableActions = new ArrayList<>();
 
 	private boolean sizeBlockToCanvas = true;
 
@@ -846,7 +847,7 @@ public class TMView extends JInternalFrame {
 	 * @return most recent undoable action, for menu labeling
 	 **/
 	public ReversibleAction getFirstUndoableAction() {
-		return undoableActions.lastElement();
+		return undoableActions.get(undoableActions.size() - 1);
 	}
 
 	/**
@@ -854,7 +855,7 @@ public class TMView extends JInternalFrame {
 	 * @return most recent redoable action, for menu labeling
 	 **/
 	public ReversibleAction getFirstRedoableAction() {
-		return redoableActions.lastElement();
+		return redoableActions.get(redoableActions.size() - 1);
 	}
 
 	/**

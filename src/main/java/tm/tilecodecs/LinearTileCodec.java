@@ -144,7 +144,7 @@ public class LinearTileCodec extends TileCodec {
                 byte b = 0;
                 for (int m = startPixel; m != boundary; m += step) {
                     // encode one pixel
-                    b |= (pixels[pos++] & pixelMask) << (m*bitsPerPixel);
+                    b = (byte) (b | ((pixels[pos++] & pixelMask) << (m*bitsPerPixel)));
                 }
                 bits[ofs++] = b;    // TODO: rowbyteoffset[k]
             }

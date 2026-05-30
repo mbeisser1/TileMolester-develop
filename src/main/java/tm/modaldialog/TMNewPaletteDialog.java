@@ -24,7 +24,7 @@ import tm.utils.DecimalNumberVerifier;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
-import java.util.Vector;
+import java.util.List;
 
 /**
  * Dialog for creating a new palette with size, format, and endianness.
@@ -127,7 +127,7 @@ public class TMNewPaletteDialog extends TMModalDialog {
      * Populates the color codec combo box.
      * @param codecs available color codecs for the combo box
      **/
-    public void setCodecs(Vector<ColorCodec> codecs) {
+    public void setCodecs(List<ColorCodec> codecs) {
         codecCombo.removeAllItems();
         for (int i=0; i<codecs.size(); i++) {
             codecCombo.addItem(codecs.get(i));

@@ -64,11 +64,11 @@ public class TMUI extends JFrame {
 
 	private int previousTool;
 
-	private Vector<ColorCodec> colorcodecs;
-	private Vector<TileCodec> tilecodecs;
-	private Vector<TMTileCodecFileFilter> filefilters;
-	private Vector<TMPaletteFileFilter> palettefilters;
-	private Vector<TMFileListener> filelisteners;
+	private java.util.List<ColorCodec> colorcodecs;
+	private java.util.List<TileCodec> tilecodecs;
+	private java.util.List<TMTileCodecFileFilter> filefilters;
+	private java.util.List<TMPaletteFileFilter> palettefilters;
+	private java.util.List<TMFileListener> filelisteners;
 
 	private TMSelectionCanvas copiedSelection = null;
 
@@ -291,10 +291,10 @@ public class TMUI extends JFrame {
 	private ButtonGroup modeButtonGroup = new ButtonGroup();
 	private ButtonGroup paletteEndiannessButtonGroup = new ButtonGroup();
 
-	private Hashtable<TileCodec, TileCodecMenuItem> tileCodecButtonHashtable = new Hashtable<>();
-	private Hashtable<ColorCodec, ColorCodecMenuItem> colorCodecButtonHashtable = new Hashtable<>();
-	private Hashtable<TMPalette, PaletteMenuItem> paletteButtonHashtable = new Hashtable<>();
-	private Hashtable<byte[], TMFileListener> fileListenerHashtable = new Hashtable<>();
+	private Map<TileCodec, TileCodecMenuItem> tileCodecButtonHashtable = new HashMap<>();
+	private Map<ColorCodec, ColorCodecMenuItem> colorCodecButtonHashtable = new HashMap<>();
+	private Map<TMPalette, PaletteMenuItem> paletteButtonHashtable = new HashMap<>();
+	private Map<byte[], TMFileListener> fileListenerHashtable = new HashMap<>();
 
 	private Xlator xl;
 
@@ -1274,7 +1274,7 @@ public class TMUI extends JFrame {
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		// New
 		newMenuItem.setMnemonic(KeyEvent.VK_N);
-		newMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK));
+		newMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
 		newMenuItem.addActionListener(
 				new ActionListener() {
 					/**
@@ -1288,7 +1288,7 @@ public class TMUI extends JFrame {
 		fileMenu.add(newMenuItem);
 		// Open
 		openMenuItem.setMnemonic(KeyEvent.VK_O);
-		openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
+		openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
 		openMenuItem.addActionListener(
 				new ActionListener() {
 					/**
@@ -1333,7 +1333,7 @@ public class TMUI extends JFrame {
 		fileMenu.addSeparator();
 		// Save
 		saveMenuItem.setMnemonic(KeyEvent.VK_S);
-		saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
+		saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
 		saveMenuItem.addActionListener(
 				new ActionListener() {
 					/**
@@ -1391,7 +1391,7 @@ public class TMUI extends JFrame {
 		editMenu.setMnemonic(KeyEvent.VK_E);
 		// Undo
 		undoMenuItem.setMnemonic(KeyEvent.VK_U);
-		undoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.CTRL_MASK));
+		undoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK));
 		undoMenuItem.addActionListener(
 				new ActionListener() {
 					/**
@@ -1405,7 +1405,7 @@ public class TMUI extends JFrame {
 		editMenu.add(undoMenuItem);
 		// Redo
 		redoMenuItem.setMnemonic(KeyEvent.VK_R);
-		redoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.CTRL_MASK));
+		redoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
 		redoMenuItem.addActionListener(
 				new ActionListener() {
 					/**
@@ -1421,7 +1421,7 @@ public class TMUI extends JFrame {
 		editMenu.addSeparator();
 		// Cut
 		cutMenuItem.setMnemonic(KeyEvent.VK_T);
-		cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK));
+		cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));
 		cutMenuItem.addActionListener(
 				new ActionListener() {
 					/**
@@ -1435,7 +1435,7 @@ public class TMUI extends JFrame {
 		editMenu.add(cutMenuItem);
 		// Copy
 		copyMenuItem.setMnemonic(KeyEvent.VK_C);
-		copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK));
+		copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
 		copyMenuItem.addActionListener(
 				new ActionListener() {
 					/**
@@ -1449,7 +1449,7 @@ public class TMUI extends JFrame {
 		editMenu.add(copyMenuItem);
 		// Paste
 		pasteMenuItem.setMnemonic(KeyEvent.VK_P);
-		pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK));
+		pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
 		pasteMenuItem.addActionListener(
 				new ActionListener() {
 					/**
@@ -1479,7 +1479,7 @@ public class TMUI extends JFrame {
 		editMenu.addSeparator();
 		// Select All
 		selectAllMenuItem.setMnemonic(KeyEvent.VK_S);
-		selectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK));
+		selectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
 		selectAllMenuItem.addActionListener(
 				new ActionListener() {
 					/**
@@ -1801,7 +1801,7 @@ public class TMUI extends JFrame {
 		imageMenu.setMnemonic(KeyEvent.VK_I);
 		// Mirror
 		mirrorMenuItem.setMnemonic(KeyEvent.VK_M);
-		mirrorMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, Event.CTRL_MASK));
+		mirrorMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK));
 		mirrorMenuItem.addActionListener(
 				new ActionListener() {
 					/**
@@ -1815,7 +1815,7 @@ public class TMUI extends JFrame {
 		imageMenu.add(mirrorMenuItem);
 		// Flip
 		flipMenuItem.setMnemonic(KeyEvent.VK_F);
-		flipMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, Event.CTRL_MASK));
+		flipMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK));
 		flipMenuItem.addActionListener(
 				new ActionListener() {
 					/**
@@ -1950,7 +1950,7 @@ public class TMUI extends JFrame {
 		navigateMenu.setMnemonic(KeyEvent.VK_N);
 		// Go To
 		goToMenuItem.setMnemonic(KeyEvent.VK_G);
-		goToMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, Event.CTRL_MASK));
+		goToMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.CTRL_DOWN_MASK));
 		goToMenuItem.addActionListener(
 				new ActionListener() {
 					/**
@@ -3159,7 +3159,7 @@ public class TMUI extends JFrame {
 	 **/
 	public void doReopenCommand(File recentFile) {
 		if (recentFile.exists() && recentFile.canRead()) {
-			Vector<File> recentFiles = TileMolester.settings.getRecentFiles();
+			java.util.List<File> recentFiles = TileMolester.settings.getRecentFiles();
 			fileOpenChooser.setFileFilter(getTileCodecFilterForFile(recentFile));
 			openFile(recentFile);
 			recentFiles.remove(recentFile);
@@ -4792,7 +4792,7 @@ public class TMUI extends JFrame {
 		view.setGridSize(3, 36);
 		addViewToDesktop(view);
 
-		Vector<File> recentFiles = TileMolester.settings.getRecentFiles();
+		java.util.List<File> recentFiles = TileMolester.settings.getRecentFiles();
 		// Remove file from recentFiles, if it's there
 		for (int i = 0; i < recentFiles.size(); i++) {
 			File f = recentFiles.get(i);
@@ -4813,7 +4813,7 @@ public class TMUI extends JFrame {
 	 **/
 	public void buildReopenMenu() {
 		reopenMenu.removeAll();
-		Vector<File> recentFiles = TileMolester.settings.getRecentFiles();
+		java.util.List<File> recentFiles = TileMolester.settings.getRecentFiles();
 		if (recentFiles.size() == 0) {
 			JMenuItem emptyItem = new JMenuItem("(" + xlate("Empty") + ")");
 			emptyItem.setEnabled(false);
@@ -4901,7 +4901,7 @@ public class TMUI extends JFrame {
 	 * @param f f value
 	 **/
 	public void addToRecentFiles(File f) {
-		Vector<File> recentFiles = TileMolester.settings.getRecentFiles();
+		java.util.List<File> recentFiles = TileMolester.settings.getRecentFiles();
 		// make sure it's not already in the list
 		for (int i = 0; i < recentFiles.size(); i++) {
 			File rf = recentFiles.get(i);
@@ -4911,7 +4911,7 @@ public class TMUI extends JFrame {
 			}
 		}
 		// add it
-		recentFiles.insertElementAt(f, 0);
+		recentFiles.add(0, f);
 		// check for "overflow"
 		int maxRecentFiles = TileMolester.settings.getMaxRecentFiles();
 		if (recentFiles.size() > maxRecentFiles) {

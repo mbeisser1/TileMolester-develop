@@ -24,7 +24,8 @@ import tm.fileselection.*;
 import tm.filelistener.TMFileListener;
 import tm.utils.*;
 import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -40,11 +41,11 @@ import org.xml.sax.SAXException;
  **/
 public class TMSpecReader {
 
-    private static Vector<ColorCodec> colorcodecs;
-    private static Vector<TileCodec> tilecodecs;
-    private static Vector<TMTileCodecFileFilter> filefilters;
-    private static Vector<TMPaletteFileFilter> palettefilters;
-    private static Vector<TMFileListener> filelisteners;
+    private static List<ColorCodec> colorcodecs;
+    private static List<TileCodec> tilecodecs;
+    private static List<TMTileCodecFileFilter> filefilters;
+    private static List<TMPaletteFileFilter> palettefilters;
+    private static List<TMFileListener> filelisteners;
     private static Element tmspec;
 
     /**
@@ -56,11 +57,11 @@ public class TMSpecReader {
      **/
     public static void readSpecsFromFile(File file)
     throws SAXException, ParserConfigurationException, IOException {
-        colorcodecs = new Vector<>();
-        tilecodecs = new Vector<>();
-        filefilters = new Vector<>();
-        palettefilters = new Vector<>();
-        filelisteners = new Vector<>();
+        colorcodecs = new ArrayList<>();
+        tilecodecs = new ArrayList<>();
+        filefilters = new ArrayList<>();
+        palettefilters = new ArrayList<>();
+        filelisteners = new ArrayList<>();
         Document doc = null;
         try {
             doc = XMLParser.parse(file);
@@ -296,7 +297,7 @@ public class TMSpecReader {
      * Gets the vector of color codecs that's been created based on the XML.
      * @return color codecs loaded from the specification file
      **/
-    public static Vector<ColorCodec> getColorCodecs() {
+    public static List<ColorCodec> getColorCodecs() {
         return colorcodecs;
     }
 
@@ -304,7 +305,7 @@ public class TMSpecReader {
      * Gets the vector of tile codecs that's been created based on the XML.
      * @return tile codecs loaded from the specification file
      **/
-    public static Vector<TileCodec> getTileCodecs() {
+    public static List<TileCodec> getTileCodecs() {
         return tilecodecs;
     }
 
@@ -312,7 +313,7 @@ public class TMSpecReader {
      * Gets the vector of file filters that's been created based on the XML.
      * @return tile codec file filters loaded from the specification file
      **/
-    public static Vector<TMTileCodecFileFilter> getFileFilters() {
+    public static List<TMTileCodecFileFilter> getFileFilters() {
         return filefilters;
     }
 
@@ -320,7 +321,7 @@ public class TMSpecReader {
      * Gets the vector of palette filters that's been created based on the XML.
      * @return palette file filters loaded from the specification file
      **/
-    public static Vector<TMPaletteFileFilter> getPaletteFilters() {
+    public static List<TMPaletteFileFilter> getPaletteFilters() {
         return palettefilters;
     }
 
@@ -328,7 +329,7 @@ public class TMSpecReader {
      * Gets the vector of file listeners that's been created based on the XML.
      * @return file listeners loaded from the specification file
      **/
-    public static Vector<TMFileListener> getFileListeners() {
+    public static List<TMFileListener> getFileListeners() {
         return filelisteners;
     }
 

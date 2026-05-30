@@ -109,7 +109,7 @@ public class PlanarTileCodec extends TileCodec {
                 int p = pixels[pos];
                 for (int k=0; k<bitsPerPixel; k++) {
                     // add bitplane k
-                    bits[ofs+bpOffsets[k]] |= ((p >> k) & 0x01) << (7-j);
+                    bits[ofs+bpOffsets[k]] = (byte) (bits[ofs+bpOffsets[k]] | (((p >> k) & 0x01) << (7-j)));
                 }
                 pos++;
             }

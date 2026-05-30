@@ -49,7 +49,7 @@ public abstract class ImageEncoder implements ImageConsumer
     private boolean encoding;
     private IOException iox;
     private static final ColorModel rgbModel = ColorModel.getRGBdefault();
-    private Hashtable<?, ?> props = null;
+    private Map<?, ?> props = null;
 
     /**
      * Creates an image encoder for the given image and output stream.
@@ -191,7 +191,7 @@ public abstract class ImageEncoder implements ImageConsumer
      * Receives image properties from the image producer.
      * @param props image property hashtable
      **/
-    public void setProperties( Hashtable<?, ?> props )
+    public void setProperties( Map<?, ?> props )
 	{
 	this.props = props;
 	}

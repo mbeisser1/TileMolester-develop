@@ -21,7 +21,8 @@ package tm;
 import tm.treenodes.*;
 import tm.ui.TMView;
 import java.io.File;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A FileImage object represents a file that has been loaded into the editor.
@@ -30,7 +31,7 @@ public class FileImage {
 
     private byte[] contents;
     private File file;
-    private Vector<TMView> views = new Vector<>();
+    private List<TMView> views = new ArrayList<>();
     private static int fileNum=0;
     private boolean modified;
     private TMFileResources resources;
