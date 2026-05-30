@@ -67,11 +67,11 @@ public class TMUI extends JFrame {
 
 	private int previousTool;
 
-	private Vector colorcodecs;
-	private Vector tilecodecs;
-	private Vector filefilters;
-	private Vector palettefilters;
-	private Vector filelisteners;
+	private Vector<ColorCodec> colorcodecs;
+	private Vector<TileCodec> tilecodecs;
+	private Vector<TMTileCodecFileFilter> filefilters;
+	private Vector<TMPaletteFileFilter> palettefilters;
+	private Vector<TMFileListener> filelisteners;
 
 	private TMSelectionCanvas copiedSelection = null;
 
@@ -294,10 +294,10 @@ public class TMUI extends JFrame {
 	private ButtonGroup modeButtonGroup = new ButtonGroup();
 	private ButtonGroup paletteEndiannessButtonGroup = new ButtonGroup();
 
-	private Hashtable tileCodecButtonHashtable = new Hashtable();
-	private Hashtable colorCodecButtonHashtable = new Hashtable();
-	private Hashtable paletteButtonHashtable = new Hashtable();
-	private Hashtable fileListenerHashtable = new Hashtable();
+	private Hashtable<TileCodec, TileCodecMenuItem> tileCodecButtonHashtable = new Hashtable<>();
+	private Hashtable<ColorCodec, ColorCodecMenuItem> colorCodecButtonHashtable = new Hashtable<>();
+	private Hashtable<TMPalette, PaletteMenuItem> paletteButtonHashtable = new Hashtable<>();
+	private Hashtable<byte[], TMFileListener> fileListenerHashtable = new Hashtable<>();
 
 	private Xlator xl;
 
@@ -1849,7 +1849,7 @@ public class TMUI extends JFrame {
 			FileImage img = new FileImage(newFileDialog.getFileSize());
 			new TMFileResources(img, this);
 			// create view for it
-			TileCodec tc = (TileCodec) tilecodecs.get(0); // default
+			TileCodec tc = tilecodecs.get(0); // default
 			TMPalette pal = new TMPalette("PAL000", TMPalette.defaultPalette, getColorCodecByID("CF01"),
 					ColorCodec.LITTLE_ENDIAN, true);
 			addViewToDesktop(createView(img, tc, pal, TileCodec.MODE_1D));
@@ -2082,7 +2082,7 @@ public class TMUI extends JFrame {
 					}
 
 					// see if a filelistener should be notified
-					TMFileListener fl = (TMFileListener) fileListenerHashtable.get(contents);
+					TMFileListener fl = fileListenerHashtable.get(contents);
 					if (fl != null) {
 						fl.fileSaving(contents, ext);
 					}
@@ -2889,7 +2889,7 @@ public class TMUI extends JFrame {
 
 	public void doReopenCommand(File recentFile) {
 		if (recentFile.exists() && recentFile.canRead()) {
-			Vector recentFiles = TileMolester.settings.getRecentFiles();
+			Vector<File> recentFiles = TileMolester.settings.getRecentFiles();
 			fileOpenChooser.setFileFilter(getTileCodecFilterForFile(recentFile));
 			openFile(recentFile);
 			recentFiles.remove(recentFile);
@@ -3644,9 +3644,9 @@ public class TMUI extends JFrame {
 	public TileCodec getTileCodecSuccessor(TileCodec codec) {
 		int i = tilecodecs.indexOf(codec);
 		if (i == tilecodecs.size() - 1) {
-			return (TileCodec) tilecodecs.get(0);
+			return tilecodecs.get(0);
 		} else {
-			return (TileCodec) tilecodecs.get(i + 1);
+			return tilecodecs.get(i + 1);
 		}
 	}
 
@@ -3660,9 +3660,9 @@ public class TMUI extends JFrame {
 	public TileCodec getTileCodecPredecessor(TileCodec codec) {
 		int i = tilecodecs.indexOf(codec);
 		if (i == 0) {
-			return (TileCodec) tilecodecs.get(tilecodecs.size() - 1);
+			return tilecodecs.get(tilecodecs.size() - 1);
 		} else {
-			return (TileCodec) tilecodecs.get(i - 1);
+			return tilecodecs.get(i - 1);
 		}
 	}
 
@@ -3885,7 +3885,7 @@ public class TMUI extends JFrame {
 		tileCodecMenu.setMnemonic(KeyEvent.VK_C);
 		tileCodecMenu.removeAll();
 		for (int i = 0; i < tilecodecs.size(); i++) {
-			addTileCodec((TileCodec) tilecodecs.get(i));
+			addTileCodec(tilecodecs.get(i));
 		}
 
 	}
@@ -3900,7 +3900,7 @@ public class TMUI extends JFrame {
 		colorCodecMenu.setMnemonic(KeyEvent.VK_F);
 		colorCodecMenu.removeAll();
 		for (int i = 0; i < colorcodecs.size(); i++) {
-			addColorCodec((ColorCodec) colorcodecs.get(i));
+			addColorCodec(colorcodecs.get(i));
 		}
 	}
 
@@ -3963,7 +3963,7 @@ public class TMUI extends JFrame {
 		fileOpenChooser.resetChoosableFileFilters();
 		ArrayList<TMTileCodecFileFilter> sortedFileFilters = new ArrayList<>();
 		for (int i = 0; i < filefilters.size(); i++) {
-			sortedFileFilters.add((TMTileCodecFileFilter) filefilters.get(i));
+			sortedFileFilters.add(filefilters.get(i));
 		}
 		Collections.sort(sortedFileFilters,
 				(a, b) -> a.getDescription().compareToIgnoreCase(b.getDescription()));
@@ -4037,7 +4037,7 @@ public class TMUI extends JFrame {
 		paletteOpenChooser.resetChoosableFileFilters();
 		ArrayList<TMPaletteFileFilter> sortedPaletteFilters = new ArrayList<>();
 		for (int i = 0; i < palettefilters.size(); i++) {
-			sortedPaletteFilters.add((TMPaletteFileFilter) palettefilters.get(i));
+			sortedPaletteFilters.add(palettefilters.get(i));
 		}
 		Collections.sort(sortedPaletteFilters, (a, b) -> {
 			int ra = paletteFilterSortRank(a);
@@ -4070,7 +4070,7 @@ public class TMUI extends JFrame {
 
 	public ColorCodec getColorCodecByID(String codecID) {
 		for (int i = 0; i < colorcodecs.size(); i++) {
-			ColorCodec cc = (ColorCodec) colorcodecs.get(i);
+			ColorCodec cc = colorcodecs.get(i);
 			if (cc.getID().equals(codecID)) {
 				return cc;
 			}
@@ -4087,7 +4087,7 @@ public class TMUI extends JFrame {
 
 	public TileCodec getTileCodecByID(String codecID) {
 		for (int i = 0; i < tilecodecs.size(); i++) {
-			TileCodec tc = (TileCodec) tilecodecs.get(i);
+			TileCodec tc = tilecodecs.get(i);
 			if (tc.getID().equals(codecID)) {
 				return tc;
 			}
@@ -4104,12 +4104,12 @@ public class TMUI extends JFrame {
 
 	private TMTileCodecFileFilter getTileCodecFilterForFile(File file) {
 		for (int i = 0; i < filefilters.size(); i++) {
-			TMTileCodecFileFilter cff = (TMTileCodecFileFilter) filefilters.get(i);
+			TMTileCodecFileFilter cff = filefilters.get(i);
 			if (cff.accept(file)) {
 				return cff;
 			}
 		}
-		return (TMTileCodecFileFilter) filefilters.get(0);
+		return filefilters.get(0);
 	}
 
 	/**
@@ -4121,12 +4121,12 @@ public class TMUI extends JFrame {
 
 	private TMPaletteFileFilter getPaletteFilterForFile(File file) {
 		for (int i = 0; i < palettefilters.size(); i++) {
-			TMPaletteFileFilter pff = (TMPaletteFileFilter) palettefilters.get(i);
+			TMPaletteFileFilter pff = palettefilters.get(i);
 			if (pff.accept(file)) {
 				return pff;
 			}
 		}
-		return (TMPaletteFileFilter) palettefilters.get(0);
+		return palettefilters.get(0);
 	}
 
 	/**
@@ -4381,7 +4381,7 @@ public class TMUI extends JFrame {
 	 **/
 
 	public void refreshTileCodecSelection(TMView view) {
-		((TileCodecMenuItem) tileCodecButtonHashtable.get(view.getTileCodec())).setSelected(true);
+		tileCodecButtonHashtable.get(view.getTileCodec()).setSelected(true);
 	}
 
 	/**
@@ -4483,7 +4483,7 @@ public class TMUI extends JFrame {
 	 **/
 
 	public void refreshPaletteSelection(TMView view) {
-		PaletteMenuItem item = (PaletteMenuItem) paletteButtonHashtable.get(view.getPalette());
+		PaletteMenuItem item = paletteButtonHashtable.get(view.getPalette());
 		if (item != null) {
 			item.setSelected(true);
 		} else {
@@ -4512,7 +4512,7 @@ public class TMUI extends JFrame {
 	 **/
 
 	public void refreshColorCodecSelection(TMView view) {
-		((ColorCodecMenuItem) colorCodecButtonHashtable.get(view.getPalette().getCodec())).setSelected(true);
+		colorCodecButtonHashtable.get(view.getPalette().getCodec()).setSelected(true);
 	}
 
 	/**
@@ -4546,7 +4546,7 @@ public class TMUI extends JFrame {
 		// see if a filelistener should receive notification
 		String ext = TMFileFilter.getExtension(file);
 		for (int i = 0; i < filelisteners.size(); i++) {
-			TMFileListener fl = (TMFileListener) filelisteners.get(i);
+			TMFileListener fl = filelisteners.get(i);
 			if (fl.doFormatDetect(contents, ext)) {
 				fileListenerHashtable.put(contents, fl);
 				fl.fileLoaded(contents, ext);
@@ -4601,10 +4601,10 @@ public class TMUI extends JFrame {
 		view.setGridSize(3, 36);
 		addViewToDesktop(view);
 
-		Vector recentFiles = TileMolester.settings.getRecentFiles();
+		Vector<File> recentFiles = TileMolester.settings.getRecentFiles();
 		// Remove file from recentFiles, if it's there
 		for (int i = 0; i < recentFiles.size(); i++) {
-			File f = (File) recentFiles.get(i);
+			File f = recentFiles.get(i);
 			if (f.compareTo(file) == 0) {
 				recentFiles.remove(f);
 				buildReopenMenu();
@@ -4625,14 +4625,14 @@ public class TMUI extends JFrame {
 
 	public void buildReopenMenu() {
 		reopenMenu.removeAll();
-		Vector recentFiles = TileMolester.settings.getRecentFiles();
+		Vector<File> recentFiles = TileMolester.settings.getRecentFiles();
 		if (recentFiles.size() == 0) {
 			JMenuItem emptyItem = new JMenuItem("(" + xlate("Empty") + ")");
 			emptyItem.setEnabled(false);
 			reopenMenu.add(emptyItem);
 		} else {
 			for (int i = 0; i < recentFiles.size(); i++) {
-				File recentFile = (File) recentFiles.get(i);
+				File recentFile = recentFiles.get(i);
 				reopenMenu.add(new RecentFileMenuItem(recentFile));
 			}
 		}
@@ -4676,7 +4676,7 @@ public class TMUI extends JFrame {
 	public ColorCodec[] getColorCodecs() {
 		ColorCodec[] ccs = new ColorCodec[colorcodecs.size()];
 		for (int i = 0; i < ccs.length; i++) {
-			ccs[i] = (ColorCodec) colorcodecs.get(i);
+			ccs[i] = colorcodecs.get(i);
 		}
 		return ccs;
 	}
@@ -4714,10 +4714,10 @@ public class TMUI extends JFrame {
 	 *
 	 **/
 	public void addToRecentFiles(File f) {
-		Vector recentFiles = TileMolester.settings.getRecentFiles();
+		Vector<File> recentFiles = TileMolester.settings.getRecentFiles();
 		// make sure it's not already in the list
 		for (int i = 0; i < recentFiles.size(); i++) {
-			File rf = (File) recentFiles.get(i);
+			File rf = recentFiles.get(i);
 			if (rf.compareTo(f) == 0) {
 				recentFiles.remove(i);
 				break;

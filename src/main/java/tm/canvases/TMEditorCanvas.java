@@ -66,8 +66,8 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     private Point moveMousePoint;
 
     private int[] tempPixels = new int[8*8];
-    private Vector modifiedTiles = new Vector(); // tiles modified by operation
-    private Vector modifiedPixels = new Vector();
+    private Vector<Point> modifiedTiles = new Vector<>(); // tiles modified by operation
+    private Vector<IntBuffer> modifiedPixels = new Vector<>();
     private Point[][] gridCoords;
 
     private int blockWidth=1;
@@ -500,10 +500,10 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
 **/
 
     public void floodFill(int x, int y) {
-        Vector seeds = new Vector();
+        Vector<Point> seeds = new Vector<>();
         seeds.add(new Point(x, y));
         while (!seeds.isEmpty()) {
-            Point p = (Point)seeds.remove(0);
+            Point p = seeds.remove(0);
             x = p.x;
             y = p.y;
             if (getPixel(x, y) == colorDraw) continue;
@@ -722,10 +722,10 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
         int[] newPix = new int[pts.length * 8*8];
 
         for (int i=0; i<modifiedTiles.size(); i++) {
-            Point p = (Point)modifiedTiles.elementAt(i);
+            Point p = modifiedTiles.elementAt(i);
             pts[i] = new Point(p);
 
-            IntBuffer ib = (IntBuffer)modifiedPixels.elementAt(i);
+            IntBuffer ib = modifiedPixels.elementAt(i);
             System.arraycopy(ib.array(), 0, oldPix, i * 8*8, 8*8);
 
             copyTilePixelsToBuffer(p.x, p.y, newPix, i * 8*8);

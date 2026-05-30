@@ -152,7 +152,7 @@ public class TMImportInternalPaletteDialog extends TMModalDialog {
 *
 **/
 
-    public void setCodecs(Vector codecs) {
+    public void setCodecs(Vector<ColorCodec> codecs) {
         codecCombo.removeAllItems();
         for (int i=0; i<codecs.size(); i++) {
             codecCombo.addItem(codecs.get(i));

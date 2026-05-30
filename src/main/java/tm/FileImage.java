@@ -33,7 +33,7 @@ public class FileImage {
 
     private byte[] contents;
     private File file;
-    private Vector views = new Vector();
+    private Vector<TMView> views = new Vector<>();
     private static int fileNum=0;
     private boolean modified;
     private TMFileResources resources;
@@ -134,7 +134,7 @@ public class FileImage {
     public TMView[] getViews() {
         TMView[] vs = new TMView[views.size()];
         for (int i=0; i<vs.length; i++) {
-            vs[i] = (TMView)views.get(i);
+            vs[i] = views.get(i);
         }
         return vs;
     }

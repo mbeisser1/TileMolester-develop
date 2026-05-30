@@ -195,7 +195,7 @@ public class GIFOutputStream extends FilterOutputStream
 
       switch (colorMode) {
          case ORIGINAL_COLOR:
-            Hashtable   colorSet = getColorSet(pixels);
+            Hashtable<Integer, Integer>   colorSet = getColorSet(pixels);
             colorCount = colorSet.size();
             if (colorCount > 256) {
                errorStatus = TOO_MANY_COLORS;
@@ -272,9 +272,9 @@ public class GIFOutputStream extends FilterOutputStream
       write(0x3B); // GIF file terminator.
    }
 
-   protected Hashtable getColorSet(int[] pixels)
+   protected Hashtable<Integer, Integer> getColorSet(int[] pixels)
    {
-      Hashtable   colorSet = new Hashtable();
+      Hashtable<Integer, Integer>   colorSet = new Hashtable<>();
       boolean[]   checked = new boolean[pixels.length];
       int         needsChecking = pixels.length;
       int         color;
@@ -311,20 +311,20 @@ public class GIFOutputStream extends FilterOutputStream
       return colorSet;
    }
 
-   protected int[] createColorTable(Hashtable colorSet, int colorCount)
+   protected int[] createColorTable(Hashtable<Integer, Integer> colorSet, int colorCount)
    {
       int[]    colorTable = new int[colorCount];
       Integer  key;
 
-      for (Enumeration e = colorSet.keys(); e.hasMoreElements(); ) {
-         key = (Integer) e.nextElement();
-         colorTable[((Integer) colorSet.get(key)).intValue()] = key.intValue();
+      for (Enumeration<Integer> e = colorSet.keys(); e.hasMoreElements(); ) {
+         key = e.nextElement();
+         colorTable[colorSet.get(key).intValue()] = key.intValue();
       }
 
       return colorTable;
    }
 
-   protected byte[] createBytePixels(int[] pixels, Hashtable colorSet)
+   protected byte[] createBytePixels(int[] pixels, Hashtable<Integer, Integer> colorSet)
    {
       byte[]   bytePixels = new byte[pixels.length];
       Integer  key;

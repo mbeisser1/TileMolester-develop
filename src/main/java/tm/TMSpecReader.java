@@ -21,6 +21,7 @@ package tm;
 import tm.colorcodecs.*;
 import tm.tilecodecs.*;
 import tm.fileselection.*;
+import tm.filelistener.TMFileListener;
 import tm.utils.*;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -42,11 +43,11 @@ import org.xml.sax.SAXException;
 
 public class TMSpecReader {
 
-    private static Vector colorcodecs;
-    private static Vector tilecodecs;
-    private static Vector filefilters;
-    private static Vector palettefilters;
-    private static Vector filelisteners;
+    private static Vector<ColorCodec> colorcodecs;
+    private static Vector<TileCodec> tilecodecs;
+    private static Vector<TMTileCodecFileFilter> filefilters;
+    private static Vector<TMPaletteFileFilter> palettefilters;
+    private static Vector<TMFileListener> filelisteners;
     private static Element tmspec;
 
 /**
@@ -57,11 +58,11 @@ public class TMSpecReader {
 
     public static void readSpecsFromFile(File file)
     throws SAXException, ParserConfigurationException, IOException {
-        colorcodecs = new Vector();
-        tilecodecs = new Vector();
-        filefilters = new Vector();
-        palettefilters = new Vector();
-        filelisteners = new Vector();
+        colorcodecs = new Vector<>();
+        tilecodecs = new Vector<>();
+        filefilters = new Vector<>();
+        palettefilters = new Vector<>();
+        filelisteners = new Vector<>();
         Document doc = null;
         try {
             doc = XMLParser.parse(file);
@@ -230,7 +231,7 @@ public class TMSpecReader {
                 String cid = st.nextToken();
                 // find the codec with correct id
                 for (int k=0; k<tilecodecs.size(); k++) {
-                    TileCodec tc = (TileCodec)tilecodecs.get(k);
+                    TileCodec tc = tilecodecs.get(k);
                     if (tc.getID().equals(cid)) {
                         codecs[j] = tc;
                         cc++;
@@ -314,7 +315,9 @@ public class TMSpecReader {
             catch (Exception e) {
                 continue;
             }
-            filelisteners.add(o);
+            if (o instanceof TMFileListener) {
+                filelisteners.add((TMFileListener) o);
+            }
         }
     }
 
@@ -324,7 +327,7 @@ public class TMSpecReader {
 *
 **/
 
-    public static Vector getColorCodecs() {
+    public static Vector<ColorCodec> getColorCodecs() {
         return colorcodecs;
     }
 
@@ -334,7 +337,7 @@ public class TMSpecReader {
 *
 **/
 
-    public static Vector getTileCodecs() {
+    public static Vector<TileCodec> getTileCodecs() {
         return tilecodecs;
     }
 
@@ -344,7 +347,7 @@ public class TMSpecReader {
 *
 **/
 
-    public static Vector getFileFilters() {
+    public static Vector<TMTileCodecFileFilter> getFileFilters() {
         return filefilters;
     }
 
@@ -354,7 +357,7 @@ public class TMSpecReader {
 *
 **/
 
-    public static Vector getPaletteFilters() {
+    public static Vector<TMPaletteFileFilter> getPaletteFilters() {
         return palettefilters;
     }
 
@@ -364,7 +367,7 @@ public class TMSpecReader {
 *
 **/
 
-    public static Vector getFileListeners() {
+    public static Vector<TMFileListener> getFileListeners() {
         return filelisteners;
     }
 

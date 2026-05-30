@@ -28,7 +28,7 @@ public class TMSettings extends JFrame {
 	public boolean viewToolBar = true;
 	private boolean darkMode;
 	public int maxRecentFiles = 10;
-	public Vector recentFiles = new Vector();
+	public Vector<File> recentFiles = new Vector<>();
 	public String lastPath = "";
 
 	public TMSettings() {
@@ -219,7 +219,7 @@ public class TMSettings extends JFrame {
 		File recentFile = null;
 		// To remember last path
 		for (int i = 0; i < recentFiles.size(); i++) {
-			recentFile = (File) recentFiles.get(i);
+			recentFile = recentFiles.get(i);
 			sb.append(makePropertyTag("recentFile", recentFile.getAbsolutePath()));
 		}
 		sb.append(makePropertyTag("lastPath", lastPath));
@@ -289,11 +289,11 @@ public class TMSettings extends JFrame {
 		return maxRecentFiles;
 	}
 
-	public void setRecentFiles(Vector newRecentFiles) {
+	public void setRecentFiles(Vector<File> newRecentFiles) {
 		recentFiles = newRecentFiles;
 	}
 
-	public Vector getRecentFiles() {
+	public Vector<File> getRecentFiles() {
 		return recentFiles;
 	}
 

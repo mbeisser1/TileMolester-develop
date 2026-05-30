@@ -115,7 +115,7 @@ public class TMTreeNodeTree extends JTree {
         public int getChildCount(Object parent) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)parent;
             int childCount = 0;
-            Enumeration children = node.children();
+            Enumeration<?> children = node.children();
             while (children.hasMoreElements()) {
                 if (children.nextElement() instanceof FolderNode) {
                     childCount++;

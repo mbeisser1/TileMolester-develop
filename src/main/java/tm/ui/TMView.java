@@ -69,8 +69,8 @@ public class TMView extends JInternalFrame {
 
 	private boolean keysEnabled = true;
 
-	private Vector undoableActions = new Vector();
-	private Vector redoableActions = new Vector();
+	private Vector<ReversibleAction> undoableActions = new Vector<>();
+	private Vector<ReversibleAction> redoableActions = new Vector<>();
 
 	private boolean sizeBlockToCanvas = true;
 
@@ -770,7 +770,7 @@ public class TMView extends JInternalFrame {
 
 	public void undo() {
 		if (!undoableActions.isEmpty()) {
-			ReversibleAction ra = (ReversibleAction) undoableActions.remove(undoableActions.size() - 1);
+			ReversibleAction ra = undoableActions.remove(undoableActions.size() - 1);
 			ra.undo();
 			redoableActions.add(ra);
 		}
@@ -784,7 +784,7 @@ public class TMView extends JInternalFrame {
 
 	public void redo() {
 		if (!redoableActions.isEmpty()) {
-			ReversibleAction ra = (ReversibleAction) redoableActions.remove(redoableActions.size() - 1);
+			ReversibleAction ra = redoableActions.remove(redoableActions.size() - 1);
 			ra.redo();
 			undoableActions.add(ra);
 		}
@@ -908,7 +908,7 @@ public class TMView extends JInternalFrame {
 	 **/
 
 	public ReversibleAction getFirstUndoableAction() {
-		return (ReversibleAction) undoableActions.lastElement();
+		return undoableActions.lastElement();
 	}
 
 	/**
@@ -918,7 +918,7 @@ public class TMView extends JInternalFrame {
 	 **/
 
 	public ReversibleAction getFirstRedoableAction() {
-		return (ReversibleAction) redoableActions.lastElement();
+		return redoableActions.lastElement();
 	}
 
 	/**
