@@ -203,6 +203,22 @@
 
 	<palettefilters>
 
+		<palettefilter extensions="csv" colorformat="CF01" size="0" offset="0">
+			<description>0xRRGGBB (*.csv)</description>
+		</palettefilter>
+
+		<palettefilter extensions="col,pal,bak" colorformat="CF00" size="256" offset="0">
+			<description>Raw palette (*.col, *.pal, *.bak)</description>
+		</palettefilter>
+
+		<palettefilter extensions="tpl" colorformat="CF01" size="256" offset="4" endianness="big">
+			<description>Tile Layer Pro (*.tpl)</description>
+		</palettefilter>
+
+		<palettefilter extensions="pal" colorformat="RIFF" size="256" offset="24" endianness="big">
+			<description>Windows Palette (*.pal)</description>
+		</palettefilter>
+
 		<palettefilter extensions="fc?" colorformat="CF02" size="32" offset="4276">
 			<description>FCEUltra Save States (*.fc?)</description>
 		</palettefilter>
@@ -219,18 +235,6 @@
 			<description>ZSNES Save States (*.zs?)</description>
 		</palettefilter>
 
-		<palettefilter extensions="tpl" colorformat="CF01" size="256" offset="4" endianness="big">
-			<description>Tile Layer Pro palette (*.tpl)</description>
-		</palettefilter>
-
-		<palettefilter extensions="pal" colorformat="RIFF" size="256" offset="24" endianness="big">
-            <description>Windows Palette (*.pal)</description>
-        </palettefilter>
-
-		<palettefilter extensions="col,pal,bak" colorformat="CF00" size="256" offset="0">
-			<description>Raw palette file (*.col,*.pal)</description>
-		</palettefilter>
-		
 	</palettefilters>
 
 	<filelisteners>

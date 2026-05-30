@@ -41,6 +41,7 @@ import javax.swing.plaf.ComponentUI;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.util.SystemInfo;
 
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
@@ -448,7 +449,7 @@ public class TMUI extends JFrame {
 
 		///////// Read specs
 		try {
-			TMSpecReader.readSpecsFromFile(new File("tmspec.xml"));
+			TMSpecReader.readSpecsFromFile(resolveTmspecFile());
 		} catch (SAXParseException e) {
 			JOptionPane.showMessageDialog(this,
 					xlate("Parser_Parse_Error") + "\n" +
@@ -3246,6 +3247,12 @@ public class TMUI extends JFrame {
 					ff = getPaletteFilterForFile(file);
 				}
 				TMPaletteFileFilter pf = (TMPaletteFileFilter) ff;
+
+				if (isCsvPaletteImport(pf, file)) {
+					importPaletteFromCsvFile(view, file);
+					return;
+				}
+
 				int size = pf.getSize();
 				ColorCodec codec = getColorCodecByID(pf.getCodecID());
 				int offset = pf.getOffset();
@@ -3278,6 +3285,52 @@ public class TMUI extends JFrame {
 				refreshPalettesMenu();
 			}
 		}
+	}
+
+	private boolean isCsvPaletteImport(TMPaletteFileFilter pf, File file) {
+		if (pf.getSize() == 0 && "CF01".equals(pf.getCodecID())) {
+			return true;
+		}
+		String name = file.getName().toLowerCase();
+		return name.endsWith(".csv");
+	}
+
+	private void importPaletteFromCsvFile(TMView view, File file) {
+		int[] rgb;
+		try {
+			rgb = PaletteCsvReader.read(file);
+		} catch (PaletteCsvParseException e) {
+			String msg = MessageFormat.format(
+					xlate("Palette_Csv_Invalid_Entry"),
+					Integer.valueOf(e.getEntryNumber()),
+					e.getValue());
+			JOptionPane.showMessageDialog(this, msg, "Tile Molester", JOptionPane.ERROR_MESSAGE);
+			return;
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this,
+					xlate("Palette_Read_Error") + "\n" + e.getMessage(),
+					"Tile Molester",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		ColorCodec codec = getColorCodecByID("CF01");
+		int colorCount = view.getTileCodec().getColorCount();
+		int n = rgb.length;
+		int pages = Math.max(1, (n + colorCount - 1) / colorCount);
+		int size = pages * colorCount;
+
+		TMPalette palette = new TMPalette("ID", size, codec, ColorCodec.BIG_ENDIAN);
+		for (int i = 0; i < n; i++) {
+			palette.setEntryRGB(i, rgb[i]);
+		}
+		for (int i = n; i < size; i++) {
+			palette.setEntryRGB(i, 0x000000);
+		}
+
+		view.setPalette(palette);
+		refreshPalettePane();
+		refreshPalettesMenu();
 	}
 
 	/**
@@ -3908,10 +3961,15 @@ public class TMUI extends JFrame {
 	private void initFileOpenChooser() {
 		fileOpenChooser.setAcceptAllFileFilterUsed(false);
 		fileOpenChooser.resetChoosableFileFilters();
-		// TODO: Sort alphabetically by description...
-		String extlist = "";
+		ArrayList<TMTileCodecFileFilter> sortedFileFilters = new ArrayList<>();
 		for (int i = 0; i < filefilters.size(); i++) {
-			TMTileCodecFileFilter cff = (TMTileCodecFileFilter) filefilters.get(i);
+			sortedFileFilters.add((TMTileCodecFileFilter) filefilters.get(i));
+		}
+		Collections.sort(sortedFileFilters,
+				(a, b) -> a.getDescription().compareToIgnoreCase(b.getDescription()));
+		String extlist = "";
+		for (int i = 0; i < sortedFileFilters.size(); i++) {
+			TMTileCodecFileFilter cff = sortedFileFilters.get(i);
 			fileOpenChooser.addChoosableFileFilter(cff);
 			if (i > 0)
 				extlist += ",";
@@ -3924,25 +3982,83 @@ public class TMUI extends JFrame {
 	}
 
 	/**
+	 * Loads tmspec.xml from the working directory, or from the classpath if missing.
+	 */
+	private static File resolveTmspecFile() throws IOException {
+		File cwdSpec = new File("tmspec.xml");
+		if (cwdSpec.isFile()) {
+			return cwdSpec;
+		}
+		java.net.URL url = TMUI.class.getResource("/tmspec.xml");
+		if (url == null) {
+			return cwdSpec;
+		}
+		if ("file".equals(url.getProtocol())) {
+			return new File(url.getPath());
+		}
+		File temp = File.createTempFile("tmspec", ".xml");
+		temp.deleteOnExit();
+		try (InputStream in = url.openStream();
+				FileOutputStream out = new FileOutputStream(temp)) {
+			byte[] buf = new byte[4096];
+			int n;
+			while ((n = in.read(buf)) > 0) {
+				out.write(buf, 0, n);
+			}
+		}
+		return temp;
+	}
+
+	/**
 	 *
 	 * Sets up the palette open chooser.
 	 *
 	 **/
 
+	private static int paletteFilterSortRank(TMPaletteFileFilter pff) {
+		String ext = pff.getExtlist();
+		if ("csv".equals(ext)) {
+			return 0;
+		}
+		if (ext.indexOf("col") >= 0) {
+			return 1;
+		}
+		if ("tpl".equals(ext)) {
+			return 2;
+		}
+		if ("pal".equals(ext) && "RIFF".equals(pff.getCodecID())) {
+			return 3;
+		}
+		return 4;
+	}
+
 	private void initPaletteOpenChooser() {
 		paletteOpenChooser.setAcceptAllFileFilterUsed(false);
 		paletteOpenChooser.resetChoosableFileFilters();
-		String extlist = "";
+		ArrayList<TMPaletteFileFilter> sortedPaletteFilters = new ArrayList<>();
 		for (int i = 0; i < palettefilters.size(); i++) {
-			TMPaletteFileFilter pff = (TMPaletteFileFilter) palettefilters.get(i);
+			sortedPaletteFilters.add((TMPaletteFileFilter) palettefilters.get(i));
+		}
+		Collections.sort(sortedPaletteFilters, (a, b) -> {
+			int ra = paletteFilterSortRank(a);
+			int rb = paletteFilterSortRank(b);
+			if (ra != rb) {
+				return ra - rb;
+			}
+			return a.getDescription().compareToIgnoreCase(b.getDescription());
+		});
+		String extlist = "";
+		for (int i = 0; i < sortedPaletteFilters.size(); i++) {
+			TMPaletteFileFilter pff = sortedPaletteFilters.get(i);
 			paletteOpenChooser.addChoosableFileFilter(pff);
-			if (i > 0)
+			if (i > 0) {
 				extlist += ",";
+			}
 			extlist += pff.getExtlist();
 		}
 		TMFileFilter supportedFilter = new TMFileFilter(extlist, xlate("All_Supported_Formats"));
 		paletteOpenChooser.addChoosableFileFilter(supportedFilter);
-		paletteOpenChooser.setFileFilter(supportedFilter);
+		paletteOpenChooser.setFileFilter(sortedPaletteFilters.get(0));
 	}
 
 	/**

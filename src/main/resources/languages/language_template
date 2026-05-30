@@ -132,6 +132,7 @@ Save_Resources_Error =
 Load_Resources_Error = 
 File_Write_Error = 
 Palette_Read_Error = 
+Palette_Csv_Invalid_Entry = 
 Parser_Config_Error = 
 Parser_Parse_Error = 
 Parser_IO_Error = 
