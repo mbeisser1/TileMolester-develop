@@ -67,6 +67,8 @@ public class TMCanvasSizeDialog extends TMModalDialog {
         rowsLabel = new JLabel(xlate("Rows_Prompt"));
         colsField = new JTextField();
         rowsField = new JTextField();
+        TMDialogFields.configure(colsField, 5);
+        TMDialogFields.configure(rowsField, 5);
 
 		colsLabel.setBorder(new EmptyBorder(0, 4, 0, 4));
 		rowsLabel.setBorder(new EmptyBorder(0, 4, 0, 4));
@@ -87,18 +89,18 @@ public class TMCanvasSizeDialog extends TMModalDialog {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
 
-        buildConstraints(gbc, 0, 0, 1, 1, 100, 50);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0;
+        buildConstraints(gbc, 0, 0, 1, 1, 100, 0);
         gbl.setConstraints(colsPane, gbc);
         p.add(colsPane);
 
-        buildConstraints(gbc, 0, 1, 1, 1, 100, 50);
+        buildConstraints(gbc, 0, 1, 1, 1, 100, 0);
         gbl.setConstraints(rowsPane, gbc);
         p.add(rowsPane);
 
-        p.setPreferredSize(new Dimension(200, 60));
-
-        colsField.setColumns(3);
-        rowsField.setColumns(3);
+        p.setPreferredSize(new Dimension(280, 72));
 
         colsField.addKeyListener(new DecimalNumberVerifier());
         colsField.getDocument().addDocumentListener(new TMDocumentListener());

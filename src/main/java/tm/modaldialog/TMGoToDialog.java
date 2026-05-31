@@ -58,8 +58,8 @@ public class TMGoToDialog extends TMModalDialog {
      * Gets the offset that was entered.
      **/
     public int getOffset() {
-        if(inputOK()) {
-            return Integer.parseInt(ofsField.getText(), getRadix());
+        if (inputOK()) {
+            return Integer.parseInt(ofsField.getText().trim(), getRadix());
         }
         return 0;
     }
@@ -73,12 +73,20 @@ public class TMGoToDialog extends TMModalDialog {
         GridBagLayout gbl = new GridBagLayout();
         p.setLayout(gbl);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.insets = new Insets(4, 4, 4, 8);
 
-        JPanel ofsPane = new JPanel();
+        JPanel ofsPane = new JPanel(new GridBagLayout());
         ofsPane.setBorder(new TitledBorder(new EtchedBorder(), xlate("Offset")));
         ofsField = new JTextField();
-        ofsPane.add(ofsField);
+        TMDialogFields.configure(ofsField, 12);
+        GridBagConstraints fieldGbc = new GridBagConstraints();
+        fieldGbc.gridx = 0;
+        fieldGbc.gridy = 0;
+        fieldGbc.fill = GridBagConstraints.HORIZONTAL;
+        fieldGbc.weightx = 1.0;
+        fieldGbc.insets = new Insets(6, 8, 6, 8);
+        ofsPane.add(ofsField, fieldGbc);
 
         JPanel radixPane = new JPanel();
         radixPane.setBorder(new TitledBorder(new EtchedBorder(), xlate("Radix")));
@@ -96,15 +104,20 @@ public class TMGoToDialog extends TMModalDialog {
         modePane.add(absButton);
         modePane.add(relButton);
 
-        buildConstraints(gbc, 0, 0, 1, 1, 50, 100);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0;
+        buildConstraints(gbc, 0, 0, 1, 1, 100, 0);
         gbl.setConstraints(ofsPane, gbc);
         p.add(ofsPane);
 
-        buildConstraints(gbc, 1, 0, 1, 1, 25, 100);
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0;
+        buildConstraints(gbc, 1, 0, 1, 1, 0, 0);
         gbl.setConstraints(radixPane, gbc);
         p.add(radixPane);
 
-        buildConstraints(gbc, 2, 0, 1, 1, 25, 100);
+        buildConstraints(gbc, 2, 0, 1, 1, 0, 0);
         gbl.setConstraints(modePane, gbc);
         p.add(modePane);
 
@@ -118,10 +131,9 @@ public class TMGoToDialog extends TMModalDialog {
         radixButtonGroup.add(decButton);
         hexButton.setSelected(true);
 
-        p.setPreferredSize(new Dimension(300, 100));
+        p.setPreferredSize(new Dimension(440, 110));
 
         ofsField.setText("");
-        ofsField.setColumns(10);
         ofsField.addKeyListener(new KeyAdapter() {
             /**
              * Filters or handles key-typed input.
@@ -147,7 +159,7 @@ public class TMGoToDialog extends TMModalDialog {
              **/
             public void actionPerformed(ActionEvent e) {
                 if (inputOK()) {
-                    int ofs = Integer.parseInt(ofsField.getText(), 10);
+                    int ofs = Integer.parseInt(ofsField.getText().trim(), 10);
                     ofsField.setText(Integer.toString(ofs, 16));
                 }
             }
@@ -159,7 +171,7 @@ public class TMGoToDialog extends TMModalDialog {
              **/
             public void actionPerformed(ActionEvent e) {
                 if (inputOK()) {
-                    int ofs = Integer.parseInt(ofsField.getText(), 16);
+                    int ofs = Integer.parseInt(ofsField.getText().trim(), 16);
                     ofsField.setText(Integer.toString(ofs, 10));
                 }
             }
@@ -175,14 +187,7 @@ public class TMGoToDialog extends TMModalDialog {
     public int showDialog() {
         ofsField.setText("");
         maybeEnableOKButton();
-        SwingUtilities.invokeLater( new Runnable() {
-            /**
-             * Runs the deferred UI task.
-             **/
-            public void run() {
-                ofsField.requestFocus();
-            }
-        });
+        SwingUtilities.invokeLater(() -> ofsField.requestFocusInWindow());
         return super.showDialog();
     }
 
@@ -199,7 +204,7 @@ public class TMGoToDialog extends TMModalDialog {
      * @return true if dialog input is valid for OK
      **/
     public boolean inputOK() {
-        return !(ofsField.getText().equals(""));
+        return !ofsField.getText().trim().isEmpty();
     }
 
 }

@@ -56,6 +56,7 @@ public class TMAddToTreeDialog extends TMModalDialog {
     protected JPanel getDialogPane() {
         descLabel = new JLabel(xlate("Description_Prompt"));
         descField = new JTextField();
+        TMDialogFields.configure(descField, 24);
         descField.getDocument().addDocumentListener(new TMDocumentListener());
         createInLabel = new JLabel(xlate("Create_In"));
 
@@ -103,7 +104,7 @@ public class TMAddToTreeDialog extends TMModalDialog {
         gbl.setConstraints(scrollPane, gbc);
         p.add(scrollPane);
 
-        p.setPreferredSize(new Dimension(300, 200));
+        p.setPreferredSize(new Dimension(420, 220));
         return p;
     }
 

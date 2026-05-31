@@ -167,7 +167,8 @@ Big_Endian =
 
 # Dialog titles
 
-New_File_Dialog_Title = 
+New_File_Dialog_Title =
+New_File_Size_Prompt = 
 New_Folder_Dialog_Title = 
 Open_File_Dialog_Title = 
 Save_As_Dialog_Title = 

@@ -58,14 +58,30 @@ public class TMNewFolderDialog extends TMModalDialog {
      **/
     protected JPanel getDialogPane() {
         JPanel p = new JPanel();
-        nameLabel = new JLabel(xlate("Folder_Name_Prompt"));
-        p.add(nameLabel);
-        nameField = new JTextField();
-        nameField.getDocument().addDocumentListener(new TMDocumentListener());
-        nameField.setColumns(15);
-        p.add(nameField);
-        p.setPreferredSize(new Dimension(300, 50));
+        GridBagLayout gbl = new GridBagLayout();
+        p.setLayout(gbl);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(4, 4, 4, 8);
 
+        nameLabel = new JLabel(xlate("Folder_Name_Prompt"));
+        nameField = new JTextField();
+        TMDialogFields.configure(nameField, 20);
+        nameField.getDocument().addDocumentListener(new TMDocumentListener());
+
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0;
+        buildConstraints(gbc, 0, 0, 1, 1, 0, 0);
+        gbl.setConstraints(nameLabel, gbc);
+        p.add(nameLabel);
+
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        buildConstraints(gbc, 1, 0, 1, 1, 100, 0);
+        gbl.setConstraints(nameField, gbc);
+        p.add(nameField);
+
+        p.setPreferredSize(new Dimension(400, 56));
         return p;
     }
 

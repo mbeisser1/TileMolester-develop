@@ -55,17 +55,21 @@ public class TMNewFileDialog extends TMModalDialog {
         p.setLayout(gbl);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
-        sizeLabel = new JLabel(xlate("Size_Prompt"));
-        buildConstraints(gbc, 0, 0, 1, 1, 50, 100);
+        gbc.insets = new Insets(4, 4, 4, 8);
+        sizeLabel = new JLabel(xlate("New_File_Size_Prompt"));
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0;
+        buildConstraints(gbc, 0, 0, 1, 1, 0, 0);
         gbl.setConstraints(sizeLabel, gbc);
         p.add(sizeLabel);
         sizeField = new JTextField();
-        buildConstraints(gbc, 1, 0, 1, 1, 50, 100);
+        TMDialogFields.configure(sizeField, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        buildConstraints(gbc, 1, 0, 1, 1, 100, 0);
         gbl.setConstraints(sizeField, gbc);
         p.add(sizeField);
-        p.setPreferredSize(new Dimension(200, 50));
-
-        sizeField.setColumns(7);
+        p.setPreferredSize(new Dimension(320, 56));
         sizeField.addKeyListener(new DecimalNumberVerifier());
         sizeField.getDocument().addDocumentListener(new TMDocumentListener());
 

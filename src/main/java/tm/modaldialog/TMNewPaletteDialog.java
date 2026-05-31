@@ -32,8 +32,7 @@ import java.util.List;
  **/
 public class TMNewPaletteDialog extends TMModalDialog {
 
-    private static final Dimension SIZE_FIELD_DIM = new Dimension(72, 24);
-    private static final Dimension COMBO_FIELD_DIM = new Dimension(220, 24);
+    private static final Dimension COMBO_FIELD_DIM = new Dimension(220, 26);
 
     private JLabel sizeLabel;
     private JTextField sizeField;
@@ -59,9 +58,7 @@ public class TMNewPaletteDialog extends TMModalDialog {
         formatLabel = new JLabel(xlate("Format"));
         codecCombo = new JComboBox<>();
 
-        sizeField.setColumns(8);
-        sizeField.setMinimumSize(SIZE_FIELD_DIM);
-        sizeField.setPreferredSize(SIZE_FIELD_DIM);
+        TMDialogFields.configure(sizeField, 8);
         sizeField.getDocument().addDocumentListener(new TMDocumentListener());
         sizeField.addKeyListener(new DecimalNumberVerifier());
 

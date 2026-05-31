@@ -38,11 +38,11 @@ public class TMCustomCodecDialog extends JDialog {
     private JLabel endiannessLabel = new JLabel("Endianness:");
 
     // input fields
-    private JFormattedTextField bppField = new JFormattedTextField();
-    private JFormattedTextField rmaskField = new JFormattedTextField();
-    private JFormattedTextField gmaskField = new JFormattedTextField();
-    private JFormattedTextField bmaskField = new JFormattedTextField();
-    private JFormattedTextField amaskField = new JFormattedTextField();
+    private JTextField bppField = new JTextField();
+    private JTextField rmaskField = new JTextField();
+    private JTextField gmaskField = new JTextField();
+    private JTextField bmaskField = new JTextField();
+    private JTextField amaskField = new JTextField();
 
     private JButton okButton = new JButton("OK");
     private JButton cancelButton = new JButton("Cancel");
@@ -54,7 +54,12 @@ public class TMCustomCodecDialog extends JDialog {
         super(owner, title, modal);
         JPanel pane = new JPanel();
         setContentPane(pane);
-        pane.setLayout(new GridLayout(6, 2));
+        pane.setLayout(new GridLayout(6, 2, 8, 6));
+        TMDialogFields.configure(bppField, 4);
+        TMDialogFields.configure(rmaskField, 10);
+        TMDialogFields.configure(gmaskField, 10);
+        TMDialogFields.configure(bmaskField, 10);
+        TMDialogFields.configure(amaskField, 10);
         pane.add(bppLabel);
         pane.add(bppField);
         pane.add(rmaskLabel);
