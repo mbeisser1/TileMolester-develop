@@ -72,235 +72,235 @@ public class TMUI extends JFrame {
 	private TMSelectionCanvas copiedSelection = null;
 
 	// UI components
-	private mxScrollableDesktop desktop = new mxScrollableDesktop();
-	private TMStatusBar statusBar = new TMStatusBar();
-	private JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
-	private JToolBar toolBarMDI = new JToolBar(JToolBar.HORIZONTAL);
-	private JToolBar toolPalette = new JToolBar(JToolBar.VERTICAL);
-	private JToolBar selectionToolBar = new JToolBar(JToolBar.VERTICAL);
-	private JToolBar navBar = new JToolBar(JToolBar.HORIZONTAL);
-	private JMenuBar menuBar = new JMenuBar();
-	private JPanel toolPane = new JPanel(); // the drawing tools and such
-	private JPanel toolBarPane = new JPanel(); // the program toolbars
-	private JPanel bottomPane = new JPanel(); // palette and statusbar
-	private TMPalettePane palettePane;
+	mxScrollableDesktop desktop = new mxScrollableDesktop();
+	TMStatusBar statusBar = new TMStatusBar();
+	JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
+	JToolBar toolBarMDI = new JToolBar(JToolBar.HORIZONTAL);
+	JToolBar toolPalette = new JToolBar(JToolBar.VERTICAL);
+	JToolBar selectionToolBar = new JToolBar(JToolBar.VERTICAL);
+	JToolBar navBar = new JToolBar(JToolBar.HORIZONTAL);
+	JMenuBar menuBar = new JMenuBar();
+	JPanel toolPane = new JPanel(); // the drawing tools and such
+	JPanel toolBarPane = new JPanel(); // the program toolbars
+	JPanel bottomPane = new JPanel(); // palette and statusbar
+	TMPalettePane palettePane;
 
 	// file choosers
-	private TMApprovedFileOpenChooser fileOpenChooser = new TMApprovedFileOpenChooser();
-	private TMApprovedFileSaveChooser fileSaveChooser = new TMApprovedFileSaveChooser();
-	private TMApprovedFileOpenChooser bitmapOpenChooser = new TMApprovedFileOpenChooser();
-	private TMApprovedFileSaveChooser bitmapSaveChooser = new TMApprovedFileSaveChooser();
-	private TMApprovedFileOpenChooser paletteOpenChooser = new TMApprovedFileOpenChooser();
+	TMApprovedFileOpenChooser fileOpenChooser = new TMApprovedFileOpenChooser();
+	TMApprovedFileSaveChooser fileSaveChooser = new TMApprovedFileSaveChooser();
+	TMApprovedFileOpenChooser bitmapOpenChooser = new TMApprovedFileOpenChooser();
+	TMApprovedFileSaveChooser bitmapSaveChooser = new TMApprovedFileSaveChooser();
+	TMApprovedFileOpenChooser paletteOpenChooser = new TMApprovedFileOpenChooser();
 
-	private TMBitmapFilters bmf = new TMBitmapFilters();
-	private TMFileFilter allFilter;
+	TMBitmapFilters bmf = new TMBitmapFilters();
+	TMFileFilter allFilter;
 
 	// custom dialogs
-	private TMGoToDialog goToDialog;
-	private TMNewFileDialog newFileDialog;
-	private TMCustomCodecDialog customCodecDialog;
-	private TMStretchDialog stretchDialog;
-	private TMCanvasSizeDialog canvasSizeDialog;
-	private TMBlockSizeDialog blockSizeDialog;
-	private TMAddToTreeDialog addBookmarkDialog;
-	private TMAddToTreeDialog addPaletteDialog;
-	private TMOrganizeTreeDialog organizeBookmarksDialog;
-	private TMOrganizeTreeDialog organizePalettesDialog;
-	private TMNewPaletteDialog newPaletteDialog;
-	private TMPaletteSizeDialog paletteSizeDialog;
-	private TMImportInternalPaletteDialog importInternalPaletteDialog;
+	TMGoToDialog goToDialog;
+	TMNewFileDialog newFileDialog;
+	TMCustomCodecDialog customCodecDialog;
+	TMStretchDialog stretchDialog;
+	TMCanvasSizeDialog canvasSizeDialog;
+	TMBlockSizeDialog blockSizeDialog;
+	TMAddToTreeDialog addBookmarkDialog;
+	TMAddToTreeDialog addPaletteDialog;
+	TMOrganizeTreeDialog organizeBookmarksDialog;
+	TMOrganizeTreeDialog organizePalettesDialog;
+	TMNewPaletteDialog newPaletteDialog;
+	TMPaletteSizeDialog paletteSizeDialog;
+	TMImportInternalPaletteDialog importInternalPaletteDialog;
 
 	// toolbar buttons
 	ClassLoader cl = getClass().getClassLoader();
-	private TMToolButton newButton = new TMToolButton(
+	TMToolButton newButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/document_add_24_regular.svg", 22, 22));
-	private TMToolButton openButton = new TMToolButton(
+	TMToolButton openButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/folder_open_24_regular.svg", 22, 22));
-	private TMToolButton saveButton = new TMToolButton(
+	TMToolButton saveButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/save_24_regular.svg", 22, 22));
-	private TMToolButton cutButton = new TMToolButton(new FlatSVGIcon("icons/fluent/cut_24_regular.svg", 22, 22));
-	private TMToolButton copyButton = new TMToolButton(
+	TMToolButton cutButton = new TMToolButton(new FlatSVGIcon("icons/fluent/cut_24_regular.svg", 22, 22));
+	TMToolButton copyButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/copy_24_regular.svg", 22, 22));
-	private TMToolButton pasteButton = new TMToolButton(
+	TMToolButton pasteButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/clipboard_paste_24_regular.svg", 22, 22));
-	private TMToolButton undoButton = new TMToolButton(
+	TMToolButton undoButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/arrow_undo_24_regular.svg", 22, 22));
-	private TMToolButton redoButton = new TMToolButton(
+	TMToolButton redoButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/arrow_redo_24_regular.svg", 22, 22));
-	private TMToolButton gotoButton = new TMToolButton(new FlatSVGIcon("icons/fluent/custom/jump-to.svg", 22, 22));
-	private TMToolButton addBookmarkButton = new TMToolButton(
+	TMToolButton gotoButton = new TMToolButton(new FlatSVGIcon("icons/fluent/custom/jump-to.svg", 22, 22));
+	TMToolButton addBookmarkButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/bookmark_add_24_regular.svg", 22, 22));
-	private TMToolButton decWidthButton = new TMToolButton(
+	TMToolButton decWidthButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/panel_left_contract_24_regular.svg", 22, 22));
-	private TMToolButton incWidthButton = new TMToolButton(
+	TMToolButton incWidthButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/panel_left_expand_24_regular.svg", 22, 22));
-	private TMToolButton decHeightButton = new TMToolButton(
+	TMToolButton decHeightButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/custom/decrease-height.svg", 22, 22));
-	private TMToolButton incHeightButton = new TMToolButton(
+	TMToolButton incHeightButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/custom/increase-height.svg", 22, 22));
 
 	// navigation bar buttons
-	private TMToolButton minusPageButton = new TMToolButton(
+	TMToolButton minusPageButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/rewind_24_regular.svg", 22, 22));
-	private TMToolButton plusPageButton = new TMToolButton(
+	TMToolButton plusPageButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/fast_forward_24_regular.svg", 22, 22));
-	private TMToolButton minusRowButton = new TMToolButton(
+	TMToolButton minusRowButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/previous_frame_24_regular.svg", 22, 22));
-	private TMToolButton plusRowButton = new TMToolButton(
+	TMToolButton plusRowButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/next_frame_24_regular.svg", 22, 22));
-	private TMToolButton minusTileButton = new TMToolButton(
+	TMToolButton minusTileButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/custom/tile-previous.svg", 22, 22));
-	private TMToolButton plusTileButton = new TMToolButton(new FlatSVGIcon("icons/fluent/custom/tile-next.svg", 22, 22));
-	private TMToolButton minusByteButton = new TMToolButton(
+	TMToolButton plusTileButton = new TMToolButton(new FlatSVGIcon("icons/fluent/custom/tile-next.svg", 22, 22));
+	TMToolButton minusByteButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/subtract_square_24_regular.svg", 22, 22));
-	private TMToolButton plusByteButton = new TMToolButton(
+	TMToolButton plusByteButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/add_square_24_regular.svg", 22, 22));
 
 	// tool palette buttons
-	private TMToolToggleButton selectButton = new TMToolToggleButton(
+	TMToolToggleButton selectButton = new TMToolToggleButton(
 			new FlatSVGIcon("icons/fluent/square_hint_24_regular.svg", 22, 22));
-	private TMToolToggleButton zoomButton = new TMToolToggleButton(new FlatSVGIcon("icons/fluent/custom/zoom.svg", 22, 22));
-	private TMToolToggleButton pickupButton = new TMToolToggleButton(
+	TMToolToggleButton zoomButton = new TMToolToggleButton(new FlatSVGIcon("icons/fluent/custom/zoom.svg", 22, 22));
+	TMToolToggleButton pickupButton = new TMToolToggleButton(
 			new FlatSVGIcon("icons/fluent/eyedropper_24_regular.svg", 22, 22));
-	private TMToolToggleButton brushButton = new TMToolToggleButton(
+	TMToolToggleButton brushButton = new TMToolToggleButton(
 			new FlatSVGIcon("icons/fluent/edit_24_regular.svg", 22, 22));
-	private TMToolToggleButton lineButton = new TMToolToggleButton(new FlatSVGIcon("icons/fluent/line_24_regular.svg", 22, 22));
-	private TMToolToggleButton fillButton = new TMToolToggleButton(new FlatSVGIcon("icons/fluent/paint_bucket_24_regular.svg", 22, 22));
-	private TMToolToggleButton replaceButton = new TMToolToggleButton(
+	TMToolToggleButton lineButton = new TMToolToggleButton(new FlatSVGIcon("icons/fluent/line_24_regular.svg", 22, 22));
+	TMToolToggleButton fillButton = new TMToolToggleButton(new FlatSVGIcon("icons/fluent/paint_bucket_24_regular.svg", 22, 22));
+	TMToolToggleButton replaceButton = new TMToolToggleButton(
 			new FlatSVGIcon("icons/fluent/custom/color-replace.svg", 22, 22));
-	private TMToolToggleButton moveButton = new TMToolToggleButton(
+	TMToolToggleButton moveButton = new TMToolToggleButton(
 			new FlatSVGIcon("icons/fluent/arrow_move_24_regular.svg", 22, 22));
 
 	// selection palette buttons
-	private TMToolButton mirrorButton = new TMToolButton(new FlatSVGIcon("icons/fluent/flip_horizontal_24_regular.svg", 22, 22));
-	private TMToolButton flipButton = new TMToolButton(new FlatSVGIcon("icons/fluent/flip_vertical_24_regular.svg", 22, 22));
-	private TMToolButton rotateRightButton = new TMToolButton(
+	TMToolButton mirrorButton = new TMToolButton(new FlatSVGIcon("icons/fluent/flip_horizontal_24_regular.svg", 22, 22));
+	TMToolButton flipButton = new TMToolButton(new FlatSVGIcon("icons/fluent/flip_vertical_24_regular.svg", 22, 22));
+	TMToolButton rotateRightButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/rotate_right_24_regular.svg", 22, 22));
-	private TMToolButton rotateLeftButton = new TMToolButton(new FlatSVGIcon("icons/fluent/rotate_left_24_regular.svg", 22, 22));
+	TMToolButton rotateLeftButton = new TMToolButton(new FlatSVGIcon("icons/fluent/rotate_left_24_regular.svg", 22, 22));
 
-	private TMToolButton shiftLeftButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_left_24_regular.svg", 22, 22));
-	private TMToolButton shiftRightButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_right_24_regular.svg", 22, 22));
-	private TMToolButton shiftUpButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_above_24_regular.svg", 22, 22));
-	private TMToolButton shiftDownButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_below_24_regular.svg", 22, 22));
+	TMToolButton shiftLeftButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_left_24_regular.svg", 22, 22));
+	TMToolButton shiftRightButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_right_24_regular.svg", 22, 22));
+	TMToolButton shiftUpButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_above_24_regular.svg", 22, 22));
+	TMToolButton shiftDownButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_below_24_regular.svg", 22, 22));
 
 	// File menu
-	private JMenu fileMenu = new JMenu("File");
-	private JMenuItem newMenuItem = new JMenuItem("New...");
-	private JMenuItem openMenuItem = new JMenuItem("Open...");
-	private JMenu reopenMenu = new JMenu("Reopen");
-	private JMenuItem closeMenuItem = new JMenuItem("Close");
-	private JMenuItem closeAllMenuItem = new JMenuItem("Close All");
-	private JMenuItem saveMenuItem = new JMenuItem("Save");
-	private JMenuItem saveAsMenuItem = new JMenuItem("Save As...");
-	private JMenuItem saveAllMenuItem = new JMenuItem("Save All");
-	private JMenuItem exitMenuItem = new JMenuItem("Exit");
+	JMenu fileMenu = new JMenu("File");
+	JMenuItem newMenuItem = new JMenuItem("New...");
+	JMenuItem openMenuItem = new JMenuItem("Open...");
+	JMenu reopenMenu = new JMenu("Reopen");
+	JMenuItem closeMenuItem = new JMenuItem("Close");
+	JMenuItem closeAllMenuItem = new JMenuItem("Close All");
+	JMenuItem saveMenuItem = new JMenuItem("Save");
+	JMenuItem saveAsMenuItem = new JMenuItem("Save As...");
+	JMenuItem saveAllMenuItem = new JMenuItem("Save All");
+	JMenuItem exitMenuItem = new JMenuItem("Exit");
 	// Edit menu
-	private JMenu editMenu = new JMenu("Edit");
-	private JMenuItem undoMenuItem = new JMenuItem("Undo");
-	private JMenuItem redoMenuItem = new JMenuItem("Redo");
-	private JMenuItem cutMenuItem = new JMenuItem("Cut");
-	private JMenuItem copyMenuItem = new JMenuItem("Copy");
-	private JMenuItem pasteMenuItem = new JMenuItem("Paste");
-	private JMenuItem clearMenuItem = new JMenuItem("Clear");
-	private JMenuItem selectAllMenuItem = new JMenuItem("Select All");
-	private JMenuItem copyToMenuItem = new JMenuItem("Export As...");
-	private JMenuItem pasteFromMenuItem = new JMenuItem("Paste From...");
-	private JMenuItem newSelectionMenuItem = new JMenuItem("New Selection");
-	private JMenuItem applySelectionMenuItem = new JMenuItem("Apply Selection");
+	JMenu editMenu = new JMenu("Edit");
+	JMenuItem undoMenuItem = new JMenuItem("Undo");
+	JMenuItem redoMenuItem = new JMenuItem("Redo");
+	JMenuItem cutMenuItem = new JMenuItem("Cut");
+	JMenuItem copyMenuItem = new JMenuItem("Copy");
+	JMenuItem pasteMenuItem = new JMenuItem("Paste");
+	JMenuItem clearMenuItem = new JMenuItem("Clear");
+	JMenuItem selectAllMenuItem = new JMenuItem("Select All");
+	JMenuItem copyToMenuItem = new JMenuItem("Export As...");
+	JMenuItem pasteFromMenuItem = new JMenuItem("Paste From...");
+	JMenuItem newSelectionMenuItem = new JMenuItem("New Selection");
+	JMenuItem applySelectionMenuItem = new JMenuItem("Apply Selection");
 	// Image menu
-	private JMenu imageMenu = new JMenu("Image");
-	private JMenuItem mirrorMenuItem = new JMenuItem("Mirror");
-	private JMenuItem flipMenuItem = new JMenuItem("Flip");
-	private JMenuItem rotateRightMenuItem = new JMenuItem("Rotate Right");
-	private JMenuItem rotateLeftMenuItem = new JMenuItem("Rotate Left");
-	private JMenuItem shiftLeftMenuItem = new JMenuItem("Shift Left");
-	private JMenuItem shiftRightMenuItem = new JMenuItem("Shift Right");
-	private JMenuItem shiftUpMenuItem = new JMenuItem("Shift Up");
-	private JMenuItem shiftDownMenuItem = new JMenuItem("Shift Down");
-	private JMenuItem canvasSizeMenuItem = new JMenuItem("Canvas Size...");
-	private JMenuItem stretchMenuItem = new JMenuItem("Stretch...");
+	JMenu imageMenu = new JMenu("Image");
+	JMenuItem mirrorMenuItem = new JMenuItem("Mirror");
+	JMenuItem flipMenuItem = new JMenuItem("Flip");
+	JMenuItem rotateRightMenuItem = new JMenuItem("Rotate Right");
+	JMenuItem rotateLeftMenuItem = new JMenuItem("Rotate Left");
+	JMenuItem shiftLeftMenuItem = new JMenuItem("Shift Left");
+	JMenuItem shiftRightMenuItem = new JMenuItem("Shift Right");
+	JMenuItem shiftUpMenuItem = new JMenuItem("Shift Up");
+	JMenuItem shiftDownMenuItem = new JMenuItem("Shift Down");
+	JMenuItem canvasSizeMenuItem = new JMenuItem("Canvas Size...");
+	JMenuItem stretchMenuItem = new JMenuItem("Stretch...");
 	// View menu
-	private JMenu viewMenu = new JMenu("View");
-	private JCheckBoxMenuItem statusBarMenuItem = new JCheckBoxMenuItem("Statusbar");
-	private JCheckBoxMenuItem toolBarMenuItem = new JCheckBoxMenuItem("Toolbar");
-	private JCheckBoxMenuItem darkModeMenuItem = new JCheckBoxMenuItem("Dark mode");
-	private JMenu tileCodecMenu = new JMenu("Codec");
-	private JMenu zoomMenu = new JMenu("Zoom");
-	private JMenuItem zoomInMenuItem = new JMenuItem("In");
-	private JMenuItem zoomOutMenuItem = new JMenuItem("Out");
-	private JMenuItem _100MenuItem = new JMenuItem("100%");
-	private JMenuItem _200MenuItem = new JMenuItem("200%");
-	private JMenuItem _400MenuItem = new JMenuItem("400%");
-	private JMenuItem _800MenuItem = new JMenuItem("800%");
-	private JMenuItem _1600MenuItem = new JMenuItem("1600%");
-	private JMenuItem _3200MenuItem = new JMenuItem("3200%");
-	private JMenu blockSizeMenu = new JMenu("Block Size");
-	private JCheckBoxMenuItem sizeBlockToCanvasMenuItem = new JCheckBoxMenuItem("Full Canvas");
-	private JMenuItem customBlockSizeMenuItem = new JMenuItem("Custom...");
-	private JRadioButtonMenuItem rowInterleaveBlocksMenuItem = new JRadioButtonMenuItem("Row-interleave Blocks");
-	private JMenu modeMenu = new JMenu("Mode");
-	private JRadioButtonMenuItem _1DimensionalMenuItem = new JRadioButtonMenuItem("1-Dimensional");
-	private JRadioButtonMenuItem _2DimensionalMenuItem = new JRadioButtonMenuItem("2-Dimensional");
-	private JCheckBoxMenuItem blockGridMenuItem = new JCheckBoxMenuItem("Block Grid");
-	private JCheckBoxMenuItem tileGridMenuItem = new JCheckBoxMenuItem("Tile Grid");
-	private JCheckBoxMenuItem pixelGridMenuItem = new JCheckBoxMenuItem("Pixel Grid");
+	JMenu viewMenu = new JMenu("View");
+	JCheckBoxMenuItem statusBarMenuItem = new JCheckBoxMenuItem("Statusbar");
+	JCheckBoxMenuItem toolBarMenuItem = new JCheckBoxMenuItem("Toolbar");
+	JCheckBoxMenuItem darkModeMenuItem = new JCheckBoxMenuItem("Dark mode");
+	JMenu tileCodecMenu = new JMenu("Codec");
+	JMenu zoomMenu = new JMenu("Zoom");
+	JMenuItem zoomInMenuItem = new JMenuItem("In");
+	JMenuItem zoomOutMenuItem = new JMenuItem("Out");
+	JMenuItem _100MenuItem = new JMenuItem("100%");
+	JMenuItem _200MenuItem = new JMenuItem("200%");
+	JMenuItem _400MenuItem = new JMenuItem("400%");
+	JMenuItem _800MenuItem = new JMenuItem("800%");
+	JMenuItem _1600MenuItem = new JMenuItem("1600%");
+	JMenuItem _3200MenuItem = new JMenuItem("3200%");
+	JMenu blockSizeMenu = new JMenu("Block Size");
+	JCheckBoxMenuItem sizeBlockToCanvasMenuItem = new JCheckBoxMenuItem("Full Canvas");
+	JMenuItem customBlockSizeMenuItem = new JMenuItem("Custom...");
+	JRadioButtonMenuItem rowInterleaveBlocksMenuItem = new JRadioButtonMenuItem("Row-interleave Blocks");
+	JMenu modeMenu = new JMenu("Mode");
+	JRadioButtonMenuItem _1DimensionalMenuItem = new JRadioButtonMenuItem("1-Dimensional");
+	JRadioButtonMenuItem _2DimensionalMenuItem = new JRadioButtonMenuItem("2-Dimensional");
+	JCheckBoxMenuItem blockGridMenuItem = new JCheckBoxMenuItem("Block Grid");
+	JCheckBoxMenuItem tileGridMenuItem = new JCheckBoxMenuItem("Tile Grid");
+	JCheckBoxMenuItem pixelGridMenuItem = new JCheckBoxMenuItem("Pixel Grid");
 	// Navigate menu
-	private JMenu navigateMenu = new JMenu("Navigate");
-	private JMenuItem goToMenuItem = new JMenuItem("Go To...");
-	private JMenuItem goToAgainMenuItem = new JMenuItem("Go To Again");
-	private JMenuItem addToBookmarksMenuItem = new JMenuItem("Add To Bookmarks...");
-	private JMenuItem organizeBookmarksMenuItem = new JMenuItem("Organize Bookmarks...");
+	JMenu navigateMenu = new JMenu("Navigate");
+	JMenuItem goToMenuItem = new JMenuItem("Go To...");
+	JMenuItem goToAgainMenuItem = new JMenuItem("Go To Again");
+	JMenuItem addToBookmarksMenuItem = new JMenuItem("Add To Bookmarks...");
+	JMenuItem organizeBookmarksMenuItem = new JMenuItem("Organize Bookmarks...");
 	// private JMenuItem saveBookmarksMenuItem = new JMenuItem("Save Bookmarks");
 	// Palette menu
-	private JMenu paletteMenu = new JMenu("Palette");
-	private JMenuItem editColorsMenuItem = new JMenuItem("Edit Color");
-	private JMenu colorCodecMenu = new JMenu("Format");
-	private JMenu paletteEndiannessMenu = new JMenu("Endianness");
-	private JRadioButtonMenuItem paletteLittleEndianMenuItem = new JRadioButtonMenuItem("Little");
-	private JRadioButtonMenuItem paletteBigEndianMenuItem = new JRadioButtonMenuItem("Big");
-	private JRadioButtonMenuItem dummyPaletteMenuItem = new JRadioButtonMenuItem();
-	private JMenuItem paletteSizeMenuItem = new JMenuItem("Size...");
-	private JMenuItem newPaletteMenuItem = new JMenuItem("New...");
-	private JMenu importPaletteMenu = new JMenu("Import From");
-	private JMenuItem importInternalPaletteMenuItem = new JMenuItem("This File...");
-	private JMenuItem importExternalPaletteMenuItem = new JMenuItem("Another File...");
-	private JMenuItem addToPalettesMenuItem = new JMenuItem("Add To Palettes...");
-	private JMenuItem organizePalettesMenuItem = new JMenuItem("Organize Palettes...");
+	JMenu paletteMenu = new JMenu("Palette");
+	JMenuItem editColorsMenuItem = new JMenuItem("Edit Color");
+	JMenu colorCodecMenu = new JMenu("Format");
+	JMenu paletteEndiannessMenu = new JMenu("Endianness");
+	JRadioButtonMenuItem paletteLittleEndianMenuItem = new JRadioButtonMenuItem("Little");
+	JRadioButtonMenuItem paletteBigEndianMenuItem = new JRadioButtonMenuItem("Big");
+	JRadioButtonMenuItem dummyPaletteMenuItem = new JRadioButtonMenuItem();
+	JMenuItem paletteSizeMenuItem = new JMenuItem("Size...");
+	JMenuItem newPaletteMenuItem = new JMenuItem("New...");
+	JMenu importPaletteMenu = new JMenu("Import From");
+	JMenuItem importInternalPaletteMenuItem = new JMenuItem("This File...");
+	JMenuItem importExternalPaletteMenuItem = new JMenuItem("Another File...");
+	JMenuItem addToPalettesMenuItem = new JMenuItem("Add To Palettes...");
+	JMenuItem organizePalettesMenuItem = new JMenuItem("Organize Palettes...");
 	// private JMenuItem savePalettesMenuItem = new JMenuItem("Save Palettes");
 	// private JMenuItem exportPaletteMenuItem = new JMenuItem("Export..."); // tpl,
 	// c, asm, java?
 	// Window menu
-	private JMenu windowMenu = new JMenu("Window");
-	private JMenuItem newWindowMenuItem = new JMenuItem("New Window");
-	private JMenuItem tileMenuItem = new JMenuItem("Tile");
-	private JMenuItem cascadeMenuItem = new JMenuItem("Cascade");
-	private JMenuItem arrangeIconsMenuItem = new JMenuItem("Arrange Icons");
+	JMenu windowMenu = new JMenu("Window");
+	JMenuItem newWindowMenuItem = new JMenuItem("New Window");
+	JMenuItem tileMenuItem = new JMenuItem("Tile");
+	JMenuItem cascadeMenuItem = new JMenuItem("Cascade");
+	JMenuItem arrangeIconsMenuItem = new JMenuItem("Arrange Icons");
 	// Help menu
-	private JMenu helpMenu = new JMenu("Help");
-	private JMenuItem helpTopicsMenuItem = new JMenuItem("Help Topics");
+	JMenu helpMenu = new JMenu("Help");
+	JMenuItem helpTopicsMenuItem = new JMenuItem("Help Topics");
 	// private JMenuItem tipMenuItem = new JMenuItem("Tip of the Millennium..."); //
 	// Still say no to drugs, okay?
-	private JMenuItem aboutMenuItem = new JMenuItem("About Tile Molester...");
+	JMenuItem aboutMenuItem = new JMenuItem("About Tile Molester...");
 
 	// button groups
 	//private ButtonGroup toolButtonGroup = new ButtonGroup();
-	private ButtonGroup colorCodecButtonGroup = new ButtonGroup();
-	private ButtonGroup tileCodecButtonGroup = new ButtonGroup();
-	private ButtonGroup paletteButtonGroup = new ButtonGroup();
-	private ButtonGroup modeButtonGroup = new ButtonGroup();
-	private ButtonGroup paletteEndiannessButtonGroup = new ButtonGroup();
+	ButtonGroup colorCodecButtonGroup = new ButtonGroup();
+	ButtonGroup tileCodecButtonGroup = new ButtonGroup();
+	ButtonGroup paletteButtonGroup = new ButtonGroup();
+	ButtonGroup modeButtonGroup = new ButtonGroup();
+	ButtonGroup paletteEndiannessButtonGroup = new ButtonGroup();
 
-	private Map<TileCodec, TMTileCodecMenuItem> tileCodecButtonHashtable = new HashMap<>();
-	private Map<ColorCodec, TMColorCodecMenuItem> colorCodecButtonHashtable = new HashMap<>();
-	private Map<TMPalette, TMPaletteMenuItem> paletteButtonHashtable = new HashMap<>();
-	private Map<byte[], TMFileListener> fileListenerHashtable = new HashMap<>();
+	Map<TileCodec, TMTileCodecMenuItem> tileCodecButtonHashtable = new HashMap<>();
+	Map<ColorCodec, TMColorCodecMenuItem> colorCodecButtonHashtable = new HashMap<>();
+	Map<TMPalette, TMPaletteMenuItem> paletteButtonHashtable = new HashMap<>();
+	Map<byte[], TMFileListener> fileListenerHashtable = new HashMap<>();
 
 	private Xlator xl;
 
-	private Locale locale;
-	private boolean viewStatusBar = true;
-	private boolean viewToolBar = true;
-	private boolean darkMode = TMTheme.darkMode;
+	Locale locale;
+	boolean viewStatusBar = true;
+	boolean viewToolBar = true;
+	boolean darkMode = TMTheme.darkMode;
 
 	private String lastPath;
 
@@ -308,6 +308,10 @@ public class TMUI extends JFrame {
 	private JSeparator separator = new JSeparator();
 
 	private Logger uiLogger = Logger.getLogger("D_TMUI");
+
+	TMUIMenuBuilder menuBuilder;
+	TMUIToolbarBuilder toolbarBuilder;
+	TMUITreeMenuBuilder treeMenuBuilder;
 
 	/**
 	 * Creates a Tile Molester UI.
@@ -485,6 +489,10 @@ public class TMUI extends JFrame {
 		newPaletteDialog.setCodecs(colorcodecs);
 		importInternalPaletteDialog.setCodecs(colorcodecs);
 
+		menuBuilder = new TMUIMenuBuilder(this);
+		toolbarBuilder = new TMUIToolbarBuilder(this);
+		treeMenuBuilder = new TMUITreeMenuBuilder(this);
+
 		// Set up the GUI.
 		// main contentpane
 		JPanel pane = new JPanel();
@@ -493,8 +501,8 @@ public class TMUI extends JFrame {
 		pane.setLayout(new BorderLayout());
 
 		// main toolbar
-		initToolBar();
-		initNavBar();
+		toolbarBuilder.buildToolBar();
+		toolbarBuilder.buildNavBar();
 		toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT));
 		toolBarPane.add(toolBar);
 		toolBarPane.add(toolBarMDI);
@@ -514,8 +522,8 @@ public class TMUI extends JFrame {
 
 		JPanel barPane = new JPanel();
 		// tool palettes
-		initToolPalette();
-		initSelectionToolBar();
+		toolbarBuilder.buildToolPalette();
+		toolbarBuilder.buildSelectionToolBar();
 		//barPane.setLayout(new GridLayout(1, 2));
 
 		barPane.add(selectionToolBar);
@@ -525,7 +533,7 @@ public class TMUI extends JFrame {
 		pane.add(toolPane, BorderLayout.WEST);
 
 		// menus
-		initMenuBar();
+		menuBuilder.buildMenuBar();
 		setJMenuBar(menuBar);
 		buildReopenMenu();
 
@@ -604,490 +612,6 @@ public class TMUI extends JFrame {
 		setVisible(true);
 	}
 
-	///////////////////////////////////////////////////////////////////////////////
-	// Begin long bunch of code for setting up menus, panels etc...
-
-	/**
-	 * Sets up the toolbar.
-	 **/
-	private void initToolBar() {
-		// toolBar.setBorder(null);
-
-		// New
-		newButton.setToolTipText(newMenuItem.getText());
-		newButton.setFocusable(false);
-		newButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doNewCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doNewCommand();
-					}
-				});
-		toolBar.add(newButton);
-		// Open
-		openButton.setToolTipText(openMenuItem.getText());
-		openButton.setFocusable(false);
-		openButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doOpenCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doOpenCommand();
-					}
-				});
-		toolBar.add(openButton);
-		// Save
-		saveButton.setToolTipText(saveMenuItem.getText());
-		saveButton.setFocusable(false);
-		saveButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doSaveCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doSaveCommand();
-					}
-				});
-		toolBar.add(saveButton);
-		//
-		toolBarMDI.addSeparator();
-		// Cut
-		cutButton.setToolTipText(cutMenuItem.getText());
-		cutButton.setFocusable(false);
-		cutButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doCutCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doCutCommand();
-					}
-				});
-		toolBarMDI.add(cutButton);
-		// Copy
-		copyButton.setToolTipText(copyMenuItem.getText());
-		copyButton.setFocusable(false);
-		copyButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doCopyCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doCopyCommand();
-					}
-				});
-		toolBarMDI.add(copyButton);
-		// Paste
-		pasteButton.setToolTipText(pasteMenuItem.getText());
-		pasteButton.setFocusable(false);
-		pasteButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doPasteCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doPasteCommand();
-					}
-				});
-		toolBarMDI.add(pasteButton);
-		//
-		toolBarMDI.addSeparator();
-		// Undo
-		undoButton.setToolTipText(undoMenuItem.getText());
-		undoButton.setFocusable(false);
-		undoButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doUndoCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doUndoCommand();
-					}
-				});
-		toolBarMDI.add(undoButton);
-		// Redo
-		redoButton.setToolTipText(redoMenuItem.getText());
-		redoButton.setFocusable(false);
-		redoButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doRedoCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doRedoCommand();
-					}
-				});
-		toolBarMDI.add(redoButton);
-		//
-		toolBarMDI.addSeparator();
-		// Go To
-		gotoButton.setToolTipText(goToMenuItem.getText());
-		gotoButton.setFocusable(false);
-		gotoButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doGoToCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doGoToCommand();
-					}
-				});
-		toolBarMDI.add(gotoButton);
-		// Add To Bookmarks...
-		addBookmarkButton.setToolTipText(addToBookmarksMenuItem.getText());
-		addBookmarkButton.setFocusable(false);
-		addBookmarkButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doAddToBookmarksCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doAddToBookmarksCommand();
-					}
-				});
-		toolBarMDI.add(addBookmarkButton);
-		//
-		toolBarMDI.addSeparator();
-		// Decrease Width
-		decWidthButton.setToolTipText(xlate("Decrease_Width"));
-		decWidthButton.setFocusable(false);
-		decWidthButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doDecreaseWidthCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doDecreaseWidthCommand();
-					}
-				});
-		toolBarMDI.add(decWidthButton);
-		// Increase Width
-		incWidthButton.setToolTipText(xlate("Increase_Width"));
-		incWidthButton.setFocusable(false);
-		incWidthButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doIncreaseWidthCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doIncreaseWidthCommand();
-					}
-				});
-		toolBarMDI.add(incWidthButton);
-		// Decrease Height
-		decHeightButton.setToolTipText(xlate("Decrease_Height"));
-		decHeightButton.setFocusable(false);
-		decHeightButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doDecreaseHeightCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doDecreaseHeightCommand();
-					}
-				});
-		toolBarMDI.add(decHeightButton);
-		// Increase Height
-		incHeightButton.setToolTipText(xlate("Increase_Height"));
-		incHeightButton.setFocusable(false);
-		incHeightButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doIncreaseHeightCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doIncreaseHeightCommand();
-					}
-				});
-		toolBarMDI.add(incHeightButton);
-		//
-		toolBar.setFocusable(false);
-		toolBar.setFloatable(false);
-		toolBarMDI.setFocusable(false);
-		toolBarMDI.setFloatable(false);
-	}
-
-	/**
-	 * Sets up the navigation bar.
-	 **/
-	public void initNavBar() {
-		// navBar.setBorder(null);
-
-		navBar.addSeparator();
-
-		// Page Back
-		minusPageButton.setToolTipText(xlate("Page_Back"));
-		minusPageButton.setFocusable(false);
-		minusPageButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doMinusPageCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doMinusPageCommand();
-					}
-				});
-		navBar.add(minusPageButton);
-		// Page Forward
-		plusPageButton.setToolTipText(xlate("Page_Forward"));
-		plusPageButton.setFocusable(false);
-		plusPageButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doPlusPageCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doPlusPageCommand();
-					}
-				});
-		navBar.add(plusPageButton);
-		// Row Back
-		minusRowButton.setToolTipText(xlate("Row_Back"));
-		minusRowButton.setFocusable(false);
-		minusRowButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doMinusRowCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doMinusRowCommand();
-					}
-				});
-		navBar.add(minusRowButton);
-		// Row Forward
-		plusRowButton.setToolTipText(xlate("Row_Forward"));
-		plusRowButton.setFocusable(false);
-		plusRowButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doPlusRowCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doPlusRowCommand();
-					}
-				});
-		navBar.add(plusRowButton);
-		// Tile Back
-		minusTileButton.setToolTipText(xlate("Tile_Back"));
-		minusTileButton.setFocusable(false);
-		minusTileButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doMinusTileCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doMinusTileCommand();
-					}
-				});
-		navBar.add(minusTileButton);
-		// Tile Forward
-		plusTileButton.setToolTipText(xlate("Tile_Forward"));
-		plusTileButton.setFocusable(false);
-		plusTileButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doPlusTileCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doPlusTileCommand();
-					}
-				});
-		navBar.add(plusTileButton);
-		// Byte Back
-		minusByteButton.setToolTipText(xlate("Byte_Back"));
-		minusByteButton.setFocusable(false);
-		minusByteButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doMinusByteCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doMinusByteCommand();
-					}
-				});
-		navBar.add(minusByteButton);
-		// Byte Forward
-		plusByteButton.setToolTipText(xlate("Byte_Forward"));
-		plusByteButton.setFocusable(false);
-		plusByteButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doPlusByteCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doPlusByteCommand();
-					}
-				});
-		navBar.add(plusByteButton);
-		//
-		navBar.setFloatable(false);
-		navBar.setFocusable(false);
-	}
-
-	/**
-	 * Sets up the tool palette.
-	 **/
-	private void initToolPalette() {
-		toolPalette.setBorder(null);
-		// Selection
-		selectButton.setToolTipText(xlate("Selection"));
-		selectButton.setFocusable(false);
-		selectButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Invokes {@link #deselectToolPalette()} in response to the user action.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						toolType = TMTools.ToolType.SELECT_TOOL;
-						deselectToolPalette();
-						selectButton.setSelected(true);
-					}
-				});
-		toolPalette.add(selectButton);
-		// Zoom
-		zoomButton.setToolTipText(xlate("Zoom"));
-		zoomButton.setFocusable(false);
-		zoomButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Invokes {@link #deselectToolPalette()} in response to the user action.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						toolType = TMTools.ToolType.ZOOM_TOOL;
-						deselectToolPalette();
-						zoomButton.setSelected(true);
-					}
-				});
-		toolPalette.add(zoomButton);
-		// Dropper
-		pickupButton.setToolTipText(xlate("Dropper"));
-		pickupButton.setFocusable(false);
-		pickupButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Invokes {@link #deselectToolPalette()} in response to the user action.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						toolType = TMTools.ToolType.PICKUP_TOOL;
-						deselectToolPalette();
-						pickupButton.setSelected(true);
-					}
-				});
-		toolPalette.add(pickupButton);
-		// Brush
-		brushButton.setToolTipText(xlate("Brush"));
-		brushButton.setFocusable(false);
-		brushButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Invokes {@link #deselectToolPalette()} in response to the user action.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						toolType = TMTools.ToolType.BRUSH_TOOL;
-						deselectToolPalette();
-						brushButton.setSelected(true);
-					}
-				});
-		toolPalette.add(brushButton);
-		// Line
-		lineButton.setToolTipText(xlate("Line"));
-		lineButton.setFocusable(false);
-		lineButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Invokes {@link #deselectToolPalette()} in response to the user action.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						toolType = TMTools.ToolType.LINE_TOOL;
-						deselectToolPalette();
-						lineButton.setSelected(true);
-					}
-				});
-		toolPalette.add(lineButton);
-		// Flood Fill
-		fillButton.setToolTipText(xlate("Flood_Fill"));
-		fillButton.setFocusable(false);
-		fillButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Invokes {@link #deselectToolPalette()} in response to the user action.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						toolType = TMTools.ToolType.FILL_TOOL;
-						deselectToolPalette();
-						fillButton.setSelected(true);
-					}
-				});
-		toolPalette.add(fillButton);
-		// Color Replacer
-		replaceButton.setToolTipText(xlate("Color_Replacer"));
-		replaceButton.setFocusable(false);
-		replaceButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Invokes {@link #deselectToolPalette()} in response to the user action.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						toolType = TMTools.ToolType.REPLACE_TOOL;
-						deselectToolPalette();
-						replaceButton.setSelected(true);
-					}
-				});
-		toolPalette.add(replaceButton);
-		// Mover
-		moveButton.setToolTipText(xlate("Mover"));
-		moveButton.setFocusable(false);
-		moveButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Invokes {@link #deselectToolPalette()} in response to the user action.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						toolType = TMTools.ToolType.MOVE_TOOL;
-						deselectToolPalette();
-						moveButton.setSelected(true);
-					}
-				});
-		toolPalette.add(moveButton);
-		toolPalette.setFloatable(false);
-		toolPalette.setFocusable(false);
-
-		selectButton.setSelected(true); // starting tool
-	}
-
 	/**
 	 * Deselects all tools in the tool palette.
 	 **/
@@ -1100,1097 +624,6 @@ public class TMUI extends JFrame {
 		fillButton.setSelected(false);
 		replaceButton.setSelected(false);
 		moveButton.setSelected(false);
-	}
-
-	/**
-	 * Sets up the selection palette.
-	 **/
-	public void initSelectionToolBar() {
-		selectionToolBar.setBorder(null);
-		// Mirror
-		mirrorButton.setToolTipText(mirrorMenuItem.getText());
-		mirrorButton.setFocusable(false);
-		mirrorButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doMirrorCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doMirrorCommand();
-					}
-				});
-		selectionToolBar.add(mirrorButton);
-		// Flip
-		flipButton.setToolTipText(flipMenuItem.getText());
-		flipButton.setFocusable(false);
-		flipButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doFlipCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doFlipCommand();
-					}
-				});
-		selectionToolBar.add(flipButton);
-		// Rotate Right
-		rotateRightButton.setToolTipText(rotateRightMenuItem.getText());
-		rotateRightButton.setFocusable(false);
-		rotateRightButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doRotateRightCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doRotateRightCommand();
-					}
-				});
-		selectionToolBar.add(rotateRightButton);
-		// Rotate Left
-		rotateLeftButton.setToolTipText(rotateLeftMenuItem.getText());
-		rotateLeftButton.setFocusable(false);
-		rotateLeftButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doRotateLeftCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doRotateLeftCommand();
-					}
-				});
-		selectionToolBar.add(rotateLeftButton);
-		// Shift Left
-		shiftLeftButton.setToolTipText(shiftLeftMenuItem.getText());
-		shiftLeftButton.setFocusable(false);
-		shiftLeftButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doShiftLeftCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doShiftLeftCommand();
-					}
-				});
-		selectionToolBar.add(shiftLeftButton);
-		// Shift Right
-		shiftRightButton.setToolTipText(shiftRightMenuItem.getText());
-		shiftRightButton.setFocusable(false);
-		shiftRightButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doShiftRightCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doShiftRightCommand();
-					}
-				});
-		selectionToolBar.add(shiftRightButton);
-		// Shift Up
-		shiftUpButton.setToolTipText(shiftUpMenuItem.getText());
-		shiftUpButton.setFocusable(false);
-		shiftUpButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doShiftUpCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doShiftUpCommand();
-					}
-				});
-		selectionToolBar.add(shiftUpButton);
-		// Shift Down
-		shiftDownButton.setToolTipText(shiftDownMenuItem.getText());
-		shiftDownButton.setFocusable(false);
-		shiftDownButton.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doShiftDownCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doShiftDownCommand();
-					}
-				});
-		selectionToolBar.add(shiftDownButton);
-		//
-		selectionToolBar.setFloatable(false);
-		selectionToolBar.setFocusable(false);
-		// selectionToolBar.setBorder(new BevelBorder(BevelBorder.LOWERED));
-	}
-
-	/**
-	 * Sets up the menu bar.
-	 **/
-	private void initMenuBar() {
-		// File menu
-		fileMenu.setMnemonic(KeyEvent.VK_F);
-		// New
-		newMenuItem.setMnemonic(KeyEvent.VK_N);
-		newMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
-		newMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doNewCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doNewCommand();
-					}
-				});
-		fileMenu.add(newMenuItem);
-		// Open
-		openMenuItem.setMnemonic(KeyEvent.VK_O);
-		openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
-		openMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doOpenCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doOpenCommand();
-					}
-				});
-		fileMenu.add(openMenuItem);
-		// Reopen
-		reopenMenu.setMnemonic(KeyEvent.VK_R);
-		fileMenu.add(reopenMenu);
-		// Close
-		closeMenuItem.setMnemonic(KeyEvent.VK_C);
-		closeMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doCloseCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doCloseCommand();
-					}
-				});
-		fileMenu.add(closeMenuItem);
-		// Close All
-		closeAllMenuItem.setMnemonic(KeyEvent.VK_E);
-		closeAllMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doCloseAllCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doCloseAllCommand();
-					}
-				});
-		fileMenu.add(closeAllMenuItem);
-		//
-		fileMenu.addSeparator();
-		// Save
-		saveMenuItem.setMnemonic(KeyEvent.VK_S);
-		saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
-		saveMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doSaveCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doSaveCommand();
-					}
-				});
-		fileMenu.add(saveMenuItem);
-		// Save As
-		saveAsMenuItem.setMnemonic(KeyEvent.VK_A);
-		saveAsMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doSaveAsCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doSaveAsCommand();
-					}
-				});
-		fileMenu.add(saveAsMenuItem);
-		// Save All
-		saveAllMenuItem.setMnemonic(KeyEvent.VK_L);
-		saveAllMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doSaveAllCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doSaveAllCommand();
-					}
-				});
-		fileMenu.add(saveAllMenuItem);
-		//
-		fileMenu.addSeparator();
-		// Exit
-		exitMenuItem.setMnemonic(KeyEvent.VK_X);
-		exitMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doExitCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doExitCommand();
-					}
-				});
-		fileMenu.add(exitMenuItem);
-		menuBar.add(fileMenu);
-		// Edit menu
-		editMenu.setMnemonic(KeyEvent.VK_E);
-		// Undo
-		undoMenuItem.setMnemonic(KeyEvent.VK_U);
-		undoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK));
-		undoMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doUndoCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doUndoCommand();
-					}
-				});
-		editMenu.add(undoMenuItem);
-		// Redo
-		redoMenuItem.setMnemonic(KeyEvent.VK_R);
-		redoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
-		redoMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doRedoCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doRedoCommand();
-					}
-				});
-		editMenu.add(redoMenuItem);
-		//
-		editMenu.addSeparator();
-		// Cut
-		cutMenuItem.setMnemonic(KeyEvent.VK_T);
-		cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));
-		cutMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doCutCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doCutCommand();
-					}
-				});
-		editMenu.add(cutMenuItem);
-		// Copy
-		copyMenuItem.setMnemonic(KeyEvent.VK_C);
-		copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
-		copyMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doCopyCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doCopyCommand();
-					}
-				});
-		editMenu.add(copyMenuItem);
-		// Paste
-		pasteMenuItem.setMnemonic(KeyEvent.VK_P);
-		pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
-		pasteMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doPasteCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doPasteCommand();
-					}
-				});
-		editMenu.add(pasteMenuItem);
-		// Clear
-		clearMenuItem.setMnemonic(KeyEvent.VK_L);
-		clearMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
-		clearMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doClearCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doClearCommand();
-					}
-				});
-		editMenu.add(clearMenuItem);
-		//
-		editMenu.addSeparator();
-		// Select All
-		selectAllMenuItem.setMnemonic(KeyEvent.VK_S);
-		selectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
-		selectAllMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doSelectAllCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doSelectAllCommand();
-					}
-				});
-		editMenu.add(selectAllMenuItem);
-		//
-		editMenu.addSeparator();
-		// Save Selection As...
-		copyToMenuItem.setMnemonic(KeyEvent.VK_O);
-		copyToMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doCopyToCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doCopyToCommand();
-					}
-				});
-		editMenu.add(copyToMenuItem);
-		// Paste From...
-		pasteFromMenuItem.setMnemonic(KeyEvent.VK_F);
-		pasteFromMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doPasteFromCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doPasteFromCommand();
-					}
-				});
-		editMenu.add(pasteFromMenuItem);
-
-		menuBar.add(editMenu);
-		// View menu
-		viewMenu.setMnemonic(KeyEvent.VK_V);
-		// Codec submenu
-		viewMenu.add(tileCodecMenu);
-		// Zoom submenu
-		zoomMenu.setMnemonic(KeyEvent.VK_Z);
-		// In
-		zoomInMenuItem.setMnemonic(KeyEvent.VK_I);
-		zoomInMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doZoomInCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doZoomInCommand();
-					}
-				});
-		zoomMenu.add(zoomInMenuItem);
-		// Out
-		zoomOutMenuItem.setMnemonic(KeyEvent.VK_O);
-		zoomOutMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doZoomOutCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doZoomOutCommand();
-					}
-				});
-		zoomMenu.add(zoomOutMenuItem);
-		//
-		zoomMenu.addSeparator();
-		// 100%
-		_100MenuItem.setMnemonic(KeyEvent.VK_1);
-		_100MenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Handles the user interface action event.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doZoomCommand(1.0);
-					}
-				});
-		zoomMenu.add(_100MenuItem);
-		// 200%
-		_200MenuItem.setMnemonic(KeyEvent.VK_2);
-		_200MenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Handles the user interface action event.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doZoomCommand(2.0);
-					}
-				});
-		zoomMenu.add(_200MenuItem);
-		// 400%
-		_400MenuItem.setMnemonic(KeyEvent.VK_4);
-		_400MenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Handles the user interface action event.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doZoomCommand(4.0);
-					}
-				});
-		zoomMenu.add(_400MenuItem);
-		// 800%
-		_800MenuItem.setMnemonic(KeyEvent.VK_8);
-		_800MenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Handles the user interface action event.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doZoomCommand(8.0);
-					}
-				});
-		zoomMenu.add(_800MenuItem);
-		// 1600%
-		_1600MenuItem.setMnemonic(KeyEvent.VK_6);
-		_1600MenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Handles the user interface action event.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doZoomCommand(16.0);
-					}
-				});
-		zoomMenu.add(_1600MenuItem);
-		// 3200%
-		_3200MenuItem.setMnemonic(KeyEvent.VK_3);
-		_3200MenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Handles the user interface action event.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doZoomCommand(32.0);
-					}
-				});
-		zoomMenu.add(_3200MenuItem);
-		viewMenu.add(zoomMenu);
-		// Mode submenu
-		modeMenu.setMnemonic(KeyEvent.VK_M);
-		// 1-Dimensional
-		_1DimensionalMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Handles the user interface action event.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doModeCommand(TileCodec.MODE_1D);
-						_1DimensionalMenuItem.setSelected(true);
-					}
-				});
-		modeMenu.add(_1DimensionalMenuItem);
-		// 2-Dimensional
-		_2DimensionalMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Handles the user interface action event.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doModeCommand(TileCodec.MODE_2D);
-						_2DimensionalMenuItem.setSelected(true);
-					}
-				});
-		modeMenu.add(_2DimensionalMenuItem);
-		viewMenu.add(modeMenu);
-		// create button group for modes
-		modeButtonGroup.add(_1DimensionalMenuItem);
-		modeButtonGroup.add(_2DimensionalMenuItem);
-		//
-		viewMenu.addSeparator();
-		// Block Size
-		blockSizeMenu.setMnemonic(KeyEvent.VK_B);
-		// Full Canvas
-		sizeBlockToCanvasMenuItem.setMnemonic(KeyEvent.VK_F);
-		sizeBlockToCanvasMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doSizeBlockToCanvasCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doSizeBlockToCanvasCommand();
-					}
-				});
-		blockSizeMenu.add(sizeBlockToCanvasMenuItem);
-		//
-		blockSizeMenu.addSeparator();
-		// Custom Block Size
-		customBlockSizeMenuItem.setMnemonic(KeyEvent.VK_C);
-		customBlockSizeMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doCustomBlockSizeCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doCustomBlockSizeCommand();
-					}
-				});
-		blockSizeMenu.add(customBlockSizeMenuItem);
-		viewMenu.add(blockSizeMenu);
-		// Row-interleave Blocks
-		rowInterleaveBlocksMenuItem.setMnemonic(KeyEvent.VK_R);
-		rowInterleaveBlocksMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doRowInterleaveBlocksCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doRowInterleaveBlocksCommand();
-					}
-				});
-		viewMenu.add(rowInterleaveBlocksMenuItem);
-		//
-		viewMenu.addSeparator();
-		// Block Grid
-		blockGridMenuItem.setMnemonic(KeyEvent.VK_V);
-		blockGridMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doBlockGridCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doBlockGridCommand();
-					}
-				});
-		viewMenu.add(blockGridMenuItem);
-		// Tile Grid
-		tileGridMenuItem.setMnemonic(KeyEvent.VK_A);
-		tileGridMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doTileGridCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doTileGridCommand();
-					}
-				});
-		viewMenu.add(tileGridMenuItem);
-		// Pixel Grid
-		pixelGridMenuItem.setMnemonic(KeyEvent.VK_P);
-		pixelGridMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doPixelGridCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doPixelGridCommand();
-					}
-				});
-		viewMenu.add(pixelGridMenuItem);
-		//
-		viewMenu.addSeparator();
-		// Statusbar
-		statusBarMenuItem.setMnemonic(KeyEvent.VK_S);
-		statusBarMenuItem.setSelected(viewStatusBar);
-		statusBarMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doStatusBarCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doStatusBarCommand();
-					}
-				});
-		viewMenu.add(statusBarMenuItem);
-		// Toolbar
-		toolBarMenuItem.setMnemonic(KeyEvent.VK_T);
-		toolBarMenuItem.setSelected(viewToolBar);
-		toolBarMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doToolBarCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doToolBarCommand();
-					}
-				});
-		viewMenu.add(toolBarMenuItem);
-		darkModeMenuItem.setMnemonic(KeyEvent.VK_K);
-		darkModeMenuItem.setSelected(darkMode);
-		darkModeMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doDarkModeCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doDarkModeCommand();
-					}
-				});
-		viewMenu.add(darkModeMenuItem);
-		menuBar.add(viewMenu);
-		// Image menu
-		imageMenu.setMnemonic(KeyEvent.VK_I);
-		// Mirror
-		mirrorMenuItem.setMnemonic(KeyEvent.VK_M);
-		mirrorMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK));
-		mirrorMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doMirrorCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doMirrorCommand();
-					}
-				});
-		imageMenu.add(mirrorMenuItem);
-		// Flip
-		flipMenuItem.setMnemonic(KeyEvent.VK_F);
-		flipMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK));
-		flipMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doFlipCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doFlipCommand();
-					}
-				});
-		imageMenu.add(flipMenuItem);
-		//
-		imageMenu.addSeparator();
-		// Rotate Right
-		rotateRightMenuItem.setMnemonic(KeyEvent.VK_O);
-		rotateRightMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doRotateRightCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doRotateRightCommand();
-					}
-				});
-		imageMenu.add(rotateRightMenuItem);
-		// Rotate Left
-		rotateLeftMenuItem.setMnemonic(KeyEvent.VK_A);
-		rotateLeftMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doRotateLeftCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doRotateLeftCommand();
-					}
-				});
-		imageMenu.add(rotateLeftMenuItem);
-		//
-		imageMenu.addSeparator();
-		// Shift Left
-		shiftLeftMenuItem.setMnemonic(KeyEvent.VK_L);
-		// shiftLeftMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT,
-		// Event.SHIFT_MASK));
-		shiftLeftMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doShiftLeftCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doShiftLeftCommand();
-					}
-				});
-		imageMenu.add(shiftLeftMenuItem);
-		// Shift Right
-		shiftRightMenuItem.setMnemonic(KeyEvent.VK_R);
-		// shiftRightMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT,
-		// Event.SHIFT_MASK));
-		shiftRightMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doShiftRightCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doShiftRightCommand();
-					}
-				});
-		imageMenu.add(shiftRightMenuItem);
-		// Shift Up
-		shiftUpMenuItem.setMnemonic(KeyEvent.VK_U);
-		// shiftUpMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_UP,
-		// Event.SHIFT_MASK));
-		shiftUpMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doShiftUpCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doShiftUpCommand();
-					}
-				});
-		imageMenu.add(shiftUpMenuItem);
-		// Shift Down
-		shiftDownMenuItem.setMnemonic(KeyEvent.VK_D);
-		// shiftDownMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,
-		// Event.SHIFT_MASK));
-		shiftDownMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doShiftDownCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doShiftDownCommand();
-					}
-				});
-		imageMenu.add(shiftDownMenuItem);
-		//
-		imageMenu.addSeparator();
-		// Canvas Size...
-		canvasSizeMenuItem.setMnemonic(KeyEvent.VK_S);
-		canvasSizeMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doCanvasSizeCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doCanvasSizeCommand();
-					}
-				});
-		imageMenu.add(canvasSizeMenuItem);
-		// Stretch...
-		stretchMenuItem.setMnemonic(KeyEvent.VK_E);
-		stretchMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doStretchCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doStretchCommand();
-					}
-				});
-		imageMenu.add(stretchMenuItem);
-		menuBar.add(imageMenu);
-		// Navigate menu
-		navigateMenu.setMnemonic(KeyEvent.VK_N);
-		// Go To
-		goToMenuItem.setMnemonic(KeyEvent.VK_G);
-		goToMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.CTRL_DOWN_MASK));
-		goToMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doGoToCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doGoToCommand();
-					}
-				});
-		navigateMenu.add(goToMenuItem);
-		// Go To Again
-		goToAgainMenuItem.setMnemonic(KeyEvent.VK_A);
-		goToAgainMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
-		goToAgainMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doGoToAgainCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doGoToAgainCommand();
-					}
-				});
-		navigateMenu.add(goToAgainMenuItem);
-		//
-		navigateMenu.addSeparator();
-		// Add To Bookmarks
-		addToBookmarksMenuItem.setMnemonic(KeyEvent.VK_A);
-		addToBookmarksMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doAddToBookmarksCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doAddToBookmarksCommand();
-					}
-				});
-		navigateMenu.add(addToBookmarksMenuItem);
-		// Organize Bookmarks
-		organizeBookmarksMenuItem.setMnemonic(KeyEvent.VK_O);
-		organizeBookmarksMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doOrganizeBookmarksCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doOrganizeBookmarksCommand();
-					}
-				});
-		navigateMenu.add(organizeBookmarksMenuItem);
-		//
-		menuBar.add(navigateMenu);
-		// Palette menu
-		paletteMenu.setMnemonic(KeyEvent.VK_P);
-		
-		// Edit Colors...
-		editColorsMenuItem.setMnemonic(KeyEvent.VK_E);
-		editColorsMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doEditColorsCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doEditColorsCommand();
-					}
-				});
-		paletteMenu.add(editColorsMenuItem);
-		// Format submenu
-		colorCodecMenu.setMnemonic(KeyEvent.VK_F);
-		paletteMenu.add(colorCodecMenu);
-		// Endianness submenu
-		paletteEndiannessMenu.setMnemonic(KeyEvent.VK_N);
-		// Little endian
-		paletteLittleEndianMenuItem.setMnemonic(KeyEvent.VK_L);
-		paletteLittleEndianMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Handles the user interface action event.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doPaletteEndiannessCommand(ColorCodec.LITTLE_ENDIAN);
-					}
-				});
-		paletteEndiannessMenu.add(paletteLittleEndianMenuItem);
-		// Big endian
-		paletteBigEndianMenuItem.setMnemonic(KeyEvent.VK_B);
-		paletteBigEndianMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Handles the user interface action event.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doPaletteEndiannessCommand(ColorCodec.BIG_ENDIAN);
-					}
-				});
-		paletteEndiannessMenu.add(paletteBigEndianMenuItem);
-		// create button group for palette endianness
-		paletteEndiannessButtonGroup.add(paletteLittleEndianMenuItem);
-		paletteEndiannessButtonGroup.add(paletteBigEndianMenuItem);
-		//
-		paletteMenu.add(paletteEndiannessMenu);
-		// Size...
-		paletteSizeMenuItem.setMnemonic(KeyEvent.VK_S);
-		paletteSizeMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doPaletteSizeCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doPaletteSizeCommand();
-					}
-				});
-		paletteMenu.add(paletteSizeMenuItem);
-		//
-		paletteMenu.addSeparator();
-		// New...
-		newPaletteMenuItem.setMnemonic(KeyEvent.VK_N);
-		newPaletteMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doNewPaletteCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doNewPaletteCommand();
-					}
-				});
-		paletteMenu.add(newPaletteMenuItem);
-		// Import From submenu
-		importPaletteMenu.setMnemonic(KeyEvent.VK_I);
-		// Import From This File...
-		importInternalPaletteMenuItem.setMnemonic(KeyEvent.VK_T);
-		importInternalPaletteMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doImportInternalPaletteCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doImportInternalPaletteCommand();
-					}
-				});
-		importPaletteMenu.add(importInternalPaletteMenuItem);
-		// Import From Another File...
-		importExternalPaletteMenuItem.setMnemonic(KeyEvent.VK_A);
-		importExternalPaletteMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doImportExternalPaletteCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doImportExternalPaletteCommand();
-					}
-				});
-		importPaletteMenu.add(importExternalPaletteMenuItem);
-		paletteMenu.add(importPaletteMenu);
-		//
-		paletteMenu.addSeparator();
-		// Add To Palettes...
-		addToPalettesMenuItem.setMnemonic(KeyEvent.VK_A);
-		addToPalettesMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doAddToPalettesCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doAddToPalettesCommand();
-					}
-				});
-		paletteMenu.add(addToPalettesMenuItem);
-		// Organize Palettes...
-		organizePalettesMenuItem.setMnemonic(KeyEvent.VK_O);
-		organizePalettesMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doOrganizePalettesCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doOrganizePalettesCommand();
-					}
-				});
-		paletteMenu.add(organizePalettesMenuItem);
-		menuBar.add(paletteMenu);
-		// Window menu
-		windowMenu.setMnemonic(KeyEvent.VK_W);
-		// New Window
-		newWindowMenuItem.setMnemonic(KeyEvent.VK_N);
-		newWindowMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doNewWindowCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doNewWindowCommand();
-					}
-				});
-		windowMenu.add(newWindowMenuItem);
-		//
-		windowMenu.addSeparator();
-		// Tile
-		tileMenuItem.setMnemonic(KeyEvent.VK_T);
-		tileMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doTileCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doTileCommand();
-					}
-				});
-		windowMenu.add(tileMenuItem);
-		// Cascade
-		cascadeMenuItem.setMnemonic(KeyEvent.VK_C);
-		cascadeMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doCascadeCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doCascadeCommand();
-					}
-				});
-		windowMenu.add(cascadeMenuItem);
-		// Arrange Icons
-		arrangeIconsMenuItem.setMnemonic(KeyEvent.VK_I);
-		arrangeIconsMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doArrangeIconsCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doArrangeIconsCommand();
-					}
-				});
-		windowMenu.add(arrangeIconsMenuItem);
-		menuBar.add(windowMenu);
-		// Help menu
-		helpMenu.setMnemonic(KeyEvent.VK_H);
-		// Help Topics
-		helpTopicsMenuItem.setMnemonic(KeyEvent.VK_H);
-		helpTopicsMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
-		helpTopicsMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doHelpTopicsCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doHelpTopicsCommand();
-					}
-				});
-		helpMenu.add(helpTopicsMenuItem);
-
-		// About
-		aboutMenuItem.setMnemonic(KeyEvent.VK_A);
-		aboutMenuItem.addActionListener(
-				new ActionListener() {
-					/**
-					 * Forwards the toolbar/menu action to {@link TMUI#doAboutCommand()}.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void actionPerformed(ActionEvent e) {
-						doAboutCommand();
-					}
-				});
-		helpMenu.add(aboutMenuItem);
-		menuBar.add(helpMenu);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -3964,23 +2397,6 @@ public class TMUI extends JFrame {
 	 * Builds the menu containing all the bookmarks.
 	 * @param root root value
 	 **/
-	private void buildBookmarksMenu(FolderNode root) {
-		// remove old bookmark menuitems, if any
-		while (navigateMenu.getItemCount() > 5) {
-			navigateMenu.remove(5);
-		}
-
-		TMTreeNode[] children = root.getChildren();
-		if (children.length == 0) {
-			// no bookmarks exist
-		} else {
-			// add all the bookmarks
-			navigateMenu.addSeparator();
-			for (int i = 0; i < children.length; i++) {
-				addToBookmarksMenu(children[i], navigateMenu);
-			}
-		}
-	}
 
 	/**
 	 * Recursive routine that adds the given node to the given menu.
@@ -3988,53 +2404,11 @@ public class TMUI extends JFrame {
 	 * @param node node value
 	 * @param menu menu value
 	 **/
-	public void addToBookmarksMenu(TMTreeNode node, JMenu menu) {
-		if (node instanceof BookmarkItemNode) {
-			menu.add(new TMBookmarkMenuItem((BookmarkItemNode) node, this::doGotoBookmarkCommand));
-		} else {
-			// folder
-			JMenu subMenu = new JMenu(node.toString());
-			TMTreeNode[] children = node.getChildren();
-			if (children.length == 0) {
-				// no bookmarks exist in this folder
-				JMenuItem emptyItem = new JMenuItem("(" + xlate("Empty") + ")");
-				emptyItem.setEnabled(false);
-				subMenu.add(emptyItem);
-			} else {
-				// add all the child bookmarks/folders
-				for (int i = 0; i < children.length; i++) {
-					addToBookmarksMenu(children[i], subMenu);
-				}
-			}
-			menu.add(subMenu);
-		}
-	}
 
 	/**
 	 * Builds the menu containing all the palettes.
 	 * @param root root value
 	 **/
-	private void buildPalettesMenu(FolderNode root) {
-		// remove old palette menuitems, if any
-		while (paletteMenu.getItemCount() > 10) {
-			paletteMenu.remove(10);
-		}
-
-		paletteButtonHashtable.clear();
-		paletteButtonGroup = new ButtonGroup();
-
-		TMTreeNode[] children = root.getChildren();
-		if (children.length == 0) {
-			// no palettes exist (shouldn't be possible)
-		} else {
-			// add all the palettes
-			paletteMenu.addSeparator();
-			for (int i = 0; i < children.length; i++) {
-				addToPalettesMenu(children[i], paletteMenu);
-			}
-		}
-		paletteButtonGroup.add(dummyPaletteMenuItem);
-	}
 
 	/**
 	 * Recursive routine that adds the given node to the given menu.
@@ -4042,32 +2416,6 @@ public class TMUI extends JFrame {
 	 * @param node node value
 	 * @param menu menu value
 	 **/
-	public void addToPalettesMenu(TMTreeNode node, JMenu menu) {
-		if (node instanceof PaletteItemNode) {
-			// palette
-			PaletteItemNode paletteNode = (PaletteItemNode) node;
-			TMPaletteMenuItem paletteMenuItem = new TMPaletteMenuItem(paletteNode, this::doSelectPaletteCommand);
-			menu.add(paletteMenuItem);
-			paletteButtonGroup.add(paletteMenuItem);
-			paletteButtonHashtable.put(paletteNode.getPalette(), paletteMenuItem);
-		} else {
-			// folder
-			JMenu subMenu = new JMenu(node.toString());
-			TMTreeNode[] children = node.getChildren();
-			if (children.length == 0) {
-				// no palettes exist in this folder
-				JMenuItem emptyItem = new JMenuItem("(" + xlate("Empty") + ")");
-				emptyItem.setEnabled(false);
-				subMenu.add(emptyItem);
-			} else {
-				// add all the child palettes/folders
-				for (int i = 0; i < children.length; i++) {
-					addToPalettesMenu(children[i], subMenu);
-				}
-			}
-			menu.add(subMenu);
-		}
-	}
 
 	/**
 	 * Updates various UI components (menus, statusbar, palette) to reflect the
@@ -4182,7 +2530,7 @@ public class TMUI extends JFrame {
 	public void refreshBookmarksMenu() {
 		TMView view = getSelectedView();
 		if (view != null && view.getFileImage().getResources() != null) {
-			buildBookmarksMenu(view.getFileImage().getResources().getBookmarksRoot());
+			treeMenuBuilder.buildBookmarksMenu(view.getFileImage().getResources().getBookmarksRoot());
 		}
 	}
 
@@ -4192,7 +2540,7 @@ public class TMUI extends JFrame {
 	public void refreshPalettesMenu() {
 		TMView view = getSelectedView();
 		if (view != null && view.getFileImage().getResources() != null) {
-			buildPalettesMenu(view.getFileImage().getResources().getPalettesRoot());
+			treeMenuBuilder.buildPalettesMenu(view.getFileImage().getResources().getPalettesRoot());
 			refreshPaletteSelection(view);
 			refreshPaletteEndiannessSelection(view);
 			refreshColorCodecSelection(view);
