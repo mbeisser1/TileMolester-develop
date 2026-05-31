@@ -326,10 +326,7 @@ public class TMUI extends JFrame {
 		try {
 			xl = new Xlator("languages/language", locale);
 		} catch (MissingResourceException e) {
-			JOptionPane.showMessageDialog(this,
-					xlate("Error reading language file:") + "\n" + e.getMessage(),
-					"Tile Molester",
-					JOptionPane.ERROR_MESSAGE);
+			showError("Error reading language file:", e);
 			System.exit(0);
 		}
 
@@ -446,31 +443,17 @@ public class TMUI extends JFrame {
 		try {
 			TMSpecReader.readSpecsFromFile(resolveTmspecFile());
 		} catch (SAXParseException e) {
-			JOptionPane.showMessageDialog(this,
-					xlate("Parser_Parse_Error") + "\n" +
-							e.getMessage() + "\n" +
-							"(" + e.getSystemId() + ",\n" +
-							"line " + e.getLineNumber() + ")\n",
-					"Tile Molester",
-					JOptionPane.ERROR_MESSAGE);
+			showError("Parser_Parse_Error",
+					e.getMessage() + "\n(" + e.getSystemId() + ",\nline " + e.getLineNumber() + ")\n");
 			System.exit(0);
 		} catch (SAXException e) {
-			JOptionPane.showMessageDialog(this,
-					xlate("Parser_Parse_Error") + "\n" + e.getMessage(),
-					"Tile Molester",
-					JOptionPane.ERROR_MESSAGE);
+			showError("Parser_Parse_Error", e);
 			System.exit(0);
 		} catch (ParserConfigurationException e) {
-			JOptionPane.showMessageDialog(this,
-					xlate("Parser_Config_Error") + "\n" + e.getMessage(),
-					"Tile Molester",
-					JOptionPane.ERROR_MESSAGE);
+			showError("Parser_Config_Error", e);
 			System.exit(0);
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(this,
-					xlate("Parser_IO_Error") + "\n" + e.getMessage(),
-					"Tile Molester",
-					JOptionPane.ERROR_MESSAGE);
+			showError("Parser_IO_Error", e);
 			System.exit(0);
 		}
 
@@ -2366,10 +2349,7 @@ public class TMUI extends JFrame {
 				fw.close();
 			}
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(this,
-					xlate("Save_Resources_Error") + "\n" + e.getMessage(),
-					"Tile Molester",
-					JOptionPane.ERROR_MESSAGE);
+			showError("Save_Resources_Error", e);
 		}
 	}
 
@@ -2459,20 +2439,14 @@ public class TMUI extends JFrame {
 			// if (img.isModified()) {
 			if (file.exists()) {
 				if (!file.canWrite()) {
-					JOptionPane.showMessageDialog(this,
-							xlate("File_Write_Error") + "\n" + file.getName(),
-							"Tile Molester",
-							JOptionPane.ERROR_MESSAGE);
+					showError("File_Write_Error", file.getName());
 				} else {
 					FileSaverThread thread = null;
 					byte[] contents = img.getContents();
 					try {
 						thread = new FileSaverThread(contents, file);
 					} catch (IOException e) {
-						JOptionPane.showMessageDialog(this,
-								xlate("File_Save_Error") + "\n" + e.getMessage(),
-								"Tile Molester",
-								JOptionPane.ERROR_MESSAGE);
+						showError("File_Save_Error", e);
 						return;
 					}
 
@@ -2695,10 +2669,7 @@ public class TMUI extends JFrame {
 				view.refreshPaletteDisplay();
 				return true;
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(this,
-						xlate("Save_Bitmap_Error") + "\n" + e.getMessage(),
-						"Tile Molester",
-						JOptionPane.ERROR_MESSAGE);
+				showError("Save_Bitmap_Error", e);
 				return false;
 			}
 		}
@@ -2740,10 +2711,7 @@ public class TMUI extends JFrame {
 				try {
 					bitmapCanvas = TMBitmapImporter.loadTileCanvasFromFile(file);
 				} catch (InterruptedException | IOException e) {
-					JOptionPane.showMessageDialog(this,
-							xlate("Load_Bitmap_Error") + "\n" + e.getMessage(),
-							"Tile Molester",
-							JOptionPane.ERROR_MESSAGE);
+					showError("Load_Bitmap_Error", e);
 					return;
 				}
 				TMSelectionCanvas selCanvas = new TMSelectionCanvas(
@@ -3478,10 +3446,7 @@ public class TMUI extends JFrame {
 					raf.read(data);
 					raf.close();
 				} catch (IOException e) {
-					JOptionPane.showMessageDialog(this,
-							xlate("Palette_Read_Error") + "\n" + e.getMessage(),
-							"Tile Molester",
-							JOptionPane.ERROR_MESSAGE);
+					showError("Palette_Read_Error", e);
 					return;
 				}
 
@@ -3526,10 +3491,7 @@ public class TMUI extends JFrame {
 			JOptionPane.showMessageDialog(this, msg, "Tile Molester", JOptionPane.ERROR_MESSAGE);
 			return;
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(this,
-					xlate("Palette_Read_Error") + "\n" + e.getMessage(),
-					"Tile Molester",
-					JOptionPane.ERROR_MESSAGE);
+			showError("Palette_Read_Error", e);
 			return;
 		}
 
@@ -4666,16 +4628,10 @@ public class TMUI extends JFrame {
 		try {
 			thread = new FileLoaderThread(file);
 		} catch (OutOfMemoryError e) {
-			JOptionPane.showMessageDialog(this,
-					xlate("Out_Of_Memory") + "\n" + file.length() + " bytes needed to load file.", // i18n
-					"Tile Molester",
-					JOptionPane.ERROR_MESSAGE);
+			showError("Out_Of_Memory", file.length() + " bytes needed to load file.");
 			return;
 		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(this,
-					xlate("Load_File_Error") + "\n" + e.getMessage(),
-					"Tile Molester",
-					JOptionPane.ERROR_MESSAGE);
+			showError("Load_File_Error", e);
 			return;
 		}
 		ProgressDialog dialog = new ProgressDialog(this, thread);
@@ -4701,20 +4657,11 @@ public class TMUI extends JFrame {
 			try {
 				new TMFileResources(resourceFile, img, this);
 			} catch (SAXException e) {
-				JOptionPane.showMessageDialog(this,
-						xlate("Parser_Parse_Error") + "\n" + e.getMessage(),
-						"Tile Molester",
-						JOptionPane.ERROR_MESSAGE);
+				showError("Parser_Parse_Error", e);
 			} catch (ParserConfigurationException e) {
-				JOptionPane.showMessageDialog(this,
-						xlate("Parser_Config_Error") + "\n" + e.getMessage(),
-						"Tile Molester",
-						JOptionPane.ERROR_MESSAGE);
+				showError("Parser_Config_Error", e);
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(this,
-						xlate("Parser_IO_Error") + "\n" + e.getMessage(),
-						"Tile Molester",
-						JOptionPane.ERROR_MESSAGE);
+				showError("Parser_IO_Error", e);
 			}
 		} else {
 			// create default resources
