@@ -1,5 +1,6 @@
 package tm.ui;
 
+import java.awt.Component;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
@@ -12,7 +13,6 @@ import java.util.StringTokenizer;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.w3c.dom.Document;
@@ -26,7 +26,10 @@ import org.xml.sax.SAXException;
 import tm.utils.XMLParser;
 import tm.utils.Xlator;
 
-public class TMSettings extends JFrame {
+public class TMSettings {
+
+	private static final String DIALOG_TITLE = "Tile Molester";
+
 	private Xlator xl;
 	private File settingsFile = new File("settings.xml");
 	public Locale locale = Locale.getDefault();
@@ -38,8 +41,6 @@ public class TMSettings extends JFrame {
 	public String lastPath = "";
 
 	public TMSettings() {
-		super();
-
 		if (settingsFile.exists()) {
 			// load settings from file
 			loadSettings();
@@ -105,9 +106,9 @@ public class TMSettings extends JFrame {
 		try {
 			doc = XMLParser.parse(settingsFile);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			JOptionPane.showMessageDialog(this,
+			JOptionPane.showMessageDialog(null,
 					xlate("Load_Settings_Error") + "\n" + e.getMessage(),
-					"Tile Molester",
+					DIALOG_TITLE,
 					JOptionPane.ERROR_MESSAGE);
 		}
 		if (doc == null)
@@ -174,8 +175,8 @@ public class TMSettings extends JFrame {
 			}
 
 			// ask user to select language
-			String selectedName = (String) JOptionPane.showInputDialog(this,
-					"Choose a locale:", "Tile Molester",
+			String selectedName = (String) JOptionPane.showInputDialog(null,
+					"Choose a locale:", DIALOG_TITLE,
 					JOptionPane.INFORMATION_MESSAGE, null,
 					displayNames, displayNames[defaultIndex]);
 			if (selectedName != null) {
@@ -189,9 +190,9 @@ public class TMSettings extends JFrame {
 				}
 			}
 		} else {
-			JOptionPane.showMessageDialog(this,
+			JOptionPane.showMessageDialog(null,
 					xlate("No language files found.\nPlease check your installation."),
-					"Tile Molester",
+					DIALOG_TITLE,
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -200,8 +201,9 @@ public class TMSettings extends JFrame {
 
 	/**
 	 * Saves program settings to file.
+	 * @param parent dialog owner; use the main frame when available, or {@code null} at startup
 	 **/
-	public void saveSettings() {
+	public void saveSettings(Component parent) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		sb.append("<!DOCTYPE settings SYSTEM \"settings.dtd\">\n");
@@ -230,9 +232,9 @@ public class TMSettings extends JFrame {
 			fw.write(sb.toString());
 			fw.close();
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(this,
+			JOptionPane.showMessageDialog(parent,
 					xlate("Save_Settings_Error") + "\n" + e.getMessage(),
-					"Tile Molester",
+					DIALOG_TITLE,
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}

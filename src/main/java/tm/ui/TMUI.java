@@ -106,6 +106,8 @@ public class TMUI extends JFrame {
 		
 		locale = TileMolester.settings.getLocale();
 		lastPath = TileMolester.settings.getLastPath();
+		viewStatusBar = TileMolester.settings.viewStatusBar;
+		viewToolBar = TileMolester.settings.viewToolBar;
 		// create a translator
 		try {
 			xl = new Xlator("languages/language", locale);
@@ -242,6 +244,9 @@ public class TMUI extends JFrame {
 		refresh.setMdiMode(false);
 
 		widgets.toolBarPane.setVisible(viewToolBar);
+		widgets.statusBar.setVisible(viewStatusBar);
+		widgets.statusBarMenuItem.setSelected(viewStatusBar);
+		widgets.toolBarMenuItem.setSelected(viewToolBar);
 
 		com.formdev.flatlaf.FlatLaf.updateUI();
 		// Show and maximize.

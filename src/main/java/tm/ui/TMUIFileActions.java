@@ -307,7 +307,7 @@ public class TMUIFileActions extends TMUICommandGroup {
 		doCloseAllCommand();
 		// if all frames were closed, the operation was successful and we can exit.
 		if (ui.widgets.desktop.getAllFrames().length == 0) {
-			TileMolester.settings.saveSettings();
+			TileMolester.settings.saveSettings(ui);
 			System.exit(0);
 		}
 	}

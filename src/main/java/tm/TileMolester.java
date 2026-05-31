@@ -26,7 +26,6 @@ import java.awt.Image;
 import java.awt.Taskbar;
 import java.awt.Toolkit;
 import com.formdev.flatlaf.util.SystemInfo;
-import java.util.logging.Logger;
 
 
 /**
@@ -37,8 +36,6 @@ import java.util.logging.Logger;
  **/
 public class TileMolester {
 
-	Logger mLog = Logger.getGlobal();
-	ClassLoader cl = getClass().getClassLoader();
 	public static TMSettings settings;
 
 	/**
@@ -46,13 +43,13 @@ public class TileMolester {
 	 * Initializes platform-specific settings and starts the main UI.
 	 **/
 	public TileMolester() {
-		if(SystemInfo.isMacOS) {
+		if (SystemInfo.isMacOS) {
 			System.setProperty( "apple.awt.application.appearance", "system" );
 			System.setProperty( "apple.laf.useScreenMenuBar", "true" );
 			System.setProperty( "apple.awt.application.name", "Tile Molester" );
 
 			final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-			final Image macIcon = defaultToolkit.getImage(cl.getResource("icons/TMIcon_dock.png"));
+			final Image macIcon = defaultToolkit.getImage(getClass().getClassLoader().getResource("icons/TMIcon_dock.png"));
 			final Taskbar taskbar = Taskbar.getTaskbar();
 	
 			try {
