@@ -68,11 +68,11 @@ public class TMUI extends JFrame {
 	TMSelectionCanvas copiedSelection;
 
 	/** Loaded from tmspec.xml; used for menus, choosers, and file open. */
-	java.util.List<ColorCodec> colorcodecs;
-	java.util.List<TileCodec> tilecodecs;
-	java.util.List<TMTileCodecFileFilter> filefilters;
-	java.util.List<TMPaletteFileFilter> palettefilters;
-	java.util.List<TMFileListener> filelisteners;
+	private final List<ColorCodec> colorcodecs = new ArrayList<>();
+	private final List<TileCodec> tilecodecs = new ArrayList<>();
+	private final List<TMTileCodecFileFilter> filefilters = new ArrayList<>();
+	private final List<TMPaletteFileFilter> palettefilters = new ArrayList<>();
+	private final List<TMFileListener> filelisteners = new ArrayList<>();
 
 	final TMUIWidgets widgets;
 	TMUITreeMenuBuilder treeMenuBuilder;
@@ -136,17 +136,17 @@ public class TMUI extends JFrame {
 			System.exit(0);
 		}
 
-		colorcodecs = TMSpecReader.getColorCodecs();
-		tilecodecs = TMSpecReader.getTileCodecs();
-		filefilters = TMSpecReader.getFileFilters();
-		palettefilters = TMSpecReader.getPaletteFilters();
-		filelisteners = TMSpecReader.getFileListeners();
+		colorcodecs.addAll(TMSpecReader.getColorCodecs());
+		tilecodecs.addAll(TMSpecReader.getTileCodecs());
+		filefilters.addAll(TMSpecReader.getFileFilters());
+		palettefilters.addAll(TMSpecReader.getPaletteFilters());
+		filelisteners.addAll(TMSpecReader.getFileListeners());
 
 		tilecodecs.add(new _3BPPLinearTileCodec());
 		tilecodecs.add(new _6BPPLinearTileCodec());
 
 		widgets = TMUIWidgets.create(new TMUIWidgetsBootstrap(
-				this, xl, colorcodecs, filefilters, palettefilters));
+				this, xl, getColorCodecs(), getFileFilters(), getPaletteFilters()));
 
 		// File menu
 		widgets.fileMenu.setText(xlate("File"));
@@ -420,6 +420,9 @@ public class TMUI extends JFrame {
 	 * @param codec tile codec used for encode/decode
 	 **/
 	public void addTileCodec(TileCodec codec) {
+		if (!tilecodecs.contains(codec)) {
+			tilecodecs.add(codec);
+		}
 		TMTileCodecMenuItem codecMenuItem = new TMTileCodecMenuItem(codec, viewActions::doTileCodecCommand);
 		widgets.tileCodecMenu.add(codecMenuItem);
 		widgets.tileCodecButtonGroup.add(codecMenuItem);
@@ -729,16 +732,29 @@ public class TMUI extends JFrame {
 		widgets.statusBar.setCoords("");
 	}
 
-	/**
-	 * Gets the color codecs.
-	 * @return color codecs
-	 **/
-	public ColorCodec[] getColorCodecs() {
-		ColorCodec[] ccs = new ColorCodec[colorcodecs.size()];
-		for (int i = 0; i < ccs.length; i++) {
-			ccs[i] = colorcodecs.get(i);
-		}
-		return ccs;
+	/** @return unmodifiable color codecs from tmspec.xml */
+	public List<ColorCodec> getColorCodecs() {
+		return Collections.unmodifiableList(colorcodecs);
+	}
+
+	/** @return unmodifiable tile codecs (spec + built-in extras) */
+	public List<TileCodec> getTileCodecs() {
+		return Collections.unmodifiableList(tilecodecs);
+	}
+
+	/** @return unmodifiable tile file filters from tmspec.xml */
+	public List<TMTileCodecFileFilter> getFileFilters() {
+		return Collections.unmodifiableList(filefilters);
+	}
+
+	/** @return unmodifiable palette file filters from tmspec.xml */
+	public List<TMPaletteFileFilter> getPaletteFilters() {
+		return Collections.unmodifiableList(palettefilters);
+	}
+
+	/** @return unmodifiable file listeners from tmspec.xml */
+	public List<TMFileListener> getFileListeners() {
+		return Collections.unmodifiableList(filelisteners);
 	}
 
 	/**

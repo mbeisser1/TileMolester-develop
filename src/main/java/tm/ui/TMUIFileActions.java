@@ -69,7 +69,7 @@ public class TMUIFileActions extends TMUICommandGroup {
 			FileImage img = new FileImage(ui.widgets.newFileDialog.getFileSize());
 			new TMFileResources(img, ui);
 			// create view for it
-			TileCodec tc = ui.tilecodecs.get(0); // default
+			TileCodec tc = ui.getTileCodecs().get(0); // default
 			TMPalette pal = new TMPalette("PAL000", TMPalette.defaultPalette, ui.getColorCodecByID("CF01"),
 					ColorCodec.LITTLE_ENDIAN, true);
 			ui.addViewToDesktop(ui.createView(img, tc, pal, TileCodec.MODE_1D));
@@ -340,8 +340,7 @@ public class TMUIFileActions extends TMUICommandGroup {
 
 		// see if a filelistener should receive notification
 		String ext = TMFileFilter.getExtension(file);
-		for (int i = 0; i < ui.filelisteners.size(); i++) {
-			TMFileListener fl = ui.filelisteners.get(i);
+		for (TMFileListener fl : ui.getFileListeners()) {
 			if (fl.doFormatDetect(contents, ext)) {
 				ui.widgets.fileListenerHashtable.put(contents, fl);
 				fl.fileLoaded(contents, ext);
