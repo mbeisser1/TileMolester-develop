@@ -18,28 +18,41 @@
 
 package tm.reversibleaction;
 
+import tm.canvases.TMEditorCanvas;
 import tm.canvases.TMSelectionCanvas;
+import tm.treenodes.BookmarkItemNode;
 
 /**
  * Allows undo/redo of moving a selection.
  **/
 public class ReversibleMoveSelectionAction extends ReversibleAction {
 
+    private TMEditorCanvas owner;
     private TMSelectionCanvas selection;
+    private BookmarkItemNode bookmark;
     private int oldX, oldY;
     private int newX, newY;
 
     /**
      * Records the selection and its old and new grid positions.
+     * @param owner editor canvas that owns the selection
      * @param selection selection canvas that was moved
      * @param oldX previous tile column
      * @param oldY previous tile row
      * @param newX new tile column
      * @param newY new tile row
      **/
-    public ReversibleMoveSelectionAction(TMSelectionCanvas selection, int oldX, int oldY, int newX, int newY) {
+    public ReversibleMoveSelectionAction(
+            TMEditorCanvas owner,
+            TMSelectionCanvas selection,
+            int oldX,
+            int oldY,
+            int newX,
+            int newY) {
         super("Move Selection");   // i18n
+        this.owner = owner;
         this.selection = selection;
+        this.bookmark = owner.getView().createBookmark("");
         this.oldX = oldX;
         this.oldY = oldY;
         this.newX = newX;
@@ -50,17 +63,24 @@ public class ReversibleMoveSelectionAction extends ReversibleAction {
      * Moves the selection back to its previous grid position.
      **/
     public void undo() {
-        int dim = selection.getScaledTileDim();
-        selection.setLocation(oldX * dim, oldY * dim);
+        owner.getView().gotoBookmark(bookmark);
+        moveSelectionTo(oldX, oldY);
     }
 
     /**
      * Moves the selection to its new grid position.
      **/
     public void redo() {
-        int dim = selection.getScaledTileDim();
-        selection.setLocation(newX * dim, newY * dim);
+        owner.getView().gotoBookmark(bookmark);
+        moveSelectionTo(newX, newY);
+    }
 
+    private void moveSelectionTo(int tileX, int tileY) {
+        int dim = selection.getScaledTileDim();
+        selection.setLocation(tileX * dim, tileY * dim);
+        owner.syncParkedMetadataAfterMove(tileX, tileY);
+        selection.repaint();
+        owner.repaint();
     }
 
     /**

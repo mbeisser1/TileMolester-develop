@@ -788,6 +788,39 @@ public class TMUI extends JFrame {
 		}
 	}
 
+	/**
+	 * View used for undo/redo: the selected frame, or another open view that has history.
+	 **/
+	TMView getViewForUndoRedo() {
+		TMView selected = getSelectedView();
+		if (selected != null) {
+			return selected;
+		}
+		for (JInternalFrame frame : widgets.desktop.getAllFrames()) {
+			if (frame instanceof TMView view && view.canUndo()) {
+				return view;
+			}
+		}
+		for (JInternalFrame frame : widgets.desktop.getAllFrames()) {
+			if (frame instanceof TMView view && view.canRedo()) {
+				return view;
+			}
+		}
+		for (JInternalFrame frame : widgets.desktop.getAllFrames()) {
+			if (frame instanceof TMView view) {
+				return view;
+			}
+		}
+		return null;
+	}
+
+	void withViewForUndoRedo(Consumer<TMView> action) {
+		TMView view = getViewForUndoRedo();
+		if (view != null) {
+			action.accept(view);
+		}
+	}
+
 	void adjustOffset(int delta) {
 		withSelectedView(view -> view.setRelativeOffset(delta));
 	}

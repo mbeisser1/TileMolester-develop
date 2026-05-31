@@ -56,7 +56,7 @@ public class TMUIEditActions extends TMUICommandGroup {
 
 
 	public void doUndoCommand() {
-		ui.withSelectedView(view -> {
+		ui.withViewForUndoRedo(view -> {
 			view.undo();
 			ui.refreshUndoRedo();
 			ui.fileImageModified(view.getFileImage());
@@ -64,7 +64,7 @@ public class TMUIEditActions extends TMUICommandGroup {
 	}
 
 	public void doRedoCommand() {
-		ui.withSelectedView(view -> {
+		ui.withViewForUndoRedo(view -> {
 			view.redo();
 			ui.refreshUndoRedo();
 			ui.fileImageModified(view.getFileImage());

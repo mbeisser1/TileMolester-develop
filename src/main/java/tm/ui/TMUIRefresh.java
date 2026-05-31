@@ -154,24 +154,31 @@ public class TMUIRefresh {
 	}
 
 	public void refreshUndoRedo() {
-		TMView view = ui.getSelectedView();
-		if (view != null) {
-			ui.setUndoButtonsEnabled(view.canUndo());
-			if (view.canUndo()) {
-				ui.widgets.undoMenuItem.setText(ui.xlate("Undo") + " " + ui.xlate(view.getFirstUndoableAction().getPresentationName()));
-			} else {
-				ui.widgets.undoMenuItem.setText(ui.xlate("Cant_Undo"));
-			}
+		TMView view = ui.getViewForUndoRedo();
+		if (view == null) {
+			ui.setUndoButtonsEnabled(false);
+			ui.setRedoButtonsEnabled(false);
+			ui.widgets.undoMenuItem.setText(ui.xlate("Cant_Undo"));
+			ui.widgets.redoMenuItem.setText(ui.xlate("Cant_Redo"));
 			ui.widgets.undoButton.setToolTipText(ui.widgets.undoMenuItem.getText());
-
-			ui.setRedoButtonsEnabled(view.canRedo());
-			if (view.canRedo()) {
-				ui.widgets.redoMenuItem.setText(ui.xlate("Redo") + " " + ui.xlate(view.getFirstRedoableAction().getPresentationName()));
-			} else {
-				ui.widgets.redoMenuItem.setText(ui.xlate("Cant_Redo"));
-			}
 			ui.widgets.redoButton.setToolTipText(ui.widgets.redoMenuItem.getText());
+			return;
 		}
+		ui.setUndoButtonsEnabled(view.canUndo());
+		if (view.canUndo()) {
+			ui.widgets.undoMenuItem.setText(ui.xlate("Undo") + " " + ui.xlate(view.getFirstUndoableAction().getPresentationName()));
+		} else {
+			ui.widgets.undoMenuItem.setText(ui.xlate("Cant_Undo"));
+		}
+		ui.widgets.undoButton.setToolTipText(ui.widgets.undoMenuItem.getText());
+
+		ui.setRedoButtonsEnabled(view.canRedo());
+		if (view.canRedo()) {
+			ui.widgets.redoMenuItem.setText(ui.xlate("Redo") + " " + ui.xlate(view.getFirstRedoableAction().getPresentationName()));
+		} else {
+			ui.widgets.redoMenuItem.setText(ui.xlate("Cant_Redo"));
+		}
+		ui.widgets.redoButton.setToolTipText(ui.widgets.redoMenuItem.getText());
 	}
 
 	public void refreshStatusBar() {

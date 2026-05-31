@@ -48,7 +48,7 @@ public class BrowserControl
      */
     public static void displayFile(File file) {
         if (file == null || !file.isFile()) {
-            TMLog.severe("Help file not found: " + file);
+            TMLog.severe("Help file not found: " + file, null);
             return;
         }
         try {

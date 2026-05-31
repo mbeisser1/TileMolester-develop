@@ -24,6 +24,7 @@ import tm.TMPalette;
 import tm.treenodes.*;
 import tm.reversibleaction.*;
 import tm.canvases.TMEditorCanvas;
+import tm.canvases.TMSelectionCanvas;
 import tm.canvases.TMTileCanvas;
 import tm.tilecodecs.TileCodec;
 import tm.ui.widget.TMOffsetNavigator;
@@ -542,10 +543,14 @@ public class TMView extends JInternalFrame {
 		} else if (absOfs > maxOffset) {
 			absOfs = maxOffset; // upper boundary
 		}
+		if (absOfs != editorCanvas.getOffset()) {
+			editorCanvas.parkSelection();
+		}
 		syncOffsetControlValue(absOfs);
 		editorCanvas.setOffset(absOfs);
 		editorCanvas.unpackPixels();
 		editorCanvas.repaint();
+		editorCanvas.unparkSelection();
 
 		// Update statusbar
 		ui.refreshStatusBar(); // TODO: Move to TMUI
@@ -806,11 +811,47 @@ public class TMView extends JInternalFrame {
 	 * Undoes the last action.
 	 **/
 	public void undo() {
-		if (!undoableActions.isEmpty()) {
-			ReversibleAction ra = undoableActions.remove(undoableActions.size() - 1);
-			ra.undo();
-			redoableActions.add(ra);
+		if (undoableActions.isEmpty()) {
+			return;
 		}
+		ReversibleAction ra = undoableActions.get(undoableActions.size() - 1);
+		if (ra instanceof ReversibleNewSelectionAction newSel) {
+			if (undoNewSelection(newSel)) {
+				ui.fileImageModified(getFileImage());
+				ui.refreshUndoRedo();
+				return;
+			}
+		}
+		undoableActions.remove(undoableActions.size() - 1);
+		ra.undo();
+		redoableActions.add(ra);
+		ui.fileImageModified(getFileImage());
+		ui.refreshUndoRedo();
+	}
+
+	/**
+	 * Two-phase undo for {@link ReversibleNewSelectionAction}.
+	 * @return true if handled (caller should refresh UI)
+	 **/
+	private boolean undoNewSelection(ReversibleNewSelectionAction newSel) {
+		if (editorCanvas.hasSelection()) {
+			TMTileCanvas visible = editorCanvas.getSelectionCanvas();
+			if (visible instanceof TMSelectionCanvas sel && newSel.ownsSelection(sel)) {
+				undoableActions.remove(undoableActions.size() - 1);
+				newSel.undoClear();
+				redoableActions.add(newSel);
+				return true;
+			}
+			return false;
+		}
+		if (newSel.isAwaitingClearUndo()) {
+			undoableActions.remove(undoableActions.size() - 1);
+			newSel.undoClear();
+			redoableActions.add(newSel);
+			return true;
+		}
+		newSel.undoReveal();
+		return true;
 	}
 
 	/**

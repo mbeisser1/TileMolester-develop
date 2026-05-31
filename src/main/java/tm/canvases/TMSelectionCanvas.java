@@ -393,15 +393,20 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
             snapToGrid();
 
             int dim = getScaledTileDim();
+            TMEditorCanvas owner = ui.getSelectedView().getEditorCanvas();
+            int tileX = getX() / dim;
+            int tileY = getY() / dim;
             ui.getSelectedView().addReversibleAction(
                     new ReversibleMoveSelectionAction(
+                            owner,
                             this,
                             oldX / dim,
                             oldY / dim,
-                            getX() / dim,
-                            getY() / dim
+                            tileX,
+                            tileY
                     )
             );
+            owner.syncParkedMetadataAfterMove(tileX, tileY);
         }
         // support popup on all platforms (some send on release)
         maybeShowPopup(e);
@@ -412,7 +417,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
      **/
     public boolean hasMoved()
     {
-        return (oldX != getX() && oldY != getY());
+        return (oldX != getX() || oldY != getY());
     }
 
     /**

@@ -20,14 +20,24 @@ package tm.reversibleaction;
 
 import tm.canvases.TMEditorCanvas;
 import tm.canvases.TMSelectionCanvas;
+import tm.canvases.TMTileCanvas;
+import tm.treenodes.BookmarkItemNode;
 
 /**
  * Allows undo/redo of making a new selection.
+ * Undo is two-phase when no float is visible: reveal, then clear.
  **/
 public class ReversibleNewSelectionAction extends ReversibleAction {
-    private TMSelectionCanvas newSelection;
-    private TMEditorCanvas owner;
-    private int newX, newY;
+    private static final String NAME_NEW = "New_Selection";
+    private static final String NAME_SHOW = "Show_Selection";
+    private static final String NAME_CLEAR = "Clear_Selection";
+
+    private final TMSelectionCanvas newSelection;
+    private final TMEditorCanvas owner;
+    private final BookmarkItemNode bookmark;
+    private final int newX, newY;
+
+    private boolean awaitingClearUndo;
 
     /**
      * Records the new selection and its grid position for undo/redo.
@@ -35,27 +45,84 @@ public class ReversibleNewSelectionAction extends ReversibleAction {
      * @param owner editor canvas that received the selection
      **/
     public ReversibleNewSelectionAction(TMSelectionCanvas newSelection, TMEditorCanvas owner) {
-        super("New_Selection");   // i18n
+        super(NAME_NEW);   // i18n
         this.newSelection = newSelection;
         this.owner = owner;
+        this.bookmark = owner.getView().createBookmark("");
         newX = newSelection.getX() / newSelection.getScaledTileDim();
         newY = newSelection.getY() / newSelection.getScaledTileDim();
     }
 
     /**
-     * Encodes the new selection into tile data and repaints.
+     * Whether the first undo phase (reveal) has run and a second undo should clear.
+     * @return true if the selection was shown by undo and is awaiting clear
      **/
-    public void undo() {
-        owner.encodeSelection(false);    // newSelection
+    public boolean isAwaitingClearUndo() {
+        return awaitingClearUndo;
+    }
+
+    /**
+     * @param sel visible selection canvas
+     * @return whether this action owns the given floating selection
+     **/
+    public boolean ownsSelection(TMSelectionCanvas sel) {
+        return sel == newSelection;
+    }
+
+    /**
+     * Navigates to the selection and shows the floating marquee.
+     **/
+    public void undoReveal() {
+        owner.getView().gotoBookmark(bookmark);
+        owner.reattachFloatingSelection(newSelection, newX, newY);
+        awaitingClearUndo = true;
         owner.repaint();
     }
 
     /**
-     * Re-attaches the selection canvas to the editor.
+     * Restores tiles under the selection and removes the float.
+     **/
+    public void undoClear() {
+        owner.getView().gotoBookmark(bookmark);
+        owner.cancelFloatingSelection(newSelection, newX, newY);
+        awaitingClearUndo = false;
+        owner.repaint();
+    }
+
+    /**
+     * Re-creates the floating selection.
      **/
     public void redo() {
-        owner.makeSelection(newSelection);
+        owner.getView().gotoBookmark(bookmark);
+        owner.reattachFloatingSelection(newSelection, newX, newY);
+        awaitingClearUndo = false;
         owner.repaint();
+    }
+
+    /**
+     * Not used directly; {@link tm.ui.view.TMView#undo()} drives two-phase undo.
+     **/
+    @Override
+    public void undo() {
+        if (awaitingClearUndo) {
+            undoClear();
+        } else {
+            undoReveal();
+        }
+    }
+
+    @Override
+    public String getPresentationName() {
+        if (awaitingClearUndo) {
+            return NAME_CLEAR;
+        }
+        if (owner.hasSelection()) {
+            TMTileCanvas visible = owner.getSelectionCanvas();
+            if (visible instanceof TMSelectionCanvas sel && ownsSelection(sel)) {
+                return NAME_CLEAR;
+            }
+        }
+        return NAME_SHOW;
     }
 
     /**

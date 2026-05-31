@@ -48,6 +48,11 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
 
     private TMSelectionCanvas selectionCanvas;
 
+    private TMSelectionCanvas parkedSelection;
+    private int parkedOffset;
+    private int parkedTileX;
+    private int parkedTileY;
+
     private boolean isSelecting=false;
     private boolean isDrawingLine=false;
     private int selX1, selY1, selX2, selY2;
@@ -427,9 +432,7 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
 
                     makeSelection(selX1, selY1, selX2-selX1+1, selY2-selY1+1);
 
-                    view.addReversibleAction(
-                        new ReversibleNewSelectionAction(selectionCanvas,this)
-                    );
+                    view.addReversibleAction(createNewSelectionUndoAction());
 
                 }
                 else {
@@ -803,9 +806,12 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
             )
         );
 
+        TMSelectionCanvas cut = new TMSelectionCanvas(ui, selectionCanvas, 0, 0, selectionCanvas.getCols(), selectionCanvas.getRows());
         remove(selectionCanvas);
+        selectionCanvas = null;
+        discardParkedSelection();
         repaint();
-        return new TMSelectionCanvas(ui, selectionCanvas, 0, 0, selectionCanvas.getCols(), selectionCanvas.getRows());
+        return cut;
     }
 
     /**
@@ -849,6 +855,7 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
      **/
     public void makeSelection(TMSelectionCanvas selection)
     {
+        cancelParkedSelection();
         selectionCanvas = selection;
         int dim = selectionCanvas.getScaledTileDim();
         int x1 = selectionCanvas.getX() / dim;
@@ -868,10 +875,55 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
      * @param h selection height in tiles
      **/
     public void makeSelection(int x1, int y1, int w, int h) {
+        cancelParkedSelection();
         selectionCanvas = new TMSelectionCanvas(ui, this, x1, y1, w, h);
         showSelection(selectionCanvas, x1, y1);
 
         setBlankPixels(ui.getBGColor(), x1, y1, x1 + w,y1+h);
+    }
+
+    /**
+     * Builds an undo action for the selection created by the last {@link #makeSelection(int, int, int, int)}.
+     * @return reversible action for the new floating selection
+     **/
+    public ReversibleNewSelectionAction createNewSelectionUndoAction() {
+        return new ReversibleNewSelectionAction(selectionCanvas, this);
+    }
+
+    /**
+     * Puts a floating selection back on the editor and cuts out the tiles underneath.
+     * @param sel selection canvas to show
+     * @param tileX horizontal tile coordinate
+     * @param tileY vertical tile coordinate
+     **/
+    public void reattachFloatingSelection(TMSelectionCanvas sel, int tileX, int tileY) {
+        selectionCanvas = sel;
+        int w = sel.getCols();
+        int h = sel.getRows();
+        showSelection(sel, tileX, tileY);
+        setBlankPixels(ui.getBGColor(), tileX, tileY, tileX + w, tileY + h);
+    }
+
+    /**
+     * Fills the selection's original tile region from the float and removes it.
+     * @param sel selection canvas to cancel
+     * @param tileX horizontal tile coordinate
+     * @param tileY vertical tile coordinate
+     **/
+    public void cancelFloatingSelection(TMSelectionCanvas sel, int tileX, int tileY) {
+        int[] size = blitSelectionToEditor(sel, tileX, tileY);
+        int w = size[0];
+        int h = size[1];
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                packTile(tileX + j, tileY + i);
+            }
+        }
+        if (sel == selectionCanvas && sel.getParent() == this) {
+            remove(selectionCanvas);
+            selectionCanvas = null;
+        }
+        redraw();
     }
 
     /**
@@ -887,7 +939,176 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
         int dim = getScaledTileDim();
         selectionCanvas.setLocation(x*dim, y*dim);
         selectionCanvas.setVisible(true);
+        syncParkedMetadata(x, y);
         redraw();
+    }
+
+    /**
+     * Hides the floating selection while scrolling away from its file offset.
+     **/
+    public void parkSelection() {
+        if (!hasSelection()) {
+            return;
+        }
+        discardParkedSelection();
+        int dim = getScaledTileDim();
+        parkedSelection = selectionCanvas;
+        parkedOffset = getOffset();
+        parkedTileX = selectionCanvas.getX() / dim;
+        parkedTileY = selectionCanvas.getY() / dim;
+        remove(selectionCanvas);
+        selectionCanvas = null;
+        repaint();
+    }
+
+    /**
+     * Restores a parked selection when the view returns to its file offset.
+     **/
+    public void unparkSelection() {
+        if (parkedSelection == null || getOffset() != parkedOffset) {
+            return;
+        }
+        TMSelectionCanvas selection = parkedSelection;
+        int tileX = parkedTileX;
+        int tileY = parkedTileY;
+        parkedSelection = null;
+        showSelection(selection, tileX, tileY);
+    }
+
+    /**
+     * Discards a hidden selection without encoding it into the editor.
+     **/
+    public void discardParkedSelection() {
+        parkedSelection = null;
+    }
+
+    /**
+     * Restores a parked selection's pixels into the file and drops the float.
+     **/
+    public void cancelParkedSelection() {
+        if (parkedSelection == null) {
+            return;
+        }
+        TMSelectionCanvas parked = parkedSelection;
+        int restoreOffset = parkedOffset;
+        int tileX = parkedTileX;
+        int tileY = parkedTileY;
+        parkedSelection = null;
+
+        int savedOffset = getOffset();
+        if (savedOffset != restoreOffset) {
+            setOffset(restoreOffset);
+            unpackPixels();
+        }
+        int[] size = blitSelectionToEditor(parked, tileX, tileY);
+        int w = size[0];
+        int h = size[1];
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                packTile(tileX + j, tileY + i);
+            }
+        }
+        if (savedOffset != restoreOffset) {
+            setOffset(savedOffset);
+            unpackPixels();
+        }
+        redraw();
+    }
+
+    private void syncParkedMetadata(int tileX, int tileY) {
+        parkedOffset = getOffset();
+        parkedTileX = tileX;
+        parkedTileY = tileY;
+    }
+
+    /**
+     * Updates parked tile coordinates after the selection is moved.
+     * @param tileX horizontal tile coordinate
+     * @param tileY vertical tile coordinate
+     **/
+    public void syncParkedMetadataAfterMove(int tileX, int tileY) {
+        syncParkedMetadata(tileX, tileY);
+    }
+
+    /**
+     * Copies a selection canvas onto the editor tile grid at the given tile origin.
+     * @param sel selection providing pixel data
+     * @param destx destination tile column
+     * @param desty destination tile row
+     * @return encoded width and height in tiles ({@code [w, h]}, may be zero)
+     **/
+    private int[] blitSelectionToEditor(TMSelectionCanvas sel, int destx, int desty) {
+        int srcx = 0;
+        int srcy = 0;
+
+        if (destx < 0) {
+            srcx = -destx;
+            destx = 0;
+        }
+        if (desty < 0) {
+            srcy = -desty;
+            desty = 0;
+        }
+
+        int w = sel.getCols() - srcx;
+        int h = sel.getRows() - srcy;
+        if (destx + w > cols) {
+            w = cols - destx;
+        }
+        if (desty + h > rows) {
+            h = rows - desty;
+        }
+        if (w <= 0 || h <= 0) {
+            return new int[] {0, 0};
+        }
+
+        int srcColor;
+        int srcBPP = sel.getCodec().getBitsPerPixel();
+        int destBPP = codec.getBitsPerPixel();
+        TMPalette srcPalette = sel.getPalette();
+        int colorCount = codec.getColorCount();
+        int colorIndex = palIndex * colorCount;
+        int srcPalIndex = sel.getPalIndex();
+        int srcColorCount = sel.getCodec().getColorCount();
+        int srcColorIndex = srcPalIndex * srcColorCount;
+
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                if ((srcBPP <= 8) && (destBPP <= 8)) {
+                    for (int p = 0; p < 8; p++) {
+                        for (int q = 0; q < 8; q++) {
+                            srcColor = srcPalette.indexOf(srcColorIndex, sel.getPixel((srcx + j) * 8 + q, (srcy + i) * 8 + p));
+                            setPixel((destx + j) * 8 + q, (desty + i) * 8 + p, palette.getEntryRGB(colorIndex + srcColor));
+                        }
+                    }
+                }
+                else if (srcBPP <= 8) {
+                    for (int p = 0; p < 8; p++) {
+                        for (int q = 0; q < 8; q++) {
+                            srcColor = srcPalette.indexOf(srcColorIndex, sel.getPixel((srcx + j) * 8 + q, (srcy + i) * 8 + p));
+                            setPixel((destx + j) * 8 + q, (desty + i) * 8 + p, srcPalette.getEntryRGB(srcColor));
+                        }
+                    }
+                }
+                else if (destBPP <= 8) {
+                    for (int p = 0; p < 8; p++) {
+                        for (int q = 0; q < 8; q++) {
+                            srcColor = sel.getPixel((srcx + j) * 8 + q, (srcy + i) * 8 + p);
+                            setPixel((destx + j) * 8 + q, (desty + i) * 8 + p, palette.closestMatchingEntryRGB(colorIndex, colorCount, srcColor));
+                        }
+                    }
+                }
+                else {
+                    for (int p = 0; p < 8; p++) {
+                        for (int q = 0; q < 8; q++) {
+                            srcColor = sel.getPixel((srcx + j) * 8 + q, (srcy + i) * 8 + p);
+                            setPixel((destx + j) * 8 + q, (desty + i) * 8 + p, srcColor);
+                        }
+                    }
+                }
+            }
+        }
+        return new int[] {w, h};
     }
 
     /**
@@ -905,105 +1126,41 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
      * @return reversible action describing the encoded selection, if any
      **/
     public ReversibleTileModifyAction encodeSelection(boolean userCanUndo) {
-        int srcx = 0;
-        int srcy = 0;
+        if (!hasSelection()) {
+            return null;
+        }
         int destx = selectionCanvas.getX() / getScaledTileDim();
         int desty = selectionCanvas.getY() / getScaledTileDim();
+        return encodeSelection(selectionCanvas, destx, desty, userCanUndo);
+    }
 
-        // bounds check
-        if (destx < 0) {
-            srcx = -destx;
-            destx = 0;
-        }
-        if (desty < 0) {
-            srcy = -desty;
-            desty = 0;
-        }
+    /**
+     * Encodes the given selection canvas onto the editor at a tile grid position.
+     * @param sel selection providing pixel data
+     * @param destx destination tile column
+     * @param desty destination tile row
+     * @param userCanUndo whether tile changes are recorded for undo
+     * @return reversible action describing encoded tiles, if any
+     **/
+    public ReversibleTileModifyAction encodeSelection(
+            TMSelectionCanvas sel, int destx, int desty, boolean userCanUndo) {
+        cancelParkedSelection();
 
-        // calculate width and height of tile grid to encode
-        int w = selectionCanvas.getCols() - srcx;
-        int h = selectionCanvas.getRows() - srcy;
-        if (destx + w > cols) {
-            w = cols - destx;
-        }
-        if (desty + h > rows) {
-            h = rows - desty;
-        }
-
-        // Undo-stuff
-        for (int i=0; i<h; i++) {
-            for (int j=0; j<w; j++) {
-                tileModified(destx+j, desty+i);
-            }
-        }
-
-        //
-        int srcColor;
-        int srcBPP = selectionCanvas.getCodec().getBitsPerPixel();
-        int destBPP = codec.getBitsPerPixel();
-
-        // the following variables are only valid when src and/or dest are palettized
-        TMPalette srcPalette = selectionCanvas.getPalette();
-        int colorCount = codec.getColorCount();
-        int colorIndex = palIndex * colorCount;
-        int srcPalIndex = selectionCanvas.getPalIndex();
-        int srcColorCount = selectionCanvas.getCodec().getColorCount();
-        int srcColorIndex = srcPalIndex * srcColorCount;
-
-        // copy tiles from selection canvas
-        for (int i=0; i<h; i++) {
-            for (int j=0; j<w; j++) {
-                // copy pixels for one tile. 4 cases:
-                // 1. palettized to palettized. map indices from source to dest. (or closest match?)
-                // 2. palettized to non-palettized. Map indices to RGB values.
-                // 3. non-palettized to palettized. Find closest entry match in palette.
-                // 4. non-palettized to non-palettized. Copy RGB values unchanged.
-                if ((srcBPP <= 8) && (destBPP <= 8)) {
-                    // 1. palettized to palettized
-                    for (int p=0; p<8; p++) {
-                        for (int q=0; q<8; q++) {
-                            srcColor = srcPalette.indexOf(srcColorIndex, selectionCanvas.getPixel((srcx+j)*8+q, (srcy+i)*8+p));
-                            setPixel((destx+j)*8+q, (desty+i)*8+p, palette.getEntryRGB(colorIndex + srcColor));
-                            // To find best match: use these lines instead
-                            // srcColor = selectionCanvas.getPixel((srcx+j)*8+q, (srcy+i)*8+p));
-                            // setPixel((destx+j)*8+q, (desty+i)*8+p, palette.closestMatchingEntryRGB(colorIndex, colorCount, srcColor));
-                        }
-                    }
-                }
-                else if (srcBPP <= 8) {
-                    // 2. palettized to non-palettized
-                    for (int p=0; p<8; p++) {
-                        for (int q=0; q<8; q++) {
-                            srcColor = srcPalette.indexOf(srcColorIndex, selectionCanvas.getPixel((srcx+j)*8+q, (srcy+i)*8+p));
-                            setPixel((destx+j)*8+q, (desty+i)*8+p, srcPalette.getEntryRGB(srcColor));
-                        }
-                    }
-                }
-                else if (destBPP <= 8) {
-                    // 3. non-palettized to palettized
-                    for (int p=0; p<8; p++) {
-                        for (int q=0; q<8; q++) {
-                            srcColor = selectionCanvas.getPixel((srcx+j)*8+q, (srcy+i)*8+p);
-                            setPixel((destx+j)*8+q, (desty+i)*8+p, palette.closestMatchingEntryRGB(colorIndex, colorCount, srcColor));
-                        }
-                    }
-                }
-                else {
-                    // 4. non-palettized to non-palettized
-                    for (int p=0; p<8; p++) {
-                        for (int q=0; q<8; q++) {
-                            srcColor = selectionCanvas.getPixel((srcx+j)*8+q, (srcy+i)*8+p);
-                            setPixel((destx+j)*8+q, (desty+i)*8+p, srcColor);
-                        }
-                    }
-                }
+        int[] size = blitSelectionToEditor(sel, destx, desty);
+        int w = size[0];
+        int h = size[1];
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                tileModified(destx + j, desty + i);
             }
         }
 
         ReversibleTileModifyAction modifiedTiles = commitDrawingOperation("Encode Selection", userCanUndo);
 
-        // remove the selection
-        remove(selectionCanvas);
+        if (sel == selectionCanvas && sel.getParent() == this) {
+            remove(selectionCanvas);
+            selectionCanvas = null;
+        }
 
         return modifiedTiles;
     }
@@ -1053,6 +1210,8 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
         );
 
         remove(selectionCanvas);
+        selectionCanvas = null;
+        discardParkedSelection();
         repaint();
     }
 
@@ -1222,14 +1381,32 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
+     * Returns whether the floating selection already covers the entire tile grid.
+     **/
+    private boolean selectionCoversFullCanvas() {
+        if (!hasSelection()) {
+            return false;
+        }
+        int dim = getScaledTileDim();
+        return selectionCanvas.getX() == 0
+                && selectionCanvas.getY() == 0
+                && selectionCanvas.getCols() == cols
+                && selectionCanvas.getRows() == rows;
+    }
+
+    /**
      * Selects all tiles.
      **/
     public void selectAll() {
-        maybeApplySelection();
+        if (selectionCoversFullCanvas()) {
+            return;
+        }
+        if (hasSelection()) {
+            encodeSelection(false);
+            selectionCanvas = null;
+        }
         makeSelection(0, 0, cols, rows);
-        view.addReversibleAction(
-                new ReversibleNewSelectionAction(selectionCanvas,this)
-        );
+        view.addReversibleAction(createNewSelectionUndoAction());
     }
 
     /**
@@ -1325,11 +1502,11 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
     }
 
     /**
-     * Returns whether there is a selection present. TODO FIX
+     * Returns whether there is a selection present.
      * @return whether a floating selection canvas is present
      **/
     public boolean hasSelection() {
-        return (getComponentCount() == 1);
+        return selectionCanvas != null && selectionCanvas.getParent() == this;
     }
 
     /**
