@@ -28,35 +28,46 @@ public final class TMUIBind {
 	private TMUIBind() {
 	}
 
-	/**
-	 * Binds a menu item to a command handler.
-	 * @param item menu item to wire
-	 * @param action command to run when selected
-	 **/
-	public static void bind(JMenuItem item, Runnable action) {
-		item.addActionListener(e -> action.run());
+	public static void bind(JMenuItem item, Action action) {
+		String text = item.getText();
+		KeyStroke accelerator = item.getAccelerator();
+		int mnemonic = item.getMnemonic();
+		item.setAction(action);
+		item.setText(text);
+		if (accelerator != null) {
+			item.setAccelerator(accelerator);
+		}
+		if (mnemonic != 0) {
+			item.setMnemonic(mnemonic);
+		}
 	}
 
-	/**
-	 * Binds an abstract button to a command handler.
-	 * @param button button to wire
-	 * @param action command to run when clicked
-	 **/
-	public static void bind(AbstractButton button, Runnable action) {
-		button.addActionListener(e -> action.run());
+	public static void bind(AbstractButton button, Action action) {
+		String toolTip = button.getToolTipText();
+		button.setAction(action);
+		button.setFocusable(false);
+		if (toolTip != null) {
+			button.setToolTipText(toolTip);
+		}
 	}
 
-	/**
-	 * Adds a toolbar button with tooltip text and command handler.
-	 * @param bar toolbar to add the button to
-	 * @param button button to configure and add
-	 * @param toolTip tooltip text
-	 * @param action command to run when clicked
-	 **/
-	public static void addToolBarButton(JToolBar bar, AbstractButton button, String toolTip, Runnable action) {
+	public static void addToolBarButton(JToolBar bar, AbstractButton button, String toolTip, Action action) {
 		button.setToolTipText(toolTip);
 		button.setFocusable(false);
 		bind(button, action);
 		bar.add(button);
+	}
+
+	public static void addToolBarButton(JToolBar bar, AbstractButton button, String toolTip, Runnable handler) {
+		addToolBarButton(bar, button, toolTip, command(handler));
+	}
+
+	private static Action command(Runnable handler) {
+		return new AbstractAction() {
+			@Override
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				handler.run();
+			}
+		};
 	}
 }

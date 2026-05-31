@@ -32,13 +32,30 @@ import java.io.*;
 import java.text.MessageFormat;
 
 /** Palette command handlers for {@link TMUI}. */
-public class TMUIPaletteActions {
-
-	private final TMUI ui;
+public class TMUIPaletteActions extends TMUICommandGroup {
+	public final Action addToPalettes;
+	public final Action organizePalettes;
+	public final Action editColors;
+	public final Action paletteSize;
+	public final Action newPalette;
+	public final Action importInternalPalette;
+	public final Action importExternalPalette;
+public final Action paletteLittleEndian;
+	public final Action paletteBigEndian;
 
 	public TMUIPaletteActions(TMUI ui) {
-		this.ui = ui;
+		super(ui);
+		addToPalettes = command(this::doAddToPalettesCommand);
+		organizePalettes = command(this::doOrganizePalettesCommand);
+		editColors = command(this::doEditColorsCommand);
+		paletteSize = command(this::doPaletteSizeCommand);
+		newPalette = command(this::doNewPaletteCommand);
+		importInternalPalette = command(this::doImportInternalPaletteCommand);
+		importExternalPalette = command(this::doImportExternalPaletteCommand);
+paletteLittleEndian = command(() -> doPaletteEndiannessCommand(ColorCodec.LITTLE_ENDIAN));
+		paletteBigEndian = command(() -> doPaletteEndiannessCommand(ColorCodec.BIG_ENDIAN));
 	}
+
 
 	public void doAddToPalettesCommand() {
 		ui.withSelectedView(view -> {

@@ -97,6 +97,10 @@ public class TMUI extends JFrame {
 	TMUINavActions navActions;
 	TMUIPaletteActions paletteActions;
 	TMUIRefresh refresh;
+	TMUIViewActions viewActions;
+	TMUIImageActions imageActions;
+	TMUIWindowActions windowActions;
+	TMUIHelpActions helpActions;
 
 	/**
 	 * Creates a Tile Molester UI.
@@ -282,6 +286,10 @@ public class TMUI extends JFrame {
 		navActions = new TMUINavActions(this);
 		paletteActions = new TMUIPaletteActions(this);
 		refresh = new TMUIRefresh(this);
+		viewActions = new TMUIViewActions(this);
+		imageActions = new TMUIImageActions(this);
+		windowActions = new TMUIWindowActions(this);
+		helpActions = new TMUIHelpActions(this);
 
 		// Set up the GUI.
 		// main contentpane
@@ -488,309 +496,159 @@ public class TMUI extends JFrame {
 	public void doPaletteEndiannessCommand(int endianness) { paletteActions.doPaletteEndiannessCommand(endianness); }
 	public void doSelectPaletteCommand(TMPalette palette) { paletteActions.doSelectPaletteCommand(palette); }
 
+	public void doTileCommand() { windowActions.doTileCommand(); }
+	public void doCascadeCommand() { windowActions.doCascadeCommand(); }
+	public void doArrangeIconsCommand() { windowActions.doArrangeIconsCommand(); }
+	public void doNewWindowCommand() { windowActions.doNewWindowCommand(); }
+	public void doHelpTopicsCommand() { helpActions.doHelpTopicsCommand(); }
+	public void doAboutCommand() { helpActions.doAboutCommand(); }
+	public void doTileCodecCommand(TileCodec codec) { viewActions.doTileCodecCommand(codec); }
+	public void doZoomCommand(double scale) { viewActions.doZoomCommand(scale); }
+	public void doZoomInCommand() { viewActions.doZoomInCommand(); }
+	public void doZoomOutCommand() { viewActions.doZoomOutCommand(); }
+	public void doBlockGridCommand() { viewActions.doBlockGridCommand(); }
+	public void doTileGridCommand() { viewActions.doTileGridCommand(); }
+	public void doPixelGridCommand() { viewActions.doPixelGridCommand(); }
+	public void doStatusBarCommand() { viewActions.doStatusBarCommand(); }
+	public void doToolBarCommand() { viewActions.doToolBarCommand(); }
+	public void doDarkModeCommand() { viewActions.doDarkModeCommand(); }
+	public void doModeCommand(int mode) { viewActions.doModeCommand(mode); }
+	public void doSizeBlockToCanvasCommand() { viewActions.doSizeBlockToCanvasCommand(); }
+	public void doCustomBlockSizeCommand() { viewActions.doCustomBlockSizeCommand(); }
+	public void doRowInterleaveBlocksCommand() { viewActions.doRowInterleaveBlocksCommand(); }
+	public void doCustomCodecCommand() { viewActions.doCustomCodecCommand(); }
+	public void doDecreaseWidthCommand() { viewActions.doDecreaseWidthCommand(); }
+	public void doIncreaseWidthCommand() { viewActions.doIncreaseWidthCommand(); }
+	public void doDecreaseHeightCommand() { viewActions.doDecreaseHeightCommand(); }
+	public void doIncreaseHeightCommand() { viewActions.doIncreaseHeightCommand(); }
+	public void doMirrorCommand() { imageActions.doMirrorCommand(); }
+	public void doFlipCommand() { imageActions.doFlipCommand(); }
+	public void doRotateRightCommand() { imageActions.doRotateRightCommand(); }
+	public void doRotateLeftCommand() { imageActions.doRotateLeftCommand(); }
+	public void doShiftLeftCommand() { imageActions.doShiftLeftCommand(); }
+	public void doShiftRightCommand() { imageActions.doShiftRightCommand(); }
+	public void doShiftUpCommand() { imageActions.doShiftUpCommand(); }
+	public void doShiftDownCommand() { imageActions.doShiftDownCommand(); }
+	public void doStretchCommand() { imageActions.doStretchCommand(); }
+	public void doCanvasSizeCommand() { imageActions.doCanvasSizeCommand(); }
+
 	/**
 	 * Handles menu command "Tile".
 	 * Code ruthlessly stolen from some guy on the Java forums. Thanks and sorry. :)
 	 **/
-	public void doTileCommand() {
-		JInternalFrame[] frames = widgets.desktop.getAllFrames();
-		// count frames that aren't iconized
-		int frameCount = 0;
-		for (int i = 0; i < frames.length; i++) {
-			if (!frames[i].isIcon())
-				frameCount++;
-		}
-		int rows = (int) Math.sqrt(frameCount);
-		int cols = frameCount / rows;
-		int extra = frameCount % rows;
-		// number of columns with an extra row
-		int width = widgets.desktop.getWidth() / cols;
-		int height = widgets.desktop.getHeight() / rows;
-		int r = 0;
-		int c = 0;
-		for (int i = 0; i < frames.length; i++) {
-			if (!frames[i].isIcon()) {
-				frames[i].reshape(c * width, r * height, width, height);
-				r++;
-				if (r == rows) {
-					r = 0;
-					c++;
-					if (c == cols - extra) {
-						// start adding an extra row
-						rows++;
-						height = widgets.desktop.getHeight() / rows;
-					}
-				}
-			}
-		}
-		widgets.desktop.revalidate();
-	}
 
 	/**
 	 * Handles menu command "Cascade".
 	 * Code ruthlessly stolen from some guy on the Java forums. Thanks and sorry. :)
 	 **/
-	public void doCascadeCommand() {
-		int FRAME_OFFSET = 30;
-		int xpos = 0, ypos = 0;
-		JInternalFrame frames[] = widgets.desktop.getAllFrames();
-		int cascadeWidth = widgets.desktop.getBounds().width - 5;
-		int cascadeHeight = widgets.desktop.getBounds().height - 5;
-		int frameHeight = cascadeHeight - frames.length * FRAME_OFFSET;
-		int frameWidth = cascadeWidth - frames.length * FRAME_OFFSET;
-		for (int i = frames.length - 1; i >= 0; i--) {
-			if (!frames[i].isIcon()) {
-				frames[i].setLocation(xpos, ypos);
-				xpos += FRAME_OFFSET;
-				ypos += FRAME_OFFSET;
-			}
-		}
-		widgets.desktop.revalidate();
-	}
 
 	/**
 	 * Handles menu command "Arrange Icons".
 	 **/
-	public void doArrangeIconsCommand() {
-		JInternalFrame[] frames = widgets.desktop.getAllFrames();
-		int xpos = 0;
-		int ypos = 0;
-		for (int i = 0; i < frames.length; i++) {
-			if (frames[i].isIcon()) {
-				JInternalFrame.JDesktopIcon icon = frames[i].getDesktopIcon();
-				icon.setLocation(xpos, widgets.desktop.getHeight() - icon.getHeight());
-				xpos += icon.getWidth();
-			}
-		}
-		widgets.desktop.revalidate();
-	}
 
 	/**
 	 * Handles menu command "Help Topics".
 	 **/
-	public void doHelpTopicsCommand() {
-		File localizedHelpFile = new File("docs/help_" + locale.toString() + ".htm");
-		if (localizedHelpFile.exists()) {
-			BrowserControl.displayURL("file://" + localizedHelpFile.getAbsolutePath());
-		} else {
-			BrowserControl.displayURL("docs\\help.htm");
-		}
-	}
 
 	/**
 	 * Handles menu command "About".
 	 * Displays a small dialog with info about the program.
 	 **/
-	public void doAboutCommand() {
-		JOptionPane.showMessageDialog(this,
-				"Tile Molester v0.21\n\nby SnowBro 2003-2005 (v0.16)\nby Dr. MefistO 2013 (v0.17.2)\nby Mewster 2014-2015 (v0.19)\nby toruzz 2020-2024 (v0.21)",
-				"Tile Molester",
-				1);
-	}
 
 	/**
 	 * Handles menu command "Tile Codec".
 	 * Changes the tile codec for the current view to the specified one.
 	 * @param codec tile codec used for encode/decode
 	 **/
-	public void doTileCodecCommand(TileCodec codec) {
-		withSelectedView(view -> {
-			view.setTileCodec(codec);
-			refresh.refreshPalettePane();
-			refresh.refreshStatusBar();
-			refresh.refreshTileCodecSelection(view);
-		});
-	}
 
 	/**
 	 * Handles menu command "Zoom".
 	 * Zooms the current frame to the given scale (1.0 = 100%, 2.0 = 200% and so on)
 	 * @param scale zoom factor applied to the canvas
 	 **/
-	public void doZoomCommand(double scale) {
-		withSelectedView(view -> view.setScale(scale));
-	}
 
 	/**
 	 * Handles menu command "Zoom In".
 	 * Scale += 1.0
 	 **/
-	public void doZoomInCommand() {
-		withSelectedView(view -> view.setScale(view.getScale() + 1.0));
-	}
 
 	/**
 	 * Handles menu command "Zoom Out".
 	 * Scale -= 1.0
 	 **/
-	public void doZoomOutCommand() {
-		withSelectedView(view -> view.setScale(view.getScale() - 1.0));
-	}
 
 	/**
 	 * Handles menu command "Block Grid".
 	 **/
-	public void doBlockGridCommand() {
-		withSelectedView(view -> {
-			view.setBlockGridVisible(!view.isBlockGridVisible());
-			widgets.blockGridMenuItem.setSelected(view.isBlockGridVisible());
-			view.repaint();
-		});
-	}
 
 	/**
 	 * Handles menu command "Tile Grid".
 	 **/
-	public void doTileGridCommand() {
-		withSelectedView(view -> {
-			view.setTileGridVisible(!view.isTileGridVisible());
-			widgets.tileGridMenuItem.setSelected(view.isTileGridVisible());
-			view.repaint();
-		});
-	}
 
 	/**
 	 * Handles menu command "Pixel Grid".
 	 **/
-	public void doPixelGridCommand() {
-		withSelectedView(view -> {
-			view.setPixelGridVisible(!view.isPixelGridVisible());
-			widgets.pixelGridMenuItem.setSelected(view.isPixelGridVisible());
-			view.repaint();
-		});
-	}
 
 	/**
 	 * Handles menu command "Statusbar".
 	 * Toggles the statusbar visibility.
 	 **/
-	public void doStatusBarCommand() {
-		viewStatusBar = !viewStatusBar;
-		TileMolester.settings.setViewStatusBar(viewStatusBar);
-		widgets.statusBar.setVisible(viewStatusBar);
-		widgets.statusBarMenuItem.setSelected(viewStatusBar);
-	}
 
 	/**
 	 * Handles menu command "Toolbar".
 	 * Toggles the toolbar visibility.
 	 **/
-	public void doToolBarCommand() {
-		viewToolBar = !viewToolBar;
-		TileMolester.settings.setViewToolBar(viewToolBar);
-		widgets.toolBarPane.setVisible(viewToolBar);
-		widgets.toolBarMenuItem.setSelected(viewToolBar);
-	}
 
 	/**
 	 * Handles menu command "Dark mode".
 	 * Toggles the dark mode theme.
 	 **/
-	public void doDarkModeCommand() {
-		darkMode = !TMTheme.darkMode;
-		widgets.darkModeMenuItem.setSelected(darkMode);
-		TMTheme.setDarkMode(darkMode);
-	}
 
 	/**
 	 * Handles menu command "New Window".
 	 * Creates a new view for the current one.
 	 * Duplicates view settings (offset, codec, width/height etc.)
 	 **/
-	public void doNewWindowCommand() {
-		withSelectedView(view -> {
-			FileImage img = view.getFileImage();
-			TMView newView = createView(img, view.getTileCodec(), view.getPalette(), view.getMode());
-			newView.setPalIndex(view.getPalIndex());
-			newView.setFGColor(view.getFGColor());
-			newView.setBGColor(view.getBGColor());
-			newView.setAbsoluteOffset(view.getOffset());
-			newView.setGridSize(view.getCols(), view.getRows());
-			addViewToDesktop(newView);
-		});
-	}
 
 	/**
 	 * Handles menu command "Mirror".
 	 **/
-	public void doMirrorCommand() {
-		withSelectedView(view -> view.getEditorCanvas().flipSelectionHorizontally());
-	}
 
 	/**
 	 * Handles menu command "Flip".
 	 **/
-	public void doFlipCommand() {
-		withSelectedView(view -> view.getEditorCanvas().flipSelectionVertically());
-	}
 
 	/**
 	 * Handles menu command "Rotate +90".
 	 **/
-	public void doRotateRightCommand() {
-		withSelectedView(view -> view.getEditorCanvas().rotateSelectionClockwise());
-	}
 
 	/**
 	 * Handles menu command "Rotate Left".
 	 **/
-	public void doRotateLeftCommand() {
-		withSelectedView(view -> view.getEditorCanvas().rotateSelectionCounterClockwise());
-	}
 
 	/**
 	 * Handles menu command "Shift Left".
 	 **/
-	public void doShiftLeftCommand() {
-		withSelectedView(view -> view.getEditorCanvas().shiftSelectionLeft());
-	}
 
 	/**
 	 * Handles menu command "Shift Right".
 	 **/
-	public void doShiftRightCommand() {
-		withSelectedView(view -> view.getEditorCanvas().shiftSelectionRight());
-	}
 
 	/**
 	 * Handles menu command "Shift Up".
 	 **/
-	public void doShiftUpCommand() {
-		withSelectedView(view -> view.getEditorCanvas().shiftSelectionUp());
-	}
 
 	/**
 	 * Handles menu command "Shift Down".
 	 **/
-	public void doShiftDownCommand() {
-		withSelectedView(view -> view.getEditorCanvas().shiftSelectionDown());
-	}
 
 	/**
 	 * Handles menu command "Stretch".
 	 **/
-	public void doStretchCommand() {
-		withSelectedView(view -> {
-			int retVal = widgets.stretchDialog.showDialog(view.getEditorCanvas().getSelectionCanvas().getCols(),
-					view.getEditorCanvas().getSelectionCanvas().getRows());
-			if (retVal == JOptionPane.OK_OPTION) {
-				view.getEditorCanvas().stretchSelection(widgets.stretchDialog.getCols(), widgets.stretchDialog.getRows());
-			}
-		});
-	}
 
 	/**
 	 * Handles menu command "Canvas Size".
 	 **/
-	public void doCanvasSizeCommand() {
-		withSelectedView(view -> {
-			int retVal = widgets.canvasSizeDialog.showDialog(view.getCols(), view.getRows());
-			if (retVal == JOptionPane.OK_OPTION) {
-				view.setGridSize(widgets.canvasSizeDialog.getCols(), widgets.canvasSizeDialog.getRows());
-				view.setScale(view.getScale());
-			}
-		});
-	}
 
 	/**
 	 * Handles menu command "Mode".
@@ -798,107 +656,38 @@ public class TMUI extends JFrame {
 	 * The valid modes are MODE_1D and MODE_2D.
 	 * @param mode tile layout mode ({@link tm.tilecodecs.TileCodec#MODE_1D} or {@link tm.tilecodecs.TileCodec#MODE_2D})
 	 **/
-	public void doModeCommand(int mode) {
-		withSelectedView(view -> {
-			view.setMode(mode);
-			refresh.refreshStatusBar();
-		});
-	}
 
 	/**
 	 * Handles the "SizeBlockToCanvas" menu or toolbar command.
 	 **/
-	public void doSizeBlockToCanvasCommand() {
-		withSelectedView(view -> {
-			view.setSizeBlockToCanvas(!view.getSizeBlockToCanvas());
-			widgets.sizeBlockToCanvasMenuItem.setSelected(view.getSizeBlockToCanvas());
-		});
-	}
 
 	/**
 	 * Handles the "CustomBlockSize" menu or toolbar command.
 	 **/
-	public void doCustomBlockSizeCommand() {
-		withSelectedView(view -> {
-			int retVal = widgets.blockSizeDialog.showDialog(view.getBlockWidth(), view.getBlockHeight());
-			if (retVal == JOptionPane.OK_OPTION) {
-				view.setSizeBlockToCanvas(false);
-				widgets.sizeBlockToCanvasMenuItem.setSelected(false);
-				view.setBlockDimensions(widgets.blockSizeDialog.getCols(), widgets.blockSizeDialog.getRows());
-			}
-		});
-	}
 
 	/**
 	 * Handles the "RowInterleaveBlocks" menu or toolbar command.
 	 **/
-	public void doRowInterleaveBlocksCommand() {
-		withSelectedView(view -> {
-			view.setRowInterleaveBlocks(!view.getRowInterleaveBlocks());
-			widgets.rowInterleaveBlocksMenuItem.setSelected(view.getRowInterleaveBlocks());
-		});
-	}
 
 	/**
 	 * Handles the menu command "Custom Codec".
 	 **/
-	public void doCustomCodecCommand() {
-		withSelectedView(view -> {
-			widgets.customCodecDialog.setVisible(true);
-			int retVal = 0; // TODO
-			if (retVal == JOptionPane.OK_OPTION) {
-				int bpp = widgets.customCodecDialog.getBitsPerPixel();
-				int rmask = widgets.customCodecDialog.getRedMask();
-				int gmask = widgets.customCodecDialog.getBlueMask();
-				int bmask = widgets.customCodecDialog.getGreenMask();
-				int amask = widgets.customCodecDialog.getAlphaMask();
-				String desc = widgets.customCodecDialog.getDescription();
-				DirectColorTileCodec codec = new DirectColorTileCodec("", bpp, rmask, gmask, bmask, amask, desc);
-				addTileCodec(codec);
-				view.setTileCodec(codec);
-			}
-		});
-	}
 
 	/**
 	 * Handles the "DecreaseWidth" menu or toolbar command.
 	 **/
-	public void doDecreaseWidthCommand() {
-		withSelectedView(view -> {
-			view.setGridSize(view.getCols() - 1, view.getRows());
-			view.setScale(view.getScale());
-		});
-	}
 
 	/**
 	 * Handles the "IncreaseWidth" menu or toolbar command.
 	 **/
-	public void doIncreaseWidthCommand() {
-		withSelectedView(view -> {
-			view.setGridSize(view.getCols() + 1, view.getRows());
-			view.setScale(view.getScale());
-		});
-	}
 
 	/**
 	 * Handles the "DecreaseHeight" menu or toolbar command.
 	 **/
-	public void doDecreaseHeightCommand() {
-		withSelectedView(view -> {
-			view.setGridSize(view.getCols(), view.getRows() - 1);
-			view.setScale(view.getScale());
-		});
-	}
 
 	/**
 	 * Handles the "IncreaseHeight" menu or toolbar command.
 	 **/
-	public void doIncreaseHeightCommand() {
-		withSelectedView(view -> {
-			view.setGridSize(view.getCols(), view.getRows() + 1);
-			view.setScale(view.getScale());
-		});
-	}
 
 	//////////////////////////////////////////////////////////////////////////////
 
@@ -909,7 +698,7 @@ public class TMUI extends JFrame {
 	public void fileImageModified(FileImage img) {
 		img.setModified(true);
 		setSaveButtonsEnabled(true);
-		widgets.saveAllMenuItem.setEnabled(true);
+		fileActions.saveAll.setEnabled(true);
 	}
 
 	/**
@@ -917,8 +706,7 @@ public class TMUI extends JFrame {
 	 * @param b b value
 	 **/
 	public void setSaveButtonsEnabled(boolean b) {
-		widgets.saveButton.setEnabled(b);
-		widgets.saveMenuItem.setEnabled(b);
+		fileActions.save.setEnabled(b);
 	}
 
 	/**
@@ -926,8 +714,7 @@ public class TMUI extends JFrame {
 	 * @param b b value
 	 **/
 	public void setUndoButtonsEnabled(boolean b) {
-		widgets.undoButton.setEnabled(b);
-		widgets.undoMenuItem.setEnabled(b);
+		editActions.undo.setEnabled(b);
 	}
 
 	/**
@@ -935,8 +722,7 @@ public class TMUI extends JFrame {
 	 * @param b b value
 	 **/
 	public void setRedoButtonsEnabled(boolean b) {
-		widgets.redoButton.setEnabled(b);
-		widgets.redoMenuItem.setEnabled(b);
+		editActions.redo.setEnabled(b);
 	}
 
 	public void disableMDIStuff() { refresh.setMdiMode(false); }

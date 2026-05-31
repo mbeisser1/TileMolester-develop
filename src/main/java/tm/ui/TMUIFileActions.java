@@ -37,13 +37,28 @@ import org.xml.sax.SAXException;
 /**
  * File-related menu command handlers for {@link TMUI}.
  **/
-public class TMUIFileActions {
-
-	private final TMUI ui;
+public class TMUIFileActions extends TMUICommandGroup {
+	public final Action newFile;
+	public final Action open;
+	public final Action close;
+	public final Action closeAll;
+	public final Action save;
+	public final Action saveAs;
+	public final Action saveAll;
+	public final Action exit;
 
 	public TMUIFileActions(TMUI ui) {
-		this.ui = ui;
+		super(ui);
+		newFile = command(this::doNewCommand);
+		open = command(this::doOpenCommand);
+		close = command(this::doCloseCommand);
+		closeAll = command(this::doCloseAllCommand);
+		save = command(this::doSaveCommand);
+		saveAs = command(this::doSaveAsCommand);
+		saveAll = command(this::doSaveAllCommand);
+		exit = command(this::doExitCommand);
 	}
+
 
 	public void doNewCommand() {
 		// Show dialog for creating new file

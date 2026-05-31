@@ -22,13 +22,32 @@ import tm.treenodes.*;
 import javax.swing.*;
 
 /** Navigation and bookmark command handlers for {@link TMUI}. */
-public class TMUINavActions {
-
-	private final TMUI ui;
+public class TMUINavActions extends TMUICommandGroup {
+	public final Action minusPage;
+	public final Action plusPage;
+	public final Action minusRow;
+	public final Action plusRow;
+	public final Action minusTile;
+	public final Action plusTile;
+	public final Action minusByte;
+	public final Action plusByte;
+	public final Action addToBookmarks;
+	public final Action organizeBookmarks;
 
 	public TMUINavActions(TMUI ui) {
-		this.ui = ui;
+		super(ui);
+		minusPage = command(this::doMinusPageCommand);
+		plusPage = command(this::doPlusPageCommand);
+		minusRow = command(this::doMinusRowCommand);
+		plusRow = command(this::doPlusRowCommand);
+		minusTile = command(this::doMinusTileCommand);
+		plusTile = command(this::doPlusTileCommand);
+		minusByte = command(this::doMinusByteCommand);
+		plusByte = command(this::doPlusByteCommand);
+		addToBookmarks = command(this::doAddToBookmarksCommand);
+		organizeBookmarks = command(this::doOrganizeBookmarksCommand);
 	}
+
 
 	public void doHomeCommand() {
 		ui.withSelectedView(view -> view.setAbsoluteOffset(view.getMinOffset()));

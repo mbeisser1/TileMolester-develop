@@ -32,33 +32,33 @@ public class TMUIToolbarBuilder {
 	}
 
 	public void buildToolBar() {
-		TMUIBind.addToolBarButton(ui.widgets.toolBar, ui.widgets.newButton, ui.widgets.newMenuItem.getText(), ui::doNewCommand);
-		TMUIBind.addToolBarButton(ui.widgets.toolBar, ui.widgets.openButton, ui.widgets.openMenuItem.getText(), ui::doOpenCommand);
-		TMUIBind.addToolBarButton(ui.widgets.toolBar, ui.widgets.saveButton, ui.widgets.saveMenuItem.getText(), ui::doSaveCommand);
+		TMUIBind.addToolBarButton(ui.widgets.toolBar, ui.widgets.newButton, ui.widgets.newMenuItem.getText(), ui.fileActions.newFile);
+		TMUIBind.addToolBarButton(ui.widgets.toolBar, ui.widgets.openButton, ui.widgets.openMenuItem.getText(), ui.fileActions.open);
+		TMUIBind.addToolBarButton(ui.widgets.toolBar, ui.widgets.saveButton, ui.widgets.saveMenuItem.getText(), ui.fileActions.save);
 
 		ui.widgets.toolBarMDI.addSeparator();
-		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.cutButton, ui.widgets.cutMenuItem.getText(), ui::doCutCommand);
-		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.copyButton, ui.widgets.copyMenuItem.getText(), ui::doCopyCommand);
-		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.pasteButton, ui.widgets.pasteMenuItem.getText(), ui::doPasteCommand);
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.cutButton, ui.widgets.cutMenuItem.getText(), ui.editActions.cut);
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.copyButton, ui.widgets.copyMenuItem.getText(), ui.editActions.copy);
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.pasteButton, ui.widgets.pasteMenuItem.getText(), ui.editActions.paste);
 
 		ui.widgets.toolBarMDI.addSeparator();
-		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.undoButton, ui.widgets.undoMenuItem.getText(), ui::doUndoCommand);
-		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.redoButton, ui.widgets.redoMenuItem.getText(), ui::doRedoCommand);
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.undoButton, ui.widgets.undoMenuItem.getText(), ui.editActions.undo);
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.redoButton, ui.widgets.redoMenuItem.getText(), ui.editActions.redo);
 
 		ui.widgets.toolBarMDI.addSeparator();
-		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.gotoButton, ui.widgets.goToMenuItem.getText(), ui::doGoToCommand);
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.gotoButton, ui.widgets.goToMenuItem.getText(), ui.editActions.goTo);
 		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.addBookmarkButton, ui.widgets.addToBookmarksMenuItem.getText(),
-				ui::doAddToBookmarksCommand);
+				ui.navActions.addToBookmarks);
 
 		ui.widgets.toolBarMDI.addSeparator();
 		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.decWidthButton, ui.xlate("Decrease_Width"),
-				ui::doDecreaseWidthCommand);
+				ui.viewActions.decreaseWidth);
 		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.incWidthButton, ui.xlate("Increase_Width"),
-				ui::doIncreaseWidthCommand);
+				ui.viewActions.increaseWidth);
 		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.decHeightButton, ui.xlate("Decrease_Height"),
-				ui::doDecreaseHeightCommand);
+				ui.viewActions.decreaseHeight);
 		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.incHeightButton, ui.xlate("Increase_Height"),
-				ui::doIncreaseHeightCommand);
+				ui.viewActions.increaseHeight);
 
 		ui.widgets.toolBar.setFocusable(false);
 		ui.widgets.toolBar.setFloatable(false);
@@ -69,14 +69,14 @@ public class TMUIToolbarBuilder {
 	public void buildNavBar() {
 		ui.widgets.navBar.addSeparator();
 
-		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.minusPageButton, ui.xlate("Page_Back"), ui::doMinusPageCommand);
-		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.plusPageButton, ui.xlate("Page_Forward"), ui::doPlusPageCommand);
-		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.minusRowButton, ui.xlate("Row_Back"), ui::doMinusRowCommand);
-		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.plusRowButton, ui.xlate("Row_Forward"), ui::doPlusRowCommand);
-		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.minusTileButton, ui.xlate("Tile_Back"), ui::doMinusTileCommand);
-		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.plusTileButton, ui.xlate("Tile_Forward"), ui::doPlusTileCommand);
-		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.minusByteButton, ui.xlate("Byte_Back"), ui::doMinusByteCommand);
-		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.plusByteButton, ui.xlate("Byte_Forward"), ui::doPlusByteCommand);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.minusPageButton, ui.xlate("Page_Back"), ui.navActions.minusPage);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.plusPageButton, ui.xlate("Page_Forward"), ui.navActions.plusPage);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.minusRowButton, ui.xlate("Row_Back"), ui.navActions.minusRow);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.plusRowButton, ui.xlate("Row_Forward"), ui.navActions.plusRow);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.minusTileButton, ui.xlate("Tile_Back"), ui.navActions.minusTile);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.plusTileButton, ui.xlate("Tile_Forward"), ui.navActions.plusTile);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.minusByteButton, ui.xlate("Byte_Back"), ui.navActions.minusByte);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.plusByteButton, ui.xlate("Byte_Forward"), ui.navActions.plusByte);
 
 		ui.widgets.navBar.setFloatable(false);
 		ui.widgets.navBar.setFocusable(false);
@@ -135,20 +135,20 @@ public class TMUIToolbarBuilder {
 		ui.widgets.selectionToolBar.setBorder(null);
 
 		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.mirrorButton, ui.widgets.mirrorMenuItem.getText(),
-				ui::doMirrorCommand);
-		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.flipButton, ui.widgets.flipMenuItem.getText(), ui::doFlipCommand);
+				ui.imageActions.mirror);
+		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.flipButton, ui.widgets.flipMenuItem.getText(), ui.imageActions.flip);
 		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.rotateRightButton, ui.widgets.rotateRightMenuItem.getText(),
-				ui::doRotateRightCommand);
+				ui.imageActions.rotateRight);
 		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.rotateLeftButton, ui.widgets.rotateLeftMenuItem.getText(),
-				ui::doRotateLeftCommand);
+				ui.imageActions.rotateLeft);
 		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.shiftLeftButton, ui.widgets.shiftLeftMenuItem.getText(),
-				ui::doShiftLeftCommand);
+				ui.imageActions.shiftLeft);
 		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.shiftRightButton, ui.widgets.shiftRightMenuItem.getText(),
-				ui::doShiftRightCommand);
+				ui.imageActions.shiftRight);
 		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.shiftUpButton, ui.widgets.shiftUpMenuItem.getText(),
-				ui::doShiftUpCommand);
+				ui.imageActions.shiftUp);
 		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.shiftDownButton, ui.widgets.shiftDownMenuItem.getText(),
-				ui::doShiftDownCommand);
+				ui.imageActions.shiftDown);
 
 		ui.widgets.selectionToolBar.setFloatable(false);
 		ui.widgets.selectionToolBar.setFocusable(false);

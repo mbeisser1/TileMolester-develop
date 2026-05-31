@@ -23,6 +23,7 @@ import tm.colorcodecs.ColorCodec;
 import tm.fileselection.*;
 import tm.modaldialog.*;
 import tm.filelistener.TMFileListener;
+import tm.tilecodecs.TileCodec;
 import tm.utils.mxScrollableDesktop;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import javax.swing.*;

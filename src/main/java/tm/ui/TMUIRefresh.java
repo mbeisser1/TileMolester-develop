@@ -71,11 +71,11 @@ public class TMUIRefresh {
 				ui.widgets.decHeightButton.setVisible(true);
 				ui.widgets.incHeightButton.setVisible(true);
 				// disable some buttons
-				ui.widgets.saveButton.setEnabled(false);
-				ui.widgets.pasteButton.setEnabled(false);
-				ui.widgets.pasteMenuItem.setEnabled(false);
-				ui.widgets.undoButton.setEnabled(false);
-				ui.widgets.redoButton.setEnabled(false);
+				ui.fileActions.save.setEnabled(false);
+				ui.fileActions.saveAll.setEnabled(false);
+				ui.editActions.paste.setEnabled(false);
+				ui.editActions.undo.setEnabled(false);
+				ui.editActions.redo.setEnabled(false);
 				// Show navigation bar
 				ui.widgets.navBar.setVisible(true);
 				// Show tool pane

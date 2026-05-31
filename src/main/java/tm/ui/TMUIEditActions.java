@@ -25,13 +25,34 @@ import javax.swing.*;
 import java.io.*;
 
 /** Edit-menu command handlers for {@link TMUI}. */
-public class TMUIEditActions {
-
-	private final TMUI ui;
+public class TMUIEditActions extends TMUICommandGroup {
+	public final Action undo;
+	public final Action redo;
+	public final Action cut;
+	public final Action copy;
+	public final Action paste;
+	public final Action clear;
+	public final Action goTo;
+	public final Action goToAgain;
+	public final Action selectAll;
+	public final Action copyTo;
+	public final Action pasteFrom;
 
 	public TMUIEditActions(TMUI ui) {
-		this.ui = ui;
+		super(ui);
+		undo = command(this::doUndoCommand);
+		redo = command(this::doRedoCommand);
+		cut = command(this::doCutCommand);
+		copy = command(this::doCopyCommand);
+		paste = command(this::doPasteCommand);
+		clear = command(this::doClearCommand);
+		goTo = command(this::doGoToCommand);
+		goToAgain = command(this::doGoToAgainCommand);
+		selectAll = command(this::doSelectAllCommand);
+		copyTo = command(this::doCopyToCommand);
+		pasteFrom = command(this::doPasteFromCommand);
 	}
+
 
 	public void doUndoCommand() {
 		ui.withSelectedView(view -> {
@@ -52,16 +73,14 @@ public class TMUIEditActions {
 	public void doCutCommand() {
 		ui.withSelectedView(view -> {
 			ui.copiedSelection = view.getEditorCanvas().cutSelection();
-			ui.widgets.pasteButton.setEnabled(true);
-			ui.widgets.pasteMenuItem.setEnabled(true);
+			ui.editActions.paste.setEnabled(true);
 		});
 	}
 
 	public void doCopyCommand() {
 		ui.withSelectedView(view -> {
 			ui.copiedSelection = view.getEditorCanvas().copySelection();
-			ui.widgets.pasteButton.setEnabled(true);
-			ui.widgets.pasteMenuItem.setEnabled(true);
+			ui.editActions.paste.setEnabled(true);
 		});
 	}
 
