@@ -56,40 +56,35 @@ import org.xml.sax.SAXParseException;
  * 2) providing action handlers for menu items and tool buttons.
  **/
 public class TMUI extends JFrame {
-	public static boolean isWindows = SystemInfo.isWindows;
+	public static final boolean isWindows = SystemInfo.isWindows;
 
-	// tool types
-	public TMTools.ToolType toolType = TMTools.ToolType.SELECT_TOOL;
+	@SuppressWarnings("unused")
+	private static final Logger uiLogger = Logger.getLogger("D_TMUI");
 
+	/** Active drawing tool (toolbar + {@link tm.canvases.TMEditorCanvas}). */
+	TMTools.ToolType toolType = TMTools.ToolType.SELECT_TOOL;
+
+	/** Cut/copy buffer for paste between views. */
+	TMSelectionCanvas copiedSelection;
+
+	/** Loaded from tmspec.xml; used for menus, choosers, and file open. */
 	private java.util.List<ColorCodec> colorcodecs;
 	java.util.List<TileCodec> tilecodecs;
-	private java.util.List<TMTileCodecFileFilter> filefilters;
+	java.util.List<TMTileCodecFileFilter> filefilters;
 	java.util.List<TMPaletteFileFilter> palettefilters;
 	java.util.List<TMFileListener> filelisteners;
 
-	TMSelectionCanvas copiedSelection = null;
-
-	ClassLoader cl = getClass().getClassLoader();
-
 	final TMUIWidgets widgets = new TMUIWidgets();
+	TMUITreeMenuBuilder treeMenuBuilder;
 
 	private Xlator xl;
-
 	Locale locale;
+	String lastPath;
 	boolean viewStatusBar = true;
 	boolean viewToolBar = true;
 	boolean darkMode = TMTheme.darkMode;
 
-	String lastPath;
-
-	private Border emptyBorder = BorderFactory.createEmptyBorder();
-	private JSeparator separator = new JSeparator();
-
-	private Logger uiLogger = Logger.getLogger("D_TMUI");
-
-	TMUIMenuBuilder menuBuilder;
-	TMUIToolbarBuilder toolbarBuilder;
-	TMUITreeMenuBuilder treeMenuBuilder;
+	/** Public for {@link tm.canvases} and action classes outside this file. */
 	public final TMUIFileActions fileActions;
 	public final TMUIEditActions editActions;
 	public final TMUINavActions navActions;
@@ -106,7 +101,7 @@ public class TMUI extends JFrame {
 	public TMUI() {
 		super("Tile Molester");
 
-		ImageIcon imgIcon = new ImageIcon(cl.getResource("icons/TMIcon32.png"));
+		ImageIcon imgIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/TMIcon32.png"));
 		setIconImage(imgIcon.getImage());
 		
 		locale = TileMolester.settings.getLocale();
@@ -125,7 +120,6 @@ public class TMUI extends JFrame {
 		setLocale(locale);
 		Locale.setDefault(locale);
 		JComponent.setDefaultLocale(this.locale);
-		// separator.setForeground(Color.decode("#292929"));
 
 		// File menu
 		widgets.fileMenu.setText(xlate("File"));
@@ -276,8 +270,8 @@ public class TMUI extends JFrame {
 		widgets.newPaletteDialog.setCodecs(colorcodecs);
 		widgets.importInternalPaletteDialog.setCodecs(colorcodecs);
 
-		menuBuilder = new TMUIMenuBuilder(this);
-		toolbarBuilder = new TMUIToolbarBuilder(this);
+		TMUIMenuBuilder menuBuilder = new TMUIMenuBuilder(this);
+		TMUIToolbarBuilder toolbarBuilder = new TMUIToolbarBuilder(this);
 		treeMenuBuilder = new TMUITreeMenuBuilder(this);
 		fileActions = new TMUIFileActions(this);
 		editActions = new TMUIEditActions(this);
