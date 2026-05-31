@@ -565,6 +565,7 @@ public class TMUI extends JFrame {
 		TMView view = new TMView(this, img, tc);
 		view.setMode(mode);
 		view.setPalette(pal);
+		view.setVisible(true);
 		return view;
 	}
 

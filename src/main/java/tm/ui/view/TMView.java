@@ -51,11 +51,11 @@ public class TMView extends JInternalFrame {
 	private TMUI ui;
 	private FileImage fileImage;
 
-	private int fgColor;
-	private int bgColor;
+	private int fgColor = 0x000000;
+	private int bgColor = 0xFFFFFF;
 
-	private int minOffset; //
-	private int maxOffset; // can't scroll past this
+	private int minOffset = 0;
+	private int maxOffset = 0; // can't scroll past this
 
 	private boolean keysEnabled = true;
 
@@ -161,7 +161,6 @@ public class TMView extends JInternalFrame {
 
 		// set some initial view properties
 		editorCanvas.setOffset(0);
-		minOffset = 0;
 		editorCanvas.setGridSize(16, 16);
 		editorCanvas.setBlockDimensions(16, 16);
 		editorCanvas.setCodec(tileCodec);
@@ -189,7 +188,6 @@ public class TMView extends JInternalFrame {
 		pack();
 		setLocation(frameCount * 20, frameCount * 20);
 		frameCount += 1;
-		setVisible(true);
 	}
 
 	/**
@@ -637,18 +635,31 @@ public class TMView extends JInternalFrame {
 
 	/**
 	 * Returns the palette index of the current foreground draw color on this page.
-	 * @return index within the current palette page, or 0 until implemented (TODO)
+	 * @return index within the current palette page, or 0 for direct-color modes
 	 **/
 	public int getFGColorIndex() {
-		return 0; // TODO
+		return colorIndexForDrawColor(fgColor);
 	}
 
 	/**
 	 * Returns the palette index of the current background draw color on this page.
-	 * @return index within the current palette page, or 0 until implemented (TODO)
+	 * @return index within the current palette page, or 0 for direct-color modes
 	 **/
 	public int getBGColorIndex() {
-		return 0; // TODO
+		return colorIndexForDrawColor(bgColor);
+	}
+
+	private int colorIndexForDrawColor(int rgb) {
+		TileCodec codec = getTileCodec();
+		if (codec == null || codec.getBitsPerPixel() > 8) {
+			return 0;
+		}
+		TMPalette pal = getPalette();
+		if (pal == null) {
+			return 0;
+		}
+		int idx = pal.indexOf(getColorIndex(), rgb);
+		return idx >= 0 ? idx : 0;
 	}
 
 	/**
