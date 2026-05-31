@@ -68,7 +68,7 @@ public class TMUI extends JFrame {
 	TMSelectionCanvas copiedSelection;
 
 	/** Loaded from tmspec.xml; used for menus, choosers, and file open. */
-	private java.util.List<ColorCodec> colorcodecs;
+	java.util.List<ColorCodec> colorcodecs;
 	java.util.List<TileCodec> tilecodecs;
 	java.util.List<TMTileCodecFileFilter> filefilters;
 	java.util.List<TMPaletteFileFilter> palettefilters;
@@ -114,9 +114,8 @@ public class TMUI extends JFrame {
 			System.exit(0);
 		}
 
-		widgets.allFilter = new TMAllFilter(xlate("All_Files"));
+		widgets.initDialogs(this, xl);
 
-		
 		setLocale(locale);
 		Locale.setDefault(locale);
 		JComponent.setDefaultLocale(this.locale);
@@ -218,12 +217,6 @@ public class TMUI extends JFrame {
 		UIManager.put("OptionPane.cancelButtonText", xlate("Cancel"));
 		UIManager.put("OptionPane.okButtonText", xlate("OK"));
 
-		widgets.fileOpenChooser.setDialogTitle(xlate("Open_File_Dialog_Title"));
-		widgets.fileSaveChooser.setDialogTitle(xlate("Save_As_Dialog_Title"));
-		widgets.bitmapOpenChooser.setDialogTitle(xlate("Paste_From_Dialog_Title"));
-		widgets.bitmapSaveChooser.setDialogTitle(xlate("Export_As_Dialog_Title"));
-		widgets.paletteOpenChooser.setDialogTitle(xlate("Open_Palette_Dialog_Title"));
-
 		///////// Read specs
 		try {
 			TMSpecReader.readSpecsFromFile(resolveTmspecFile());
@@ -251,24 +244,6 @@ public class TMUI extends JFrame {
 		tilecodecs.add(new _3BPPLinearTileCodec());
 		tilecodecs.add(new _6BPPLinearTileCodec());
 		//////////
-
-		// create dialogs.
-		widgets.goToDialog = new TMGoToDialog(this, xl);
-		widgets.newFileDialog = new TMNewFileDialog(this, xl);
-		// widgets.customCodecDialog = new TMCustomCodecDialog(this, "Custom Codec", true, xl);
-		widgets.stretchDialog = new TMStretchDialog(this, xl);
-		widgets.canvasSizeDialog = new TMCanvasSizeDialog(this, xl);
-		widgets.blockSizeDialog = new TMBlockSizeDialog(this, xl);
-		widgets.addBookmarkDialog = new TMAddToTreeDialog(this, "Add_To_Bookmarks_Dialog_Title", xl);
-		widgets.addPaletteDialog = new TMAddToTreeDialog(this, "Add_To_Palettes_Dialog_Title", xl);
-		widgets.organizeBookmarksDialog = new TMOrganizeTreeDialog(this, "Organize_Bookmarks_Dialog_Title", xl);
-		widgets.organizePalettesDialog = new TMOrganizeTreeDialog(this, "Organize_Palettes_Dialog_Title", xl);
-		widgets.newPaletteDialog = new TMNewPaletteDialog(this, xl);
-		widgets.paletteSizeDialog = new TMPaletteSizeDialog(this, xl);
-		widgets.importInternalPaletteDialog = new TMImportInternalPaletteDialog(this, xl);
-
-		widgets.newPaletteDialog.setCodecs(colorcodecs);
-		widgets.importInternalPaletteDialog.setCodecs(colorcodecs);
 
 		TMUIMenuBuilder menuBuilder = new TMUIMenuBuilder(this);
 		TMUIToolbarBuilder toolbarBuilder = new TMUIToolbarBuilder(this);
@@ -303,8 +278,6 @@ public class TMUI extends JFrame {
 		pane.add(new JScrollPane(widgets.desktop), BorderLayout.CENTER);
 
 		// palette pane & statusbar
-		widgets.palettePane = new TMPalettePane(this);
-		// widgets.statusBar.setBorder(new BevelBorder(BevelBorder.LOWERED));
 		widgets.bottomPane.setLayout(new BorderLayout());
 		widgets.bottomPane.add(widgets.palettePane, BorderLayout.CENTER);
 		widgets.bottomPane.add(widgets.statusBar, BorderLayout.SOUTH);
@@ -329,31 +302,7 @@ public class TMUI extends JFrame {
 
 		initTileCodecUIStuff();
 		buildColorCodecsMenu();
-		initPaletteOpenChooser();
-
-		// Set up file save chooser.
-		widgets.fileSaveChooser.setAcceptAllFileFilterUsed(false);
-		widgets.fileSaveChooser.addChoosableFileFilter(widgets.allFilter);
-		widgets.fileSaveChooser.setFileFilter(widgets.allFilter);
-
-		// Set up bitmap open chooser.
-		widgets.bitmapOpenChooser.setAcceptAllFileFilterUsed(false);
-		widgets.bitmapOpenChooser.addChoosableFileFilter(widgets.bmf.supported);
-		widgets.bitmapOpenChooser.addChoosableFileFilter(widgets.bmf.gif);
-		widgets.bitmapOpenChooser.addChoosableFileFilter(widgets.bmf.jpeg);
-		widgets.bitmapOpenChooser.addChoosableFileFilter(widgets.bmf.png);
-		widgets.bitmapOpenChooser.addChoosableFileFilter(widgets.bmf.bmp);
-		widgets.bitmapOpenChooser.addChoosableFileFilter(widgets.bmf.pcx);
-		widgets.bitmapOpenChooser.setFileFilter(widgets.bmf.supported);
-
-		// Set up bitmap save chooser.
-		widgets.bitmapSaveChooser.setAcceptAllFileFilterUsed(false);
-		widgets.bitmapSaveChooser.addChoosableFileFilter(widgets.bmf.gif);
-		widgets.bitmapSaveChooser.addChoosableFileFilter(widgets.bmf.jpeg);
-		widgets.bitmapSaveChooser.addChoosableFileFilter(widgets.bmf.png);
-		widgets.bitmapSaveChooser.addChoosableFileFilter(widgets.bmf.bmp);
-		widgets.bitmapSaveChooser.addChoosableFileFilter(widgets.bmf.pcx);
-		widgets.bitmapSaveChooser.setFileFilter(widgets.bmf.bmp);
+		widgets.initFileChoosers(this);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -630,13 +579,9 @@ public class TMUI extends JFrame {
 		}
 	}
 
-	/**
-	 * Initializes the View->Codec menu based on the tilecodecs present, and sets up
-	 * the widgets.fileOpenChooser accordingly.
-	 **/
+	/** Initializes the View->Codec menu based on the tilecodecs present. */
 	private void initTileCodecUIStuff() {
 		buildTileCodecsMenu();
-		initFileOpenChooser();
 	}
 
 	/**
@@ -674,32 +619,6 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 * Sets up the file open chooser.
-	 **/
-	private void initFileOpenChooser() {
-		widgets.fileOpenChooser.setAcceptAllFileFilterUsed(false);
-		widgets.fileOpenChooser.resetChoosableFileFilters();
-		ArrayList<TMTileCodecFileFilter> sortedFileFilters = new ArrayList<>();
-		for (int i = 0; i < filefilters.size(); i++) {
-			sortedFileFilters.add(filefilters.get(i));
-		}
-		Collections.sort(sortedFileFilters,
-				(a, b) -> a.getDescription().compareToIgnoreCase(b.getDescription()));
-		String extlist = "";
-		for (int i = 0; i < sortedFileFilters.size(); i++) {
-			TMTileCodecFileFilter cff = sortedFileFilters.get(i);
-			widgets.fileOpenChooser.addChoosableFileFilter(cff);
-			if (i > 0)
-				extlist += ",";
-			extlist += cff.getExtlist();
-		}
-		TMFileFilter supportedFilter = new TMFileFilter(extlist, xlate("All_Supported_Formats"));
-		widgets.fileOpenChooser.addChoosableFileFilter(supportedFilter);
-		widgets.fileOpenChooser.addChoosableFileFilter(widgets.allFilter);
-		widgets.fileOpenChooser.setFileFilter(supportedFilter);
-	}
-
-	/**
 	 * Loads tmspec.xml from the working directory, or from the classpath if missing.
 	 * @return resolve tmspec file
 	 * @throws IOException if the operation fails
@@ -727,57 +646,6 @@ public class TMUI extends JFrame {
 			}
 		}
 		return temp;
-	}
-
-	/**
-	 * Sets up the palette open chooser.
-	 * @return palette filter sort rank value
-	 * @param pff pff value
-	 **/
-	private static int paletteFilterSortRank(TMPaletteFileFilter pff) {
-		String ext = pff.getExtlist();
-		if ("csv".equals(ext)) {
-			return 0;
-		}
-		if (ext.indexOf("col") >= 0) {
-			return 1;
-		}
-		if ("tpl".equals(ext)) {
-			return 2;
-		}
-		if ("pal".equals(ext) && "RIFF".equals(pff.getCodecID())) {
-			return 3;
-		}
-		return 4;
-	}
-
-	private void initPaletteOpenChooser() {
-		widgets.paletteOpenChooser.setAcceptAllFileFilterUsed(false);
-		widgets.paletteOpenChooser.resetChoosableFileFilters();
-		ArrayList<TMPaletteFileFilter> sortedPaletteFilters = new ArrayList<>();
-		for (int i = 0; i < palettefilters.size(); i++) {
-			sortedPaletteFilters.add(palettefilters.get(i));
-		}
-		Collections.sort(sortedPaletteFilters, (a, b) -> {
-			int ra = paletteFilterSortRank(a);
-			int rb = paletteFilterSortRank(b);
-			if (ra != rb) {
-				return ra - rb;
-			}
-			return a.getDescription().compareToIgnoreCase(b.getDescription());
-		});
-		String extlist = "";
-		for (int i = 0; i < sortedPaletteFilters.size(); i++) {
-			TMPaletteFileFilter pff = sortedPaletteFilters.get(i);
-			widgets.paletteOpenChooser.addChoosableFileFilter(pff);
-			if (i > 0) {
-				extlist += ",";
-			}
-			extlist += pff.getExtlist();
-		}
-		TMFileFilter supportedFilter = new TMFileFilter(extlist, xlate("All_Supported_Formats"));
-		widgets.paletteOpenChooser.addChoosableFileFilter(supportedFilter);
-		widgets.paletteOpenChooser.setFileFilter(sortedPaletteFilters.get(0));
 	}
 
 	/**

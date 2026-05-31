@@ -26,9 +26,11 @@ import tm.filelistener.TMFileListener;
 import tm.tilecodecs.TileCodec;
 import tm.utils.mxScrollableDesktop;
 import javax.swing.*;
-import javax.swing.border.Border;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import tm.utils.Xlator;
 
 /** Menus, toolbars, dialogs, and other Swing widgets for {@link TMUI}. */
 public class TMUIWidgets {
@@ -47,17 +49,17 @@ public class TMUIWidgets {
 	JPanel bottomPane = new JPanel(); // palette and statusbar
 	TMPalettePane palettePane;
 
-	// file choosers
-	TMApprovedFileOpenChooser fileOpenChooser = new TMApprovedFileOpenChooser();
-	TMApprovedFileSaveChooser fileSaveChooser = new TMApprovedFileSaveChooser();
-	TMApprovedFileOpenChooser bitmapOpenChooser = new TMApprovedFileOpenChooser();
-	TMApprovedFileSaveChooser bitmapSaveChooser = new TMApprovedFileSaveChooser();
-	TMApprovedFileOpenChooser paletteOpenChooser = new TMApprovedFileOpenChooser();
+	// file choosers (created in initFileChoosers after tmspec is loaded)
+	TMApprovedFileOpenChooser fileOpenChooser;
+	TMApprovedFileSaveChooser fileSaveChooser;
+	TMApprovedFileOpenChooser bitmapOpenChooser;
+	TMApprovedFileSaveChooser bitmapSaveChooser;
+	TMApprovedFileOpenChooser paletteOpenChooser;
 
 	TMBitmapFilters bmf = new TMBitmapFilters();
 	TMFileFilter allFilter;
 
-	// custom dialogs
+	// modal dialogs (created in initDialogs)
 	TMGoToDialog goToDialog;
 	TMNewFileDialog newFileDialog;
 	TMCustomCodecDialog customCodecDialog;
@@ -239,12 +241,9 @@ public class TMUIWidgets {
 	// Help menu
 	JMenu helpMenu = new JMenu("Help");
 	JMenuItem helpTopicsMenuItem = new JMenuItem("Help Topics");
-	// private JMenuItem tipMenuItem = new JMenuItem("Tip of the Millennium..."); //
-	// Still say no to drugs, okay?
 	JMenuItem aboutMenuItem = new JMenuItem("About Tile Molester...");
 
 	// button groups
-	//private ButtonGroup toolButtonGroup = new ButtonGroup();
 	ButtonGroup colorCodecButtonGroup = new ButtonGroup();
 	ButtonGroup tileCodecButtonGroup = new ButtonGroup();
 	ButtonGroup paletteButtonGroup = new ButtonGroup();
@@ -256,4 +255,141 @@ public class TMUIWidgets {
 	Map<TMPalette, TMPaletteMenuItem> paletteButtonHashtable = new HashMap<>();
 	Map<byte[], TMFileListener> fileListenerHashtable = new HashMap<>();
 
+	/**
+	 * Creates modal dialogs and the palette pane. Call from {@link TMUI} once the
+	 * translator is ready.
+	 **/
+	void initDialogs(TMUI ui, Xlator xl) {
+		goToDialog = new TMGoToDialog(ui, xl);
+		newFileDialog = new TMNewFileDialog(ui, xl);
+		customCodecDialog = new TMCustomCodecDialog(ui, "Custom Codec", true);
+		stretchDialog = new TMStretchDialog(ui, xl);
+		canvasSizeDialog = new TMCanvasSizeDialog(ui, xl);
+		blockSizeDialog = new TMBlockSizeDialog(ui, xl);
+		addBookmarkDialog = new TMAddToTreeDialog(ui, "Add_To_Bookmarks_Dialog_Title", xl);
+		addPaletteDialog = new TMAddToTreeDialog(ui, "Add_To_Palettes_Dialog_Title", xl);
+		organizeBookmarksDialog = new TMOrganizeTreeDialog(ui, "Organize_Bookmarks_Dialog_Title", xl);
+		organizePalettesDialog = new TMOrganizeTreeDialog(ui, "Organize_Palettes_Dialog_Title", xl);
+		newPaletteDialog = new TMNewPaletteDialog(ui, xl);
+		paletteSizeDialog = new TMPaletteSizeDialog(ui, xl);
+		importInternalPaletteDialog = new TMImportInternalPaletteDialog(ui, xl);
+		palettePane = new TMPalettePane(ui);
+	}
+
+	/**
+	 * Creates and configures file choosers. Call from {@link TMUI} after
+	 * {@code allFilter} can be built and tile/palette filters are loaded from the spec.
+	 **/
+	void initFileChoosers(TMUI ui) {
+		allFilter = new TMAllFilter(ui.xlate("All_Files"));
+
+		fileOpenChooser = new TMApprovedFileOpenChooser();
+		fileSaveChooser = new TMApprovedFileSaveChooser();
+		bitmapOpenChooser = new TMApprovedFileOpenChooser();
+		bitmapSaveChooser = new TMApprovedFileSaveChooser();
+		paletteOpenChooser = new TMApprovedFileOpenChooser();
+
+		fileOpenChooser.setDialogTitle(ui.xlate("Open_File_Dialog_Title"));
+		fileSaveChooser.setDialogTitle(ui.xlate("Save_As_Dialog_Title"));
+		bitmapOpenChooser.setDialogTitle(ui.xlate("Paste_From_Dialog_Title"));
+		bitmapSaveChooser.setDialogTitle(ui.xlate("Export_As_Dialog_Title"));
+		paletteOpenChooser.setDialogTitle(ui.xlate("Open_Palette_Dialog_Title"));
+
+		setupFileOpenChooser(ui);
+		setupPaletteOpenChooser(ui);
+
+		fileSaveChooser.setAcceptAllFileFilterUsed(false);
+		fileSaveChooser.addChoosableFileFilter(allFilter);
+		fileSaveChooser.setFileFilter(allFilter);
+
+		bitmapOpenChooser.setAcceptAllFileFilterUsed(false);
+		bitmapOpenChooser.addChoosableFileFilter(bmf.supported);
+		bitmapOpenChooser.addChoosableFileFilter(bmf.gif);
+		bitmapOpenChooser.addChoosableFileFilter(bmf.jpeg);
+		bitmapOpenChooser.addChoosableFileFilter(bmf.png);
+		bitmapOpenChooser.addChoosableFileFilter(bmf.bmp);
+		bitmapOpenChooser.addChoosableFileFilter(bmf.pcx);
+		bitmapOpenChooser.setFileFilter(bmf.supported);
+
+		bitmapSaveChooser.setAcceptAllFileFilterUsed(false);
+		bitmapSaveChooser.addChoosableFileFilter(bmf.gif);
+		bitmapSaveChooser.addChoosableFileFilter(bmf.jpeg);
+		bitmapSaveChooser.addChoosableFileFilter(bmf.png);
+		bitmapSaveChooser.addChoosableFileFilter(bmf.bmp);
+		bitmapSaveChooser.addChoosableFileFilter(bmf.pcx);
+		bitmapSaveChooser.setFileFilter(bmf.bmp);
+
+		newPaletteDialog.setCodecs(ui.colorcodecs);
+		importInternalPaletteDialog.setCodecs(ui.colorcodecs);
+	}
+
+	private void setupFileOpenChooser(TMUI ui) {
+		fileOpenChooser.setAcceptAllFileFilterUsed(false);
+		fileOpenChooser.resetChoosableFileFilters();
+		ArrayList<TMTileCodecFileFilter> sortedFileFilters = new ArrayList<>();
+		for (int i = 0; i < ui.filefilters.size(); i++) {
+			sortedFileFilters.add(ui.filefilters.get(i));
+		}
+		Collections.sort(sortedFileFilters,
+				(a, b) -> a.getDescription().compareToIgnoreCase(b.getDescription()));
+		String extlist = "";
+		for (int i = 0; i < sortedFileFilters.size(); i++) {
+			TMTileCodecFileFilter cff = sortedFileFilters.get(i);
+			fileOpenChooser.addChoosableFileFilter(cff);
+			if (i > 0) {
+				extlist += ",";
+			}
+			extlist += cff.getExtlist();
+		}
+		TMFileFilter supportedFilter = new TMFileFilter(extlist, ui.xlate("All_Supported_Formats"));
+		fileOpenChooser.addChoosableFileFilter(supportedFilter);
+		fileOpenChooser.addChoosableFileFilter(allFilter);
+		fileOpenChooser.setFileFilter(supportedFilter);
+	}
+
+	private void setupPaletteOpenChooser(TMUI ui) {
+		paletteOpenChooser.setAcceptAllFileFilterUsed(false);
+		paletteOpenChooser.resetChoosableFileFilters();
+		ArrayList<TMPaletteFileFilter> sortedPaletteFilters = new ArrayList<>();
+		for (int i = 0; i < ui.palettefilters.size(); i++) {
+			sortedPaletteFilters.add(ui.palettefilters.get(i));
+		}
+		Collections.sort(sortedPaletteFilters, (a, b) -> {
+			int ra = paletteFilterSortRank(a);
+			int rb = paletteFilterSortRank(b);
+			if (ra != rb) {
+				return ra - rb;
+			}
+			return a.getDescription().compareToIgnoreCase(b.getDescription());
+		});
+		String extlist = "";
+		for (int i = 0; i < sortedPaletteFilters.size(); i++) {
+			TMPaletteFileFilter pff = sortedPaletteFilters.get(i);
+			paletteOpenChooser.addChoosableFileFilter(pff);
+			if (i > 0) {
+				extlist += ",";
+			}
+			extlist += pff.getExtlist();
+		}
+		TMFileFilter supportedFilter = new TMFileFilter(extlist, ui.xlate("All_Supported_Formats"));
+		paletteOpenChooser.addChoosableFileFilter(supportedFilter);
+		paletteOpenChooser.setFileFilter(sortedPaletteFilters.get(0));
+	}
+
+	private static int paletteFilterSortRank(TMPaletteFileFilter pff) {
+		String ext = pff.getExtlist();
+		if ("csv".equals(ext)) {
+			return 0;
+		}
+		if (ext.indexOf("col") >= 0) {
+			return 1;
+		}
+		if ("tpl".equals(ext)) {
+			return 2;
+		}
+		if ("pal".equals(ext) && "RIFF".equals(pff.getCodecID())) {
+			return 3;
+		}
+		return 4;
+	}
 }
