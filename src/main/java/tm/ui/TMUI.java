@@ -74,7 +74,7 @@ public class TMUI extends JFrame {
 	java.util.List<TMPaletteFileFilter> palettefilters;
 	java.util.List<TMFileListener> filelisteners;
 
-	final TMUIWidgets widgets = new TMUIWidgets();
+	final TMUIWidgets widgets;
 	TMUITreeMenuBuilder treeMenuBuilder;
 
 	private Xlator xl;
@@ -114,11 +114,39 @@ public class TMUI extends JFrame {
 			System.exit(0);
 		}
 
-		widgets.initDialogs(this, xl);
-
 		setLocale(locale);
 		Locale.setDefault(locale);
 		JComponent.setDefaultLocale(this.locale);
+
+		///////// Read specs
+		try {
+			TMSpecReader.readSpecsFromFile(resolveTmspecFile());
+		} catch (SAXParseException e) {
+			showError("Parser_Parse_Error",
+					e.getMessage() + "\n(" + e.getSystemId() + ",\nline " + e.getLineNumber() + ")\n");
+			System.exit(0);
+		} catch (SAXException e) {
+			showError("Parser_Parse_Error", e);
+			System.exit(0);
+		} catch (ParserConfigurationException e) {
+			showError("Parser_Config_Error", e);
+			System.exit(0);
+		} catch (IOException e) {
+			showError("Parser_IO_Error", e);
+			System.exit(0);
+		}
+
+		colorcodecs = TMSpecReader.getColorCodecs();
+		tilecodecs = TMSpecReader.getTileCodecs();
+		filefilters = TMSpecReader.getFileFilters();
+		palettefilters = TMSpecReader.getPaletteFilters();
+		filelisteners = TMSpecReader.getFileListeners();
+
+		tilecodecs.add(new _3BPPLinearTileCodec());
+		tilecodecs.add(new _6BPPLinearTileCodec());
+
+		widgets = TMUIWidgets.create(new TMUIWidgetsBootstrap(
+				this, xl, colorcodecs, filefilters, palettefilters));
 
 		// File menu
 		widgets.fileMenu.setText(xlate("File"));
@@ -217,34 +245,6 @@ public class TMUI extends JFrame {
 		UIManager.put("OptionPane.cancelButtonText", xlate("Cancel"));
 		UIManager.put("OptionPane.okButtonText", xlate("OK"));
 
-		///////// Read specs
-		try {
-			TMSpecReader.readSpecsFromFile(resolveTmspecFile());
-		} catch (SAXParseException e) {
-			showError("Parser_Parse_Error",
-					e.getMessage() + "\n(" + e.getSystemId() + ",\nline " + e.getLineNumber() + ")\n");
-			System.exit(0);
-		} catch (SAXException e) {
-			showError("Parser_Parse_Error", e);
-			System.exit(0);
-		} catch (ParserConfigurationException e) {
-			showError("Parser_Config_Error", e);
-			System.exit(0);
-		} catch (IOException e) {
-			showError("Parser_IO_Error", e);
-			System.exit(0);
-		}
-
-		colorcodecs = TMSpecReader.getColorCodecs();
-		tilecodecs = TMSpecReader.getTileCodecs();
-		filefilters = TMSpecReader.getFileFilters();
-		palettefilters = TMSpecReader.getPaletteFilters();
-		filelisteners = TMSpecReader.getFileListeners();
-
-		tilecodecs.add(new _3BPPLinearTileCodec());
-		tilecodecs.add(new _6BPPLinearTileCodec());
-		//////////
-
 		TMUIMenuBuilder menuBuilder = new TMUIMenuBuilder(this);
 		TMUIToolbarBuilder toolbarBuilder = new TMUIToolbarBuilder(this);
 		treeMenuBuilder = new TMUITreeMenuBuilder(this);
@@ -302,7 +302,6 @@ public class TMUI extends JFrame {
 
 		initTileCodecUIStuff();
 		buildColorCodecsMenu();
-		widgets.initFileChoosers(this);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -321,10 +320,6 @@ public class TMUI extends JFrame {
 			 **/
 			public void windowActivated(WindowEvent e) {
 				setExtendedState(JFrame.NORMAL); // Hacky way to make it not run in full screen by default
-				// HACK to fix the GUI after running FCEU in fullscreen mode
-				// int state = getExtendedState();
-				// setExtendedState(JFrame.ICONIFIED);
-				// setExtendedState(state);
 			}
 		});
 
