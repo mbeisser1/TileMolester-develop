@@ -4012,7 +4012,7 @@ public class TMUI extends JFrame {
 	 **/
 	public void addToBookmarksMenu(TMTreeNode node, JMenu menu) {
 		if (node instanceof BookmarkItemNode) {
-			menu.add(new BookmarkMenuItem((BookmarkItemNode) node));
+			menu.add(new TMBookmarkMenuItem((BookmarkItemNode) node, this::doGotoBookmarkCommand));
 		} else {
 			// folder
 			JMenu subMenu = new JMenu(node.toString());
@@ -4030,40 +4030,6 @@ public class TMUI extends JFrame {
 			}
 			menu.add(subMenu);
 		}
-	}
-
-	/**
-	 * Menu item that represents a bookmark.
-	 **/
-	private class BookmarkMenuItem extends JMenuItem {
-
-		private BookmarkItemNode bookmark;
-
-		// creates a bookmarkmenu item for the given bookmark.
-		public BookmarkMenuItem(BookmarkItemNode bookmark) {
-			super(bookmark.getDescription());
-			this.bookmark = bookmark;
-			addActionListener(
-					new ActionListener() {
-						/**
-						 * Invokes {@link #getSource()} in response to the user action.
-						 * @param e event from the AWT/Swing listener
-						 **/
-						public void actionPerformed(ActionEvent e) {
-							doGotoBookmarkCommand(((BookmarkMenuItem) e.getSource()).getBookmark());
-						}
-					});
-			setToolTipText(bookmark.getToolTipText());
-		}
-
-		/**
-		 * Gets the bookmark.
-		 * @return bookmark
-		 **/
-		public BookmarkItemNode getBookmark() {
-			return bookmark;
-		}
-
 	}
 
 	/**
@@ -4420,43 +4386,9 @@ public class TMUI extends JFrame {
 		} else {
 			for (int i = 0; i < recentFiles.size(); i++) {
 				File recentFile = recentFiles.get(i);
-				reopenMenu.add(new RecentFileMenuItem(recentFile));
+				reopenMenu.add(new TMRecentFileMenuItem(recentFile, this::doReopenCommand));
 			}
 		}
-	}
-
-	/**
-	 * Menu item that represents a recently opened (closed) file.
-	 **/
-	private class RecentFileMenuItem extends JMenuItem {
-
-		private File recentFile;
-
-		// creates a recentfilemenuitem for the given file.
-		public RecentFileMenuItem(File recentFile) {
-			super(recentFile.getName());
-			setToolTipText(recentFile.getAbsolutePath());
-			this.recentFile = recentFile;
-			addActionListener(
-					new ActionListener() {
-						/**
-						 * Invokes {@link #getSource()} in response to the user action.
-						 * @param e event from the AWT/Swing listener
-						 **/
-						public void actionPerformed(ActionEvent e) {
-							doReopenCommand(((RecentFileMenuItem) e.getSource()).getRecentFile());
-						}
-					});
-		}
-
-		/**
-		 * Gets the recent file.
-		 * @return recent file
-		 **/
-		public File getRecentFile() {
-			return recentFile;
-		}
-
 	}
 
 	/**
