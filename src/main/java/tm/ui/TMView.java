@@ -38,7 +38,7 @@ import java.util.List;
  * A graphical view of a file image.
  * The frame contains a panel that's used for rendering the tile data, and a
  * slider for keeping track of the file position. The keyboard can also be used
- * to change the file position (see class ViewKeyListener). The filename is
+ * to change the file position (see class TMViewKeyListener). The filename is
  * shown in the titlebar, along with a * when the file has been modified.
  **/
 public class TMView extends JInternalFrame {
@@ -123,7 +123,7 @@ public class TMView extends JInternalFrame {
 		// the panel containing the slider and editor canvas
 		contentPane.setLayout(null);
 		contentPane.setFocusable(true);
-		contentPane.addKeyListener(new ViewKeyListener(this));
+		contentPane.addKeyListener(new TMViewKeyListener(this));
 		contentPane.setFocusTraversalKeysEnabled(false); // so VK_TAB key events are caught
 		
 		contentPane.addMouseListener(

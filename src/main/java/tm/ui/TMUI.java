@@ -611,7 +611,6 @@ public class TMUI extends JFrame {
 				finalWidth,
 				finalHeight);
 
-
 		// MDI menus and such shouldn't be shown until file loaded.
 		refresh.setMdiMode(false);
 
@@ -636,67 +635,13 @@ public class TMUI extends JFrame {
 		moveButton.setSelected(false);
 	}
 
-	//////////////////////////////////////////////////////////////////////////////
-	// Begin code for handling menu commands
-
-	/**
-	 * Handles menu command "New".
-	 * Prompts the user to enter the desired file size, then creates a new
-	 * FileImage and a default view + palette.
-	 **/
-
-	/**
-	 * Handles menu command "Open...".
-	 * User selects file from standard file dialog, the file is
-	 * opened and a default view + palette is assigned.
-	 **/
-
-	/**
-	 * Handles menu command "Close".
-	 * Closes a view. If it is the last (only) view of a FileImage,
-	 * and the file is modified, the user is prompted to save the file.
-	 **/
-
-	/**
-	 * Saves the resources for the given fileimage to a file in XML format.
-	 * @param img img value
-	 **/
-
-	/**
-	 *
-	 **/
 	public void saveBookmarks() {
 		// TODO
 	}
 
-	/**
-	 *
-	 **/
 	public void savePalettes() {
 		// TODO
 	}
-
-	/**
-	 * Handles menu command "Close All".
-	 * Does the same as "Close", only for all the current frames.
-	 **/
-
-	/**
-	 * Handles menu command "Save".
-	 **/
-
-	/**
-	 * Handles menu command "Save As...".
-	 **/
-
-	/**
-	 * Handles menu command "Save All".
-	 **/
-
-	/**
-	 * Handles menu command "Exit".
-	 **/
-
 
 	public void doNewCommand() { fileActions.doNewCommand(); }
 
@@ -762,69 +707,6 @@ public class TMUI extends JFrame {
 	public void doImportExternalPaletteCommand() { paletteActions.doImportExternalPaletteCommand(); }
 	public void doPaletteEndiannessCommand(int endianness) { paletteActions.doPaletteEndiannessCommand(endianness); }
 	public void doSelectPaletteCommand(TMPalette palette) { paletteActions.doSelectPaletteCommand(palette); }
-
-
-	/**
-	 * Handles menu command "Undo".
-	 * Extracts the top item in the Undo stack and undoes it.
-	 * Moves the item to the Redo stack.
-	 **/
-
-	/**
-	 * Handles menu command "Redo".
-	 * Extracts the top item in the Redo stack and redoes it.
-	 * Moves the item to the Undo stack.
-	 **/
-
-	/**
-	 * Handles menu command "Cut".
-	 * The current selection of the selected frame is cut to the
-	 * central selection.
-	 **/
-
-	/**
-	 * Handles menu command "Copy".
-	 **/
-
-	/**
-	 * Handles menu command "Paste".
-	 **/
-
-	/**
-	 * Handles menu command "Clear".
-	 **/
-
-	/**
-	 * Handles menu command "Go To...".
-	 * Shows a dialog where the user can enter an absolute or relative
-	 * file offset to jump to. Then jumps to that offset.
-	 **/
-
-	/**
-	 * Handles menu command "Go To Again".
-	 * Only applicable when the preceding "Go To..." was of relative type.
-	 **/
-
-	/**
-	 * Handles menu command "Select All".
-	 **/
-
-	/**
-	 * Handles menu command "Save Selection As...".
-	 * @return export selection as flag
-	 **/
-
-	/**
-	 * Handles the "CopyTo" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the "CutAs" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles menu command "Paste From...".
-	 **/
 
 	/**
 	 * Handles menu command "Tile".
@@ -1178,11 +1060,6 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 * Handles the "Reopen" menu or toolbar command.
-	 * @param recentFile recentFile value
-	 **/
-
-	/**
 	 * Handles the menu command "Custom Codec".
 	 **/
 	public void doCustomCodecCommand() {
@@ -1202,114 +1079,6 @@ public class TMUI extends JFrame {
 			}
 		});
 	}
-
-	/**
-	 * Navigation button press handlers.
-	 **/
-
-	/**
-	 * Handles the "MinusPage" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the "MinusRow" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the "MinusTile" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the "MinusByte" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the "PlusByte" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the "PlusTile" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the "PlusRow" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the "PlusPage" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the "End" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the menu command "Add To Bookmarks".
-	 **/
-
-	/**
-	 * Handles the menu command "Organize Bookmarks".
-	 **/
-
-	/**
-	 * Handles the menu command "Add To Palettes".
-	 **/
-
-	/**
-	 * Handles the menu command "Organize Palettes".
-	 **/
-
-	/**
-	 * Handles the menu command "Edit Colors".
-	 **/
-
-	/**
-	 * Handles the menu command "Format Palette".
-	 * @param codec tile codec used for encode/decode
-	 **/
-
-	/**
-	 * Handles the menu command "Set Palette Size".
-	 **/
-
-	/**
-	 * Handles the menu command "New Palette".
-	 **/
-
-	/**
-	 * Handles the menu command "Import Palette From This File".
-	 **/
-
-	/**
-	 * Handles the menu command "Import Palette From Another File".
-	 **/
-
-	/**
-	 * Reports whether csv palette import.
-	 * @return whether csv palette import
-	 * @param pf pf value
-	 * @param file file value
-	 **/
-
-	/**
-	 * @param view file view associated with this component
-	 * @param file file value
-	 **/
-
-	/**
-	 * Handles menu command "Palette Endianness".
-	 * @param endianness endianness value
-	 **/
-
-	/**
-	 * Called when user has selected a bookmark to jump to from the Navigate menu.
-	 * @param bookmark bookmark value
-	 **/
-
-	/**
-	 * Called when user has selected a palette to use from the Palette menu.
-	 * @param palette palette whose colors are displayed or edited
-	 **/
 
 	/**
 	 * Handles the "DecreaseWidth" menu or toolbar command.
@@ -1404,14 +1173,6 @@ public class TMUI extends JFrame {
 	public void refreshPaletteSelection(TMView view) { refresh.refreshPaletteSelection(view); }
 	public void refreshPaletteEndiannessSelection(TMView view) { refresh.refreshPaletteEndiannessSelection(view); }
 	public void refreshColorCodecSelection(TMView view) { refresh.refreshColorCodecSelection(view); }
-
-	/**
-	 * Hides/disables MDI-specific menus and buttons.
-	 **/
-
-	/**
-	 * Shows/enables MDI-specific menus and buttons.
-	 **/
 
 	/**
 	 * Adds a codec to the list of available codecs and creates a menu item for it.
@@ -1693,9 +1454,6 @@ public class TMUI extends JFrame {
 		return 4;
 	}
 
-	/**
-	 *
-	 **/
 	private void initPaletteOpenChooser() {
 		paletteOpenChooser.setAcceptAllFileFilterUsed(false);
 		paletteOpenChooser.resetChoosableFileFilters();
@@ -1757,12 +1515,6 @@ public class TMUI extends JFrame {
 		return null;
 	}
 
-	/**
-	 * Gets the default tile codec file filter for the specified file
-	 * based on its extension.
-	 * @return tile codec filter for file
-	 * @param file file value
-	 **/
 	TMTileCodecFileFilter getTileCodecFilterForFile(File file) {
 		for (int i = 0; i < filefilters.size(); i++) {
 			TMTileCodecFileFilter cff = filefilters.get(i);
@@ -1773,12 +1525,6 @@ public class TMUI extends JFrame {
 		return filefilters.get(0);
 	}
 
-	/**
-	 * Gets the default palette file filter for the specified file
-	 * based on its extension.
-	 * @return palette filter for file
-	 * @param file file value
-	 **/
 	TMPaletteFileFilter getPaletteFilterForFile(File file) {
 		for (int i = 0; i < palettefilters.size(); i++) {
 			TMPaletteFileFilter pff = palettefilters.get(i);
@@ -1788,30 +1534,6 @@ public class TMUI extends JFrame {
 		}
 		return palettefilters.get(0);
 	}
-
-	/**
-	 * Builds the menu containing all the bookmarks.
-	 * @param root root value
-	 **/
-
-	/**
-	 * Recursive routine that adds the given node to the given menu.
-	 * If the node is internal it is expanded into a menu of its own.
-	 * @param node node value
-	 * @param menu menu value
-	 **/
-
-	/**
-	 * Builds the menu containing all the palettes.
-	 * @param root root value
-	 **/
-
-	/**
-	 * Recursive routine that adds the given node to the given menu.
-	 * If the node is internal it is expanded into a menu of its own.
-	 * @param node node value
-	 * @param menu menu value
-	 **/
 
 	/**
 	 * Updates various UI components (menus, statusbar, palette) to reflect the
@@ -1841,70 +1563,11 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 * Selects the correct menu item, according to the view's block size.
-	 * @param view file view associated with this component
-	 **/
-
-	/**
-	 * Selects the correct menu item, according to the view's mode.
-	 * @param view file view associated with this component
-	 **/
-
-	/**
-	 * Selects the correct menu item, according to the view's tile codec.
-	 * @param view file view associated with this component
-	 **/
-
-	/**
-	 * Reloads the palette.
-	 **/
-
-	/**
-	 * Updates the Undo/Redo buttons text+status.
-	 **/
-
-	/**
-	 * Sets the statusbar fields according to current view settings.
-	 **/
-
-	/**
 	 * Hide the statusbar coordenates.
 	 **/
 	public void hideStatusBarCoords() {
 		statusBar.setCoords("");
 	}
-
-	/**
-	 * Builds the bookmarks menu according to current file image.
-	 **/
-
-	/**
-	 * Builds the palettes menu according to current file image.
-	 **/
-
-	/**
-	 * Refreshes the palette selection.
-	 * @param view file view associated with this component
-	 **/
-
-	/**
-	 * Refreshes the palette endianness.
-	 * @param view file view associated with this component
-	 **/
-
-	/**
-	 * Selects the correct menu item, according to the view's color codec.
-	 * @param view file view associated with this component
-	 **/
-
-	/**
-	 * Opens the specified file.
-	 * @param file file value
-	 **/
-
-	/**
-	 * Builds the menu containing most recently opened (closed) files.
-	 **/
 
 	/**
 	 * Gets the color codecs.
@@ -1917,7 +1580,6 @@ public class TMUI extends JFrame {
 		}
 		return ccs;
 	}
-
 
 	/**
 	 * Attempts to translate the given key string by consulting a ResourceBundle.
@@ -1934,10 +1596,6 @@ public class TMUI extends JFrame {
 		}
 	}
 
-	/**
-	 * Runs an action on the currently selected view, if one exists.
-	 * @param action callback receiving the active {@link TMView}
-	 **/
 	void withSelectedView(Consumer<TMView> action) {
 		TMView view = getSelectedView();
 		if (view != null) {
@@ -1945,19 +1603,10 @@ public class TMUI extends JFrame {
 		}
 	}
 
-	/**
-	 * Adjusts the file offset of the selected view by the given delta.
-	 * @param delta bytes to add to the current offset (negative to move back)
-	 **/
 	void adjustOffset(int delta) {
 		withSelectedView(view -> view.setRelativeOffset(delta));
 	}
 
-	/**
-	 * Shows an error dialog with a translated message and optional detail text.
-	 * @param messageKey resource key for the primary message
-	 * @param detail additional detail appended on a new line, or null
-	 **/
 	void showError(String messageKey, String detail) {
 		String message = xlate(messageKey);
 		if (detail != null && !detail.isEmpty()) {
@@ -1966,11 +1615,6 @@ public class TMUI extends JFrame {
 		JOptionPane.showMessageDialog(this, message, "Tile Molester", JOptionPane.ERROR_MESSAGE);
 	}
 
-	/**
-	 * Shows an error dialog with a translated message and exception detail.
-	 * @param messageKey resource key for the primary message
-	 * @param e exception whose message is appended on a new line
-	 **/
 	void showError(String messageKey, Exception e) {
 		showError(messageKey, e.getMessage());
 	}
@@ -1983,8 +1627,4 @@ public class TMUI extends JFrame {
 		return (TMView) desktop.getSelectedFrame();
 	}
 
-	/**
-	 * Adds the given file to the list of recently opened (closed) files.
-	 * @param f f value
-	 **/
 }
