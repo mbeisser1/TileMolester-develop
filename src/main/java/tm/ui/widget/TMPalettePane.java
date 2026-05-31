@@ -224,7 +224,8 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
 
        lockShiftButtons();
 
-       setPreferredSize(new Dimension(2048, 80));
+       setPreferredSize(new Dimension(606, 80));
+       setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
     }
 
     /**

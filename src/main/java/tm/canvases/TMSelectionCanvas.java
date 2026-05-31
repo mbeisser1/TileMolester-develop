@@ -337,9 +337,15 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
      **/
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // draw frame
-        g.setColor(Color.white);
-        g.drawRect(0, 0, getWidth()-1, getHeight()-1);
+        Graphics2D g2 = (Graphics2D) g.create();
+        try {
+            g2.setColor(Color.white);
+            g2.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,
+                    new float[] {4.0f, 4.0f}, 0.0f));
+            g2.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+        } finally {
+            g2.dispose();
+        }
    }
 
     /**
@@ -349,6 +355,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
     public void mouseDragged(MouseEvent e) {
         // reposition
         setLocation(getX()+e.getX()-dx, getY()+e.getY()-dy);
+        ui.refreshStatusBar();
     }
 
     /**

@@ -136,6 +136,7 @@ public class TMUIFileActions extends TMUICommandGroup {
 			img.removeView(view);
 			ui.widgets.desktop.remove(view);
 			view.dispose();
+			ui.widgets.desktop.invalidatePreferredSizeCache();
 			ui.widgets.desktop.revalidate();
 			ui.widgets.desktop.repaint();
 
@@ -223,6 +224,7 @@ public class TMUIFileActions extends TMUICommandGroup {
 
 		buildReopenMenu();
 		ui.widgets.desktop.setSelectedFrame(null);
+		ui.widgets.desktop.invalidatePreferredSizeCache();
 		ui.widgets.desktop.revalidate();
 		ui.widgets.desktop.repaint();
 		ui.disableMDIStuff();

@@ -2,12 +2,13 @@ package tm.utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
 import tm.ui.settings.TMTheme;
 
 
 public class mxScrollableDesktop extends JDesktopPane {
-	
+
+	private Dimension cachedPreferredSize;
+
 	@Override
     /**
      * Paints the scrollable desktop background.
@@ -32,6 +33,7 @@ public class mxScrollableDesktop extends JDesktopPane {
              **/
             public void endDraggingFrame(JComponent f) {
                 super.endDraggingFrame(f);
+                invalidatePreferredSizeCache();
                 revalidate();
             }
 
@@ -41,6 +43,7 @@ public class mxScrollableDesktop extends JDesktopPane {
              **/
             public void endResizingFrame(JComponent f) {
                 super.endResizingFrame(f);
+                invalidatePreferredSizeCache();
                 revalidate();
             }
         };
@@ -51,11 +54,26 @@ public class mxScrollableDesktop extends JDesktopPane {
     }
 
     /**
+     * Clears cached preferred size so the next layout pass recomputes it.
+     **/
+    public void invalidatePreferredSizeCache() {
+        cachedPreferredSize = null;
+    }
+
+    /**
      * Set the preferred size of the desktop to the right-bottom-corner of the
      * internal-frame with the "largest" right-bottom-corner.
      * @return The preferred desktop dimension.
      **/
+    @Override
     public Dimension getPreferredSize() {
+        if (cachedPreferredSize == null) {
+            cachedPreferredSize = computePreferredSize();
+        }
+        return new Dimension(cachedPreferredSize);
+    }
+
+    private Dimension computePreferredSize() {
         JInternalFrame [] array = getAllFrames();
         int maxX = 0;
         int maxY = 0;

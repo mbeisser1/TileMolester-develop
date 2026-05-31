@@ -21,11 +21,9 @@ package tm.ui.widget;
 import tm.ui.view.TMView;
 import tm.tilecodecs.TileCodec;
 import tm.canvases.TMEditorCanvas;
+import tm.canvases.TMSelectionCanvas;
 import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.*;
-import java.awt.event.*;
-import javax.swing.border.*;
 
 /**
  * Tile Molester status bar.
@@ -33,46 +31,69 @@ import javax.swing.border.*;
 public class TMStatusBar extends JPanel {
 
     private JLabel offsetLabel = new JLabel(" ");
-    private JLabel coordsLabel = new JLabel(" ");
+    private JLabel cursorLabel = new JLabel(" ");
+    private JLabel selectionLabel = new JLabel(" ");
     private JLabel codecLabel = new JLabel(" ");
     private JLabel palOffsetLabel = new JLabel(" ");
     private JLabel modeLabel = new JLabel(" ");
     private JLabel tilesLabel = new JLabel(" ");
     private JLabel messageLabel = new JLabel(" ");
 
+    private String rowLabel = "Row";
+    private String colLabel = "Col";
+    private String selLabel = "Sel";
+    private String paletteLabel = "Palette:";
+
     /**
      * Creates the status bar.
      **/
     public TMStatusBar() {
         super();
-        JPanel p1 = new JPanel();
-        p1.setLayout(new GridLayout(1, 3));
-        p1.add(messageLabel);
-        p1.add(offsetLabel);
-        p1.add(coordsLabel);
+        setLayout(new BorderLayout());
 
-        JPanel p2 = new JPanel();
-        p2.setLayout(new GridLayout(1, 2));
-        p2.add(palOffsetLabel);
-        p2.add(codecLabel);
+        configureStatusLabel(messageLabel);
+        configureStatusLabel(offsetLabel);
+        configureStatusLabel(cursorLabel);
+        configureStatusLabel(selectionLabel);
+        configureStatusLabel(palOffsetLabel);
+        configureStatusLabel(codecLabel);
+        configureStatusLabel(modeLabel);
+        configureStatusLabel(tilesLabel);
 
-        JPanel p3 = new JPanel();
-        p3.setLayout(new GridLayout(1, 2));
-        p3.add(modeLabel);
-        p3.add(tilesLabel);
+        JPanel coordsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+        coordsPanel.add(messageLabel);
+        coordsPanel.add(offsetLabel);
+        coordsPanel.add(cursorLabel);
+        coordsPanel.add(selectionLabel);
 
-        setLayout(new GridLayout(1, 4));
-        add(p1);
-        add(p2);
-        add(p3);
-//        pane.add(new JLabel("    "));   // just some whitespace
+        JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+        infoPanel.add(palOffsetLabel);
+        infoPanel.add(codecLabel);
+        infoPanel.add(modeLabel);
+        infoPanel.add(tilesLabel);
 
-        //offsetLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        //coordsLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        //palOffsetLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        //codecLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        //modeLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        //tilesLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        add(coordsPanel, BorderLayout.WEST);
+        add(infoPanel, BorderLayout.EAST);
+    }
+
+    private static void configureStatusLabel(JLabel label) {
+        label.setHorizontalAlignment(SwingConstants.LEFT);
+    }
+
+    private static void setLabelText(JLabel label, String text) {
+        if (!text.equals(label.getText())) {
+            label.setText(text);
+        }
+    }
+
+    /**
+     * Sets translated labels for tile coordinate fields.
+     **/
+    public void setCoordLabels(String row, String col, String sel, String palette) {
+        rowLabel = row;
+        colLabel = col;
+        selLabel = sel;
+        paletteLabel = palette;
     }
 
     /**
@@ -80,7 +101,7 @@ public class TMStatusBar extends JPanel {
      * @param s text displayed in the status bar
      **/
     public void setMessage(String s) {
-        messageLabel.setText(" "+s+" ");
+        setLabelText(messageLabel, " " + s + " ");
     }
 
     /**
@@ -88,33 +109,47 @@ public class TMStatusBar extends JPanel {
      * @param offset byte offset into the file buffer
      **/
     public void setOffset(int offset) {
-        String hexOffset = Integer.toHexString(offset).toUpperCase();
-        while (hexOffset.length() < 8) {
-            hexOffset = "0" + hexOffset;
-        }
-        offsetLabel.setText(" "+hexOffset+" "); // i18n
+        setLabelText(offsetLabel, " 0x" + formatHexOffset(offset) + " ");
     }
 
     /**
-     * Sets the coordinates.
-     * @param x horizontal pixel or tile coordinate
-     * @param y vertical pixel or tile coordinate
+     * Sets the cursor tile under the mouse.
+     * @param col tile column
+     * @param row tile row
      **/
-    public void setCoords(int x, int y) {
-        coordsLabel.setText(" ("+x+","+y+") ");
+    public void setCursorTile(int col, int row) {
+        setLabelText(cursorLabel, formatRowCol(row, col));
     }
 
     /**
-     * Sets the selection coords.
-     * @param x1 starting horizontal tile coordinate
-     * @param y1 starting vertical tile coordinate
-     * @param x2 ending horizontal tile or pixel coordinate
-     * @param y2 ending vertical tile or pixel coordinate
+     * Clears the cursor tile field.
      **/
-    public void setSelectionCoords(int x1, int y1, int x2, int y2) {
-        int w = Math.abs(x1 - x2) + 1;
-        int h = Math.abs(y1 - y2) + 1;
-        coordsLabel.setText(" ("+x1+","+y1+") -> ("+x2+","+y2+") = ("+w+","+h+")");
+    public void clearCursor() {
+        setLabelText(cursorLabel, " ");
+    }
+
+    /**
+     * Sets the selection from two tile corners (start → end, with size).
+     **/
+    public void setSelectionRange(int col1, int row1, int col2, int row2) {
+        int colMin = Math.min(col1, col2);
+        int colMax = Math.max(col1, col2);
+        int rowMin = Math.min(row1, row2);
+        int rowMax = Math.max(row1, row2);
+        int w = colMax - colMin + 1;
+        int h = rowMax - rowMin + 1;
+        setLabelText(selectionLabel, " " + selLabel + "  "
+                + rowLabel + " " + rowMin + " " + colLabel + " " + colMin
+                + " → "
+                + rowLabel + " " + rowMax + " " + colLabel + " " + colMax
+                + "  (" + w + "×" + h + ") ");
+    }
+
+    /**
+     * Clears the selection tile field.
+     **/
+    public void clearSelection() {
+        setLabelText(selectionLabel, " ");
     }
 
     /**
@@ -122,44 +157,37 @@ public class TMStatusBar extends JPanel {
      * @param s text displayed in the status bar
      **/
     public void setCodec(String s) {
-        codecLabel.setText(" "+s+" ");   // i18n
+        setLabelText(codecLabel, " " + s + " ");
     }
-
-
 
     /**
-     * Sets the text that indicates the graphics codec in use.
-     * @param offset byte offset into the file buffer
+     * Sets the palette file offset.
+     * @param offset byte offset into the palette buffer
      **/
     public void setPalOffset(int offset) {
-        String hexOffset = Integer.toHexString(offset).toUpperCase();
-        while (hexOffset.length() < 8) {
-            hexOffset = "0" + hexOffset;
-        }
-        palOffsetLabel.setText(" Palette: "+hexOffset+" "); // i18n
+        setLabelText(palOffsetLabel, " " + paletteLabel + " " + offset + " ");
     }
-
 
     /**
      * Sets the text that indicates the current mode.
      * @param mode tile layout mode ({@link tm.tilecodecs.TileCodec#MODE_1D} or {@link tm.tilecodecs.TileCodec#MODE_2D})
      **/
     public void setMode(int mode) {
-        if(mode == TileCodec.MODE_1D) {
-            modeLabel.setText(" 1-Dimensional "); // i18n
+        if (mode == TileCodec.MODE_1D) {
+            setLabelText(modeLabel, " 1-Dimensional ");
         }
         else {
-            modeLabel.setText(" 2-Dimensional "); // i18n
+            setLabelText(modeLabel, " 2-Dimensional ");
         }
     }
 
     /**
      * Sets the text that indicates how many tiles are shown.
-     * @param w selection width in tiles
-     * @param h selection height in tiles
+     * @param w number of tile columns in the view
+     * @param h number of tile rows in the view
      **/
     public void setTiles(int w, int h) {
-        tilesLabel.setText(" "+w+"x"+h+" tiles ");  // i18n
+        setLabelText(tilesLabel, " " + w + "x" + h + " tiles ");
     }
 
     /**
@@ -170,15 +198,36 @@ public class TMStatusBar extends JPanel {
         TMEditorCanvas ec = view.getEditorCanvas();
         setMessage("");
         setOffset(view.getOffset());
-        if (ec.isSelecting()) {
-            setSelectionCoords(ec.getSelX1(), ec.getSelY1(), ec.getCurrentCol(), ec.getCurrentRow());
+        clearCursor();
+        clearSelection();
+
+        if (ec.hasSelection()) {
+            TMSelectionCanvas sel = (TMSelectionCanvas) ec.getSelectionCanvas();
+            if (ec.isSelectionOnGrid(sel)) {
+                int dim = sel.getScaledTileDim();
+                int col = sel.getX() / dim;
+                int row = sel.getY() / dim;
+                setSelectionRange(col, row, col + sel.getCols() - 1, row + sel.getRows() - 1);
+            }
+        }
+        else if (ec.isSelecting()) {
+            if (ec.isTileRegionOnGrid(ec.getSelX1(), ec.getSelY1(), ec.getSelX2(), ec.getSelY2())) {
+                setSelectionRange(ec.getSelX1(), ec.getSelY1(), ec.getSelX2(), ec.getSelY2());
+            }
         }
         else if (ec.isDrawingLine()) {
-            setSelectionCoords(ec.getLineX1(), ec.getLineY1(), ec.getLineX2(), ec.getLineY2());
+            int col1 = ec.getLineX1() / 8;
+            int row1 = ec.getLineY1() / 8;
+            int col2 = ec.getLineX2() / 8;
+            int row2 = ec.getLineY2() / 8;
+            if (ec.isTileRegionOnGrid(col1, row1, col2, row2)) {
+                setSelectionRange(col1, row1, col2, row2);
+            }
         }
         else {
-            setCoords(ec.getCurrentCol(), ec.getCurrentRow());
+            setCursorTile(ec.getCurrentCol(), ec.getCurrentRow());
         }
+
         if (view.getTileCodec() != null) {
             setCodec(view.getTileCodec().getDescription());
         }
@@ -190,32 +239,30 @@ public class TMStatusBar extends JPanel {
         setTiles(view.getCols(), view.getRows());
     }
 
-    /**
-     * Convenience method for setting various fields of gridbagconstraints.
-     * @param gbc grid bag constraints to populate
-     * @param gx grid x position
-     * @param gy grid y position
-     * @param gw grid width in cells
-     * @param gh grid height in cells
-     * @param wx horizontal weight
-     * @param wy vertical weight
-     **/
-    protected static void buildConstraints(GridBagConstraints gbc, int gx, int gy, int gw, int gh, int wx, int wy) {
-        gbc.gridx = gx;
-        gbc.gridy = gy;
-        gbc.gridwidth = gw;
-        gbc.gridheight = gh;
-        gbc.weightx = wx;
-        gbc.weighty = wy;
+    private static String formatHexOffset(int offset) {
+        String hexOffset = Integer.toHexString(offset).toUpperCase();
+        while (hexOffset.length() < 8) {
+            hexOffset = "0" + hexOffset;
+        }
+        return hexOffset;
     }
 
+    private String formatRowCol(int row, int col) {
+        return " " + rowLabel + " " + row + "  " + colLabel + " " + col + " ";
+    }
 
-	/**
-	 * Sets coordinates text.
-	 * Sets the coords.
-	 * @param string coordinate text to display
-	 **/
-	public void setCoords(String string) {
-		coordsLabel.setText(string);
-	}
+    /**
+     * Clears cursor and selection coordinate fields.
+     **/
+    public void clearCoords() {
+        clearCursor();
+        clearSelection();
+    }
+
+    /**
+     * @param string ignored; clears coordinate fields
+     **/
+    public void setCoords(String string) {
+        clearCoords();
+    }
 }

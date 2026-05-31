@@ -155,8 +155,15 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
                 y2 = selY1;
             }
             int dim = getScaledTileDim();
-            g.setColor(Color.white);
-            g.drawRect(x1*dim, y1*dim, (x2-x1+1)*dim-1, (y2-y1+1)*dim-1);
+            Graphics2D g2 = (Graphics2D) g.create();
+            try {
+                g2.setColor(Color.white);
+                g2.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,
+                        new float[] {4.0f, 4.0f}, 0.0f));
+                g2.drawRect(x1 * dim, y1 * dim, (x2 - x1 + 1) * dim - 1, (y2 - y1 + 1) * dim - 1);
+            } finally {
+                g2.dispose();
+            }
         }
     }
 
@@ -336,11 +343,10 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
         switch (tool) {
             case SELECT_TOOL:
                 isSelecting = true;
-                // update selection
                 selX2 = x / 8;
                 selY2 = y / 8;
-                //
                 repaint();
+                ui.refreshStatusBar();
                 break;
             case BRUSH_TOOL:
                 drawLine(lineX1, lineY1, x, y, true);
@@ -393,6 +399,7 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
                 }
 
                 moveMousePoint = new Point(p);
+                ui.refreshStatusBar();
                 break;
             default:
                 break;
@@ -1499,6 +1506,27 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
      **/
     public int getLineY2() {
         return lineY2;
+    }
+
+    /**
+     * Returns whether every tile in the region lies on the editor grid.
+     **/
+    public boolean isTileRegionOnGrid(int col1, int row1, int col2, int row2) {
+        int colMin = Math.min(col1, col2);
+        int rowMin = Math.min(row1, row2);
+        int colMax = Math.max(col1, col2);
+        int rowMax = Math.max(row1, row2);
+        return colMin >= 0 && rowMin >= 0 && colMax < cols && rowMax < rows;
+    }
+
+    /**
+     * Returns whether a floating selection lies entirely on the editor grid.
+     **/
+    public boolean isSelectionOnGrid(TMSelectionCanvas sel) {
+        int dim = sel.getScaledTileDim();
+        int col = sel.getX() / dim;
+        int row = sel.getY() / dim;
+        return isTileRegionOnGrid(col, row, col + sel.getCols() - 1, row + sel.getRows() - 1);
     }
 
     /**

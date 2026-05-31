@@ -79,6 +79,7 @@ public class TMUIRefresh {
 				ui.editActions.undo.setEnabled(false);
 				ui.editActions.redo.setEnabled(false);
 				// Show navigation bar
+				ui.widgets.toolBarMDI.setVisible(true);
 				ui.widgets.navBar.setVisible(true);
 				// Show tool pane
 				ui.widgets.toolPane.setVisible(true);
@@ -121,6 +122,7 @@ public class TMUIRefresh {
 				ui.widgets.decHeightButton.setVisible(false);
 				ui.widgets.incHeightButton.setVisible(false);
 				// Hide navigation bar until a file is open
+				ui.widgets.toolBarMDI.setVisible(false);
 				ui.widgets.navBar.setVisible(false);
 				// Hide left tool buttons until a file is open
 				ui.widgets.toolPane.setVisible(false);
@@ -186,6 +188,10 @@ public class TMUIRefresh {
 		if (view != null) {
 			ui.widgets.statusBar.viewSelected(view);
 		}
+	}
+
+	public void refreshStatusBarTiles(int cols, int rows) {
+		ui.widgets.statusBar.setTiles(cols, rows);
 	}
 
 	public void refreshBookmarksMenu() {

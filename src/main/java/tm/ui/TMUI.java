@@ -171,7 +171,7 @@ public class TMUI extends JFrame {
 		// main toolbar
 		toolbarBuilder.buildToolBar();
 		toolbarBuilder.buildNavBar();
-		widgets.toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT));
+		widgets.toolBarPane.setLayout(new BoxLayout(widgets.toolBarPane, BoxLayout.X_AXIS));
 		widgets.toolBarPane.add(widgets.toolBar);
 		widgets.toolBarPane.add(widgets.toolBarMDI);
 		widgets.toolBarPane.add(widgets.navBar);
@@ -187,10 +187,9 @@ public class TMUI extends JFrame {
 		pane.add(widgets.bottomPane, BorderLayout.SOUTH);
 
 		JPanel barPane = new JPanel();
-		// tool palettes
 		toolbarBuilder.buildToolPalette();
 		toolbarBuilder.buildSelectionToolBar();
-		//barPane.setLayout(new GridLayout(1, 2));
+		barPane.setLayout(new BoxLayout(barPane, BoxLayout.X_AXIS));
 
 		barPane.add(widgets.selectionToolBar);
 		barPane.add(widgets.toolPalette);
@@ -291,6 +290,7 @@ public class TMUI extends JFrame {
 		// View menu
 		widgets.viewMenu.setText(xlate("View"));
 		widgets.statusBarMenuItem.setText(xlate("Statusbar"));
+		widgets.statusBar.setCoordLabels(xlate("Row"), xlate("Col"), xlate("Sel"), xlate("Palette") + ":");
 		widgets.toolBarMenuItem.setText(xlate("Toolbar"));
 		widgets.darkModeMenuItem.setText(xlate("Dark_Mode"));
 		widgets.tileCodecMenu.setText(xlate("Codec"));
@@ -415,6 +415,7 @@ public class TMUI extends JFrame {
 	public void refreshPalettePane() { refresh.refreshPalettePane(); }
 	public void refreshUndoRedo() { refresh.refreshUndoRedo(); }
 	public void refreshStatusBar() { refresh.refreshStatusBar(); }
+	public void refreshStatusBarTiles(int cols, int rows) { refresh.refreshStatusBarTiles(cols, rows); }
 	public void refreshBookmarksMenu() { refresh.refreshBookmarksMenu(); }
 	public void refreshPalettesMenu() { refresh.refreshPalettesMenu(); }
 	public void refreshPaletteSelection(TMView view) { refresh.refreshPaletteSelection(view); }
@@ -571,6 +572,7 @@ public class TMUI extends JFrame {
 	 **/
 	public void addViewToDesktop(TMView view) {
 		widgets.desktop.add(view);
+		widgets.desktop.invalidatePreferredSizeCache();
 		try {
 			view.setSelected(true);
 		} catch (java.beans.PropertyVetoException x) {
@@ -737,7 +739,7 @@ public class TMUI extends JFrame {
 	 * Hide the statusbar coordenates.
 	 **/
 	public void hideStatusBarCoords() {
-		widgets.statusBar.setCoords("");
+		widgets.statusBar.clearCoords();
 	}
 
 	/** @return unmodifiable color codecs from tmspec.xml */

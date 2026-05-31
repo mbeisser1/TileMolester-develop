@@ -56,6 +56,7 @@ public class TMView extends JInternalFrame {
 	private boolean offsetControlUpdating;
 	private boolean fittingRowsToViewport;
 	private JScrollPane scrollPane;
+	private ComponentAdapter viewportResizeHandler;
 	private TMEditorCanvas editorCanvas;
 	private TMUI ui;
 	private FileImage fileImage;
@@ -148,14 +149,14 @@ public class TMView extends JInternalFrame {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		setContentPane(scrollPane);
 
-		ComponentAdapter resizeHandler = new ComponentAdapter() {
+		ComponentAdapter viewportResizeHandler = new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				onViewAreaResized();
 			}
 		};
-		addComponentListener(resizeHandler);
-		scrollPane.getViewport().addComponentListener(resizeHandler);
+		this.viewportResizeHandler = viewportResizeHandler;
+		scrollPane.getViewport().addComponentListener(viewportResizeHandler);
 	}
 
 	private void configureEditorCanvas(TileCodec tileCodec) {
@@ -228,15 +229,24 @@ public class TMView extends JInternalFrame {
 	}
 
 	private void layoutOffsetNavigator() {
-		offsetNavigator.setBounds(0, 0, TMOffsetNavigator.WIDTH, editorCanvas.getHeight());
-		offsetNavigator.revalidate();
-		editorCanvas.setLocation(TMOffsetNavigator.WIDTH, 0);
+		int height = editorCanvas.getHeight();
+		if (offsetNavigator.getWidth() != TMOffsetNavigator.WIDTH
+				|| offsetNavigator.getHeight() != height) {
+			offsetNavigator.setBounds(0, 0, TMOffsetNavigator.WIDTH, height);
+		}
+		int editorX = TMOffsetNavigator.WIDTH;
+		if (editorCanvas.getX() != editorX || editorCanvas.getY() != 0) {
+			editorCanvas.setLocation(editorX, 0);
+		}
 	}
 
 	private void syncContentPanePreferredSize() {
-		contentPane.setPreferredSize(new Dimension(
-				offsetNavigator.getWidth() + editorCanvas.getWidth(), editorCanvas.getHeight()));
-		contentPane.revalidate();
+		Dimension preferred = new Dimension(
+				offsetNavigator.getWidth() + editorCanvas.getWidth(), editorCanvas.getHeight());
+		if (!preferred.equals(contentPane.getPreferredSize())) {
+			contentPane.setPreferredSize(preferred);
+			contentPane.revalidate();
+		}
 	}
 
 	private void syncOffsetControlValue(int absOfs) {
@@ -505,8 +515,12 @@ public class TMView extends JInternalFrame {
 		editorCanvas.unpackPixels();
 		setScale(getScale());
 
-		// update statusbar
-		ui.refreshStatusBar(); // TODO: Move to TMUI
+		if (fittingRowsToViewport) {
+			ui.refreshStatusBarTiles(cols, rows);
+		}
+		else {
+			ui.refreshStatusBar();
+		}
 	}
 
 	/**
@@ -978,7 +992,9 @@ public class TMView extends JInternalFrame {
 	public void dispose() {
 		contentPane.removeKeyListener(contentPane.getKeyListeners()[0]);
 		removeInternalFrameListener(getInternalFrameListeners()[0]);
-		removeComponentListener(getComponentListeners()[0]);
+		if (scrollPane != null && viewportResizeHandler != null) {
+			scrollPane.getViewport().removeComponentListener(viewportResizeHandler);
+		}
 		removeAll();
 		fileImage = null;
 		editorCanvas.killViewRef();
