@@ -239,10 +239,10 @@
 
 	<filelisteners>
 
-		<filelistener classname="GameBoyFileListener"/>
-		<filelistener classname="GameBoyAdvanceFileListener"/>
-		<filelistener classname="SegaMasterSystemFileListener"/>
-		<filelistener classname="SegaGenesisFileListener"/>
+		<filelistener classname="tm.filelistener.GameBoyFileListener"/>
+		<filelistener classname="tm.filelistener.GameBoyAdvanceFileListener"/>
+		<filelistener classname="tm.filelistener.SegaMasterSystemFileListener"/>
+		<filelistener classname="tm.filelistener.SegaGenesisFileListener"/>
 
 	</filelisteners>
 

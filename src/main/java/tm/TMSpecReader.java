@@ -254,16 +254,29 @@ public class TMSpecReader {
     /**
      * Reads the filelistener tags and creates TMFileListeners for them.
      **/
+    private static final String FILE_LISTENER_PACKAGE = "tm.filelistener.";
+
+    private static Class<?> loadFileListenerClass(ClassLoader loader, String classname)
+            throws ClassNotFoundException {
+        try {
+            return loader.loadClass(classname);
+        } catch (ClassNotFoundException first) {
+            if (!classname.contains(".")) {
+                return loader.loadClass(FILE_LISTENER_PACKAGE + classname);
+            }
+            throw first;
+        }
+    }
+
     private static void readFileListeners() {
-        ClassLoader loader = ClassLoader.getSystemClassLoader();
+        ClassLoader loader = TMSpecReader.class.getClassLoader();
         NodeList fltags = tmspec.getElementsByTagName("filelistener");
         for (int i=0; i<fltags.getLength(); i++) {
             Element fl = (Element)fltags.item(i);
-            String extlist = fl.getAttribute("extensions");
             String classname = fl.getAttribute("classname");
             Class<?> c;
             try {
-                c = loader.loadClass(classname);
+                c = loadFileListenerClass(loader, classname);
             }
             catch (ClassNotFoundException e) {
                 TMLog.warning("File listener class not found: " + classname, e);
