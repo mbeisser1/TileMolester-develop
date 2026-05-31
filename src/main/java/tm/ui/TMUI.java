@@ -324,7 +324,7 @@ public class TMUI extends JFrame {
 		// create a translator
 		try {
 			xl = new Xlator("languages/language", locale);
-		} catch (Exception e) {
+		} catch (MissingResourceException e) {
 			JOptionPane.showMessageDialog(this,
 					xlate("Error reading language file:") + "\n" + e.getMessage(),
 					"Tile Molester",
@@ -2342,7 +2342,7 @@ public class TMUI extends JFrame {
 			// select a random frame (Swing doesn't do it for you...)
 			try {
 				frames[0].setSelected(true);
-			} catch (Exception e) {
+			} catch (java.beans.PropertyVetoException e) {
 			}
 		}
 	}
@@ -2364,7 +2364,7 @@ public class TMUI extends JFrame {
 				fw.write(img.getResources().toXML());
 				fw.close();
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this,
 					xlate("Save_Resources_Error") + "\n" + e.getMessage(),
 					"Tile Molester",
@@ -2467,7 +2467,7 @@ public class TMUI extends JFrame {
 					byte[] contents = img.getContents();
 					try {
 						thread = new FileSaverThread(contents, file);
-					} catch (Exception e) {
+					} catch (IOException e) {
 						JOptionPane.showMessageDialog(this,
 								xlate("File_Save_Error") + "\n" + e.getMessage(),
 								"Tile Molester",
@@ -2693,7 +2693,7 @@ public class TMUI extends JFrame {
 				// Keep selection and palette in sync after export.
 				view.refreshPaletteDisplay();
 				return true;
-			} catch (Exception e) {
+			} catch (IOException e) {
 				JOptionPane.showMessageDialog(this,
 						xlate("Save_Bitmap_Error") + "\n" + e.getMessage(),
 						"Tile Molester",
@@ -2738,7 +2738,7 @@ public class TMUI extends JFrame {
 				TMTileCanvas bitmapCanvas = null;
 				try {
 					bitmapCanvas = TMBitmapImporter.loadTileCanvasFromFile(file);
-				} catch (Exception e) {
+				} catch (InterruptedException | IOException e) {
 					JOptionPane.showMessageDialog(this,
 							xlate("Load_Bitmap_Error") + "\n" + e.getMessage(),
 							"Tile Molester",
@@ -3530,7 +3530,7 @@ public class TMUI extends JFrame {
 					raf.seek(offset);
 					raf.read(data);
 					raf.close();
-				} catch (Exception e) {
+				} catch (IOException e) {
 					JOptionPane.showMessageDialog(this,
 							xlate("Palette_Read_Error") + "\n" + e.getMessage(),
 							"Tile Molester",
@@ -3578,7 +3578,7 @@ public class TMUI extends JFrame {
 					e.getValue());
 			JOptionPane.showMessageDialog(this, msg, "Tile Molester", JOptionPane.ERROR_MESSAGE);
 			return;
-		} catch (Exception e) {
+		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this,
 					xlate("Palette_Read_Error") + "\n" + e.getMessage(),
 					"Tile Molester",
@@ -4724,7 +4724,7 @@ public class TMUI extends JFrame {
 					"Tile Molester",
 					JOptionPane.ERROR_MESSAGE);
 			return;
-		} catch (Exception e) {
+		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(this,
 					xlate("Load_File_Error") + "\n" + e.getMessage(),
 					"Tile Molester",
@@ -4883,7 +4883,7 @@ public class TMUI extends JFrame {
 		try {
 			String value = xl.xlate(key);
 			return value;
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
 			return key;
 		}
 	}

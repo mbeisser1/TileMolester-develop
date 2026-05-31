@@ -217,7 +217,7 @@ public abstract class TMModalDialog extends JDialog {
             String value = xl.xlate(key);
             return value;
         }
-        catch (Exception e) {
+        catch (NullPointerException e) {
             return key;
         }
     }

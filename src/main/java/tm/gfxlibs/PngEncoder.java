@@ -516,7 +516,7 @@ public class PngEncoder extends Object
                 try {
                     pg.grabPixels();
                 }
-                catch (Exception e) {
+                catch (InterruptedException e) {
                     System.err.println("interrupted waiting for pixels!");
                     return false;
                 }

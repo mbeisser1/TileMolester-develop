@@ -41,16 +41,8 @@ public class FileSaverThread extends ProgressThread {
         throws FileNotFoundException, IOException {
         super();
         this.contents = contents;
-        try {
-            raf = new RandomAccessFile(file, "rw");
-            raf.seek(0);
-        }
-        catch (FileNotFoundException e) {
-            throw e;
-        }
-        catch (IOException e) {
-            throw e;
-        }
+        raf = new RandomAccessFile(file, "rw");
+        raf.seek(0);
         bytesLeft = contents.length;
         this.setPriority(NORM_PRIORITY);
     }
@@ -73,21 +65,21 @@ public class FileSaverThread extends ProgressThread {
                 try {
                     raf.write(contents, contents.length - bytesLeft, CHUNK_SIZE);
                 }
-                catch (Exception e) { }
+                catch (IOException e) { }
                 bytesLeft -= CHUNK_SIZE;
             }
             else {
                 try {
                     raf.write(contents, contents.length - bytesLeft, bytesLeft);
                 }
-                catch (Exception e) { }
+                catch (IOException e) { }
                 bytesLeft = 0;
             }
             ProgressThread.yield();
         }
         try {
             raf.close();
-        } catch (Exception e) { }
+        } catch (IOException e) { }
         // done saving data
     }
 

@@ -57,12 +57,7 @@ public class FileImage {
     public FileImage(int size) throws OutOfMemoryError {
         file = new File(System.getProperty("user.dir") + (fileNum++));
         this.resources = null;
-        try {
-            contents = new byte[size];
-        }
-        catch (OutOfMemoryError e) {
-            throw e;
-        }
+        contents = new byte[size];
         // fill with zeroes
         for (int i=0; i<size; i++) {
             contents[i] = 0x00;

@@ -77,7 +77,7 @@ public class TMSplashScreen extends JWindow {
                     Thread.sleep(4000);     // 4 secs
                     SwingUtilities.invokeAndWait(closerRunner);
                 }
-                catch(Exception e) {
+                catch (InterruptedException | java.lang.reflect.InvocationTargetException e) {
                     e.printStackTrace();
                     // can catch InvocationTargetException
                     // can catch InterruptedException

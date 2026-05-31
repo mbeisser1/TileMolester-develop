@@ -28,9 +28,7 @@ public class TMTreeNodeTransferable implements Transferable {
 
     public static DataFlavor localTMTreeNodeFlavor=null;
     static {
-        try {
-            localTMTreeNodeFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + "; class=treenodes.TMTreeNode", "Local TMTreeNode");
-        } catch(Exception e) { e.printStackTrace(); }
+        localTMTreeNodeFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + "; class=treenodes.TMTreeNode", "Local TMTreeNode");
     }
 
     private TMTreeNode node;

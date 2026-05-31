@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -109,7 +110,7 @@ public class TMTheme {
 		
 			com.formdev.flatlaf.FlatLaf.updateUI();
 			
-		} catch (Exception e) {
+		} catch (UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
 	}

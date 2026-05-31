@@ -245,7 +245,7 @@ public class BMP {
                          (((int)(rawData[k++])) & 0xFF) << 16;
               }
             }
-        }catch (Exception e) {};
+        }catch (ArrayIndexOutOfBoundsException e) {};
         return Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(bmp_infoheader.biWidth, bmp_infoheader.biHeight, ColorModel.getRGBdefault(), data, 0, bmp_infoheader.biWidth));
     }
 
@@ -298,7 +298,7 @@ public class BMP {
               }
             }
         }
-        }catch (Exception e) {};
+        }catch (ArrayIndexOutOfBoundsException e) {};
 
         ColorModel colourModel = new IndexColorModel(bmp_infoheader.biBitCount, bmp_palette.length, bmp_palette.r, bmp_palette.g, bmp_palette.b);
         return Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(bmp_infoheader.biWidth, bmp_infoheader.biHeight, colourModel, data, 0, bmp_infoheader.biWidth));

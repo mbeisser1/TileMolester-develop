@@ -20,6 +20,7 @@ package tm.utils;
 
 import java.util.ResourceBundle;
 import java.util.Locale;
+import java.util.MissingResourceException;
 
 public class Xlator {
 
@@ -30,14 +31,8 @@ public class Xlator {
      * @param baseName resource bundle base name
      * @param locale locale for resource bundle loading
      **/
-    public Xlator(String baseName, Locale locale) throws Exception {
-        rb = null;
-        try {
-            rb = ResourceBundle.getBundle(baseName, locale);
-        }
-        catch (Exception e) {
-            throw e;
-        }
+    public Xlator(String baseName, Locale locale) {
+        rb = ResourceBundle.getBundle(baseName, locale);
     }
 
     /**
@@ -50,7 +45,7 @@ public class Xlator {
             String value = rb.getString(key);
             return value;
         }
-        catch (Exception e) {
+        catch (MissingResourceException e) {
             return key;
         }
     }

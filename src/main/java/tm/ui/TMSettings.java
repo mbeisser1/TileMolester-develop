@@ -3,6 +3,7 @@ package tm.ui;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
@@ -17,6 +18,10 @@ import javax.swing.JOptionPane;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import tm.utils.XMLParser;
 import tm.utils.Xlator;
@@ -99,7 +104,7 @@ public class TMSettings extends JFrame {
 		Document doc = null;
 		try {
 			doc = XMLParser.parse(settingsFile);
-		} catch (Exception e) {
+		} catch (IOException | SAXException | ParserConfigurationException e) {
 			JOptionPane.showMessageDialog(this,
 					xlate("Load_Settings_Error") + "\n" + e.getMessage(),
 					"Tile Molester",
@@ -224,7 +229,7 @@ public class TMSettings extends JFrame {
 
 			fw.write(sb.toString());
 			fw.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this,
 					xlate("Save_Settings_Error") + "\n" + e.getMessage(),
 					"Tile Molester",
@@ -254,7 +259,7 @@ public class TMSettings extends JFrame {
 		try {
 			String value = xl.xlate(key);
 			return value;
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
 			return key;
 		}
 	}

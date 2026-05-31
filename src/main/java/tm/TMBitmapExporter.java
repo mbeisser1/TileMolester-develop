@@ -25,6 +25,7 @@ import javax.imageio.*;
 import javax.imageio.stream.FileImageOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.awt.Image;
 import java.awt.image.RenderedImage;
 import java.awt.image.BufferedImage;
@@ -43,7 +44,7 @@ public class TMBitmapExporter {
      * @throws Exception if encoding or file I/O fails
      **/
     public static void saveTileCanvasToFile(TMTileCanvas canvas, File file)
-        throws Exception {
+        throws IOException {
         Image img = canvas.getImage();
         String ext = getExtension(file);
         // use proper encoder based on file extension
@@ -52,50 +53,30 @@ public class TMBitmapExporter {
             bmp.write(file);
         }
         else if (ext.equals("gif")) {
-            try {
-                FileOutputStream fis = new FileOutputStream(file);
-                GIFOutputStream.writeGIF(fis, img, GIFOutputStream.STANDARD_256_COLORS);
-                fis.close();
-            }
-            catch (Exception e) {
-               throw e;
-            }
+            FileOutputStream fis = new FileOutputStream(file);
+            GIFOutputStream.writeGIF(fis, img, GIFOutputStream.STANDARD_256_COLORS);
+            fis.close();
         }
         else if (ext.equals("jpg")) {
             ImageWriter jpegEncoder = (ImageWriter)ImageIO.getImageWritersByFormatName("jpeg").next();
             if (jpegEncoder != null) {
-                try {
-                    FileImageOutputStream fios = new FileImageOutputStream(file);
-                    jpegEncoder.setOutput(fios);
-                    jpegEncoder.write(convertToRenderedImage(img));
-                    fios.close();
-                }
-                catch (Exception e) {
-                    throw e;
-                }
+                FileImageOutputStream fios = new FileImageOutputStream(file);
+                jpegEncoder.setOutput(fios);
+                jpegEncoder.write(convertToRenderedImage(img));
+                fios.close();
             }
         }
         else if (ext.equals("png")) {
-            try {
-                byte[] pngBytes = new PngEncoder(img).pngEncode();
-                FileOutputStream fis = new FileOutputStream(file);
-                fis.write(pngBytes);
-                fis.close();
-            }
-            catch (Exception e) {
-                throw e;
-            }
+            byte[] pngBytes = new PngEncoder(img).pngEncode();
+            FileOutputStream fis = new FileOutputStream(file);
+            fis.write(pngBytes);
+            fis.close();
         }
         else if (ext.equals("pcx")) {
-            try {
-                byte[] pcxBytes = PCXEncoder.encode(img);
-                FileOutputStream fis = new FileOutputStream(file);
-                fis.write(pcxBytes);
-                fis.close();
-            }
-            catch (Exception e) {
-                throw e;
-            }
+            byte[] pcxBytes = PCXEncoder.encode(img);
+            FileOutputStream fis = new FileOutputStream(file);
+            fis.write(pcxBytes);
+            fis.close();
         }
     }
 

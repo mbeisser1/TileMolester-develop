@@ -42,60 +42,47 @@ public class XMLParser {
 	 **/
 	public static Document parse(File file)
 			throws SAXException, SAXParseException, ParserConfigurationException, IOException {
-		Document document = null;
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(true);
-		try {
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			InputStream inputStream = new FileInputStream(file);
-			InputSource is = new InputSource(inputStream);
-			is.setEncoding("UTF-8");
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		InputStream inputStream = new FileInputStream(file);
+		InputSource is = new InputSource(inputStream);
+		is.setEncoding("UTF-8");
 
-			builder.setErrorHandler(
-					new org.xml.sax.ErrorHandler() { // ignore fatal errors (an exception is guaranteed)
-						/**
-						 * SAX fatal error handler (ignored).
-						 * @param exception SAX parse exception
-						 **/
-						public void fatalError(SAXParseException exception)
-								throws SAXException {
-						}
+		builder.setErrorHandler(
+				new org.xml.sax.ErrorHandler() { // ignore fatal errors (an exception is guaranteed)
+					/**
+					 * SAX fatal error handler (ignored).
+					 * @param exception SAX parse exception
+					 **/
+					public void fatalError(SAXParseException exception)
+							throws SAXException {
+					}
 
-						// treat validation errors as fatal
-						/**
-						 * SAX validation error handler.
-						 * @param e event object
-						 **/
-						public void error(SAXParseException e)
-								throws SAXParseException {
-							throw e;
-						}
+					// treat validation errors as fatal
+					/**
+					 * SAX validation error handler.
+					 * @param e event object
+					 **/
+					public void error(SAXParseException e)
+							throws SAXParseException {
+						throw e;
+					}
 
-						// dump warnings too
-						/**
-						 * SAX warning handler.
-						 * @param err SAX warning exception
-						 **/
-						public void warning(SAXParseException err)
-								throws SAXParseException {
-							System.out.println("** Warning"
-									+ ", line " + err.getLineNumber()
-									+ ", uri " + err.getSystemId());
-							System.out.println("   " + err.getMessage());
-						}
-					});
-			document = builder.parse(is);
-		} catch (SAXParseException spe) {
-			throw spe;
-		} catch (SAXException sxe) {
-			throw sxe;
-		} catch (ParserConfigurationException pce) {
-			// Parser with specified options can't be built
-			throw pce;
-		} catch (IOException ioe) {
-			throw ioe;
-		}
-		return document;
+					// dump warnings too
+					/**
+					 * SAX warning handler.
+					 * @param err SAX warning exception
+					 **/
+					public void warning(SAXParseException err)
+							throws SAXParseException {
+						System.out.println("** Warning"
+								+ ", line " + err.getLineNumber()
+								+ ", uri " + err.getSystemId());
+						System.out.println("   " + err.getMessage());
+					}
+				});
+		return builder.parse(is);
 	}
 
 	/**

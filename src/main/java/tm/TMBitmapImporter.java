@@ -24,6 +24,7 @@ import tm.osbaldeston.image.BMP;
 import tm.gfxlibs.*;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.*;
@@ -43,7 +44,7 @@ public class TMBitmapImporter {
      * @throws InterruptedException if pixel grabbing is interrupted
      **/
     public static TMTileCanvas loadTileCanvasFromFile(File file)
-        throws Exception {
+        throws IOException, InterruptedException {
         Image img = null;
         String ext = getExtension(file);
         // use proper decoder based on file extension
@@ -53,13 +54,7 @@ public class TMBitmapImporter {
             img = bmp.getImage();
         }
         else if (ext.equals("pcx")) {
-            // use PCX decoder
-            try {
-                img = PCXReader.loadImage(new FileInputStream(file));
-            }
-            catch (Exception e) {
-                throw e;
-            }
+            img = PCXReader.loadImage(new FileInputStream(file));
         }
         else {
             // use Java's decoders
@@ -67,7 +62,7 @@ public class TMBitmapImporter {
             img = icon.getImage();
         }
         if (img == null) {
-            throw new Exception();    // couldn't load the image
+            throw new IOException("Couldn't load the image");
         }
 
         int w = img.getWidth(null);
@@ -76,13 +71,9 @@ public class TMBitmapImporter {
 
         // grab the pixels
         PixelGrabber pg = new PixelGrabber(img, 0, 0, w, h, pixels, 0, w);
-        try {
-            pg.grabPixels();
-        } catch (InterruptedException e) {
-            throw e;
-        }
+        pg.grabPixels();
         if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
-            throw new Exception();
+            throw new IOException("Pixel grab aborted");
         }
 
         DirectColorTileCodec codec = new DirectColorTileCodec("", 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000, "");

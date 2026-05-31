@@ -21,6 +21,7 @@ package tm.utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class PaletteCsvReader {
     /**
      * @return 24-bit RGB values (0x00RRGGBB) in file order
      **/
-    public static int[] read(File file) throws Exception {
+    public static int[] read(File file) throws IOException, PaletteCsvParseException {
         ArrayList<Integer> colors = new ArrayList<>();
         try (BufferedReader in = new BufferedReader(
                 new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {

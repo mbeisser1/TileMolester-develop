@@ -61,18 +61,7 @@ public class TMSpecReader {
         filefilters = new ArrayList<>();
         palettefilters = new ArrayList<>();
         filelisteners = new ArrayList<>();
-        Document doc = null;
-        try {
-            doc = XMLParser.parse(file);
-        } catch (SAXException e) {
-            throw e;
-        }
-        catch (ParserConfigurationException e) {
-            throw e;
-        }
-        catch (IOException e) {
-            throw e;
-        }
+        Document doc = XMLParser.parse(file);
         if (doc == null) return;
 
         tmspec = doc.getDocumentElement();   // root element (<tmspec> tag)
@@ -276,14 +265,14 @@ public class TMSpecReader {
             try {
                 c = loader.loadClass(classname);
             }
-            catch (Exception e) {
+            catch (ClassNotFoundException e) {
                 continue;
             }
             Object o;
             try {
                 o = c.getDeclaredConstructor().newInstance();
             }
-            catch (Exception e) {
+            catch (ReflectiveOperationException e) {
                 continue;
             }
             if (o instanceof TMFileListener) {

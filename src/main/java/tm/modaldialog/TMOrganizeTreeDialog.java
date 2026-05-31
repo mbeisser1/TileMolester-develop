@@ -318,7 +318,7 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
             String value = xl.xlate(key);
             return value;
         }
-        catch (Exception e) {
+        catch (NullPointerException e) {
             return key;
         }
     }
@@ -354,7 +354,7 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
             TMTreeNode node = null;
             try {
                 node = (TMTreeNode)transferable.getTransferData(TMTreeNodeTransferable.localTMTreeNodeFlavor);
-            } catch (Exception e) { }
+            } catch (UnsupportedFlavorException | java.io.IOException e) { }
             TMTreeNode oldParent = node.getTMParent();
             Point loc = dtde.getLocation();
             TMTreeNode newParent;
@@ -362,7 +362,7 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
                 TreePath destinationPath = tree.getPathForLocation(loc.x, loc.y);
                 newParent = (TMTreeNode)destinationPath.getLastPathComponent();
             }
-            catch (Exception e) {
+            catch (NullPointerException e) {
                 newParent = (TMTreeNode)((DefaultTreeModel)tree.getModel()).getRoot();
             }
             if (!(newParent instanceof FolderNode)) {

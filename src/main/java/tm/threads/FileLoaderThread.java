@@ -38,17 +38,8 @@ public class FileLoaderThread extends ProgressThread {
      **/
     public FileLoaderThread(File file) throws OutOfMemoryError, FileNotFoundException {
         super();
-        try {
-            contents = new byte[(int)file.length()];
-        }
-        catch (OutOfMemoryError e) {
-            throw e;
-        }
-        try {
-            bis = new BufferedInputStream(new FileInputStream(file));
-        } catch (FileNotFoundException e) {
-            throw e;
-        }
+        contents = new byte[(int)file.length()];
+        bis = new BufferedInputStream(new FileInputStream(file));
         bytesLeft = contents.length;
         this.setPriority(NORM_PRIORITY);
     }
@@ -71,21 +62,21 @@ public class FileLoaderThread extends ProgressThread {
                 try {
                     bis.read(contents, contents.length - bytesLeft, CHUNK_SIZE);
                 }
-                catch (Exception e) { }
+                catch (IOException e) { }
                 bytesLeft -= CHUNK_SIZE;
             }
             else {
                 try {
                     bis.read(contents, contents.length - bytesLeft, bytesLeft);
                 }
-                catch (Exception e) { }
+                catch (IOException e) { }
                 bytesLeft = 0;
             }
             ProgressThread.yield();
         }
         try {
             bis.close();
-        } catch (Exception e) { }
+        } catch (IOException e) { }
         // done loading data
     }
 

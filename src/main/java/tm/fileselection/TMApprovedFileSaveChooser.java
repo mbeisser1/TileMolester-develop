@@ -19,6 +19,7 @@
 package tm.fileselection;
 
 import java.io.File;
+import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.JOptionPane;
@@ -57,7 +58,7 @@ import javax.swing.JOptionPane;
                 try {
                     file.createNewFile();
                 }
-                catch (Exception e) {
+                catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -65,7 +66,7 @@ import javax.swing.JOptionPane;
                 try {
                     file.createNewFile();
                 }
-                catch (Exception e) {
+                catch (IOException e) {
                     e.printStackTrace();
                 }
             }

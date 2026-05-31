@@ -74,16 +74,7 @@ public class TMFileResources {
 	 **/
 	public TMFileResources(File file, FileImage fileImage, TMUI ui)
 			throws SAXException, ParserConfigurationException, IOException {
-		Document doc = null;
-		try {
-			doc = XMLParser.parse(file);
-		} catch (SAXException e) {
-			throw e;
-		} catch (ParserConfigurationException e) {
-			throw e;
-		} catch (IOException e) {
-			throw e;
-		}
+		Document doc = XMLParser.parse(file);
 
 		if (doc == null)
 			return;
