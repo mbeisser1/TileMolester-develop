@@ -20,6 +20,8 @@ package tm.threads;
 
 import java.io.*;
 
+import tm.utils.TMLog;
+
 /**
  * Thread for reading a file into a buffer.
  **/
@@ -62,21 +64,27 @@ public class FileLoaderThread extends ProgressThread {
                 try {
                     bis.read(contents, contents.length - bytesLeft, CHUNK_SIZE);
                 }
-                catch (IOException e) { }
+                catch (IOException e) {
+                    TMLog.logException("File load read error", e);
+                }
                 bytesLeft -= CHUNK_SIZE;
             }
             else {
                 try {
                     bis.read(contents, contents.length - bytesLeft, bytesLeft);
                 }
-                catch (IOException e) { }
+                catch (IOException e) {
+                    TMLog.logException("File load read error", e);
+                }
                 bytesLeft = 0;
             }
             ProgressThread.yield();
         }
         try {
             bis.close();
-        } catch (IOException e) { }
+        } catch (IOException e) {
+            TMLog.logException("File load close error", e);
+        }
         // done loading data
     }
 

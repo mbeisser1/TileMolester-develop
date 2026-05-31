@@ -266,6 +266,7 @@ public class TMSpecReader {
                 c = loader.loadClass(classname);
             }
             catch (ClassNotFoundException e) {
+                TMLog.warning("File listener class not found: " + classname, e);
                 continue;
             }
             Object o;
@@ -273,6 +274,7 @@ public class TMSpecReader {
                 o = c.getDeclaredConstructor().newInstance();
             }
             catch (ReflectiveOperationException e) {
+                TMLog.warning("File listener could not be instantiated: " + classname, e);
                 continue;
             }
             if (o instanceof TMFileListener) {

@@ -21,6 +21,7 @@ import java.awt.Toolkit;
 import java.io.*;
 import java.net.URL;
 import tm.osbaldeston.io.*;
+import tm.utils.TMLog;
 
 public class BMP {
 
@@ -41,7 +42,7 @@ public class BMP {
             PCBinaryInputStream file = new PCBinaryInputStream(f);
             read(file);
         } catch (IOException e) {
-            System.err.println(e);
+            TMLog.logException("BMP I/O error", e);
         }
     }
 
@@ -55,7 +56,7 @@ public class BMP {
             PCBinaryInputStream file = new PCBinaryInputStream(url);
             read(file);
         } catch (IOException e) {
-            System.err.println(e);
+            TMLog.logException("BMP I/O error", e);
         }
     }
 
@@ -91,7 +92,7 @@ public class BMP {
             PCBinaryOutputStream file = new PCBinaryOutputStream(f);
             write(file);
         } catch (IOException e) {
-            System.err.println(e);
+            TMLog.logException("BMP I/O error", e);
         }
     }
 
@@ -105,7 +106,7 @@ public class BMP {
             PCBinaryOutputStream file = new PCBinaryOutputStream(url);
             write(file);
         } catch (IOException e) {
-            System.err.println(e);
+            TMLog.logException("BMP I/O error", e);
         }
     }
 
@@ -120,7 +121,9 @@ public class BMP {
                           
             try {
                 grabber.grabPixels();
-            } catch (InterruptedException e) { System.err.println(e); }
+            } catch (InterruptedException e) {
+                TMLog.logException("BMP pixel grab interrupted", e);
+            }
 
             ColorModel model = grabber.getColorModel();
 
@@ -172,7 +175,9 @@ public class BMP {
             file.writeByteArray(bitmap);            
             bitmap = null;
             file.close();
-        } catch (IOException e) { System.err.println(e); }
+        } catch (IOException e) {
+            TMLog.logException("BMP write failed", e);
+        }
     }
 
     /**
@@ -217,7 +222,7 @@ public class BMP {
             file.close();
 
         } catch (IOException e) {
-            System.err.println(e);
+            TMLog.logException("BMP I/O error", e);
         }
 
         if (rawData != null) {
@@ -245,7 +250,9 @@ public class BMP {
                          (((int)(rawData[k++])) & 0xFF) << 16;
               }
             }
-        }catch (ArrayIndexOutOfBoundsException e) {};
+        } catch (ArrayIndexOutOfBoundsException e) {
+            TMLog.logException("BMP 24-bit unpack bounds error", e);
+        }
         return Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(bmp_infoheader.biWidth, bmp_infoheader.biHeight, ColorModel.getRGBdefault(), data, 0, bmp_infoheader.biWidth));
     }
 
@@ -298,7 +305,9 @@ public class BMP {
               }
             }
         }
-        }catch (ArrayIndexOutOfBoundsException e) {};
+        } catch (ArrayIndexOutOfBoundsException e) {
+            TMLog.logException("BMP 8-bit unpack bounds error", e);
+        }
 
         ColorModel colourModel = new IndexColorModel(bmp_infoheader.biBitCount, bmp_palette.length, bmp_palette.r, bmp_palette.g, bmp_palette.b);
         return Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(bmp_infoheader.biWidth, bmp_infoheader.biHeight, colourModel, data, 0, bmp_infoheader.biWidth));
@@ -347,7 +356,9 @@ public class BMP {
                     biClrUsed = file.readInt();
                     biClrImportant = file.readInt();
                 }
-            } catch (IOException e) { System.err.println(e); }
+            } catch (IOException e) {
+            TMLog.logException("BMP write failed", e);
+        }
 
             if (biSizeImage == 0)
                 biSizeImage = (((biWidth*biBitCount+31)>>5)<<2)*biHeight;
@@ -378,7 +389,7 @@ public class BMP {
                     file.writeInt(biClrImportant);
                 }
             } catch (IOException e) {
-                System.err.println(e);
+                TMLog.logException("BMP I/O error", e);
             }
         }
     }
@@ -409,7 +420,7 @@ public class BMP {
                 bfReserved2 = file.readShort();
                 bfOffBits = file.readInt();
             } catch (IOException e) {
-                System.err.println(e);
+                TMLog.logException("BMP I/O error", e);
             }
         }
 
@@ -422,7 +433,7 @@ public class BMP {
             file.writeShort(bfReserved2);
             file.writeInt(bfOffBits);
             } catch (IOException e) {
-                System.err.println(e);
+                TMLog.logException("BMP I/O error", e);
             }
         }
     }
@@ -475,7 +486,7 @@ public class BMP {
                         reserved = file.readByte(); // reserved
                     }
                 } catch (IOException e) {
-                    System.err.println(e);
+                    TMLog.logException("BMP I/O error", e);
                 }
             }
         }
@@ -491,7 +502,7 @@ public class BMP {
                         file.writeByte(reserved);
                     }
                 } catch (IOException e) {
-                    System.err.println(e);
+                    TMLog.logException("BMP I/O error", e);
                 }
             }
         }

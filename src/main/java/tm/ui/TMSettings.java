@@ -23,6 +23,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import tm.utils.TMLog;
 import tm.utils.XMLParser;
 import tm.utils.Xlator;
 
@@ -106,10 +107,7 @@ public class TMSettings {
 		try {
 			doc = XMLParser.parse(settingsFile);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			JOptionPane.showMessageDialog(null,
-					xlate("Load_Settings_Error") + "\n" + e.getMessage(),
-					DIALOG_TITLE,
-					JOptionPane.ERROR_MESSAGE);
+			TMLog.showError(null, xlate("Load_Settings_Error"), e);
 		}
 		if (doc == null)
 			return;
@@ -232,10 +230,7 @@ public class TMSettings {
 			fw.write(sb.toString());
 			fw.close();
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(parent,
-					xlate("Save_Settings_Error") + "\n" + e.getMessage(),
-					DIALOG_TITLE,
-					JOptionPane.ERROR_MESSAGE);
+			TMLog.showError(parent, xlate("Save_Settings_Error"), e);
 		}
 	}
 

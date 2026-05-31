@@ -19,6 +19,7 @@
 package tm.modaldialog;
 
 import tm.treenodes.*;
+import tm.utils.TMLog;
 import tm.modaldialog.TMNewFolderDialog;
 import tm.utils.Xlator;
 import javax.swing.*;
@@ -283,7 +284,9 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
         try {
             int index = e.getChildIndices()[0];
             node = (TMTreeNode)node.getChildAt(index);
-        } catch (NullPointerException exc) {}
+        } catch (NullPointerException exc) {
+            TMLog.logException("Tree node change index missing", exc);
+        }
         node.setText((String)node.getUserObject());
     }
 
@@ -354,7 +357,9 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
             TMTreeNode node = null;
             try {
                 node = (TMTreeNode)transferable.getTransferData(TMTreeNodeTransferable.localTMTreeNodeFlavor);
-            } catch (UnsupportedFlavorException | java.io.IOException e) { }
+            } catch (UnsupportedFlavorException | java.io.IOException e) {
+                TMLog.logException("Tree drag-and-drop transfer failed", e);
+            }
             TMTreeNode oldParent = node.getTMParent();
             Point loc = dtde.getLocation();
             TMTreeNode newParent;

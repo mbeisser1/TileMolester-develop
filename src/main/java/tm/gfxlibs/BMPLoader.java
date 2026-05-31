@@ -8,6 +8,8 @@
 
 package tm.gfxlibs;
 
+import tm.utils.TMLog;
+
 import java.awt.image.*;
 import java.awt.*;
 import java.io.*;
@@ -245,9 +247,8 @@ public class BMPLoader
         }
 
         catch (IOException e)
-
         {
-          // System.out.println("Caught exception in loadbitmap!");
+          TMLog.showError("BMP load failed", e);
         }
 
         return(null);
@@ -482,7 +483,8 @@ public class BMPLoader
             return(read(fs));
   }
 
-  catch(IOException ex) {
+  catch (IOException ex) {
+   TMLog.showError("BMP load from path failed: " + sdir, ex);
    return(null);
   }
 

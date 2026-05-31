@@ -28,6 +28,8 @@
 
 package tm.gfxlibs;
 
+import tm.utils.TMLog;
+
 import java.util.*;
 import java.io.*;
 import java.awt.Image;
@@ -116,7 +118,9 @@ public abstract class ImageEncoder implements ImageConsumer
 		{
 		wait();
 		}
-	    catch ( InterruptedException e ) {}
+	    catch ( InterruptedException e ) {
+		TMLog.logException("Image encoding interrupted", e);
+	    }
 	if ( iox != null )
 	    throw iox;
 	}
@@ -233,6 +237,7 @@ public abstract class ImageEncoder implements ImageConsumer
 		}
 	    catch ( IOException e )
 		{
+		TMLog.logException("Image encoding I/O error", e);
 		iox = e;
 		stop();
 		return;
@@ -255,6 +260,7 @@ public abstract class ImageEncoder implements ImageConsumer
 		}
 	    catch ( IOException e )
 		{
+		TMLog.logException("Image encoding I/O error", e);
 		iox = e;
 		stop();
 		return;
@@ -274,6 +280,7 @@ public abstract class ImageEncoder implements ImageConsumer
 		    }
 		catch ( IOException e )
 		    {
+		    TMLog.logException("Image encoding I/O error", e);
 		    iox = e;
 		    stop();
 		    return;
@@ -300,6 +307,7 @@ public abstract class ImageEncoder implements ImageConsumer
 		}
 	    catch ( IOException e )
 		{
+		TMLog.logException("Image encoding finish failed", e);
 		iox = e;
 		}
 	    }

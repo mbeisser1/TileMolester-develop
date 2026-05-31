@@ -15,6 +15,8 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.formdev.flatlaf.util.SystemInfo;
 
+import tm.utils.TMLog;
+
 /**
  * Look-and-feel theme support for Tile Molester.
  * Selects a FlatLaf theme based on the host operating system and the
@@ -111,7 +113,7 @@ public class TMTheme {
 			com.formdev.flatlaf.FlatLaf.updateUI();
 			
 		} catch (UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
+			TMLog.showError("Failed to load look and feel theme", e);
 		}
 	}
 

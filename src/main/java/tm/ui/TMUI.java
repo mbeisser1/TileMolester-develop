@@ -42,7 +42,6 @@ import com.formdev.flatlaf.util.SystemInfo;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -58,9 +57,6 @@ import org.xml.sax.SAXParseException;
 public class TMUI extends JFrame {
 	public static final boolean isWindows = SystemInfo.isWindows;
 
-	@SuppressWarnings("unused")
-	private static final Logger uiLogger = Logger.getLogger("D_TMUI");
-
 	/** Active drawing tool (toolbar + {@link tm.canvases.TMEditorCanvas}). */
 	TMTools.ToolType toolType = TMTools.ToolType.SELECT_TOOL;
 
@@ -68,11 +64,11 @@ public class TMUI extends JFrame {
 	TMSelectionCanvas copiedSelection;
 
 	/** Loaded from tmspec.xml; used for menus, choosers, and file open. */
-	private final List<ColorCodec> colorcodecs = new ArrayList<>();
-	private final List<TileCodec> tilecodecs = new ArrayList<>();
-	private final List<TMTileCodecFileFilter> filefilters = new ArrayList<>();
-	private final List<TMPaletteFileFilter> palettefilters = new ArrayList<>();
-	private final List<TMFileListener> filelisteners = new ArrayList<>();
+	private final java.util.List<ColorCodec> colorcodecs = new ArrayList<>();
+	private final java.util.List<TileCodec> tilecodecs = new ArrayList<>();
+	private final java.util.List<TMTileCodecFileFilter> filefilters = new ArrayList<>();
+	private final java.util.List<TMPaletteFileFilter> palettefilters = new ArrayList<>();
+	private final java.util.List<TMFileListener> filelisteners = new ArrayList<>();
 
 	final TMUIWidgets widgets;
 	TMUITreeMenuBuilder treeMenuBuilder;
@@ -100,6 +96,7 @@ public class TMUI extends JFrame {
 	 **/
 	public TMUI() {
 		super("Tile Molester");
+		TMLog.setDialogParent(this);
 
 		ImageIcon imgIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/TMIcon32.png"));
 		setIconImage(imgIcon.getImage());
@@ -575,7 +572,7 @@ public class TMUI extends JFrame {
 		try {
 			view.setSelected(true);
 		} catch (java.beans.PropertyVetoException x) {
-			x.printStackTrace();
+			TMLog.severe("Failed to select view on desktop", x);
 		}
 		widgets.desktop.revalidate();
 		widgets.desktop.repaint();
@@ -742,27 +739,27 @@ public class TMUI extends JFrame {
 	}
 
 	/** @return unmodifiable color codecs from tmspec.xml */
-	public List<ColorCodec> getColorCodecs() {
+	public java.util.List<ColorCodec> getColorCodecs() {
 		return Collections.unmodifiableList(colorcodecs);
 	}
 
 	/** @return unmodifiable tile codecs (spec + built-in extras) */
-	public List<TileCodec> getTileCodecs() {
+	public java.util.List<TileCodec> getTileCodecs() {
 		return Collections.unmodifiableList(tilecodecs);
 	}
 
 	/** @return unmodifiable tile file filters from tmspec.xml */
-	public List<TMTileCodecFileFilter> getFileFilters() {
+	public java.util.List<TMTileCodecFileFilter> getFileFilters() {
 		return Collections.unmodifiableList(filefilters);
 	}
 
 	/** @return unmodifiable palette file filters from tmspec.xml */
-	public List<TMPaletteFileFilter> getPaletteFilters() {
+	public java.util.List<TMPaletteFileFilter> getPaletteFilters() {
 		return Collections.unmodifiableList(palettefilters);
 	}
 
 	/** @return unmodifiable file listeners from tmspec.xml */
-	public List<TMFileListener> getFileListeners() {
+	public java.util.List<TMFileListener> getFileListeners() {
 		return Collections.unmodifiableList(filelisteners);
 	}
 
@@ -797,11 +794,11 @@ public class TMUI extends JFrame {
 		if (detail != null && !detail.isEmpty()) {
 			message = message + "\n" + detail;
 		}
-		JOptionPane.showMessageDialog(this, message, "Tile Molester", JOptionPane.ERROR_MESSAGE);
+		TMLog.showError(this, message, null);
 	}
 
 	void showError(String messageKey, Exception e) {
-		showError(messageKey, e.getMessage());
+		TMLog.showError(this, xlate(messageKey), e);
 	}
 
 	/**

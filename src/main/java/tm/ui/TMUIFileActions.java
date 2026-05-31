@@ -26,6 +26,7 @@ import tm.fileselection.TMTileCodecFileFilter;
 import tm.tilecodecs.TileCodec;
 import tm.threads.FileLoaderThread;
 import tm.threads.FileSaverThread;
+import tm.utils.TMLog;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
@@ -151,6 +152,7 @@ public class TMUIFileActions extends TMUICommandGroup {
 			try {
 				frames[0].setSelected(true);
 			} catch (java.beans.PropertyVetoException e) {
+				TMLog.severe("Failed to select frame after close", e);
 			}
 		}
 	}
@@ -188,7 +190,7 @@ public class TMUIFileActions extends TMUICommandGroup {
 						try {
 							view.setSelected(true);
 						} catch (java.beans.PropertyVetoException x) {
-							x.printStackTrace();
+							TMLog.severe("Failed to select view before save", x);
 						}
 						doSaveCommand();
 					} else if (retVal == JOptionPane.NO_OPTION) {
@@ -295,7 +297,7 @@ public class TMUIFileActions extends TMUICommandGroup {
 				try {
 					view.setSelected(true);
 				} catch (java.beans.PropertyVetoException x) {
-					x.printStackTrace();
+					TMLog.severe("Failed to select view for save all", x);
 				}
 				doSaveCommand();
 			}

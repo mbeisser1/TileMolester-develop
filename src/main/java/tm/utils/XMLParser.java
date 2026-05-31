@@ -76,10 +76,8 @@ public class XMLParser {
 					 **/
 					public void warning(SAXParseException err)
 							throws SAXParseException {
-						System.out.println("** Warning"
-								+ ", line " + err.getLineNumber()
-								+ ", uri " + err.getSystemId());
-						System.out.println("   " + err.getMessage());
+						TMLog.warning("XML parse warning, line " + err.getLineNumber()
+								+ ", uri " + err.getSystemId() + ": " + err.getMessage(), err);
 					}
 				});
 		return builder.parse(is);

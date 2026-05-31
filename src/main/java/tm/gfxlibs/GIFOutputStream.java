@@ -31,6 +31,8 @@
 
 package tm.gfxlibs;
 
+import tm.utils.TMLog;
+
 import java.io.*;
 import java.awt.*;
 import java.awt.image.*;
@@ -239,6 +241,7 @@ public class GIFOutputStream extends FilterOutputStream
       try {
          pg.grabPixels();
       } catch (InterruptedException e) {
+         TMLog.logException("GIF image pixel grab interrupted", e);
          errorStatus = IMAGE_LOAD_FAILED;
          return;
       }

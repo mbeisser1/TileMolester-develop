@@ -11,6 +11,8 @@
  **/
 package tm.gfxlibs;
 
+import tm.utils.TMLog;
+
 import java.awt.Image;
 import java.awt.image.PixelGrabber;
 import java.awt.image.ImageObserver;
@@ -36,11 +38,11 @@ public class PCXEncoder {
         try {
             pg.grabPixels();
         } catch (InterruptedException e) {
-            System.err.println("interrupted waiting for pixels!");
+            TMLog.showError("PCX encode interrupted waiting for pixels", e);
             return null;
         }
         if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
-            System.err.println("image fetch aborted or errored");
+            TMLog.severe("PCX encode image fetch aborted or errored", null);
             return null;
         }
 

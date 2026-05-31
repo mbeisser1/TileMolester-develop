@@ -20,6 +20,8 @@ package tm.threads;
 
 import java.io.*;
 
+import tm.utils.TMLog;
+
 /**
  * Thread for writing a buffer to a file.
  **/
@@ -65,21 +67,27 @@ public class FileSaverThread extends ProgressThread {
                 try {
                     raf.write(contents, contents.length - bytesLeft, CHUNK_SIZE);
                 }
-                catch (IOException e) { }
+                catch (IOException e) {
+                    TMLog.logException("File save write error", e);
+                }
                 bytesLeft -= CHUNK_SIZE;
             }
             else {
                 try {
                     raf.write(contents, contents.length - bytesLeft, bytesLeft);
                 }
-                catch (IOException e) { }
+                catch (IOException e) {
+                    TMLog.logException("File save write error", e);
+                }
                 bytesLeft = 0;
             }
             ProgressThread.yield();
         }
         try {
             raf.close();
-        } catch (IOException e) { }
+        } catch (IOException e) {
+            TMLog.logException("File save close error", e);
+        }
         // done saving data
     }
 

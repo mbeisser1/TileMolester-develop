@@ -7,3 +7,5 @@ TileMolester.jar
 /resources/*.xml
 /target
 /private
+tilemolester.log
+tilemolester.log.*

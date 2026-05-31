@@ -33,6 +33,8 @@
 
 package tm.gfxlibs;
 
+import tm.utils.TMLog;
+
 import java.awt.*;
 import java.awt.image.*;
 import java.util.*;
@@ -517,11 +519,11 @@ public class PngEncoder extends Object
                     pg.grabPixels();
                 }
                 catch (InterruptedException e) {
-                    System.err.println("interrupted waiting for pixels!");
+                    TMLog.logException("PNG encode interrupted waiting for pixels", e);
                     return false;
                 }
                 if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
-                    System.err.println("image fetch aborted or errored");
+                    TMLog.severe("PNG encode image fetch aborted or errored", null);
                     return false;
                 }
 
@@ -600,7 +602,7 @@ public class PngEncoder extends Object
         }
         catch (IOException e)
         {
-            System.err.println( e.toString());
+            TMLog.showError("PNG encode failed", e);
             return false;
         }
     }

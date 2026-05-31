@@ -19,6 +19,7 @@
 package tm;
 
 import tm.colorcodecs.*;
+import tm.utils.TMLog;
 
 /**
  * Custom palette class.
@@ -322,7 +323,7 @@ public class TMPalette {
      **/
     public int getEntry(int index) {
         if (index >= entries.length) {
-            System.out.println("Entry doesn't exist");
+            TMLog.getLogger().warning("Palette entry doesn't exist: index " + index);
             return 0;
         }
         return entries[index];
@@ -373,7 +374,7 @@ public class TMPalette {
                 return i;
             }
         }
-        System.out.println("RGB value not in palette");
+        TMLog.getLogger().warning("RGB value not in palette: " + rgbval);
         return -1;
     }
 

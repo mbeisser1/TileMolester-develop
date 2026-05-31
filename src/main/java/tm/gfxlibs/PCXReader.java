@@ -29,6 +29,8 @@
 
 package tm.gfxlibs;
 
+import tm.utils.TMLog;
+
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
@@ -128,11 +130,11 @@ public class PCXReader
       
         if(in.available() != 769)
         {
-          System.out.println("Error in the palette!");
+          TMLog.getLogger().warning("PCX palette size mismatch");
         }
         if(in.read()!=12)
         {
-          System.out.println("Error in the palette!");
+          TMLog.getLogger().warning("PCX palette size mismatch");
         }
 
         in.read(pal);
@@ -194,7 +196,7 @@ public class PCXReader
     }
     catch (IOException e)
     {
-      System.out.println("Error reading PCX-File!");
+      TMLog.showError("Error reading PCX file", e);
     }
     
     return picture;

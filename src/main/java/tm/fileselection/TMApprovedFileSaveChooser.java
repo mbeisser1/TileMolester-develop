@@ -20,6 +20,9 @@ package tm.fileselection;
 
 import java.io.File;
 import java.io.IOException;
+
+import tm.utils.TMLog;
+
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.JOptionPane;
@@ -59,7 +62,8 @@ import javax.swing.JOptionPane;
                     file.createNewFile();
                 }
                 catch (IOException e) {
-                    e.printStackTrace();
+                    TMLog.showError(getParent(),
+                            "Could not recreate file for overwrite: " + file.getName(), e);
                 }
             }
             else {
@@ -67,7 +71,8 @@ import javax.swing.JOptionPane;
                     file.createNewFile();
                 }
                 catch (IOException e) {
-                    e.printStackTrace();
+                    TMLog.showError(getParent(),
+                            "Could not create file: " + file.getName(), e);
                 }
             }
             if (!file.canWrite()) {

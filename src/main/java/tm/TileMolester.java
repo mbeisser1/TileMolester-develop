@@ -21,6 +21,7 @@ package tm;
 import tm.ui.TMSettings;
 import tm.ui.TMTheme;
 import tm.ui.TMUI;
+import tm.utils.TMLog;
 
 import java.awt.Image;
 import java.awt.Taskbar;
@@ -55,9 +56,9 @@ public class TileMolester {
 			try {
 				taskbar.setIconImage(macIcon);
 			} catch (final UnsupportedOperationException e) {
-				System.out.println("taskbar.setIconImage not supported");
+				TMLog.warning("taskbar.setIconImage not supported", e);
 			} catch (final SecurityException e) {
-				System.out.println("There was a security exception for taskbar.setIconImage");
+				TMLog.warning("Security exception for taskbar.setIconImage", e);
 			}
 		}
 		
@@ -71,6 +72,7 @@ public class TileMolester {
 	 * @param args command-line arguments (currently unused)
 	 **/
 	public static void main(String[] args) {
+		TMLog.init();
 		new TileMolester();
 	}
 

@@ -36,8 +36,7 @@ public class BrowserControl
             }
         }
         catch (IOException | IllegalArgumentException | UnsupportedOperationException x) {
-            System.err.println("Could not invoke browser, url=" + url);
-            System.err.println("Caught: " + x);
+            TMLog.logException("Could not invoke browser, url=" + url, x);
         }
     }
 
