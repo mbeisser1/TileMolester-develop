@@ -19,7 +19,7 @@
 			<description>32bpp RGB (888)</description>
 		</directcolor>
 		<directcolor id="RIFF" bpp="32" rmask="FF000000" gmask="00FF0000" bmask="0000FF00">
-			<description>32bpp RGB (Windows Palete)</description>
+			<description>32bpp BGRx (Windows palette)</description>
 		</directcolor>
 
 		<indexedcolor id="CF02" bpp="6" endianness="big">

@@ -21,6 +21,7 @@ package tm.modaldialog;
 import tm.colorcodecs.ColorCodec;
 import tm.utils.DecimalNumberVerifier;
 import tm.utils.HexadecimalNumberVerifier;
+import tm.utils.PaletteCodecSort;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -63,7 +64,12 @@ public class TMImportInternalPaletteDialog extends TMModalDialog {
         copyCheck = new JCheckBox(xlate("Copy"));
 
         offsetField.setColumns(8);
-        sizeField.setColumns(4);
+        sizeField.setColumns(6);
+        Dimension fieldDim = new Dimension(72, 24);
+        offsetField.setMinimumSize(fieldDim);
+        offsetField.setPreferredSize(fieldDim);
+        sizeField.setMinimumSize(fieldDim);
+        sizeField.setPreferredSize(fieldDim);
         offsetField.getDocument().addDocumentListener(new TMDocumentListener());
         offsetField.addKeyListener(new HexadecimalNumberVerifier());
         sizeField.getDocument().addDocumentListener(new TMDocumentListener());
@@ -72,8 +78,8 @@ public class TMImportInternalPaletteDialog extends TMModalDialog {
         JPanel endiannessPane = new JPanel();
         endiannessPane.setBorder(new TitledBorder(new EtchedBorder(), xlate("Endianness")));
         endiannessPane.setLayout(new BoxLayout(endiannessPane, BoxLayout.Y_AXIS));
-        littleRadio = new JRadioButton(xlate("Little_Endian")+"      ");
-        bigRadio = new JRadioButton(xlate("Big_Endian")+"      ");
+        littleRadio = new JRadioButton(xlate("Little_Endian"));
+        bigRadio = new JRadioButton(xlate("Big_Endian"));
         endiannessPane.add(littleRadio);
         endiannessPane.add(bigRadio);
 
@@ -164,10 +170,13 @@ public class TMImportInternalPaletteDialog extends TMModalDialog {
      **/
     public void setCodecs(List<ColorCodec> codecs) {
         codecCombo.removeAllItems();
-        for (int i=0; i<codecs.size(); i++) {
-            codecCombo.addItem(codecs.get(i));
+        List<ColorCodec> sorted = PaletteCodecSort.sortedForPaletteUi(codecs);
+        for (ColorCodec codec : sorted) {
+            codecCombo.addItem(codec);
         }
-        codecCombo.setSelectedIndex(0);
+        if (codecCombo.getItemCount() > 0) {
+            codecCombo.setSelectedIndex(0);
+        }
     }
 
     /**

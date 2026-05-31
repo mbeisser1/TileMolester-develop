@@ -20,6 +20,7 @@ package tm.modaldialog;
 
 import tm.colorcodecs.ColorCodec;
 import tm.utils.DecimalNumberVerifier;
+import tm.utils.PaletteCodecSort;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -31,8 +32,11 @@ import java.util.List;
  **/
 public class TMNewPaletteDialog extends TMModalDialog {
 
+    private static final Dimension SIZE_FIELD_DIM = new Dimension(72, 24);
+    private static final Dimension COMBO_FIELD_DIM = new Dimension(220, 24);
+
     private JLabel sizeLabel;
-    private JFormattedTextField sizeField;
+    private JTextField sizeField;
     private JLabel formatLabel;
     private JComboBox<ColorCodec> codecCombo;
     private JRadioButton littleRadio;
@@ -51,19 +55,21 @@ public class TMNewPaletteDialog extends TMModalDialog {
      **/
     protected JPanel getDialogPane() {
         sizeLabel = new JLabel(xlate("Size_Prompt"));
-        sizeField = new JFormattedTextField();
+        sizeField = new JTextField();
         formatLabel = new JLabel(xlate("Format"));
         codecCombo = new JComboBox<>();
 
-        sizeField.setColumns(5);
+        sizeField.setColumns(8);
+        sizeField.setMinimumSize(SIZE_FIELD_DIM);
+        sizeField.setPreferredSize(SIZE_FIELD_DIM);
         sizeField.getDocument().addDocumentListener(new TMDocumentListener());
         sizeField.addKeyListener(new DecimalNumberVerifier());
 
         JPanel endiannessPane = new JPanel();
         endiannessPane.setBorder(new TitledBorder(new EtchedBorder(), xlate("Endianness")));
         endiannessPane.setLayout(new BoxLayout(endiannessPane, BoxLayout.Y_AXIS));
-        littleRadio = new JRadioButton(xlate("Little_Endian")+"      ");
-        bigRadio = new JRadioButton(xlate("Big_Endian")+"      ");
+        littleRadio = new JRadioButton(xlate("Little_Endian"));
+        bigRadio = new JRadioButton(xlate("Big_Endian"));
         endiannessPane.add(littleRadio);
         endiannessPane.add(bigRadio);
 
@@ -77,24 +83,41 @@ public class TMNewPaletteDialog extends TMModalDialog {
         p.setLayout(gbl);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(4, 4, 4, 8);
+
         gbc.fill = GridBagConstraints.NONE;
-        buildConstraints(gbc, 0, 0, 1, 1, 25, 10);
+        gbc.weightx = 0;
+        buildConstraints(gbc, 0, 0, 1, 1, 0, 0);
         gbl.setConstraints(sizeLabel, gbc);
         p.add(sizeLabel);
-        buildConstraints(gbc, 1, 0, 1, 1, 25, 10);
+
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 0.15;
+        buildConstraints(gbc, 1, 0, 1, 1, 15, 0);
         gbl.setConstraints(sizeField, gbc);
         p.add(sizeField);
-        buildConstraints(gbc, 0, 1, 1, 1, 25, 10);
+
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0;
+        buildConstraints(gbc, 0, 1, 1, 1, 0, 0);
         gbl.setConstraints(formatLabel, gbc);
         p.add(formatLabel);
-        buildConstraints(gbc, 1, 1, 2, 1, 50, 10);
+
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        buildConstraints(gbc, 1, 1, 1, 1, 100, 0);
+        codecCombo.setMinimumSize(COMBO_FIELD_DIM);
+        codecCombo.setPreferredSize(COMBO_FIELD_DIM);
         gbl.setConstraints(codecCombo, gbc);
         p.add(codecCombo);
-        buildConstraints(gbc, 3, 1, 1, 1, 25, 10);
+
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0;
+        buildConstraints(gbc, 2, 0, 1, 2, 0, 0);
         gbl.setConstraints(endiannessPane, gbc);
         p.add(endiannessPane);
 
-        p.setPreferredSize(new Dimension(400, 100));
+        p.setPreferredSize(new Dimension(480, 120));
 
         return p;
     }
@@ -104,12 +127,12 @@ public class TMNewPaletteDialog extends TMModalDialog {
      * @return palette size entered by the user
      **/
     public int getPaletteSize() {
-        return Integer.parseInt(sizeField.getText());
+        return Integer.parseInt(sizeField.getText().trim());
     }
 
     /**
      * Gets the selected byte-order endianness.
-     * @return TODO: not yet implemented; always returns 0
+     * @return {@link ColorCodec#LITTLE_ENDIAN} or {@link ColorCodec#BIG_ENDIAN}
      **/
     public int getEndianness() {
         return littleRadio.isSelected() ? ColorCodec.LITTLE_ENDIAN : ColorCodec.BIG_ENDIAN;
@@ -124,15 +147,18 @@ public class TMNewPaletteDialog extends TMModalDialog {
     }
 
     /**
-     * Populates the color codec combo box.
+     * Populates the color codec combo box (sorted by effective bpp, then name).
      * @param codecs available color codecs for the combo box
      **/
     public void setCodecs(List<ColorCodec> codecs) {
         codecCombo.removeAllItems();
-        for (int i=0; i<codecs.size(); i++) {
-            codecCombo.addItem(codecs.get(i));
+        List<ColorCodec> sorted = PaletteCodecSort.sortedForPaletteUi(codecs);
+        for (ColorCodec codec : sorted) {
+            codecCombo.addItem(codec);
         }
-        codecCombo.setSelectedIndex(0);
+        if (codecCombo.getItemCount() > 0) {
+            codecCombo.setSelectedIndex(0);
+        }
     }
 
     /**
@@ -140,16 +166,8 @@ public class TMNewPaletteDialog extends TMModalDialog {
      * @return JOptionPane.OK_OPTION or JOptionPane.CANCEL_OPTION
      **/
     public int showDialog() {
-        //sizeField.setText("");
         maybeEnableOKButton();
-        SwingUtilities.invokeLater( new Runnable() {
-            /**
-             * Runs the deferred UI task.
-             **/
-            public void run() {
-                sizeField.requestFocus();
-            }
-        });
+        SwingUtilities.invokeLater(() -> sizeField.requestFocusInWindow());
         return super.showDialog();
     }
 
@@ -158,7 +176,15 @@ public class TMNewPaletteDialog extends TMModalDialog {
      * @return true if dialog input is valid for OK
      **/
     public boolean inputOK() {
-        return (!sizeField.getText().equals("") && (getPaletteSize() > 0));
+        String text = sizeField.getText().trim();
+        if (text.isEmpty()) {
+            return false;
+        }
+        try {
+            return Integer.parseInt(text) > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
 }

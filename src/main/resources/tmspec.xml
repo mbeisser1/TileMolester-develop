@@ -6,20 +6,20 @@
 
 	<colorformats>
 
+		<directcolor id="CF05" bpp="16" rmask="000E" gmask="00E0" bmask="0E00">
+			<description>9bpp BGR (Genesis)</description>
+		</directcolor>
 		<directcolor id="CF00" bpp="15" rmask="001F" gmask="03E0" bmask="7C00">
 			<description>15bpp BGR (555)</description>
 		</directcolor>
 		<directcolor id="CF01" bpp="24" rmask="FF0000" gmask="00FF00" bmask="0000FF">
 			<description>24bpp RGB (888)</description>
 		</directcolor>
-		<directcolor id="CF05" bpp="16" rmask="000E" gmask="00E0" bmask="0E00">
-			<description>9bpp BGR (Genesis)</description>
-		</directcolor>
 		<directcolor id="CF06" bpp="32" rmask="00FF0000" gmask="0000FF00" bmask="000000FF">
 			<description>32bpp RGB (888)</description>
 		</directcolor>
 		<directcolor id="RIFF" bpp="32" rmask="FF000000" gmask="00FF0000" bmask="0000FF00">
-			<description>32bpp RGB (Windows Palete)</description>
+			<description>32bpp BGRx (Windows palette)</description>
 		</directcolor>
 
 		<indexedcolor id="CF02" bpp="6" endianness="big">

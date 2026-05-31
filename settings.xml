@@ -6,6 +6,7 @@
   <property key="viewToolBar" value="true"/>
   <property key="darkMode" value="true"/>
   <property key="maxRecentFiles" value="10"/>
+  <property key="recentFile" value="/home/mbeisser/repo/TileMolester-develop0"/>
   <property key="recentFile" value="/home/mbeisser/repo/gauntlet_mame_gfx/rom/gauntlet_4bpp_planar_tiles_tiles_only.bin"/>
   <property key="recentFile" value="/home/mbeisser/repo/gauntlet_mame_gfx/scripts/bitplane_roms_to_4bpp_planar_tiles.py"/>
   <property key="recentFile" value="/home/mbeisser/repo/gauntlet_mame_gfx/rom/gauntlet_alpha_numeric_2bpp_linear_tiles.bin"/>
