@@ -90,7 +90,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doCutAsCommand();
+                    ui.editActions.doCutAsCommand();
                 }
             }
         );
@@ -105,7 +105,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doCopyToCommand();
+                    ui.editActions.doCopyToCommand();
                 }
             }
         );
@@ -120,7 +120,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doCutCommand();
+                    ui.editActions.doCutCommand();
                 }
             }
         );
@@ -135,7 +135,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doCopyCommand();
+                    ui.editActions.doCopyCommand();
                 }
             }
         );
@@ -150,7 +150,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doPasteCommand();
+                    ui.editActions.doPasteCommand();
                 }
             }
         );
@@ -165,7 +165,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doClearCommand();
+                    ui.editActions.doClearCommand();
                 }
             }
         );
@@ -180,7 +180,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doSelectAllCommand();
+                    ui.editActions.doSelectAllCommand();
                 }
             }
         );
@@ -197,7 +197,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doMirrorCommand();
+                    ui.imageActions.doMirrorCommand();
                 }
             }
         );
@@ -212,7 +212,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doFlipCommand();
+                    ui.imageActions.doFlipCommand();
                 }
             }
         );
@@ -229,7 +229,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doRotateRightCommand();
+                    ui.imageActions.doRotateRightCommand();
                 }
             }
         );
@@ -244,7 +244,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doRotateLeftCommand();
+                    ui.imageActions.doRotateLeftCommand();
                 }
             }
         );
@@ -261,7 +261,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doShiftLeftCommand();
+                    ui.imageActions.doShiftLeftCommand();
                 }
             }
         );
@@ -276,7 +276,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doShiftRightCommand();
+                    ui.imageActions.doShiftRightCommand();
                 }
             }
         );
@@ -291,7 +291,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doShiftUpCommand();
+                    ui.imageActions.doShiftUpCommand();
                 }
             }
         );
@@ -306,7 +306,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doShiftDownCommand();
+                    ui.imageActions.doShiftDownCommand();
                 }
             }
         );
@@ -323,7 +323,7 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
                  * @param e event from the AWT/Swing listener
                  **/
                 public void actionPerformed(ActionEvent e) {
-                    ui.doStretchCommand();
+                    ui.imageActions.doStretchCommand();
                 }
             }
         );

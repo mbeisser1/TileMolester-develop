@@ -61,8 +61,6 @@ public class TMUI extends JFrame {
 	// tool types
 	public TMTools.ToolType toolType = TMTools.ToolType.SELECT_TOOL;
 
-	private int previousTool;
-
 	private java.util.List<ColorCodec> colorcodecs;
 	java.util.List<TileCodec> tilecodecs;
 	private java.util.List<TMTileCodecFileFilter> filefilters;
@@ -92,15 +90,15 @@ public class TMUI extends JFrame {
 	TMUIMenuBuilder menuBuilder;
 	TMUIToolbarBuilder toolbarBuilder;
 	TMUITreeMenuBuilder treeMenuBuilder;
-	TMUIFileActions fileActions;
-	TMUIEditActions editActions;
-	TMUINavActions navActions;
-	TMUIPaletteActions paletteActions;
-	TMUIRefresh refresh;
-	TMUIViewActions viewActions;
-	TMUIImageActions imageActions;
-	TMUIWindowActions windowActions;
-	TMUIHelpActions helpActions;
+	public final TMUIFileActions fileActions;
+	public final TMUIEditActions editActions;
+	public final TMUINavActions navActions;
+	public final TMUIPaletteActions paletteActions;
+	public final TMUIRefresh refresh;
+	public final TMUIViewActions viewActions;
+	public final TMUIImageActions imageActions;
+	public final TMUIWindowActions windowActions;
+	public final TMUIHelpActions helpActions;
 
 	/**
 	 * Creates a Tile Molester UI.
@@ -333,7 +331,7 @@ public class TMUI extends JFrame {
 		// menus
 		menuBuilder.buildMenuBar();
 		setJMenuBar(widgets.menuBar);
-		buildReopenMenu();
+		fileActions.buildReopenMenu();
 
 		initTileCodecUIStuff();
 		buildColorCodecsMenu();
@@ -371,7 +369,7 @@ public class TMUI extends JFrame {
 			 * @param e event from the AWT/Swing listener
 			 **/
 			public void windowClosing(WindowEvent e) {
-				doExitCommand();
+				fileActions.doExitCommand();
 			}
 
 			/**
@@ -388,12 +386,11 @@ public class TMUI extends JFrame {
 		});
 
 		// Center the frame
-		int inset = 128;
-		int maxWidth = 1600;
-		int maxHeight = 1080;
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int finalWidth = (screenSize.width > maxWidth ? maxWidth : screenSize.width) - inset * 2;
-		int finalHeight = (screenSize.height > maxHeight ? maxHeight : screenSize.height) - inset * 2;
+		int finalWidth = (screenSize.width > TMUIConstants.MAX_WINDOW_WIDTH ? TMUIConstants.MAX_WINDOW_WIDTH
+				: screenSize.width) - TMUIConstants.WINDOW_INSET * 2;
+		int finalHeight = (screenSize.height > TMUIConstants.MAX_WINDOW_HEIGHT ? TMUIConstants.MAX_WINDOW_HEIGHT
+				: screenSize.height) - TMUIConstants.WINDOW_INSET * 2;
 		setBounds((screenSize.width - finalWidth) / 2,
 				(screenSize.height - finalHeight) / 2,
 				finalWidth,
@@ -430,266 +427,6 @@ public class TMUI extends JFrame {
 	public void savePalettes() {
 		// TODO
 	}
-
-	public void doNewCommand() { fileActions.doNewCommand(); }
-
-	public void doOpenCommand() { fileActions.doOpenCommand(); }
-
-	public void doCloseCommand() { fileActions.doCloseCommand(); }
-
-	public void saveResources(FileImage img) { fileActions.saveResources(img); }
-
-	public void doCloseAllCommand() { fileActions.doCloseAllCommand(); }
-
-	public void doSaveCommand() { fileActions.doSaveCommand(); }
-
-	public void doSaveAsCommand() { fileActions.doSaveAsCommand(); }
-
-	public void doSaveAllCommand() { fileActions.doSaveAllCommand(); }
-
-	public void doExitCommand() { fileActions.doExitCommand(); }
-
-	public void doReopenCommand(File recentFile) { fileActions.doReopenCommand(recentFile); }
-
-	public void openFile(File file) { fileActions.openFile(file); }
-
-	public void buildReopenMenu() { fileActions.buildReopenMenu(); }
-
-	public void addToRecentFiles(File f) { fileActions.addToRecentFiles(f); }
-
-	public void doUndoCommand() { editActions.doUndoCommand(); }
-	public void doRedoCommand() { editActions.doRedoCommand(); }
-	public void doCutCommand() { editActions.doCutCommand(); }
-	public void doCopyCommand() { editActions.doCopyCommand(); }
-	public void doPasteCommand() { editActions.doPasteCommand(); }
-	public void doClearCommand() { editActions.doClearCommand(); }
-	public void doGoToCommand() { editActions.doGoToCommand(); }
-	public void doGoToAgainCommand() { editActions.doGoToAgainCommand(); }
-	public void doSelectAllCommand() { editActions.doSelectAllCommand(); }
-	public boolean exportSelectionAs() { return editActions.exportSelectionAs(); }
-	public void doCopyToCommand() { editActions.doCopyToCommand(); }
-	public void doCutAsCommand() { editActions.doCutAsCommand(); }
-	public void doPasteFromCommand() { editActions.doPasteFromCommand(); }
-
-	public void doHomeCommand() { navActions.doHomeCommand(); }
-	public void doMinusPageCommand() { navActions.doMinusPageCommand(); }
-	public void doMinusRowCommand() { navActions.doMinusRowCommand(); }
-	public void doMinusTileCommand() { navActions.doMinusTileCommand(); }
-	public void doMinusByteCommand() { navActions.doMinusByteCommand(); }
-	public void doPlusByteCommand() { navActions.doPlusByteCommand(); }
-	public void doPlusTileCommand() { navActions.doPlusTileCommand(); }
-	public void doPlusRowCommand() { navActions.doPlusRowCommand(); }
-	public void doPlusPageCommand() { navActions.doPlusPageCommand(); }
-	public void doEndCommand() { navActions.doEndCommand(); }
-	public void doAddToBookmarksCommand() { navActions.doAddToBookmarksCommand(); }
-	public void doOrganizeBookmarksCommand() { navActions.doOrganizeBookmarksCommand(); }
-	public void doGotoBookmarkCommand(BookmarkItemNode bookmark) { navActions.doGotoBookmarkCommand(bookmark); }
-
-	public void doAddToPalettesCommand() { paletteActions.doAddToPalettesCommand(); }
-	public void doOrganizePalettesCommand() { paletteActions.doOrganizePalettesCommand(); }
-	public void doEditColorsCommand() { paletteActions.doEditColorsCommand(); }
-	public void doColorCodecCommand(ColorCodec codec) { paletteActions.doColorCodecCommand(codec); }
-	public void doPaletteSizeCommand() { paletteActions.doPaletteSizeCommand(); }
-	public void doNewPaletteCommand() { paletteActions.doNewPaletteCommand(); }
-	public void doImportInternalPaletteCommand() { paletteActions.doImportInternalPaletteCommand(); }
-	public void doImportExternalPaletteCommand() { paletteActions.doImportExternalPaletteCommand(); }
-	public void doPaletteEndiannessCommand(int endianness) { paletteActions.doPaletteEndiannessCommand(endianness); }
-	public void doSelectPaletteCommand(TMPalette palette) { paletteActions.doSelectPaletteCommand(palette); }
-
-	public void doTileCommand() { windowActions.doTileCommand(); }
-	public void doCascadeCommand() { windowActions.doCascadeCommand(); }
-	public void doArrangeIconsCommand() { windowActions.doArrangeIconsCommand(); }
-	public void doNewWindowCommand() { windowActions.doNewWindowCommand(); }
-	public void doHelpTopicsCommand() { helpActions.doHelpTopicsCommand(); }
-	public void doAboutCommand() { helpActions.doAboutCommand(); }
-	public void doTileCodecCommand(TileCodec codec) { viewActions.doTileCodecCommand(codec); }
-	public void doZoomCommand(double scale) { viewActions.doZoomCommand(scale); }
-	public void doZoomInCommand() { viewActions.doZoomInCommand(); }
-	public void doZoomOutCommand() { viewActions.doZoomOutCommand(); }
-	public void doBlockGridCommand() { viewActions.doBlockGridCommand(); }
-	public void doTileGridCommand() { viewActions.doTileGridCommand(); }
-	public void doPixelGridCommand() { viewActions.doPixelGridCommand(); }
-	public void doStatusBarCommand() { viewActions.doStatusBarCommand(); }
-	public void doToolBarCommand() { viewActions.doToolBarCommand(); }
-	public void doDarkModeCommand() { viewActions.doDarkModeCommand(); }
-	public void doModeCommand(int mode) { viewActions.doModeCommand(mode); }
-	public void doSizeBlockToCanvasCommand() { viewActions.doSizeBlockToCanvasCommand(); }
-	public void doCustomBlockSizeCommand() { viewActions.doCustomBlockSizeCommand(); }
-	public void doRowInterleaveBlocksCommand() { viewActions.doRowInterleaveBlocksCommand(); }
-	public void doCustomCodecCommand() { viewActions.doCustomCodecCommand(); }
-	public void doDecreaseWidthCommand() { viewActions.doDecreaseWidthCommand(); }
-	public void doIncreaseWidthCommand() { viewActions.doIncreaseWidthCommand(); }
-	public void doDecreaseHeightCommand() { viewActions.doDecreaseHeightCommand(); }
-	public void doIncreaseHeightCommand() { viewActions.doIncreaseHeightCommand(); }
-	public void doMirrorCommand() { imageActions.doMirrorCommand(); }
-	public void doFlipCommand() { imageActions.doFlipCommand(); }
-	public void doRotateRightCommand() { imageActions.doRotateRightCommand(); }
-	public void doRotateLeftCommand() { imageActions.doRotateLeftCommand(); }
-	public void doShiftLeftCommand() { imageActions.doShiftLeftCommand(); }
-	public void doShiftRightCommand() { imageActions.doShiftRightCommand(); }
-	public void doShiftUpCommand() { imageActions.doShiftUpCommand(); }
-	public void doShiftDownCommand() { imageActions.doShiftDownCommand(); }
-	public void doStretchCommand() { imageActions.doStretchCommand(); }
-	public void doCanvasSizeCommand() { imageActions.doCanvasSizeCommand(); }
-
-	/**
-	 * Handles menu command "Tile".
-	 * Code ruthlessly stolen from some guy on the Java forums. Thanks and sorry. :)
-	 **/
-
-	/**
-	 * Handles menu command "Cascade".
-	 * Code ruthlessly stolen from some guy on the Java forums. Thanks and sorry. :)
-	 **/
-
-	/**
-	 * Handles menu command "Arrange Icons".
-	 **/
-
-	/**
-	 * Handles menu command "Help Topics".
-	 **/
-
-	/**
-	 * Handles menu command "About".
-	 * Displays a small dialog with info about the program.
-	 **/
-
-	/**
-	 * Handles menu command "Tile Codec".
-	 * Changes the tile codec for the current view to the specified one.
-	 * @param codec tile codec used for encode/decode
-	 **/
-
-	/**
-	 * Handles menu command "Zoom".
-	 * Zooms the current frame to the given scale (1.0 = 100%, 2.0 = 200% and so on)
-	 * @param scale zoom factor applied to the canvas
-	 **/
-
-	/**
-	 * Handles menu command "Zoom In".
-	 * Scale += 1.0
-	 **/
-
-	/**
-	 * Handles menu command "Zoom Out".
-	 * Scale -= 1.0
-	 **/
-
-	/**
-	 * Handles menu command "Block Grid".
-	 **/
-
-	/**
-	 * Handles menu command "Tile Grid".
-	 **/
-
-	/**
-	 * Handles menu command "Pixel Grid".
-	 **/
-
-	/**
-	 * Handles menu command "Statusbar".
-	 * Toggles the statusbar visibility.
-	 **/
-
-	/**
-	 * Handles menu command "Toolbar".
-	 * Toggles the toolbar visibility.
-	 **/
-
-	/**
-	 * Handles menu command "Dark mode".
-	 * Toggles the dark mode theme.
-	 **/
-
-	/**
-	 * Handles menu command "New Window".
-	 * Creates a new view for the current one.
-	 * Duplicates view settings (offset, codec, width/height etc.)
-	 **/
-
-	/**
-	 * Handles menu command "Mirror".
-	 **/
-
-	/**
-	 * Handles menu command "Flip".
-	 **/
-
-	/**
-	 * Handles menu command "Rotate +90".
-	 **/
-
-	/**
-	 * Handles menu command "Rotate Left".
-	 **/
-
-	/**
-	 * Handles menu command "Shift Left".
-	 **/
-
-	/**
-	 * Handles menu command "Shift Right".
-	 **/
-
-	/**
-	 * Handles menu command "Shift Up".
-	 **/
-
-	/**
-	 * Handles menu command "Shift Down".
-	 **/
-
-	/**
-	 * Handles menu command "Stretch".
-	 **/
-
-	/**
-	 * Handles menu command "Canvas Size".
-	 **/
-
-	/**
-	 * Handles menu command "Mode".
-	 * Switches to the specified tile mode for the current frame.
-	 * The valid modes are MODE_1D and MODE_2D.
-	 * @param mode tile layout mode ({@link tm.tilecodecs.TileCodec#MODE_1D} or {@link tm.tilecodecs.TileCodec#MODE_2D})
-	 **/
-
-	/**
-	 * Handles the "SizeBlockToCanvas" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the "CustomBlockSize" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the "RowInterleaveBlocks" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the menu command "Custom Codec".
-	 **/
-
-	/**
-	 * Handles the "DecreaseWidth" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the "IncreaseWidth" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the "DecreaseHeight" menu or toolbar command.
-	 **/
-
-	/**
-	 * Handles the "IncreaseHeight" menu or toolbar command.
-	 **/
-
-	//////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Call this when a fileimage has been modified.
@@ -745,7 +482,7 @@ public class TMUI extends JFrame {
 	 * @param codec tile codec used for encode/decode
 	 **/
 	public void addTileCodec(TileCodec codec) {
-		TMTileCodecMenuItem codecMenuItem = new TMTileCodecMenuItem(codec, this::doTileCodecCommand);
+		TMTileCodecMenuItem codecMenuItem = new TMTileCodecMenuItem(codec, viewActions::doTileCodecCommand);
 		widgets.tileCodecMenu.add(codecMenuItem);
 		widgets.tileCodecButtonGroup.add(codecMenuItem);
 		widgets.tileCodecButtonHashtable.put(codec, codecMenuItem);
@@ -936,7 +673,7 @@ public class TMUI extends JFrame {
 	 * @param codec tile codec used for encode/decode
 	 **/
 	public void addColorCodec(ColorCodec codec) {
-		TMColorCodecMenuItem codecMenuItem = new TMColorCodecMenuItem(codec, this::doColorCodecCommand);
+		TMColorCodecMenuItem codecMenuItem = new TMColorCodecMenuItem(codec, paletteActions::doColorCodecCommand);
 		widgets.colorCodecMenu.add(codecMenuItem);
 		widgets.colorCodecButtonGroup.add(codecMenuItem);
 		widgets.colorCodecButtonHashtable.put(codec, codecMenuItem);
@@ -989,7 +726,7 @@ public class TMUI extends JFrame {
 		temp.deleteOnExit();
 		try (InputStream in = url.openStream();
 				FileOutputStream out = new FileOutputStream(temp)) {
-			byte[] buf = new byte[4096];
+			byte[] buf = new byte[TMUIConstants.IO_BUFFER_SIZE];
 			int n;
 			while ((n = in.read(buf)) > 0) {
 				out.write(buf, 0, n);

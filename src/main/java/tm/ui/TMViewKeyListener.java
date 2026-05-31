@@ -45,60 +45,60 @@ public class TMViewKeyListener extends KeyAdapter {
 			case KeyEvent.VK_UP:
 			case KeyEvent.VK_KP_UP:
 				if (e.isShiftDown()) {
-					ui.doDecreaseHeightCommand();
+					ui.viewActions.doDecreaseHeightCommand();
 				} else {
-					ui.doMinusRowCommand();
+					ui.navActions.doMinusRowCommand();
 				}
 				break;
 			case KeyEvent.VK_DOWN:
 			case KeyEvent.VK_KP_DOWN:
 				if (e.isShiftDown()) {
-					ui.doIncreaseHeightCommand();
+					ui.viewActions.doIncreaseHeightCommand();
 				} else {
-					ui.doPlusRowCommand();
+					ui.navActions.doPlusRowCommand();
 				}
 				break;
 			case KeyEvent.VK_LEFT:
 			case KeyEvent.VK_KP_LEFT:
 				if (e.isShiftDown()) {
-					ui.doDecreaseWidthCommand();
+					ui.viewActions.doDecreaseWidthCommand();
 				} else {
-					ui.doMinusTileCommand();
+					ui.navActions.doMinusTileCommand();
 				}
 				break;
 			case KeyEvent.VK_RIGHT:
 			case KeyEvent.VK_KP_RIGHT:
 				if (e.isShiftDown()) {
-					ui.doIncreaseWidthCommand();
+					ui.viewActions.doIncreaseWidthCommand();
 				} else {
-					ui.doPlusTileCommand();
+					ui.navActions.doPlusTileCommand();
 				}
 				break;
 			case KeyEvent.VK_HOME:
-				ui.doHomeCommand();
+				ui.navActions.doHomeCommand();
 				break;
 			case KeyEvent.VK_END:
-				ui.doEndCommand();
+				ui.navActions.doEndCommand();
 				break;
 			case 109:
 			case KeyEvent.VK_MINUS:
-				ui.doMinusByteCommand();
+				ui.navActions.doMinusByteCommand();
 				break;
 			case 107:
 			case KeyEvent.VK_PLUS:
-				ui.doPlusByteCommand();
+				ui.navActions.doPlusByteCommand();
 				break;
 			case KeyEvent.VK_PAGE_UP:
-				ui.doMinusPageCommand();
+				ui.navActions.doMinusPageCommand();
 				break;
 			case KeyEvent.VK_PAGE_DOWN:
-				ui.doPlusPageCommand();
+				ui.navActions.doPlusPageCommand();
 				break;
 			case KeyEvent.VK_TAB:
 				if (e.isShiftDown()) {
-					ui.doTileCodecCommand(ui.getTileCodecPredecessor(tc));
+					ui.viewActions.doTileCodecCommand(ui.getTileCodecPredecessor(tc));
 				} else {
-					ui.doTileCodecCommand(ui.getTileCodecSuccessor(tc));
+					ui.viewActions.doTileCodecCommand(ui.getTileCodecSuccessor(tc));
 				}
 				break;
 			case KeyEvent.VK_ESCAPE:

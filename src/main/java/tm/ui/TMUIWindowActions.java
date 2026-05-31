@@ -73,18 +73,15 @@ public class TMUIWindowActions extends TMUICommandGroup {
 	}
 
 	public void doCascadeCommand() {
-		int FRAME_OFFSET = 30;
 		int xpos = 0, ypos = 0;
 		JInternalFrame frames[] = ui.widgets.desktop.getAllFrames();
-		int cascadeWidth = ui.widgets.desktop.getBounds().width - 5;
-		int cascadeHeight = ui.widgets.desktop.getBounds().height - 5;
-		int frameHeight = cascadeHeight - frames.length * FRAME_OFFSET;
-		int frameWidth = cascadeWidth - frames.length * FRAME_OFFSET;
+		int cascadeWidth = ui.widgets.desktop.getBounds().width - TMUIConstants.MDI_CASCADE_MARGIN;
+		int cascadeHeight = ui.widgets.desktop.getBounds().height - TMUIConstants.MDI_CASCADE_MARGIN;
 		for (int i = frames.length - 1; i >= 0; i--) {
 			if (!frames[i].isIcon()) {
 				frames[i].setLocation(xpos, ypos);
-				xpos += FRAME_OFFSET;
-				ypos += FRAME_OFFSET;
+				xpos += TMUIConstants.MDI_CASCADE_OFFSET;
+				ypos += TMUIConstants.MDI_CASCADE_OFFSET;
 			}
 		}
 		ui.widgets.desktop.revalidate();

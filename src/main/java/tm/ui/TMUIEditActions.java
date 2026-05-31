@@ -148,11 +148,11 @@ public class TMUIEditActions extends TMUICommandGroup {
 	}
 
 	public void doCopyToCommand() {
-		ui.exportSelectionAs();
+		exportSelectionAs();
 	}
 
 	public void doCutAsCommand() {
-		if (ui.exportSelectionAs()) {
+		if (exportSelectionAs()) {
 			doCutCommand();
 		}
 	}

@@ -815,7 +815,7 @@ public class TMView extends JInternalFrame {
 	 * Closes the view.
 	 **/
 	private void doCloseCommand() {
-		ui.doCloseCommand();
+		ui.fileActions.doCloseCommand();
 	}
 
 	/**

@@ -384,7 +384,7 @@ public class TMUIFileActions extends TMUICommandGroup {
 				ColorCodec.LITTLE_ENDIAN, true);
 
 		TMView view = ui.createView(img, tc, pal, mode);
-		view.setGridSize(3, 36);
+		view.setGridSize(TMUIConstants.DEFAULT_OPEN_GRID_COLS, TMUIConstants.DEFAULT_OPEN_GRID_ROWS);
 		ui.addViewToDesktop(view);
 
 		java.util.List<File> recentFiles = TileMolester.settings.getRecentFiles();
@@ -413,7 +413,7 @@ public class TMUIFileActions extends TMUICommandGroup {
 		} else {
 			for (int i = 0; i < recentFiles.size(); i++) {
 				File recentFile = recentFiles.get(i);
-				ui.widgets.reopenMenu.add(new TMRecentFileMenuItem(recentFile, ui::doReopenCommand));
+				ui.widgets.reopenMenu.add(new TMRecentFileMenuItem(recentFile, this::doReopenCommand));
 			}
 		}
 	}

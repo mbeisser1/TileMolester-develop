@@ -25,7 +25,6 @@ import tm.modaldialog.*;
 import tm.filelistener.TMFileListener;
 import tm.tilecodecs.TileCodec;
 import tm.utils.mxScrollableDesktop;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.util.HashMap;
@@ -75,75 +74,75 @@ public class TMUIWidgets {
 
 	// toolbar buttons
 	TMToolButton newButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/document_add_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/document_add_24_regular.svg"));
 	TMToolButton openButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/folder_open_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/folder_open_24_regular.svg"));
 	TMToolButton saveButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/save_24_regular.svg", 22, 22));
-	TMToolButton cutButton = new TMToolButton(new FlatSVGIcon("icons/fluent/cut_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/save_24_regular.svg"));
+	TMToolButton cutButton = new TMToolButton(TMUIConstants.toolbarIcon("icons/fluent/cut_24_regular.svg"));
 	TMToolButton copyButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/copy_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/copy_24_regular.svg"));
 	TMToolButton pasteButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/clipboard_paste_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/clipboard_paste_24_regular.svg"));
 	TMToolButton undoButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/arrow_undo_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/arrow_undo_24_regular.svg"));
 	TMToolButton redoButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/arrow_redo_24_regular.svg", 22, 22));
-	TMToolButton gotoButton = new TMToolButton(new FlatSVGIcon("icons/fluent/custom/jump-to.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/arrow_redo_24_regular.svg"));
+	TMToolButton gotoButton = new TMToolButton(TMUIConstants.toolbarIcon("icons/fluent/custom/jump-to.svg"));
 	TMToolButton addBookmarkButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/bookmark_add_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/bookmark_add_24_regular.svg"));
 	TMToolButton decWidthButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/panel_left_contract_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/panel_left_contract_24_regular.svg"));
 	TMToolButton incWidthButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/panel_left_expand_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/panel_left_expand_24_regular.svg"));
 	TMToolButton decHeightButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/custom/decrease-height.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/custom/decrease-height.svg"));
 	TMToolButton incHeightButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/custom/increase-height.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/custom/increase-height.svg"));
 
 	// navigation bar buttons
 	TMToolButton minusPageButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/rewind_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/rewind_24_regular.svg"));
 	TMToolButton plusPageButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/fast_forward_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/fast_forward_24_regular.svg"));
 	TMToolButton minusRowButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/previous_frame_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/previous_frame_24_regular.svg"));
 	TMToolButton plusRowButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/next_frame_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/next_frame_24_regular.svg"));
 	TMToolButton minusTileButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/custom/tile-previous.svg", 22, 22));
-	TMToolButton plusTileButton = new TMToolButton(new FlatSVGIcon("icons/fluent/custom/tile-next.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/custom/tile-previous.svg"));
+	TMToolButton plusTileButton = new TMToolButton(TMUIConstants.toolbarIcon("icons/fluent/custom/tile-next.svg"));
 	TMToolButton minusByteButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/subtract_square_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/subtract_square_24_regular.svg"));
 	TMToolButton plusByteButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/add_square_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/add_square_24_regular.svg"));
 
 	// tool palette buttons
 	TMToolToggleButton selectButton = new TMToolToggleButton(
-			new FlatSVGIcon("icons/fluent/square_hint_24_regular.svg", 22, 22));
-	TMToolToggleButton zoomButton = new TMToolToggleButton(new FlatSVGIcon("icons/fluent/custom/zoom.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/square_hint_24_regular.svg"));
+	TMToolToggleButton zoomButton = new TMToolToggleButton(TMUIConstants.toolbarIcon("icons/fluent/custom/zoom.svg"));
 	TMToolToggleButton pickupButton = new TMToolToggleButton(
-			new FlatSVGIcon("icons/fluent/eyedropper_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/eyedropper_24_regular.svg"));
 	TMToolToggleButton brushButton = new TMToolToggleButton(
-			new FlatSVGIcon("icons/fluent/edit_24_regular.svg", 22, 22));
-	TMToolToggleButton lineButton = new TMToolToggleButton(new FlatSVGIcon("icons/fluent/line_24_regular.svg", 22, 22));
-	TMToolToggleButton fillButton = new TMToolToggleButton(new FlatSVGIcon("icons/fluent/paint_bucket_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/edit_24_regular.svg"));
+	TMToolToggleButton lineButton = new TMToolToggleButton(TMUIConstants.toolbarIcon("icons/fluent/line_24_regular.svg"));
+	TMToolToggleButton fillButton = new TMToolToggleButton(TMUIConstants.toolbarIcon("icons/fluent/paint_bucket_24_regular.svg"));
 	TMToolToggleButton replaceButton = new TMToolToggleButton(
-			new FlatSVGIcon("icons/fluent/custom/color-replace.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/custom/color-replace.svg"));
 	TMToolToggleButton moveButton = new TMToolToggleButton(
-			new FlatSVGIcon("icons/fluent/arrow_move_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/arrow_move_24_regular.svg"));
 
 	// selection palette buttons
-	TMToolButton mirrorButton = new TMToolButton(new FlatSVGIcon("icons/fluent/flip_horizontal_24_regular.svg", 22, 22));
-	TMToolButton flipButton = new TMToolButton(new FlatSVGIcon("icons/fluent/flip_vertical_24_regular.svg", 22, 22));
+	TMToolButton mirrorButton = new TMToolButton(TMUIConstants.toolbarIcon("icons/fluent/flip_horizontal_24_regular.svg"));
+	TMToolButton flipButton = new TMToolButton(TMUIConstants.toolbarIcon("icons/fluent/flip_vertical_24_regular.svg"));
 	TMToolButton rotateRightButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/rotate_right_24_regular.svg", 22, 22));
-	TMToolButton rotateLeftButton = new TMToolButton(new FlatSVGIcon("icons/fluent/rotate_left_24_regular.svg", 22, 22));
+			TMUIConstants.toolbarIcon("icons/fluent/rotate_right_24_regular.svg"));
+	TMToolButton rotateLeftButton = new TMToolButton(TMUIConstants.toolbarIcon("icons/fluent/rotate_left_24_regular.svg"));
 
-	TMToolButton shiftLeftButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_left_24_regular.svg", 22, 22));
-	TMToolButton shiftRightButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_right_24_regular.svg", 22, 22));
-	TMToolButton shiftUpButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_above_24_regular.svg", 22, 22));
-	TMToolButton shiftDownButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_below_24_regular.svg", 22, 22));
+	TMToolButton shiftLeftButton = new TMToolButton(TMUIConstants.toolbarIcon("icons/fluent/table_move_left_24_regular.svg"));
+	TMToolButton shiftRightButton = new TMToolButton(TMUIConstants.toolbarIcon("icons/fluent/table_move_right_24_regular.svg"));
+	TMToolButton shiftUpButton = new TMToolButton(TMUIConstants.toolbarIcon("icons/fluent/table_move_above_24_regular.svg"));
+	TMToolButton shiftDownButton = new TMToolButton(TMUIConstants.toolbarIcon("icons/fluent/table_move_below_24_regular.svg"));
 
 	// File menu
 	JMenu fileMenu = new JMenu("File");

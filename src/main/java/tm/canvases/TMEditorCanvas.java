@@ -232,10 +232,10 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
                 break;
             case ZOOM_TOOL:
                 if (e.getButton() == MouseEvent.BUTTON1) {
-                    ui.doZoomInCommand();
+                    ui.viewActions.doZoomInCommand();
                 }
                 else {
-                    ui.doZoomOutCommand();
+                    ui.viewActions.doZoomOutCommand();
                 }
                 break;
             case PICKUP_TOOL:

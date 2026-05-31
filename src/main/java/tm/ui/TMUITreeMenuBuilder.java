@@ -52,7 +52,7 @@ public class TMUITreeMenuBuilder {
 
 	public void addToBookmarksMenu(TMTreeNode node, JMenu menu) {
 		if (node instanceof BookmarkItemNode) {
-			menu.add(new TMBookmarkMenuItem((BookmarkItemNode) node, ui::doGotoBookmarkCommand));
+			menu.add(new TMBookmarkMenuItem((BookmarkItemNode) node, ui.navActions::doGotoBookmarkCommand));
 		} else {
 			// folder
 			JMenu subMenu = new JMenu(node.toString());
@@ -74,8 +74,8 @@ public class TMUITreeMenuBuilder {
 
 	public void buildPalettesMenu(FolderNode root) {
 		// remove old palette menuitems, if any
-		while (ui.widgets.paletteMenu.getItemCount() > 10) {
-			ui.widgets.paletteMenu.remove(10);
+		while (ui.widgets.paletteMenu.getItemCount() > TMUIConstants.PALETTE_MENU_FIXED_ITEM_COUNT) {
+			ui.widgets.paletteMenu.remove(TMUIConstants.PALETTE_MENU_FIXED_ITEM_COUNT);
 		}
 
 		ui.widgets.paletteButtonHashtable.clear();
@@ -98,7 +98,7 @@ public class TMUITreeMenuBuilder {
 		if (node instanceof PaletteItemNode) {
 			// palette
 			PaletteItemNode paletteNode = (PaletteItemNode) node;
-			TMPaletteMenuItem paletteMenuItem = new TMPaletteMenuItem(paletteNode, ui::doSelectPaletteCommand);
+			TMPaletteMenuItem paletteMenuItem = new TMPaletteMenuItem(paletteNode, ui.paletteActions::doSelectPaletteCommand);
 			menu.add(paletteMenuItem);
 			ui.widgets.paletteButtonGroup.add(paletteMenuItem);
 			ui.widgets.paletteButtonHashtable.put(paletteNode.getPalette(), paletteMenuItem);

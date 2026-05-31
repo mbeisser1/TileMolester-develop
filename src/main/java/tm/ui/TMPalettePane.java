@@ -59,9 +59,9 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
     private JButton incButton = new JButton(new FlatSVGIcon("icons/fluent/caret_right_24_filled.svg", 32, 32));
     private JButton rotatePaletteRightButton = new JButton(new FlatSVGIcon("icons/fluent/rotate_right_24_regular.svg", 32, 32));
     private JButton rotatePaletteLeftButton = new JButton(new FlatSVGIcon("icons/fluent/rotate_left_24_regular.svg", 32, 32));
-    private JButton leftShiftButton = new JButton(new FlatSVGIcon("icons/fluent/caret_left_24_filled.svg", 22, 22));
-    private JButton rightShiftButton = new JButton(new FlatSVGIcon("icons/fluent/caret_right_24_filled.svg", 22, 22));
-    private JButton swapButton = new JButton(new FlatSVGIcon("icons/fluent/custom/swap.svg", 22, 22));
+    private JButton leftShiftButton = new JButton(TMUIConstants.toolbarIcon("icons/fluent/caret_left_24_filled.svg"));
+    private JButton rightShiftButton = new JButton(TMUIConstants.toolbarIcon("icons/fluent/caret_right_24_filled.svg"));
+    private JButton swapButton = new JButton(TMUIConstants.toolbarIcon("icons/fluent/custom/swap.svg"));
 	
 	private JTextField shiftValueField = new JTextField("1");
 
