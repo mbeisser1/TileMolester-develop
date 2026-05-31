@@ -66,7 +66,7 @@ public class TMUI extends JFrame {
 	private java.util.List<ColorCodec> colorcodecs;
 	java.util.List<TileCodec> tilecodecs;
 	private java.util.List<TMTileCodecFileFilter> filefilters;
-	private java.util.List<TMPaletteFileFilter> palettefilters;
+	java.util.List<TMPaletteFileFilter> palettefilters;
 	java.util.List<TMFileListener> filelisteners;
 
 	TMSelectionCanvas copiedSelection = null;
@@ -314,6 +314,9 @@ public class TMUI extends JFrame {
 	TMUITreeMenuBuilder treeMenuBuilder;
 	TMUIFileActions fileActions;
 	TMUIEditActions editActions;
+	TMUINavActions navActions;
+	TMUIPaletteActions paletteActions;
+	TMUIRefresh refresh;
 
 	/**
 	 * Creates a Tile Molester UI.
@@ -496,6 +499,9 @@ public class TMUI extends JFrame {
 		treeMenuBuilder = new TMUITreeMenuBuilder(this);
 		fileActions = new TMUIFileActions(this);
 		editActions = new TMUIEditActions(this);
+		navActions = new TMUINavActions(this);
+		paletteActions = new TMUIPaletteActions(this);
+		refresh = new TMUIRefresh(this);
 
 		// Set up the GUI.
 		// main contentpane
@@ -607,7 +613,7 @@ public class TMUI extends JFrame {
 
 
 		// MDI menus and such shouldn't be shown until file loaded.
-		disableMDIStuff();
+		refresh.setMdiMode(false);
 
 		toolBarPane.setVisible(viewToolBar);
 
@@ -731,6 +737,31 @@ public class TMUI extends JFrame {
 	public void doCopyToCommand() { editActions.doCopyToCommand(); }
 	public void doCutAsCommand() { editActions.doCutAsCommand(); }
 	public void doPasteFromCommand() { editActions.doPasteFromCommand(); }
+
+	public void doHomeCommand() { navActions.doHomeCommand(); }
+	public void doMinusPageCommand() { navActions.doMinusPageCommand(); }
+	public void doMinusRowCommand() { navActions.doMinusRowCommand(); }
+	public void doMinusTileCommand() { navActions.doMinusTileCommand(); }
+	public void doMinusByteCommand() { navActions.doMinusByteCommand(); }
+	public void doPlusByteCommand() { navActions.doPlusByteCommand(); }
+	public void doPlusTileCommand() { navActions.doPlusTileCommand(); }
+	public void doPlusRowCommand() { navActions.doPlusRowCommand(); }
+	public void doPlusPageCommand() { navActions.doPlusPageCommand(); }
+	public void doEndCommand() { navActions.doEndCommand(); }
+	public void doAddToBookmarksCommand() { navActions.doAddToBookmarksCommand(); }
+	public void doOrganizeBookmarksCommand() { navActions.doOrganizeBookmarksCommand(); }
+	public void doGotoBookmarkCommand(BookmarkItemNode bookmark) { navActions.doGotoBookmarkCommand(bookmark); }
+
+	public void doAddToPalettesCommand() { paletteActions.doAddToPalettesCommand(); }
+	public void doOrganizePalettesCommand() { paletteActions.doOrganizePalettesCommand(); }
+	public void doEditColorsCommand() { paletteActions.doEditColorsCommand(); }
+	public void doColorCodecCommand(ColorCodec codec) { paletteActions.doColorCodecCommand(codec); }
+	public void doPaletteSizeCommand() { paletteActions.doPaletteSizeCommand(); }
+	public void doNewPaletteCommand() { paletteActions.doNewPaletteCommand(); }
+	public void doImportInternalPaletteCommand() { paletteActions.doImportInternalPaletteCommand(); }
+	public void doImportExternalPaletteCommand() { paletteActions.doImportExternalPaletteCommand(); }
+	public void doPaletteEndiannessCommand(int endianness) { paletteActions.doPaletteEndiannessCommand(endianness); }
+	public void doSelectPaletteCommand(TMPalette palette) { paletteActions.doSelectPaletteCommand(palette); }
 
 
 	/**
@@ -903,9 +934,9 @@ public class TMUI extends JFrame {
 	public void doTileCodecCommand(TileCodec codec) {
 		withSelectedView(view -> {
 			view.setTileCodec(codec);
-			refreshPalettePane();
-			refreshStatusBar();
-			refreshTileCodecSelection(view);
+			refresh.refreshPalettePane();
+			refresh.refreshStatusBar();
+			refresh.refreshTileCodecSelection(view);
 		});
 	}
 
@@ -1108,7 +1139,7 @@ public class TMUI extends JFrame {
 	public void doModeCommand(int mode) {
 		withSelectedView(view -> {
 			view.setMode(mode);
-			refreshStatusBar();
+			refresh.refreshStatusBar();
 		});
 	}
 
@@ -1175,261 +1206,83 @@ public class TMUI extends JFrame {
 	/**
 	 * Navigation button press handlers.
 	 **/
-	public void doHomeCommand() {
-		withSelectedView(view -> view.setAbsoluteOffset(view.getMinOffset()));
-	}
 
 	/**
 	 * Handles the "MinusPage" menu or toolbar command.
 	 **/
-	public void doMinusPageCommand() {
-		withSelectedView(view -> view.setRelativeOffset(-view.getEditorCanvas().getPageIncrement()));
-	}
 
 	/**
 	 * Handles the "MinusRow" menu or toolbar command.
 	 **/
-	public void doMinusRowCommand() {
-		withSelectedView(view -> view.setRelativeOffset(-view.getEditorCanvas().getRowIncrement()));
-	}
 
 	/**
 	 * Handles the "MinusTile" menu or toolbar command.
 	 **/
-	public void doMinusTileCommand() {
-		withSelectedView(view -> view.setRelativeOffset(-view.getEditorCanvas().getTileIncrement()));
-	}
 
 	/**
 	 * Handles the "MinusByte" menu or toolbar command.
 	 **/
-	public void doMinusByteCommand() {
-		adjustOffset(-1);
-	}
 
 	/**
 	 * Handles the "PlusByte" menu or toolbar command.
 	 **/
-	public void doPlusByteCommand() {
-		adjustOffset(1);
-	}
 
 	/**
 	 * Handles the "PlusTile" menu or toolbar command.
 	 **/
-	public void doPlusTileCommand() {
-		withSelectedView(view -> view.setRelativeOffset(view.getEditorCanvas().getTileIncrement()));
-	}
 
 	/**
 	 * Handles the "PlusRow" menu or toolbar command.
 	 **/
-	public void doPlusRowCommand() {
-		withSelectedView(view -> view.setRelativeOffset(view.getEditorCanvas().getRowIncrement()));
-	}
 
 	/**
 	 * Handles the "PlusPage" menu or toolbar command.
 	 **/
-	public void doPlusPageCommand() {
-		withSelectedView(view -> view.setRelativeOffset(view.getEditorCanvas().getPageIncrement()));
-	}
 
 	/**
 	 * Handles the "End" menu or toolbar command.
 	 **/
-	public void doEndCommand() {
-		withSelectedView(view -> view.setRelativeOffset(view.getMaxOffset()));
-	}
 
 	/**
 	 * Handles the menu command "Add To Bookmarks".
 	 **/
-	public void doAddToBookmarksCommand() {
-		withSelectedView(view -> {
-			int retVal = addBookmarkDialog.showDialog(view.getFileImage().getResources().getBookmarksRoot());
-			if (retVal == JOptionPane.OK_OPTION) {
-				FolderNode folder = addBookmarkDialog.getFolder();
-				BookmarkItemNode bookmark = view.createBookmark(addBookmarkDialog.getDescription());
-				folder.add(bookmark);
-				refreshBookmarksMenu();
-			}
-		});
-	}
 
 	/**
 	 * Handles the menu command "Organize Bookmarks".
 	 **/
-	public void doOrganizeBookmarksCommand() {
-		withSelectedView(view -> {
-			organizeBookmarksDialog.showDialog(view.getFileImage().getResources().getBookmarksRoot());
-			refreshBookmarksMenu();
-		});
-	}
 
 	/**
 	 * Handles the menu command "Add To Palettes".
 	 **/
-	public void doAddToPalettesCommand() {
-		withSelectedView(view -> {
-			int retVal = addPaletteDialog.showDialog(view.getFileImage().getResources().getPalettesRoot());
-			if (retVal == JOptionPane.OK_OPTION) {
-				FolderNode folder = addPaletteDialog.getFolder();
-				PaletteItemNode palNode = new PaletteItemNode(view.getPalette(), addPaletteDialog.getDescription());
-				folder.add(palNode);
-				refreshPalettesMenu();
-			}
-		});
-	}
 
 	/**
 	 * Handles the menu command "Organize Palettes".
 	 **/
-	public void doOrganizePalettesCommand() {
-		withSelectedView(view -> {
-			organizePalettesDialog.showDialog(view.getFileImage().getResources().getPalettesRoot());
-			refreshPalettesMenu();
-		});
-	}
 
 	/**
 	 * Handles the menu command "Edit Colors".
 	 **/
-	public void doEditColorsCommand() {
-		withSelectedView(view -> {
-			Color newColor = JColorChooser.showDialog(this, "Edit Color", new Color(view.getFGColor()));
-			if (newColor != null) {
-				int rgb = newColor.getRGB();
-				TMPaletteVizualiser vizualiser = palettePane.getVizualiser();
-				int colorIndex = vizualiser.getLastIndex();
-
-				view.addReversibleAction(new ReversiblePaletteEditAction(view, view.getPalette(), colorIndex,
-						view.getPalette().getEntryRGB(colorIndex), rgb));
-				view.getPalette().setEntryRGB(colorIndex, rgb);
-
-				this.setFGColor(rgb);
-				view.refreshPaletteDisplay();
-				repaint();
-			}
-		});
-	}
 
 	/**
 	 * Handles the menu command "Format Palette".
 	 * @param codec tile codec used for encode/decode
 	 **/
-	public void doColorCodecCommand(ColorCodec codec) {
-		withSelectedView(view -> {
-			view.getPalette().setCodec(codec);
-			view.refreshPaletteDisplay();
-			refreshPalettePane();
-		});
-	}
 
 	/**
 	 * Handles the menu command "Set Palette Size".
 	 **/
-	public void doPaletteSizeCommand() {
-		withSelectedView(view -> {
-			int retVal = paletteSizeDialog.showDialog(view.getPalette().getSize());
-			if (retVal == JOptionPane.OK_OPTION) {
-				view.getPalette().setSize(paletteSizeDialog.getPaletteSize());
-				refreshPalettePane();
-			}
-		});
-	}
 
 	/**
 	 * Handles the menu command "New Palette".
 	 **/
-	public void doNewPaletteCommand() {
-		withSelectedView(view -> {
-			int retVal = newPaletteDialog.showDialog();
-			if (retVal == JOptionPane.OK_OPTION) {
-				int size = newPaletteDialog.getPaletteSize();
-				ColorCodec codec = newPaletteDialog.getCodec();
-				int endianness = newPaletteDialog.getEndianness();
-
-				TMPalette palette = new TMPalette("ID", size, codec, endianness);
-				view.setPalette(palette);
-				refreshPalettePane();
-				refreshPalettesMenu();
-			}
-		});
-	}
 
 	/**
 	 * Handles the menu command "Import Palette From This File".
 	 **/
-	public void doImportInternalPaletteCommand() {
-		withSelectedView(view -> {
-			int retVal = importInternalPaletteDialog.showDialog();
-			if (retVal == JOptionPane.OK_OPTION) {
-				int offset = importInternalPaletteDialog.getOffset();
-				int size = importInternalPaletteDialog.getPaletteSize();
-				ColorCodec codec = importInternalPaletteDialog.getCodec();
-				int endianness = importInternalPaletteDialog.getEndianness();
-				boolean copy = importInternalPaletteDialog.getCopy();
-
-				byte[] data = view.getFileImage().getContents();
-				TMPalette palette = new TMPalette("ID", data, offset, size, codec, endianness, copy, false);
-				view.setPalette(palette);
-				refreshPalettePane();
-				refreshPalettesMenu();
-			}
-		});
-	}
 
 	/**
 	 * Handles the menu command "Import Palette From Another File".
 	 **/
-	public void doImportExternalPaletteCommand() {
-		withSelectedView(view -> {
-			if (new File(this.lastPath).exists()) {
-				this.paletteOpenChooser.setCurrentDirectory(new File(this.lastPath));
-			} else {
-				this.paletteOpenChooser.setCurrentDirectory(new File("."));
-			}
-			int retVal = paletteOpenChooser.showOpenDialog(this);
-			if (retVal == JFileChooser.APPROVE_OPTION) {
-				File file = paletteOpenChooser.getSelectedFile();
-
-				FileFilter ff = paletteOpenChooser.getFileFilter();
-				if (!(ff instanceof TMPaletteFileFilter)) {
-					ff = getPaletteFilterForFile(file);
-				}
-				TMPaletteFileFilter pf = (TMPaletteFileFilter) ff;
-
-				if (isCsvPaletteImport(pf, file)) {
-					importPaletteFromCsvFile(view, file);
-					return;
-				}
-
-				int size = pf.getSize();
-				ColorCodec codec = getColorCodecByID(pf.getCodecID());
-				int offset = pf.getOffset();
-				int endianness = pf.getEndianness();
-
-				byte[] data = new byte[size * codec.getBytesPerPixel()];
-
-				RandomAccessFile raf = null;
-				try {
-					raf = new RandomAccessFile(file, "r");
-					raf.seek(offset);
-					raf.read(data);
-					raf.close();
-				} catch (IOException e) {
-					showError("Palette_Read_Error", e);
-					return;
-				}
-
-				TMPalette palette = new TMPalette("ID", data, 0, size, codec, endianness, true, false);
-				view.setPalette(palette);
-				refreshPalettePane();
-				refreshPalettesMenu();
-			}
-		});
-	}
 
 	/**
 	 * Reports whether csv palette import.
@@ -1437,81 +1290,26 @@ public class TMUI extends JFrame {
 	 * @param pf pf value
 	 * @param file file value
 	 **/
-	private boolean isCsvPaletteImport(TMPaletteFileFilter pf, File file) {
-		if (pf.getSize() == 0 && "CF01".equals(pf.getCodecID())) {
-			return true;
-		}
-		String name = file.getName().toLowerCase();
-		return name.endsWith(".csv");
-	}
 
 	/**
 	 * @param view file view associated with this component
 	 * @param file file value
 	 **/
-	private void importPaletteFromCsvFile(TMView view, File file) {
-		int[] rgb;
-		try {
-			rgb = PaletteCsvReader.read(file);
-		} catch (PaletteCsvParseException e) {
-			String msg = MessageFormat.format(
-					xlate("Palette_Csv_Invalid_Entry"),
-					Integer.valueOf(e.getEntryNumber()),
-					e.getValue());
-			JOptionPane.showMessageDialog(this, msg, "Tile Molester", JOptionPane.ERROR_MESSAGE);
-			return;
-		} catch (IOException e) {
-			showError("Palette_Read_Error", e);
-			return;
-		}
-
-		ColorCodec codec = getColorCodecByID("CF01");
-		int colorCount = view.getTileCodec().getColorCount();
-		int n = rgb.length;
-		int pages = Math.max(1, (n + colorCount - 1) / colorCount);
-		int size = pages * colorCount;
-
-		TMPalette palette = new TMPalette("ID", size, codec, ColorCodec.BIG_ENDIAN);
-		for (int i = 0; i < n; i++) {
-			palette.setEntryRGB(i, rgb[i]);
-		}
-		for (int i = n; i < size; i++) {
-			palette.setEntryRGB(i, 0x000000);
-		}
-
-		view.setPalette(palette);
-		refreshPalettePane();
-		refreshPalettesMenu();
-	}
 
 	/**
 	 * Handles menu command "Palette Endianness".
 	 * @param endianness endianness value
 	 **/
-	public void doPaletteEndiannessCommand(int endianness) {
-		withSelectedView(view -> view.getPalette().setEndianness(endianness));
-	}
 
 	/**
 	 * Called when user has selected a bookmark to jump to from the Navigate menu.
 	 * @param bookmark bookmark value
 	 **/
-	public void doGotoBookmarkCommand(BookmarkItemNode bookmark) {
-		withSelectedView(view -> view.gotoBookmark(bookmark));
-	}
 
 	/**
 	 * Called when user has selected a palette to use from the Palette menu.
 	 * @param palette palette whose colors are displayed or edited
 	 **/
-	public void doSelectPaletteCommand(TMPalette palette) {
-		withSelectedView(view -> {
-			view.setPalette(palette);
-			refreshPalettePane();
-			refreshPaletteEndiannessSelection(view);
-			refreshColorCodecSelection(view);
-		});
-	}
 
 	/**
 	 * Handles the "DecreaseWidth" menu or toolbar command.
@@ -1592,106 +1390,28 @@ public class TMUI extends JFrame {
 		redoMenuItem.setEnabled(b);
 	}
 
+	public void disableMDIStuff() { refresh.setMdiMode(false); }
+	public void enableMDIStuff() { refresh.setMdiMode(true); }
+
+	public void refreshBlockSizeSelection(TMView view) { refresh.refreshBlockSizeSelection(view); }
+	public void refreshModeSelection(TMView view) { refresh.refreshModeSelection(view); }
+	public void refreshTileCodecSelection(TMView view) { refresh.refreshTileCodecSelection(view); }
+	public void refreshPalettePane() { refresh.refreshPalettePane(); }
+	public void refreshUndoRedo() { refresh.refreshUndoRedo(); }
+	public void refreshStatusBar() { refresh.refreshStatusBar(); }
+	public void refreshBookmarksMenu() { refresh.refreshBookmarksMenu(); }
+	public void refreshPalettesMenu() { refresh.refreshPalettesMenu(); }
+	public void refreshPaletteSelection(TMView view) { refresh.refreshPaletteSelection(view); }
+	public void refreshPaletteEndiannessSelection(TMView view) { refresh.refreshPaletteEndiannessSelection(view); }
+	public void refreshColorCodecSelection(TMView view) { refresh.refreshColorCodecSelection(view); }
+
 	/**
 	 * Hides/disables MDI-specific menus and buttons.
 	 **/
-	public void disableMDIStuff() {
-		// Hide MDI menus
-		menuBar.remove(editMenu);
-		menuBar.remove(viewMenu);
-		menuBar.remove(imageMenu);
-		menuBar.remove(navigateMenu);
-		menuBar.remove(paletteMenu);
-		menuBar.remove(windowMenu);
-		// Hide some File menu items
-		closeMenuItem.setVisible(false);
-		closeAllMenuItem.setVisible(false);
-		saveMenuItem.setVisible(false);
-		saveAsMenuItem.setVisible(false);
-		saveAllMenuItem.setVisible(false);
-
-
-		Component[] menuComponents = fileMenu.getMenuComponents();
-		if (menuComponents.length >= 6) {
-            menuComponents[5].setVisible(false);
-        }
-
-		// Hide some Toolbar buttons
-		saveButton.setVisible(false);
-		cutButton.setVisible(false);
-		copyButton.setVisible(false);
-		pasteButton.setVisible(false);
-		undoButton.setVisible(false);
-		redoButton.setVisible(false);
-		gotoButton.setVisible(false);
-		addBookmarkButton.setVisible(false);
-		decWidthButton.setVisible(false);
-		incWidthButton.setVisible(false);
-		decHeightButton.setVisible(false);
-		incHeightButton.setVisible(false);
-		// Hide navigation bar
-		navBar.setVisible(false);
-		// Hide tool pane
-		toolPane.setVisible(false);
-		// hide bottom pane
-		bottomPane.setVisible(false);
-	}
 
 	/**
 	 * Shows/enables MDI-specific menus and buttons.
 	 **/
-	public void enableMDIStuff() {
-		// Show MDI menus
-		menuBar.remove(helpMenu);
-		menuBar.add(editMenu);
-		menuBar.add(viewMenu);
-		menuBar.add(imageMenu);
-		menuBar.add(navigateMenu);
-		menuBar.add(paletteMenu);
-		menuBar.add(windowMenu);
-		menuBar.add(helpMenu);
-		// Show File menu items
-		closeMenuItem.setVisible(true);
-		closeAllMenuItem.setVisible(true);
-		saveMenuItem.setVisible(true);
-		saveAsMenuItem.setVisible(true);
-		saveAllMenuItem.setVisible(true);
-		saveAllMenuItem.setEnabled(false);
-
-		Component[] menuComponents = fileMenu.getMenuComponents();
-		if (menuComponents.length >= 6) {
-            menuComponents[5].setVisible(true);
-        }
-
-		// TODO: Enable previously hidden menu items w/ key accelerators
-		// Show Toolbar buttons
-		saveButton.setVisible(true);
-		cutButton.setVisible(true);
-		copyButton.setVisible(true);
-		pasteButton.setVisible(true);
-		undoButton.setVisible(true);
-		redoButton.setVisible(true);
-		gotoButton.setVisible(true);
-		addBookmarkButton.setVisible(true);
-		decWidthButton.setVisible(true);
-		incWidthButton.setVisible(true);
-		decHeightButton.setVisible(true);
-		incHeightButton.setVisible(true);
-		// disable some buttons
-		saveButton.setEnabled(false);
-		pasteButton.setEnabled(false);
-		pasteMenuItem.setEnabled(false);
-		undoButton.setEnabled(false);
-		redoButton.setEnabled(false);
-		// Show navigation bar
-		navBar.setVisible(true);
-		// Show tool pane
-		toolPane.setVisible(true);
-		// Maybe show statusbar
-		statusBar.setVisible(viewStatusBar);
-		// show bottom pane
-		bottomPane.setVisible(true);
-	}
 
 	/**
 	 * Adds a codec to the list of available codecs and creates a menu item for it.
@@ -1848,7 +1568,7 @@ public class TMUI extends JFrame {
 
 		if (desktop.getAllFrames().length == 1) {
 			// this is the first frame, show the MDI toolbars and menus
-			enableMDIStuff();
+			refresh.setMdiMode(true);
 		}
 	}
 
@@ -2059,7 +1779,7 @@ public class TMUI extends JFrame {
 	 * @return palette filter for file
 	 * @param file file value
 	 **/
-	private TMPaletteFileFilter getPaletteFilterForFile(File file) {
+	TMPaletteFileFilter getPaletteFilterForFile(File file) {
 		for (int i = 0; i < palettefilters.size(); i++) {
 			TMPaletteFileFilter pff = palettefilters.get(i);
 			if (pff.accept(file)) {
@@ -2108,14 +1828,14 @@ public class TMUI extends JFrame {
 		pixelGridMenuItem.setSelected(ec.isPixelGridVisible());
 		rowInterleaveBlocksMenuItem.setSelected(ec.getRowInterleaveBlocks());
 
-		refreshModeSelection(view);
-		refreshTileCodecSelection(view);
-		refreshBlockSizeSelection(view);
-		refreshPalettePane();
-		refreshStatusBar();
-		refreshBookmarksMenu();
-		refreshPalettesMenu();
-		refreshUndoRedo();
+		refresh.refreshModeSelection(view);
+		refresh.refreshTileCodecSelection(view);
+		refresh.refreshBlockSizeSelection(view);
+		refresh.refreshPalettePane();
+		refresh.refreshStatusBar();
+		refresh.refreshBookmarksMenu();
+		refresh.refreshPalettesMenu();
+		refresh.refreshUndoRedo();
 
 		setTitle("Tile Molester - " + view.getTitle());
 	}
@@ -2124,74 +1844,28 @@ public class TMUI extends JFrame {
 	 * Selects the correct menu item, according to the view's block size.
 	 * @param view file view associated with this component
 	 **/
-	public void refreshBlockSizeSelection(TMView view) {
-		sizeBlockToCanvasMenuItem.setSelected(view.getSizeBlockToCanvas());
-	}
 
 	/**
 	 * Selects the correct menu item, according to the view's mode.
 	 * @param view file view associated with this component
 	 **/
-	public void refreshModeSelection(TMView view) {
-		// select the correct mode menu item
-		if (view.getMode() == TileCodec.MODE_1D) {
-			_1DimensionalMenuItem.setSelected(true);
-		} else {
-			_2DimensionalMenuItem.setSelected(true);
-		}
-	}
 
 	/**
 	 * Selects the correct menu item, according to the view's tile codec.
 	 * @param view file view associated with this component
 	 **/
-	public void refreshTileCodecSelection(TMView view) {
-		tileCodecButtonHashtable.get(view.getTileCodec()).setSelected(true);
-	}
 
 	/**
 	 * Reloads the palette.
 	 **/
-	public void refreshPalettePane() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			palettePane.viewSelected(view);
-		}
-	}
 
 	/**
 	 * Updates the Undo/Redo buttons text+status.
 	 **/
-	public void refreshUndoRedo() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			setUndoButtonsEnabled(view.canUndo());
-			if (view.canUndo()) {
-				undoMenuItem.setText(xlate("Undo") + " " + xlate(view.getFirstUndoableAction().getPresentationName()));
-			} else {
-				undoMenuItem.setText(xlate("Cant_Undo"));
-			}
-			undoButton.setToolTipText(undoMenuItem.getText());
-
-			setRedoButtonsEnabled(view.canRedo());
-			if (view.canRedo()) {
-				redoMenuItem.setText(xlate("Redo") + " " + xlate(view.getFirstRedoableAction().getPresentationName()));
-			} else {
-				redoMenuItem.setText(xlate("Cant_Redo"));
-			}
-			redoButton.setToolTipText(redoMenuItem.getText());
-		}
-	}
 
 	/**
 	 * Sets the statusbar fields according to current view settings.
 	 **/
-	public void refreshStatusBar() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			statusBar.viewSelected(view);
-		}
-	}
 
 	/**
 	 * Hide the statusbar coordenates.
@@ -2203,58 +1877,25 @@ public class TMUI extends JFrame {
 	/**
 	 * Builds the bookmarks menu according to current file image.
 	 **/
-	public void refreshBookmarksMenu() {
-		TMView view = getSelectedView();
-		if (view != null && view.getFileImage().getResources() != null) {
-			treeMenuBuilder.buildBookmarksMenu(view.getFileImage().getResources().getBookmarksRoot());
-		}
-	}
 
 	/**
 	 * Builds the palettes menu according to current file image.
 	 **/
-	public void refreshPalettesMenu() {
-		TMView view = getSelectedView();
-		if (view != null && view.getFileImage().getResources() != null) {
-			treeMenuBuilder.buildPalettesMenu(view.getFileImage().getResources().getPalettesRoot());
-			refreshPaletteSelection(view);
-			refreshPaletteEndiannessSelection(view);
-			refreshColorCodecSelection(view);
-		}
-	}
 
 	/**
 	 * Refreshes the palette selection.
 	 * @param view file view associated with this component
 	 **/
-	public void refreshPaletteSelection(TMView view) {
-		TMPaletteMenuItem item = paletteButtonHashtable.get(view.getPalette());
-		if (item != null) {
-			item.setSelected(true);
-		} else {
-			dummyPaletteMenuItem.setSelected(true);
-		}
-	}
 
 	/**
 	 * Refreshes the palette endianness.
 	 * @param view file view associated with this component
 	 **/
-	public void refreshPaletteEndiannessSelection(TMView view) {
-		if (view.getPalette().getEndianness() == ColorCodec.LITTLE_ENDIAN) {
-			paletteLittleEndianMenuItem.setSelected(true);
-		} else {
-			paletteBigEndianMenuItem.setSelected(true);
-		}
-	}
 
 	/**
 	 * Selects the correct menu item, according to the view's color codec.
 	 * @param view file view associated with this component
 	 **/
-	public void refreshColorCodecSelection(TMView view) {
-		colorCodecButtonHashtable.get(view.getPalette().getCodec()).setSelected(true);
-	}
 
 	/**
 	 * Opens the specified file.
@@ -2308,7 +1949,7 @@ public class TMUI extends JFrame {
 	 * Adjusts the file offset of the selected view by the given delta.
 	 * @param delta bytes to add to the current offset (negative to move back)
 	 **/
-	private void adjustOffset(int delta) {
+	void adjustOffset(int delta) {
 		withSelectedView(view -> view.setRelativeOffset(delta));
 	}
 
