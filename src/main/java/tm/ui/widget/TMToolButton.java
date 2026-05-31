@@ -16,8 +16,9 @@
 *
 */
 
-package tm.ui;
+package tm.ui.widget;
 
+import tm.ui.TMUI;
 import javax.swing.*;
 import java.awt.*;
 

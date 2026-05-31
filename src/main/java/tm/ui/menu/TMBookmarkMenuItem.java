@@ -16,45 +16,45 @@
 *
 */
 
-package tm.ui;
+package tm.ui.menu;
 
-import tm.tilecodecs.TileCodec;
+import tm.treenodes.BookmarkItemNode;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.function.Consumer;
 
 /**
- * Menu item that represents a tile codec.
+ * Menu item that represents a bookmark.
  **/
-public class TMTileCodecMenuItem extends JRadioButtonMenuItem {
+public class TMBookmarkMenuItem extends JMenuItem {
 
-	private final TileCodec codec;
+	private final BookmarkItemNode bookmark;
 
 	/**
-	 * Creates a menu item for the given tile codec.
-	 * @param codec tile codec used for encode/decode
-	 * @param onSelect callback invoked when the user selects this codec
+	 * Creates a menu item for the given bookmark.
+	 * @param bookmark bookmark node to jump to
+	 * @param onSelect callback invoked when the user selects this bookmark
 	 **/
-	public TMTileCodecMenuItem(TileCodec codec, Consumer<TileCodec> onSelect) {
-		super(codec.getDescription());
-		this.codec = codec;
+	public TMBookmarkMenuItem(BookmarkItemNode bookmark, Consumer<BookmarkItemNode> onSelect) {
+		super(bookmark.getDescription());
+		this.bookmark = bookmark;
 		addActionListener(new ActionListener() {
 			/**
-			 * Forwards the selection to the tile codec command handler.
+			 * Forwards the selection to the goto bookmark command handler.
 			 * @param e event from the AWT/Swing listener
 			 **/
 			public void actionPerformed(ActionEvent e) {
-				onSelect.accept(((TMTileCodecMenuItem) e.getSource()).getCodec());
-				setSelected(true);
+				onSelect.accept(((TMBookmarkMenuItem) e.getSource()).getBookmark());
 			}
 		});
+		setToolTipText(bookmark.getToolTipText());
 	}
 
 	/**
-	 * Gets the codec that the menu item represents.
-	 * @return active tile codec
+	 * Gets the bookmark.
+	 * @return bookmark
 	 **/
-	public TileCodec getCodec() {
-		return codec;
+	public BookmarkItemNode getBookmark() {
+		return bookmark;
 	}
 }

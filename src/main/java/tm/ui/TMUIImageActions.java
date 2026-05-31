@@ -18,6 +18,7 @@
 
 package tm.ui;
 
+import tm.ui.TMUI;
 import javax.swing.*;
 
 /** Image menu command handlers for {@link TMUI}. */

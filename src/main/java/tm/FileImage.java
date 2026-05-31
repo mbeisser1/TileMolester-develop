@@ -19,7 +19,7 @@
 package tm;
 
 import tm.treenodes.*;
-import tm.ui.TMView;
+import tm.ui.view.TMView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

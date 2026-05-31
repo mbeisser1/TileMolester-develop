@@ -16,8 +16,9 @@
 *
 */
 
-package tm.ui;
+package tm.ui.widget;
 
+import tm.ui.view.TMView;
 import tm.tilecodecs.TileCodec;
 import tm.canvases.TMEditorCanvas;
 import javax.swing.*;

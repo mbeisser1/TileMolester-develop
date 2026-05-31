@@ -16,45 +16,45 @@
 *
 */
 
-package tm.ui;
+package tm.ui.menu;
 
-import tm.colorcodecs.ColorCodec;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.File;
 import java.util.function.Consumer;
 
 /**
- * Menu item that represents a color codec.
+ * Menu item that represents a recently opened (closed) file.
  **/
-public class TMColorCodecMenuItem extends JRadioButtonMenuItem {
+public class TMRecentFileMenuItem extends JMenuItem {
 
-	private final ColorCodec codec;
+	private final File recentFile;
 
 	/**
-	 * Creates a menu item for the given color codec.
-	 * @param codec color codec used for palette encode/decode
-	 * @param onSelect callback invoked when the user selects this codec
+	 * Creates a menu item for the given recent file.
+	 * @param recentFile file to reopen
+	 * @param onSelect callback invoked when the user selects this file
 	 **/
-	public TMColorCodecMenuItem(ColorCodec codec, Consumer<ColorCodec> onSelect) {
-		super(codec.getDescription());
-		this.codec = codec;
+	public TMRecentFileMenuItem(File recentFile, Consumer<File> onSelect) {
+		super(recentFile.getName());
+		setToolTipText(recentFile.getAbsolutePath());
+		this.recentFile = recentFile;
 		addActionListener(new ActionListener() {
 			/**
-			 * Forwards the selection to the color codec command handler.
+			 * Forwards the selection to the reopen command handler.
 			 * @param e event from the AWT/Swing listener
 			 **/
 			public void actionPerformed(ActionEvent e) {
-				onSelect.accept(((TMColorCodecMenuItem) e.getSource()).getCodec());
-				setSelected(true);
+				onSelect.accept(((TMRecentFileMenuItem) e.getSource()).getRecentFile());
 			}
 		});
 	}
 
 	/**
-	 * Gets the codec that the menu item represents.
-	 * @return active color codec
+	 * Gets the recent file.
+	 * @return recent file
 	 **/
-	public ColorCodec getCodec() {
-		return codec;
+	public File getRecentFile() {
+		return recentFile;
 	}
 }

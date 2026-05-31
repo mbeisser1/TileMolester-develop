@@ -19,7 +19,7 @@
 package tm.reversibleaction;
 
 import tm.TMPalette;
-import tm.ui.TMView;
+import tm.ui.view.TMView;
 
 /**
  * Allows undo/redo of a palette entry modification.

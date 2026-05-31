@@ -18,6 +18,10 @@
 
 package tm.ui;
 
+import tm.ui.settings.TMTheme;
+import tm.ui.view.TMView;
+import tm.ui.menu.TMColorCodecMenuItem;
+import tm.ui.menu.TMTileCodecMenuItem;
 import tm.*;
 import tm.colorcodecs.*;
 import tm.tilecodecs.*;

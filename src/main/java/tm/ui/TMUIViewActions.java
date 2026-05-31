@@ -18,6 +18,8 @@
 
 package tm.ui;
 
+import tm.ui.TMUI;
+import tm.ui.settings.TMTheme;
 import tm.*;
 import tm.tilecodecs.*;
 import javax.swing.*;

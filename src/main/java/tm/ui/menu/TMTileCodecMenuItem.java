@@ -16,45 +16,45 @@
 *
 */
 
-package tm.ui;
+package tm.ui.menu;
 
+import tm.tilecodecs.TileCodec;
 import javax.swing.*;
 import java.awt.event.*;
-import java.io.File;
 import java.util.function.Consumer;
 
 /**
- * Menu item that represents a recently opened (closed) file.
+ * Menu item that represents a tile codec.
  **/
-public class TMRecentFileMenuItem extends JMenuItem {
+public class TMTileCodecMenuItem extends JRadioButtonMenuItem {
 
-	private final File recentFile;
+	private final TileCodec codec;
 
 	/**
-	 * Creates a menu item for the given recent file.
-	 * @param recentFile file to reopen
-	 * @param onSelect callback invoked when the user selects this file
+	 * Creates a menu item for the given tile codec.
+	 * @param codec tile codec used for encode/decode
+	 * @param onSelect callback invoked when the user selects this codec
 	 **/
-	public TMRecentFileMenuItem(File recentFile, Consumer<File> onSelect) {
-		super(recentFile.getName());
-		setToolTipText(recentFile.getAbsolutePath());
-		this.recentFile = recentFile;
+	public TMTileCodecMenuItem(TileCodec codec, Consumer<TileCodec> onSelect) {
+		super(codec.getDescription());
+		this.codec = codec;
 		addActionListener(new ActionListener() {
 			/**
-			 * Forwards the selection to the reopen command handler.
+			 * Forwards the selection to the tile codec command handler.
 			 * @param e event from the AWT/Swing listener
 			 **/
 			public void actionPerformed(ActionEvent e) {
-				onSelect.accept(((TMRecentFileMenuItem) e.getSource()).getRecentFile());
+				onSelect.accept(((TMTileCodecMenuItem) e.getSource()).getCodec());
+				setSelected(true);
 			}
 		});
 	}
 
 	/**
-	 * Gets the recent file.
-	 * @return recent file
+	 * Gets the codec that the menu item represents.
+	 * @return active tile codec
 	 **/
-	public File getRecentFile() {
-		return recentFile;
+	public TileCodec getCodec() {
+		return codec;
 	}
 }

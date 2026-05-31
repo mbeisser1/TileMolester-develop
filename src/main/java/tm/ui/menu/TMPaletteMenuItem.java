@@ -16,45 +16,46 @@
 *
 */
 
-package tm.ui;
+package tm.ui.menu;
 
-import tm.treenodes.BookmarkItemNode;
+import tm.TMPalette;
+import tm.treenodes.PaletteItemNode;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.function.Consumer;
 
 /**
- * Menu item that represents a bookmark.
+ * Menu item that represents a palette.
  **/
-public class TMBookmarkMenuItem extends JMenuItem {
+public class TMPaletteMenuItem extends JRadioButtonMenuItem {
 
-	private final BookmarkItemNode bookmark;
+	private final PaletteItemNode paletteNode;
 
 	/**
-	 * Creates a menu item for the given bookmark.
-	 * @param bookmark bookmark node to jump to
-	 * @param onSelect callback invoked when the user selects this bookmark
+	 * Creates a menu item for the given palette node.
+	 * @param paletteNode palette tree node
+	 * @param onSelect callback invoked when the user selects this palette
 	 **/
-	public TMBookmarkMenuItem(BookmarkItemNode bookmark, Consumer<BookmarkItemNode> onSelect) {
-		super(bookmark.getDescription());
-		this.bookmark = bookmark;
+	public TMPaletteMenuItem(PaletteItemNode paletteNode, Consumer<TMPalette> onSelect) {
+		super(paletteNode.getDescription());
+		this.paletteNode = paletteNode;
 		addActionListener(new ActionListener() {
 			/**
-			 * Forwards the selection to the goto bookmark command handler.
+			 * Forwards the selection to the select palette command handler.
 			 * @param e event from the AWT/Swing listener
 			 **/
 			public void actionPerformed(ActionEvent e) {
-				onSelect.accept(((TMBookmarkMenuItem) e.getSource()).getBookmark());
+				onSelect.accept(((TMPaletteMenuItem) e.getSource()).getPalette());
 			}
 		});
-		setToolTipText(bookmark.getToolTipText());
+		setToolTipText(paletteNode.getToolTipText());
 	}
 
 	/**
-	 * Gets the bookmark.
-	 * @return bookmark
+	 * Gets the palette.
+	 * @return active palette
 	 **/
-	public BookmarkItemNode getBookmark() {
-		return bookmark;
+	public TMPalette getPalette() {
+		return paletteNode.getPalette();
 	}
 }

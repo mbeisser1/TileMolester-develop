@@ -16,46 +16,45 @@
 *
 */
 
-package tm.ui;
+package tm.ui.menu;
 
-import tm.TMPalette;
-import tm.treenodes.PaletteItemNode;
+import tm.colorcodecs.ColorCodec;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.function.Consumer;
 
 /**
- * Menu item that represents a palette.
+ * Menu item that represents a color codec.
  **/
-public class TMPaletteMenuItem extends JRadioButtonMenuItem {
+public class TMColorCodecMenuItem extends JRadioButtonMenuItem {
 
-	private final PaletteItemNode paletteNode;
+	private final ColorCodec codec;
 
 	/**
-	 * Creates a menu item for the given palette node.
-	 * @param paletteNode palette tree node
-	 * @param onSelect callback invoked when the user selects this palette
+	 * Creates a menu item for the given color codec.
+	 * @param codec color codec used for palette encode/decode
+	 * @param onSelect callback invoked when the user selects this codec
 	 **/
-	public TMPaletteMenuItem(PaletteItemNode paletteNode, Consumer<TMPalette> onSelect) {
-		super(paletteNode.getDescription());
-		this.paletteNode = paletteNode;
+	public TMColorCodecMenuItem(ColorCodec codec, Consumer<ColorCodec> onSelect) {
+		super(codec.getDescription());
+		this.codec = codec;
 		addActionListener(new ActionListener() {
 			/**
-			 * Forwards the selection to the select palette command handler.
+			 * Forwards the selection to the color codec command handler.
 			 * @param e event from the AWT/Swing listener
 			 **/
 			public void actionPerformed(ActionEvent e) {
-				onSelect.accept(((TMPaletteMenuItem) e.getSource()).getPalette());
+				onSelect.accept(((TMColorCodecMenuItem) e.getSource()).getCodec());
+				setSelected(true);
 			}
 		});
-		setToolTipText(paletteNode.getToolTipText());
 	}
 
 	/**
-	 * Gets the palette.
-	 * @return active palette
+	 * Gets the codec that the menu item represents.
+	 * @return active color codec
 	 **/
-	public TMPalette getPalette() {
-		return paletteNode.getPalette();
+	public ColorCodec getCodec() {
+		return codec;
 	}
 }

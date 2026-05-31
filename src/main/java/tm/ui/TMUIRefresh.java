@@ -21,6 +21,8 @@ package tm.ui;
 import tm.*;
 import tm.colorcodecs.ColorCodec;
 import tm.tilecodecs.TileCodec;
+import tm.ui.menu.TMPaletteMenuItem;
+import tm.ui.view.TMView;
 import java.awt.*;
 
 /** MDI mode and UI refresh helpers for {@link TMUI}. */

@@ -1,4 +1,4 @@
-package tm.ui;
+package tm.ui.settings;
 
 import java.awt.Color;
 import java.util.HashMap;

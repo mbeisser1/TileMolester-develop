@@ -20,7 +20,7 @@ package tm.canvases;
 
 import tm.TMPalette;
 import tm.ui.TMUI;
-import tm.ui.TMView;
+import tm.ui.view.TMView;
 import tm.tilecodecs.TileCodec;
 import tm.treenodes.*;
 import tm.reversibleaction.*;

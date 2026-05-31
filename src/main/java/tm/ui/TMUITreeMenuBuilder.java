@@ -18,6 +18,8 @@
 
 package tm.ui;
 
+import tm.ui.menu.TMBookmarkMenuItem;
+import tm.ui.menu.TMPaletteMenuItem;
 import tm.treenodes.*;
 import javax.swing.*;
 

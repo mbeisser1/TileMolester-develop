@@ -16,8 +16,9 @@
 *
 */
 
-package tm.ui;
+package tm.ui.view;
 
+import tm.ui.TMUI;
 import tm.tilecodecs.TileCodec;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;

@@ -21,8 +21,11 @@
  * Added the shift palette functionality
  * Mewster
  **/
-package tm.ui;
+package tm.ui.widget;
 
+import tm.ui.TMUI;
+import tm.ui.TMUIConstants;
+import tm.ui.view.TMView;
 import tm.TMPalette;
 import tm.colorcodecs.ColorCodec;
 import tm.utils.DecimalNumberVerifier;

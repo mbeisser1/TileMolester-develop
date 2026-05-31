@@ -18,6 +18,8 @@
 
 package tm.ui;
 
+import tm.ui.TMUI;
+import tm.ui.view.TMView;
 import tm.*;
 import tm.canvases.*;
 import tm.modaldialog.TMGoToDialog;

@@ -18,6 +18,15 @@
 
 package tm.ui;
 
+import tm.ui.filter.TMAllFilter;
+import tm.ui.filter.TMBitmapFilters;
+import tm.ui.menu.TMColorCodecMenuItem;
+import tm.ui.menu.TMPaletteMenuItem;
+import tm.ui.menu.TMTileCodecMenuItem;
+import tm.ui.widget.TMPalettePane;
+import tm.ui.widget.TMStatusBar;
+import tm.ui.widget.TMToolButton;
+import tm.ui.widget.TMToolToggleButton;
 import tm.*;
 import tm.colorcodecs.ColorCodec;
 import tm.fileselection.*;

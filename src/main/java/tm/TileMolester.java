@@ -18,9 +18,9 @@
 
 package tm;
 
-import tm.ui.TMSettings;
-import tm.ui.TMTheme;
 import tm.ui.TMUI;
+import tm.ui.settings.TMSettings;
+import tm.ui.settings.TMTheme;
 import tm.utils.TMLog;
 
 import java.awt.Image;

@@ -18,6 +18,7 @@
 
 package tm.ui;
 
+import tm.ui.TMUI;
 import tm.utils.BrowserControl;
 import javax.swing.*;
 import java.io.File;

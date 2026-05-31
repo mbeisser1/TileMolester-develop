@@ -16,8 +16,9 @@
 *
 */
 
-package tm.ui;
+package tm.ui.view;
 
+import tm.ui.TMUI;
 import tm.FileImage;
 import tm.TMPalette;
 import tm.treenodes.*;

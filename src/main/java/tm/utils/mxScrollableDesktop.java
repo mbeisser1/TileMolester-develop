@@ -3,7 +3,7 @@ package tm.utils;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
-import tm.ui.TMTheme;
+import tm.ui.settings.TMTheme;
 
 
 public class mxScrollableDesktop extends JDesktopPane {
