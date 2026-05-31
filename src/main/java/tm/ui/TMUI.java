@@ -290,8 +290,8 @@ public class TMUI extends JFrame {
 	private ButtonGroup modeButtonGroup = new ButtonGroup();
 	private ButtonGroup paletteEndiannessButtonGroup = new ButtonGroup();
 
-	private Map<TileCodec, TileCodecMenuItem> tileCodecButtonHashtable = new HashMap<>();
-	private Map<ColorCodec, ColorCodecMenuItem> colorCodecButtonHashtable = new HashMap<>();
+	private Map<TileCodec, TMTileCodecMenuItem> tileCodecButtonHashtable = new HashMap<>();
+	private Map<ColorCodec, TMColorCodecMenuItem> colorCodecButtonHashtable = new HashMap<>();
 	private Map<TMPalette, PaletteMenuItem> paletteButtonHashtable = new HashMap<>();
 	private Map<byte[], TMFileListener> fileListenerHashtable = new HashMap<>();
 
@@ -3587,45 +3587,10 @@ public class TMUI extends JFrame {
 	 * @param codec tile codec used for encode/decode
 	 **/
 	public void addTileCodec(TileCodec codec) {
-		TileCodecMenuItem codecMenuItem = new TileCodecMenuItem(codec);
+		TMTileCodecMenuItem codecMenuItem = new TMTileCodecMenuItem(codec, this::doTileCodecCommand);
 		tileCodecMenu.add(codecMenuItem);
 		tileCodecButtonGroup.add(codecMenuItem);
 		tileCodecButtonHashtable.put(codec, codecMenuItem);
-	}
-
-	/**
-	 * Menu item that represents a tile codec.
-	 **/
-	private class TileCodecMenuItem extends JRadioButtonMenuItem {
-
-		private TileCodec codec;
-
-		// Creates a TileCodecMenuItem for the given codec.
-		public TileCodecMenuItem(TileCodec codec) {
-			super(codec.getDescription()); // use description as button text
-			this.codec = codec;
-			// TODO: setToolTipText(exampleFormats)
-			addActionListener(
-					new ActionListener() {
-						/**
-						 * Invokes {@link #getSource()} in response to the user action.
-						 * @param e event from the AWT/Swing listener
-						 **/
-						public void actionPerformed(ActionEvent e) {
-							doTileCodecCommand(((TileCodecMenuItem) e.getSource()).getCodec());
-							setSelected(true);
-						}
-					});
-		}
-
-		/**
-		 * Gets the codec that the menu item represents.
-		 * @return active tile codec
-		 **/
-		public TileCodec getCodec() {
-			return codec;
-		}
-
 	}
 
 	/**
@@ -3813,44 +3778,10 @@ public class TMUI extends JFrame {
 	 * @param codec tile codec used for encode/decode
 	 **/
 	public void addColorCodec(ColorCodec codec) {
-		ColorCodecMenuItem codecMenuItem = new ColorCodecMenuItem(codec);
+		TMColorCodecMenuItem codecMenuItem = new TMColorCodecMenuItem(codec, this::doColorCodecCommand);
 		colorCodecMenu.add(codecMenuItem);
 		colorCodecButtonGroup.add(codecMenuItem);
 		colorCodecButtonHashtable.put(codec, codecMenuItem);
-	}
-
-	/**
-	 * Menu item that represents a color codec.
-	 **/
-	private class ColorCodecMenuItem extends JRadioButtonMenuItem {
-
-		private ColorCodec codec;
-
-		// Creates a ColorCodecMenuItem for the given codec.
-		public ColorCodecMenuItem(ColorCodec codec) {
-			super(codec.getDescription()); // use description as button text
-			this.codec = codec;
-			addActionListener(
-					new ActionListener() {
-						/**
-						 * Invokes {@link #getSource()} in response to the user action.
-						 * @param e event from the AWT/Swing listener
-						 **/
-						public void actionPerformed(ActionEvent e) {
-							doColorCodecCommand(((ColorCodecMenuItem) e.getSource()).getCodec());
-							setSelected(true);
-						}
-					});
-		}
-
-		/**
-		 * Gets the codec that the menu item represents.
-		 * @return active tile codec
-		 **/
-		public ColorCodec getCodec() {
-			return codec;
-		}
-
 	}
 
 	/**
