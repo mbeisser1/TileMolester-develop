@@ -241,7 +241,7 @@ public class TMUIFileActions {
 					}
 
 					// save it!
-					new ProgressDialog(ui, thread);
+					new TMProgressDialog(ui, thread);
 					img.setModified(false);
 					ui.setSaveButtonsEnabled(false);
 
@@ -320,7 +320,7 @@ public class TMUIFileActions {
 			ui.showError("Load_File_Error", e);
 			return;
 		}
-		ProgressDialog dialog = new ProgressDialog(ui, thread);
+		new TMProgressDialog(ui, thread);
 		byte[] contents = thread.getContents();
 
 		// see if a filelistener should receive notification

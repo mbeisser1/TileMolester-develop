@@ -28,16 +28,16 @@ import tm.threads.ProgressThread;
  * updating a progress bar to reflect how far along the work is.
  * The dialog unblocks when the work is completely done.
  **/
-public class ProgressDialog extends JDialog implements ActionListener {
+public class TMProgressDialog extends JDialog implements ActionListener {
 
     private JProgressBar progressBar = new JProgressBar(0, 100);
     private ProgressThread thread;
     private Timer timer;
 
     /**
-     * Creates a ProgressDialog for the given ProgressThread.
+     * Creates a progress dialog for the given ProgressThread.
      **/
-    public ProgressDialog(Frame owner, ProgressThread thread) {
+    public TMProgressDialog(Frame owner, ProgressThread thread) {
         super(owner);
         this.thread = thread;
 
