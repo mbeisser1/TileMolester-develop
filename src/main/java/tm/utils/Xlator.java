@@ -46,7 +46,6 @@ public class Xlator {
             return value;
         }
         catch (MissingResourceException e) {
-            TMLog.handled("Missing translation: " + key, e);
             return key;
         }
     }

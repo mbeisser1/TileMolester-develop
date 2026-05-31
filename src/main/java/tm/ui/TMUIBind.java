@@ -19,6 +19,7 @@
 package tm.ui;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Binds Swing menu and toolbar controls to command handlers.
@@ -44,7 +45,11 @@ public final class TMUIBind {
 
 	public static void bind(AbstractButton button, Action action) {
 		String toolTip = button.getToolTipText();
+		Icon icon = button.getIcon();
 		button.setAction(action);
+		if (icon != null) {
+			button.setIcon(icon);
+		}
 		button.setFocusable(false);
 		if (toolTip != null) {
 			button.setToolTipText(toolTip);

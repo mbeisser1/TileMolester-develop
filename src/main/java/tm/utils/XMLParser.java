@@ -22,6 +22,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -48,6 +49,9 @@ public class XMLParser {
 		InputStream inputStream = new FileInputStream(file);
 		InputSource is = new InputSource(inputStream);
 		is.setEncoding("UTF-8");
+		is.setSystemId(file.toURI().toString());
+
+		builder.setEntityResolver(createEntityResolver(file));
 
 		builder.setErrorHandler(
 				new org.xml.sax.ErrorHandler() { // ignore fatal errors (an exception is guaranteed)
@@ -57,6 +61,7 @@ public class XMLParser {
 					 **/
 					public void fatalError(SAXParseException exception)
 							throws SAXException {
+						throw exception;
 					}
 
 					// treat validation errors as fatal
@@ -81,6 +86,86 @@ public class XMLParser {
 					}
 				});
 		return builder.parse(is);
+	}
+
+	/**
+	 * Resolves external DTD paths (e.g. {@code resources/tmres.dtd}) relative to the XML file,
+	 * the working directory, or the classpath.
+	 **/
+	private static EntityResolver createEntityResolver(File contextFile) {
+		return (publicId, systemId) -> {
+			try {
+				InputSource resolved = resolveEntity(systemId, contextFile);
+				if (resolved == null) {
+					throw new SAXException("Could not find external entity: " + systemId);
+				}
+				return resolved;
+			} catch (IOException e) {
+				throw new SAXException("Could not read external entity: " + systemId, e);
+			}
+		};
+	}
+
+	private static InputSource resolveEntity(String systemId, File contextFile) throws IOException {
+		if (systemId == null || systemId.isEmpty()) {
+			return null;
+		}
+		String normalized = systemId.replace('\\', '/');
+		int slash = normalized.lastIndexOf('/');
+		String baseName = slash >= 0 ? normalized.substring(slash + 1) : normalized;
+
+		InputSource fromFile = openIfExists(new File(normalized));
+		if (fromFile != null) {
+			return fromFile;
+		}
+
+		if (contextFile != null) {
+			File parent = contextFile.getParentFile();
+			if (parent != null) {
+				fromFile = openIfExists(new File(parent, normalized));
+				if (fromFile != null) {
+					return fromFile;
+				}
+				fromFile = openIfExists(new File(parent, baseName));
+				if (fromFile != null) {
+					return fromFile;
+				}
+			}
+		}
+
+		fromFile = openIfExists(new File("resources", baseName));
+		if (fromFile != null) {
+			return fromFile;
+		}
+		fromFile = openIfExists(new File(baseName));
+		if (fromFile != null) {
+			return fromFile;
+		}
+
+		String resourcePath = normalized.startsWith("/") ? normalized : "/" + normalized;
+		InputStream classpath = XMLParser.class.getResourceAsStream(resourcePath);
+		if (classpath == null) {
+			classpath = XMLParser.class.getResourceAsStream("/" + baseName);
+		}
+		if (classpath == null) {
+			classpath = XMLParser.class.getResourceAsStream("/resources/" + baseName);
+		}
+		if (classpath != null) {
+			InputSource src = new InputSource(classpath);
+			src.setSystemId(resourcePath);
+			return src;
+		}
+
+		return null;
+	}
+
+	private static InputSource openIfExists(File file) throws IOException {
+		if (!file.isFile()) {
+			return null;
+		}
+		InputSource src = new InputSource(new FileInputStream(file));
+		src.setSystemId(file.toURI().toString());
+		return src;
 	}
 
 	/**

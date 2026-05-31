@@ -297,12 +297,12 @@ public class TMUI extends JFrame {
 		widgets.zoomMenu.setText(xlate("Zoom"));
 		widgets.zoomInMenuItem.setText(xlate("In"));
 		widgets.zoomOutMenuItem.setText(xlate("Out"));
-		widgets._100MenuItem.setText(xlate("100%"));
-		widgets._200MenuItem.setText(xlate("200%"));
-		widgets._400MenuItem.setText(xlate("400%"));
-		widgets._800MenuItem.setText(xlate("800%"));
-		widgets._1600MenuItem.setText(xlate("1600%"));
-		widgets._3200MenuItem.setText(xlate("3200%"));
+		widgets._100MenuItem.setText("100%");
+		widgets._200MenuItem.setText("200%");
+		widgets._400MenuItem.setText("400%");
+		widgets._800MenuItem.setText("800%");
+		widgets._1600MenuItem.setText("1600%");
+		widgets._3200MenuItem.setText("3200%");
 		widgets.modeMenu.setText(xlate("Mode"));
 		widgets._1DimensionalMenuItem.setText(xlate("1_Dimensional"));
 		widgets._2DimensionalMenuItem.setText(xlate("2_Dimensional"));

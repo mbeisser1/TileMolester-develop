@@ -118,11 +118,11 @@ public class TMUIRefresh {
 				ui.widgets.incWidthButton.setVisible(false);
 				ui.widgets.decHeightButton.setVisible(false);
 				ui.widgets.incHeightButton.setVisible(false);
-				// Hide navigation bar
+				// Hide navigation bar until a file is open
 				ui.widgets.navBar.setVisible(false);
-				// Hide tool pane
+				// Hide left tool buttons until a file is open
 				ui.widgets.toolPane.setVisible(false);
-				// hide bottom pane
+				// hide palette/status until a file is open
 				ui.widgets.bottomPane.setVisible(false);
 				}
 	}

@@ -155,12 +155,9 @@ public final class TMLog {
 		} else {
 			LOG.severe(message);
 		}
-		Runnable show = () -> showErrorDialog(resolveParent(parent), message, thrown);
-		if (SwingUtilities.isEventDispatchThread()) {
-			show.run();
-		} else {
-			SwingUtilities.invokeLater(show);
-		}
+		// Always defer the dialog so it is not shown while a menu or modal child is active.
+		SwingUtilities.invokeLater(
+				() -> showErrorDialog(resolveParent(parent), message, thrown));
 	}
 
 	private static Component resolveParent(Component parent) {

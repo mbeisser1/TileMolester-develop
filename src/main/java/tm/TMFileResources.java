@@ -75,9 +75,9 @@ public class TMFileResources {
 	public TMFileResources(File file, FileImage fileImage, TMUI ui)
 			throws SAXException, ParserConfigurationException, IOException {
 		Document doc = XMLParser.parse(file);
-
-		if (doc == null)
-			return;
+		if (doc == null) {
+			throw new SAXException("Empty or invalid resource document: " + file);
+		}
 		this.fileImage = fileImage;
 		this.ui = ui;
 
@@ -260,7 +260,7 @@ public class TMFileResources {
 	public String toXML() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		sb.append("<!DOCTYPE tmres SYSTEM \"resources\\tmres.dtd\">\n");
+		sb.append("<!DOCTYPE tmres SYSTEM \"tmres.dtd\">\n");
 		sb.append("<tmres>\n");
 
 		sb.append(bookmarksToXML());
