@@ -147,103 +147,7 @@ public class TMUI extends JFrame {
 
 		widgets = TMUIWidgets.create(new TMUIWidgetsBootstrap(
 				this, xl, getColorCodecs(), getFileFilters(), getPaletteFilters()));
-
-		// File menu
-		widgets.fileMenu.setText(xlate("File"));
-		widgets.newMenuItem.setText(xlate("New"));
-		widgets.openMenuItem.setText(xlate("Open"));
-		widgets.reopenMenu.setText(xlate("Reopen"));
-		widgets.closeMenuItem.setText(xlate("Close"));
-		widgets.closeAllMenuItem.setText(xlate("Close_All"));
-		widgets.saveMenuItem.setText(xlate("Save"));
-		widgets.saveAsMenuItem.setText(xlate("Save_As"));
-		widgets.saveAllMenuItem.setText(xlate("Save_All"));
-		widgets.exitMenuItem.setText(xlate("Exit"));
-		// Edit menu
-		widgets.editMenu.setText(xlate("Edit"));
-		widgets.undoMenuItem.setText(xlate("Undo"));
-		widgets.redoMenuItem.setText(xlate("Redo"));
-		widgets.cutMenuItem.setText(xlate("Cut"));
-		widgets.copyMenuItem.setText(xlate("Copy"));
-		widgets.pasteMenuItem.setText(xlate("Paste"));
-		widgets.clearMenuItem.setText(xlate("Clear"));
-		widgets.selectAllMenuItem.setText(xlate("Select_All"));
-		widgets.copyToMenuItem.setText(xlate("Export_As"));
-		widgets.pasteFromMenuItem.setText(xlate("Paste_From"));
-		widgets.newSelectionMenuItem.setText(xlate("New_Selection"));
-		widgets.applySelectionMenuItem.setText(xlate("Apply_Selection"));
-		// Image menu
-		widgets.imageMenu.setText(xlate("Image"));
-		widgets.mirrorMenuItem.setText(xlate("Mirror"));
-		widgets.flipMenuItem.setText(xlate("Flip"));
-		widgets.rotateRightMenuItem.setText(xlate("Rotate_Right"));
-		widgets.rotateLeftMenuItem.setText(xlate("Rotate_Left"));
-		widgets.shiftLeftMenuItem.setText(xlate("Shift_Left"));
-		widgets.shiftRightMenuItem.setText(xlate("Shift_Right"));
-		widgets.shiftUpMenuItem.setText(xlate("Shift_Up"));
-		widgets.shiftDownMenuItem.setText(xlate("Shift_Down"));
-		widgets.canvasSizeMenuItem.setText(xlate("Canvas_Size"));
-		widgets.stretchMenuItem.setText(xlate("Stretch"));
-		// View menu
-		widgets.viewMenu.setText(xlate("View"));
-		widgets.statusBarMenuItem.setText(xlate("Statusbar"));
-		widgets.toolBarMenuItem.setText(xlate("Toolbar"));
-		widgets.darkModeMenuItem.setText(xlate("Dark_Mode"));
-		widgets.tileCodecMenu.setText(xlate("Codec"));
-		widgets.zoomMenu.setText(xlate("Zoom"));
-		widgets.zoomInMenuItem.setText(xlate("In"));
-		widgets.zoomOutMenuItem.setText(xlate("Out"));
-		widgets._100MenuItem.setText(xlate("100%"));
-		widgets._200MenuItem.setText(xlate("200%"));
-		widgets._400MenuItem.setText(xlate("400%"));
-		widgets._800MenuItem.setText(xlate("800%"));
-		widgets._1600MenuItem.setText(xlate("1600%"));
-		widgets._3200MenuItem.setText(xlate("3200%"));
-		widgets.modeMenu.setText(xlate("Mode"));
-		widgets._1DimensionalMenuItem.setText(xlate("1_Dimensional"));
-		widgets._2DimensionalMenuItem.setText(xlate("2_Dimensional"));
-		widgets.blockSizeMenu.setText(xlate("Block_Size"));
-		widgets.sizeBlockToCanvasMenuItem.setText(xlate("Full_Canvas"));
-		widgets.customBlockSizeMenuItem.setText(xlate("Custom_Block_Size"));
-		widgets.rowInterleaveBlocksMenuItem.setText(xlate("Row_Interleave_Blocks"));
-		widgets.blockGridMenuItem.setText(xlate("Block_Grid"));
-		widgets.tileGridMenuItem.setText(xlate("Tile_Grid"));
-		widgets.pixelGridMenuItem.setText(xlate("Pixel_Grid"));
-		// Navigate menu
-		widgets.navigateMenu.setText(xlate("Navigate"));
-		widgets.goToMenuItem.setText(xlate("Go_To"));
-		widgets.goToAgainMenuItem.setText(xlate("Go_To_Again"));
-		widgets.addToBookmarksMenuItem.setText(xlate("Add_To_Bookmarks"));
-		widgets.organizeBookmarksMenuItem.setText(xlate("Organize_Bookmarks"));
-		// Palette menu
-		widgets.paletteMenu.setText(xlate("Palette"));
-		widgets.editColorsMenuItem.setText(xlate("Edit_Color"));
-		widgets.colorCodecMenu.setText(xlate("Format"));
-		widgets.paletteEndiannessMenu.setText(xlate("Endianness"));
-		widgets.paletteLittleEndianMenuItem.setText(xlate("Little_Endian"));
-		widgets.paletteBigEndianMenuItem.setText(xlate("Big_Endian"));
-		widgets.paletteSizeMenuItem.setText(xlate("Size"));
-		widgets.newPaletteMenuItem.setText(xlate("New"));
-		widgets.importPaletteMenu.setText(xlate("Import_From"));
-		widgets.importInternalPaletteMenuItem.setText(xlate("This_File"));
-		widgets.importExternalPaletteMenuItem.setText(xlate("Another_File"));
-		widgets.addToPalettesMenuItem.setText(xlate("Add_To_Palettes"));
-		widgets.organizePalettesMenuItem.setText(xlate("Organize_Palettes"));
-		// Window menu
-		widgets.windowMenu.setText(xlate("Window"));
-		widgets.newWindowMenuItem.setText(xlate("New_Window"));
-		widgets.tileMenuItem.setText(xlate("Tile"));
-		widgets.cascadeMenuItem.setText(xlate("Cascade"));
-		widgets.arrangeIconsMenuItem.setText(xlate("Arrange_Icons"));
-		// Help menu
-		widgets.helpMenu.setText(xlate("Help"));
-		widgets.helpTopicsMenuItem.setText(xlate("Help_Topics"));
-		widgets.aboutMenuItem.setText(xlate("About_Tile_Molester"));
-
-		UIManager.put("OptionPane.yesButtonText", xlate("Yes"));
-		UIManager.put("OptionPane.noButtonText", xlate("No"));
-		UIManager.put("OptionPane.cancelButtonText", xlate("Cancel"));
-		UIManager.put("OptionPane.okButtonText", xlate("OK"));
+		applyMenuLabels();
 
 		TMUIMenuBuilder menuBuilder = new TMUIMenuBuilder(this);
 		TMUIToolbarBuilder toolbarBuilder = new TMUIToolbarBuilder(this);
@@ -342,6 +246,106 @@ public class TMUI extends JFrame {
 		com.formdev.flatlaf.FlatLaf.updateUI();
 		// Show and maximize.
 		setVisible(true);
+	}
+
+	/** Applies localized labels to menu items and JOptionPane buttons. */
+	private void applyMenuLabels() {
+		// File menu
+		widgets.fileMenu.setText(xlate("File"));
+		widgets.newMenuItem.setText(xlate("New"));
+		widgets.openMenuItem.setText(xlate("Open"));
+		widgets.reopenMenu.setText(xlate("Reopen"));
+		widgets.closeMenuItem.setText(xlate("Close"));
+		widgets.closeAllMenuItem.setText(xlate("Close_All"));
+		widgets.saveMenuItem.setText(xlate("Save"));
+		widgets.saveAsMenuItem.setText(xlate("Save_As"));
+		widgets.saveAllMenuItem.setText(xlate("Save_All"));
+		widgets.exitMenuItem.setText(xlate("Exit"));
+		// Edit menu
+		widgets.editMenu.setText(xlate("Edit"));
+		widgets.undoMenuItem.setText(xlate("Undo"));
+		widgets.redoMenuItem.setText(xlate("Redo"));
+		widgets.cutMenuItem.setText(xlate("Cut"));
+		widgets.copyMenuItem.setText(xlate("Copy"));
+		widgets.pasteMenuItem.setText(xlate("Paste"));
+		widgets.clearMenuItem.setText(xlate("Clear"));
+		widgets.selectAllMenuItem.setText(xlate("Select_All"));
+		widgets.copyToMenuItem.setText(xlate("Export_As"));
+		widgets.pasteFromMenuItem.setText(xlate("Paste_From"));
+		widgets.newSelectionMenuItem.setText(xlate("New_Selection"));
+		widgets.applySelectionMenuItem.setText(xlate("Apply_Selection"));
+		// Image menu
+		widgets.imageMenu.setText(xlate("Image"));
+		widgets.mirrorMenuItem.setText(xlate("Mirror"));
+		widgets.flipMenuItem.setText(xlate("Flip"));
+		widgets.rotateRightMenuItem.setText(xlate("Rotate_Right"));
+		widgets.rotateLeftMenuItem.setText(xlate("Rotate_Left"));
+		widgets.shiftLeftMenuItem.setText(xlate("Shift_Left"));
+		widgets.shiftRightMenuItem.setText(xlate("Shift_Right"));
+		widgets.shiftUpMenuItem.setText(xlate("Shift_Up"));
+		widgets.shiftDownMenuItem.setText(xlate("Shift_Down"));
+		widgets.canvasSizeMenuItem.setText(xlate("Canvas_Size"));
+		widgets.stretchMenuItem.setText(xlate("Stretch"));
+		// View menu
+		widgets.viewMenu.setText(xlate("View"));
+		widgets.statusBarMenuItem.setText(xlate("Statusbar"));
+		widgets.toolBarMenuItem.setText(xlate("Toolbar"));
+		widgets.darkModeMenuItem.setText(xlate("Dark_Mode"));
+		widgets.tileCodecMenu.setText(xlate("Codec"));
+		widgets.zoomMenu.setText(xlate("Zoom"));
+		widgets.zoomInMenuItem.setText(xlate("In"));
+		widgets.zoomOutMenuItem.setText(xlate("Out"));
+		widgets._100MenuItem.setText(xlate("100%"));
+		widgets._200MenuItem.setText(xlate("200%"));
+		widgets._400MenuItem.setText(xlate("400%"));
+		widgets._800MenuItem.setText(xlate("800%"));
+		widgets._1600MenuItem.setText(xlate("1600%"));
+		widgets._3200MenuItem.setText(xlate("3200%"));
+		widgets.modeMenu.setText(xlate("Mode"));
+		widgets._1DimensionalMenuItem.setText(xlate("1_Dimensional"));
+		widgets._2DimensionalMenuItem.setText(xlate("2_Dimensional"));
+		widgets.blockSizeMenu.setText(xlate("Block_Size"));
+		widgets.sizeBlockToCanvasMenuItem.setText(xlate("Full_Canvas"));
+		widgets.customBlockSizeMenuItem.setText(xlate("Custom_Block_Size"));
+		widgets.rowInterleaveBlocksMenuItem.setText(xlate("Row_Interleave_Blocks"));
+		widgets.blockGridMenuItem.setText(xlate("Block_Grid"));
+		widgets.tileGridMenuItem.setText(xlate("Tile_Grid"));
+		widgets.pixelGridMenuItem.setText(xlate("Pixel_Grid"));
+		// Navigate menu
+		widgets.navigateMenu.setText(xlate("Navigate"));
+		widgets.goToMenuItem.setText(xlate("Go_To"));
+		widgets.goToAgainMenuItem.setText(xlate("Go_To_Again"));
+		widgets.addToBookmarksMenuItem.setText(xlate("Add_To_Bookmarks"));
+		widgets.organizeBookmarksMenuItem.setText(xlate("Organize_Bookmarks"));
+		// Palette menu
+		widgets.paletteMenu.setText(xlate("Palette"));
+		widgets.editColorsMenuItem.setText(xlate("Edit_Color"));
+		widgets.colorCodecMenu.setText(xlate("Format"));
+		widgets.paletteEndiannessMenu.setText(xlate("Endianness"));
+		widgets.paletteLittleEndianMenuItem.setText(xlate("Little_Endian"));
+		widgets.paletteBigEndianMenuItem.setText(xlate("Big_Endian"));
+		widgets.paletteSizeMenuItem.setText(xlate("Size"));
+		widgets.newPaletteMenuItem.setText(xlate("New"));
+		widgets.importPaletteMenu.setText(xlate("Import_From"));
+		widgets.importInternalPaletteMenuItem.setText(xlate("This_File"));
+		widgets.importExternalPaletteMenuItem.setText(xlate("Another_File"));
+		widgets.addToPalettesMenuItem.setText(xlate("Add_To_Palettes"));
+		widgets.organizePalettesMenuItem.setText(xlate("Organize_Palettes"));
+		// Window menu
+		widgets.windowMenu.setText(xlate("Window"));
+		widgets.newWindowMenuItem.setText(xlate("New_Window"));
+		widgets.tileMenuItem.setText(xlate("Tile"));
+		widgets.cascadeMenuItem.setText(xlate("Cascade"));
+		widgets.arrangeIconsMenuItem.setText(xlate("Arrange_Icons"));
+		// Help menu
+		widgets.helpMenu.setText(xlate("Help"));
+		widgets.helpTopicsMenuItem.setText(xlate("Help_Topics"));
+		widgets.aboutMenuItem.setText(xlate("About_Tile_Molester"));
+
+		UIManager.put("OptionPane.yesButtonText", xlate("Yes"));
+		UIManager.put("OptionPane.noButtonText", xlate("No"));
+		UIManager.put("OptionPane.cancelButtonText", xlate("Cancel"));
+		UIManager.put("OptionPane.okButtonText", xlate("OK"));
 	}
 
 	/**
