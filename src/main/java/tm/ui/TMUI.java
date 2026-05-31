@@ -93,7 +93,7 @@ public class TMUI extends JFrame {
 	private TMApprovedFileOpenChooser paletteOpenChooser = new TMApprovedFileOpenChooser();
 
 	private TMBitmapFilters bmf = new TMBitmapFilters();
-	private TMFileFilter allFilter = new AllFilter();
+	private TMFileFilter allFilter;
 
 	// custom dialogs
 	private TMGoToDialog goToDialog;
@@ -292,7 +292,7 @@ public class TMUI extends JFrame {
 
 	private Map<TileCodec, TMTileCodecMenuItem> tileCodecButtonHashtable = new HashMap<>();
 	private Map<ColorCodec, TMColorCodecMenuItem> colorCodecButtonHashtable = new HashMap<>();
-	private Map<TMPalette, PaletteMenuItem> paletteButtonHashtable = new HashMap<>();
+	private Map<TMPalette, TMPaletteMenuItem> paletteButtonHashtable = new HashMap<>();
 	private Map<byte[], TMFileListener> fileListenerHashtable = new HashMap<>();
 
 	private Xlator xl;
@@ -327,6 +327,8 @@ public class TMUI extends JFrame {
 			showError("Error reading language file:", e);
 			System.exit(0);
 		}
+
+		allFilter = new TMAllFilter(xlate("All_Files"));
 
 		
 		setLocale(locale);
@@ -3959,30 +3961,6 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 * Recognizes all files.
-	 **/
-	private class AllFilter extends TMFileFilter {
-
-		/**
-		 * Accepts language resource files named language_xx_yy.properties.
-		 * @return whether the filename matches the language-properties pattern
-		 * @param f f value
-		 **/
-		public boolean accept(File f) {
-			return true;
-		}
-
-		/**
-		 * Gets the description.
-		 * @return description string
-		 **/
-		public String getDescription() {
-			return xlate("All_Files");
-		}
-
-	}
-
-	/**
 	 * Builds the menu containing all the bookmarks.
 	 * @param root root value
 	 **/
@@ -4068,7 +4046,7 @@ public class TMUI extends JFrame {
 		if (node instanceof PaletteItemNode) {
 			// palette
 			PaletteItemNode paletteNode = (PaletteItemNode) node;
-			PaletteMenuItem paletteMenuItem = new PaletteMenuItem(paletteNode);
+			TMPaletteMenuItem paletteMenuItem = new TMPaletteMenuItem(paletteNode, this::doSelectPaletteCommand);
 			menu.add(paletteMenuItem);
 			paletteButtonGroup.add(paletteMenuItem);
 			paletteButtonHashtable.put(paletteNode.getPalette(), paletteMenuItem);
@@ -4089,40 +4067,6 @@ public class TMUI extends JFrame {
 			}
 			menu.add(subMenu);
 		}
-	}
-
-	/**
-	 * Menu item that represents a bookmark.
-	 **/
-	private class PaletteMenuItem extends JRadioButtonMenuItem {
-
-		private PaletteItemNode paletteNode;
-
-		// creates a palettemenu item for the given palette node.
-		public PaletteMenuItem(PaletteItemNode paletteNode) {
-			super(paletteNode.getDescription());
-			this.paletteNode = paletteNode;
-			addActionListener(
-					new ActionListener() {
-						/**
-						 * Invokes {@link #getSource()} in response to the user action.
-						 * @param e event from the AWT/Swing listener
-						 **/
-						public void actionPerformed(ActionEvent e) {
-							doSelectPaletteCommand(((PaletteMenuItem) e.getSource()).getPalette());
-						}
-					});
-			setToolTipText(paletteNode.getToolTipText());
-		}
-
-		/**
-		 * Gets the palette.
-		 * @return active palette
-		 **/
-		public TMPalette getPalette() {
-			return paletteNode.getPalette();
-		}
-
 	}
 
 	/**
@@ -4260,7 +4204,7 @@ public class TMUI extends JFrame {
 	 * @param view file view associated with this component
 	 **/
 	public void refreshPaletteSelection(TMView view) {
-		PaletteMenuItem item = paletteButtonHashtable.get(view.getPalette());
+		TMPaletteMenuItem item = paletteButtonHashtable.get(view.getPalette());
 		if (item != null) {
 			item.setSelected(true);
 		} else {
