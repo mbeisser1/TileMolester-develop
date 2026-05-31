@@ -322,6 +322,7 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
             return value;
         }
         catch (NullPointerException e) {
+            TMLog.handled("Organize tree dialog translation unavailable: " + key, e);
             return key;
         }
     }
@@ -368,6 +369,7 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
                 newParent = (TMTreeNode)destinationPath.getLastPathComponent();
             }
             catch (NullPointerException e) {
+                TMLog.handled("Drop not over tree node; using root", e);
                 newParent = (TMTreeNode)((DefaultTreeModel)tree.getModel()).getRoot();
             }
             if (!(newParent instanceof FolderNode)) {

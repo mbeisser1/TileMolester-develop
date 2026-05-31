@@ -128,6 +128,17 @@ public final class TMLog {
 	}
 
 	/**
+	 * Logs a handled/recoverable condition at {@link Level#FINE} (file only, no dialog).
+	 **/
+	public static void handled(String message, Throwable thrown) {
+		if (thrown != null) {
+			LOG.log(Level.FINE, message, thrown);
+		} else {
+			LOG.fine(message);
+		}
+	}
+
+	/**
 	 * Logs an error and shows a dialog with the message and stack trace.
 	 * @param parent dialog owner, or {@code null} to use {@link #setDialogParent(Component)}
 	 **/

@@ -26,6 +26,7 @@ package tm.ui;
 import tm.TMPalette;
 import tm.colorcodecs.ColorCodec;
 import tm.utils.DecimalNumberVerifier;
+import tm.utils.TMLog;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -460,6 +461,7 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
         try {
             return Integer.parseInt(shiftValueField.getText());
         } catch (NumberFormatException e) {
+            TMLog.warning("Invalid palette shift value; using 1", e);
             return 1;
         }
     }

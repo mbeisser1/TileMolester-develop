@@ -257,6 +257,7 @@ public class TMSettings {
 			String value = xl.xlate(key);
 			return value;
 		} catch (NullPointerException e) {
+			TMLog.handled("Settings translation unavailable: " + key, e);
 			return key;
 		}
 	}

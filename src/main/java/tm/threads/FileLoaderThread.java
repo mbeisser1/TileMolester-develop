@@ -65,7 +65,9 @@ public class FileLoaderThread extends ProgressThread {
                     bis.read(contents, contents.length - bytesLeft, CHUNK_SIZE);
                 }
                 catch (IOException e) {
-                    TMLog.logException("File load read error", e);
+                    TMLog.severe("File load read error", e);
+                    bytesLeft = 0;
+                    break;
                 }
                 bytesLeft -= CHUNK_SIZE;
             }
@@ -74,7 +76,9 @@ public class FileLoaderThread extends ProgressThread {
                     bis.read(contents, contents.length - bytesLeft, bytesLeft);
                 }
                 catch (IOException e) {
-                    TMLog.logException("File load read error", e);
+                    TMLog.severe("File load read error", e);
+                    bytesLeft = 0;
+                    break;
                 }
                 bytesLeft = 0;
             }

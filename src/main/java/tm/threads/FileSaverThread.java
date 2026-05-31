@@ -68,7 +68,9 @@ public class FileSaverThread extends ProgressThread {
                     raf.write(contents, contents.length - bytesLeft, CHUNK_SIZE);
                 }
                 catch (IOException e) {
-                    TMLog.logException("File save write error", e);
+                    TMLog.severe("File save write error", e);
+                    bytesLeft = 0;
+                    break;
                 }
                 bytesLeft -= CHUNK_SIZE;
             }
@@ -77,7 +79,9 @@ public class FileSaverThread extends ProgressThread {
                     raf.write(contents, contents.length - bytesLeft, bytesLeft);
                 }
                 catch (IOException e) {
-                    TMLog.logException("File save write error", e);
+                    TMLog.severe("File save write error", e);
+                    bytesLeft = 0;
+                    break;
                 }
                 bytesLeft = 0;
             }

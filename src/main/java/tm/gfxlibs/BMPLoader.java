@@ -1,10 +1,5 @@
-//
-
 // This code was taken and cleaned up from a
-
 // Javaworld tips and tricks column
-
-//
 
 package tm.gfxlibs;
 
@@ -17,16 +12,10 @@ import javax.swing.*;
 
 
 //
-
 // really just a collection of methods to read a BMP file
-
 //
-
 public class BMPLoader
-
 {
-
-
     // build an int from a byte array - convert little to big endian
 
     /**
@@ -44,7 +33,6 @@ public class BMPLoader
     }
 
     // build an int from a byte array - convert little to big endian
-
     // set high order bytes to 0xfff
 
     /**
@@ -60,8 +48,6 @@ public class BMPLoader
         ret = (ret << 8) | ((int)in[offset + 0] & 0xff);
         return(ret);
     }
-
-
 
     // build an int from a byte array - convert little to big endian
 
@@ -83,10 +69,6 @@ public class BMPLoader
         return(ret);
     }
 
-
-
-
-
     // build an double from a byte array - convert little to big endian
 
     /**
@@ -99,8 +81,6 @@ public class BMPLoader
         long ret = constructLong(in,offset);
         return(Double.longBitsToDouble(ret));
     }
-
-
 
     // build an short from a byte array - convert little to big endian
 
@@ -117,13 +97,8 @@ public class BMPLoader
     }
 
 
-
-    //
-
     // internal class representing a bitmap header structure
-
     // with code to read it from a file
-
     static class BitmapHeader {
         public int nsize;
         public int nbisize;
@@ -161,59 +136,45 @@ public class BMPLoader
             // Interperet data.
 
             nsize = constructInt(bf,2);
-           //  System.out.println("File type is :"+(char)bf[0]+(char)bf[1]);
-          //  System.out.println("Size of file is :"+nsize);
-
+            //  System.out.println("File type is :"+(char)bf[0]+(char)bf[1]);
+            //  System.out.println("Size of file is :"+nsize);
 
             nbisize = constructInt(bi,2);
-         //   System.out.println("Size of bitmapinfoheader is :"+nbisize);
-
+            //   System.out.println("Size of bitmapinfoheader is :"+nbisize);
 
             nwidth = constructInt(bi,4);
-         //   System.out.println("Width is :"+nwidth);
-
+            //   System.out.println("Width is :"+nwidth);
 
             nheight = constructInt(bi,8);
-          //  System.out.println("Height is :"+nheight);
+            //  System.out.println("Height is :"+nheight);
 
+            nplanes = constructShort(bi,12); //(((int)bi[13]&0xff)<<8) | (int)bi[12]&0xff;
+            //  System.out.println("Planes is :"+nplanes);
 
-             nplanes = constructShort(bi,12); //(((int)bi[13]&0xff)<<8) | (int)bi[12]&0xff;
-          //  System.out.println("Planes is :"+nplanes);
-
-
-             nbitcount = constructShort(bi,14); //(((int)bi[15]&0xff)<<8) | (int)bi[14]&0xff;
-          //  System.out.println("BitCount is :"+nbitcount);
-
+            nbitcount = constructShort(bi,14); //(((int)bi[15]&0xff)<<8) | (int)bi[14]&0xff;
+            //  System.out.println("BitCount is :"+nbitcount);
 
             // Look for non-zero values to indicate compression
 
-             ncompression = constructInt(bi,16);
-          //  System.out.println("Compression is :"+ncompression);
+            ncompression = constructInt(bi,16);
+            //  System.out.println("Compression is :"+ncompression);
 
+            nsizeimage = constructInt(bi,20);
+            //  System.out.println("SizeImage is :"+nsizeimage);
 
-             nsizeimage = constructInt(bi,20);
-          //  System.out.println("SizeImage is :"+nsizeimage);
+            nxpm = constructInt(bi,24);
+            // System.out.println("X-Pixels per meter is :"+nxpm);
 
+            nypm = constructInt(bi,28);
+            // System.out.println("Y-Pixels per meter is :"+nypm);
 
-             nxpm = constructInt(bi,24);
-           // System.out.println("X-Pixels per meter is :"+nxpm);
+            nclrused = constructInt(bi,32);
+            //  System.out.println("Colors used are :"+nclrused);
 
-
-             nypm = constructInt(bi,28);
-           // System.out.println("Y-Pixels per meter is :"+nypm);
-
-
-             nclrused = constructInt(bi,32);
-          //  System.out.println("Colors used are :"+nclrused);
-
-
-             nclrimp = constructInt(bi,36);
-          //  System.out.println("Colors important are :"+nclrimp);
+            nclrimp = constructInt(bi,36);
+            //  System.out.println("Colors important are :"+nclrimp);
         }
-
     }
-
-
 
   /**
    * Reads a BMP file and returns an Image.
@@ -221,37 +182,32 @@ public class BMPLoader
    * @return decoded Image, or null on failure
    **/
   public static Image read(FileInputStream fs)
-
   {
-         try {
-            BitmapHeader bh = new BitmapHeader();
-            bh.read(fs);
+    try {
+        BitmapHeader bh = new BitmapHeader();
+        bh.read(fs);
 
 
-            if (bh.nbitcount==24)
-
-                return(readMap24(fs,bh));
-
-
-            if (bh.nbitcount==32)
-
-                return(readMap32(fs,bh));
+        if (bh.nbitcount==24)
+            return(readMap24(fs,bh));
 
 
-            if (bh.nbitcount==8)
+        if (bh.nbitcount==32)
+            return(readMap32(fs,bh));
 
-                return(readMap8(fs,bh));
+
+        if (bh.nbitcount==8)
+            return(readMap8(fs,bh));
 
 
-            fs.close();
-        }
+        fs.close();
+    }
+    catch (IOException e)
+    {
+       TMLog.showError("BMP load failed", e);
+    }
 
-        catch (IOException e)
-        {
-          TMLog.showError("BMP load failed", e);
-        }
-
-        return(null);
+    return(null);
     }
 
   /**
@@ -354,99 +310,98 @@ public class BMPLoader
      * Image Object, be sure to check for (Image)null !!!!
      **/
     protected static Image readMap8(FileInputStream fs,BitmapHeader bh) throws IOException
-
       {
         Image image;
 
 
-                // Have to determine the number of colors, the clrsused
+        // Have to determine the number of colors, the clrsused
 
-                // parameter is dominant if it is greater than zero.  If
+        // parameter is dominant if it is greater than zero.  If
 
-                // zero, calculate colors based on bitsperpixel.
+        // zero, calculate colors based on bitsperpixel.
 
-                int nNumColors = 0;
-                if (bh.nclrused > 0)
+        int nNumColors = 0;
+        if (bh.nclrused > 0)
 
-                    {
-                    nNumColors = bh.nclrused;
-                    }
+            {
+            nNumColors = bh.nclrused;
+            }
 
-                else
+        else
 
-                    {
-                    nNumColors = (1&0xff)<< bh.nbitcount;
-                    }
+            {
+            nNumColors = (1&0xff)<< bh.nbitcount;
+            }
 
-           //     System.out.println("The number of Colors is"+nNumColors);
-
-
-                // Some bitmaps do not have the sizeimage field calculated
-
-                // Ferret out these cases and fix 'em.
-
-                if (bh.nsizeimage == 0)
-
-                    {
-                    bh.nsizeimage = ((((bh.nwidth* bh.nbitcount)+31) & ~31 ) >> 3);
-                    bh.nsizeimage *= bh.nheight;
-          //          System.out.println("nsizeimage (backup) is"+nsizeimage);
-                    }
+    //     System.out.println("The number of Colors is"+nNumColors);
 
 
+        // Some bitmaps do not have the sizeimage field calculated
 
-                // Read the palatte colors.
+        // Ferret out these cases and fix 'em.
 
-                int  npalette[] = new int [nNumColors];
-                byte bpalette[] = new byte [nNumColors*4];
-                fs.read (bpalette, 0, nNumColors*4);
-                int nindex8 = 0;
-                for (int n = 0; n < nNumColors; n++)
+        if (bh.nsizeimage == 0)
 
-                    {
-                    npalette[n] = constructInt3(bpalette,nindex8);
-                    nindex8 += 4;
-                    }
+            {
+            bh.nsizeimage = ((((bh.nwidth* bh.nbitcount)+31) & ~31 ) >> 3);
+            bh.nsizeimage *= bh.nheight;
+    //          System.out.println("nsizeimage (backup) is"+nsizeimage);
+            }
 
 
 
-                // Read the image data (actually indices into the palette)
+        // Read the palatte colors.
 
-                // Scan lines are still padded out to even 4-byte
+        int  npalette[] = new int [nNumColors];
+        byte bpalette[] = new byte [nNumColors*4];
+        fs.read (bpalette, 0, nNumColors*4);
+        int nindex8 = 0;
+        for (int n = 0; n < nNumColors; n++)
 
-                // boundaries.
-
-                int npad8 = (bh.nsizeimage / bh.nheight) - bh.nwidth;
-            //    System.out.println("nPad is:"+npad8);
-
-
-                int  ndata8[] = new int [bh.nwidth * bh.nheight];
-                byte bdata[] = new byte [(bh.nwidth+npad8)* bh.nheight];
-                fs.read (bdata, 0, (bh.nwidth+npad8)*bh.nheight);
-                nindex8 = 0;
-                  for (int j8 = 0; j8 < bh.nheight; j8++)
-                  {
-                      for (int i8 = 0; i8 < bh.nwidth; i8++)
-                      {
-                          ndata8[(bh.nwidth * (bh.nheight - j8 - 1) + i8)] =
-
-                                  npalette[(bdata[nindex8] & 0xFF)];
-                          nindex8++;
-                      }
-                      nindex8 += npad8;
-                  }
+            {
+            npalette[n] = constructInt3(bpalette,nindex8);
+            nindex8 += 4;
+            }
 
 
 
-                image = Toolkit.getDefaultToolkit().createImage
+        // Read the image data (actually indices into the palette)
 
-                    ( new MemoryImageSource (bh.nwidth, bh.nheight,
+        // Scan lines are still padded out to even 4-byte
 
-                                             ndata8, 0, bh.nwidth));
+        // boundaries.
+
+        int npad8 = (bh.nsizeimage / bh.nheight) - bh.nwidth;
+    //    System.out.println("nPad is:"+npad8);
 
 
-            return(image);
-         }
+        int  ndata8[] = new int [bh.nwidth * bh.nheight];
+        byte bdata[] = new byte [(bh.nwidth+npad8)* bh.nheight];
+        fs.read (bdata, 0, (bh.nwidth+npad8)*bh.nheight);
+        nindex8 = 0;
+            for (int j8 = 0; j8 < bh.nheight; j8++)
+            {
+                for (int i8 = 0; i8 < bh.nwidth; i8++)
+                {
+                    ndata8[(bh.nwidth * (bh.nheight - j8 - 1) + i8)] =
+
+                            npalette[(bdata[nindex8] & 0xFF)];
+                    nindex8++;
+                }
+                nindex8 += npad8;
+            }
+
+
+
+        image = Toolkit.getDefaultToolkit().createImage
+
+            ( new MemoryImageSource (bh.nwidth, bh.nheight,
+
+                                        ndata8, 0, bh.nwidth));
+
+
+    return(image);
+    }
 
 
 

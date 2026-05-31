@@ -130,11 +130,11 @@ public class PCXReader
       
         if(in.available() != 769)
         {
-          TMLog.getLogger().warning("PCX palette size mismatch");
+          TMLog.warning("PCX palette size mismatch", null);
         }
         if(in.read()!=12)
         {
-          TMLog.getLogger().warning("PCX palette size mismatch");
+          TMLog.warning("PCX palette size mismatch", null);
         }
 
         in.read(pal);

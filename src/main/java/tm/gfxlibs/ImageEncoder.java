@@ -296,8 +296,10 @@ public abstract class ImageEncoder implements ImageConsumer
     public void imageComplete( int status )
 	{
 	producer.removeConsumer( this );
-	if ( status == ImageConsumer.IMAGEABORTED )
+	if ( status == ImageConsumer.IMAGEABORTED ) {
 	    iox = new IOException( "image aborted" );
+	    TMLog.logException("Image encoding aborted", iox);
+	}
 	else
 	    {
 	    try

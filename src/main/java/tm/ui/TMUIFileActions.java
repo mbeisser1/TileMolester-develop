@@ -331,6 +331,7 @@ public class TMUIFileActions extends TMUICommandGroup {
 		try {
 			thread = new FileLoaderThread(file);
 		} catch (OutOfMemoryError e) {
+			TMLog.severe("Out of memory loading file: " + file, e);
 			ui.showError("Out_Of_Memory", file.length() + " bytes needed to load file.");
 			return;
 		} catch (FileNotFoundException e) {

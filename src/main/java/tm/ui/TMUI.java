@@ -774,6 +774,7 @@ public class TMUI extends JFrame {
 			String value = xl.xlate(key);
 			return value;
 		} catch (NullPointerException e) {
+			TMLog.handled("Translation unavailable: " + key, e);
 			return key;
 		}
 	}

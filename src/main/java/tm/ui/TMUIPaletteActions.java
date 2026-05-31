@@ -23,6 +23,7 @@ import tm.colorcodecs.ColorCodec;
 import tm.fileselection.TMPaletteFileFilter;
 import tm.reversibleaction.ReversiblePaletteEditAction;
 import tm.treenodes.*;
+import tm.utils.TMLog;
 import tm.utils.PaletteCsvParseException;
 import tm.utils.PaletteCsvReader;
 import javax.swing.*;
@@ -209,6 +210,7 @@ paletteLittleEndian = command(() -> doPaletteEndiannessCommand(ColorCodec.LITTLE
 		try {
 			rgb = PaletteCsvReader.read(file);
 		} catch (PaletteCsvParseException e) {
+			TMLog.logException("Invalid palette CSV", e);
 			String msg = MessageFormat.format(
 					ui.xlate("Palette_Csv_Invalid_Entry"),
 					Integer.valueOf(e.getEntryNumber()),

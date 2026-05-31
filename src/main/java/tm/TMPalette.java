@@ -340,6 +340,7 @@ public class TMPalette {
         try {
             val = rgbvalues[index];
         } catch (ArrayIndexOutOfBoundsException e) {
+            TMLog.handled("Palette RGB index out of range: " + index, e);
             val = 0;
         }
         return val;
@@ -357,6 +358,7 @@ public class TMPalette {
         try {
             codec.toBytes(entries[index], bytes, 0);
         } catch (ArrayIndexOutOfBoundsException e) {
+            TMLog.handled("Palette entry index out of range: " + index, e);
             return bytes;
         }
         return bytes;

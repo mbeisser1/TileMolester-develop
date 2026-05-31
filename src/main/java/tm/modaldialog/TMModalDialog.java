@@ -18,6 +18,7 @@
 
 package tm.modaldialog;
 
+import tm.utils.TMLog;
 import tm.utils.Xlator;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -218,6 +219,7 @@ public abstract class TMModalDialog extends JDialog {
             return value;
         }
         catch (NullPointerException e) {
+            TMLog.handled("Dialog translation unavailable: " + key, e);
             return key;
         }
     }
