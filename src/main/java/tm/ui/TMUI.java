@@ -64,12 +64,12 @@ public class TMUI extends JFrame {
 	private int previousTool;
 
 	private java.util.List<ColorCodec> colorcodecs;
-	private java.util.List<TileCodec> tilecodecs;
+	java.util.List<TileCodec> tilecodecs;
 	private java.util.List<TMTileCodecFileFilter> filefilters;
 	private java.util.List<TMPaletteFileFilter> palettefilters;
-	private java.util.List<TMFileListener> filelisteners;
+	java.util.List<TMFileListener> filelisteners;
 
-	private TMSelectionCanvas copiedSelection = null;
+	TMSelectionCanvas copiedSelection = null;
 
 	// UI components
 	mxScrollableDesktop desktop = new mxScrollableDesktop();
@@ -302,7 +302,7 @@ public class TMUI extends JFrame {
 	boolean viewToolBar = true;
 	boolean darkMode = TMTheme.darkMode;
 
-	private String lastPath;
+	String lastPath;
 
 	private Border emptyBorder = BorderFactory.createEmptyBorder();
 	private JSeparator separator = new JSeparator();
@@ -312,6 +312,8 @@ public class TMUI extends JFrame {
 	TMUIMenuBuilder menuBuilder;
 	TMUIToolbarBuilder toolbarBuilder;
 	TMUITreeMenuBuilder treeMenuBuilder;
+	TMUIFileActions fileActions;
+	TMUIEditActions editActions;
 
 	/**
 	 * Creates a Tile Molester UI.
@@ -492,6 +494,8 @@ public class TMUI extends JFrame {
 		menuBuilder = new TMUIMenuBuilder(this);
 		toolbarBuilder = new TMUIToolbarBuilder(this);
 		treeMenuBuilder = new TMUITreeMenuBuilder(this);
+		fileActions = new TMUIFileActions(this);
+		editActions = new TMUIEditActions(this);
 
 		// Set up the GUI.
 		// main contentpane
@@ -634,132 +638,23 @@ public class TMUI extends JFrame {
 	 * Prompts the user to enter the desired file size, then creates a new
 	 * FileImage and a default view + palette.
 	 **/
-	public void doNewCommand() {
-		// Show dialog for creating new file
-		// TMNewFileDialog newFileDialog = new TMNewFileDialog(this, xl);
-		int retVal = newFileDialog.showDialog();
-		if (retVal == JOptionPane.OK_OPTION) {
-			// create fileimage
-			FileImage img = new FileImage(newFileDialog.getFileSize());
-			new TMFileResources(img, this);
-			// create view for it
-			TileCodec tc = tilecodecs.get(0); // default
-			TMPalette pal = new TMPalette("PAL000", TMPalette.defaultPalette, getColorCodecByID("CF01"),
-					ColorCodec.LITTLE_ENDIAN, true);
-			addViewToDesktop(createView(img, tc, pal, TileCodec.MODE_1D));
-		}
-	}
 
 	/**
 	 * Handles menu command "Open...".
 	 * User selects file from standard file dialog, the file is
 	 * opened and a default view + palette is assigned.
 	 **/
-	public void doOpenCommand() {
-		// set to directory of selected file, if there is one
-		TMView view = getSelectedView();
-		if (view != null) {
-			this.fileOpenChooser.setCurrentDirectory(view.getFileImage().getFile().getParentFile());
-		} else if (new File(this.lastPath).exists()) {
-			this.fileOpenChooser.setCurrentDirectory(new File(this.lastPath));
-		} else {
-			this.fileOpenChooser.setCurrentDirectory(new File("."));
-		}
-
-		// have the user select a file
-		int retVal = fileOpenChooser.showOpenDialog(this);
-		if (retVal == JFileChooser.APPROVE_OPTION) {
-			// get the selected file and open it
-			File file = fileOpenChooser.getSelectedFile();
-			// updates the last path opened
-			lastPath = file.getPath().substring(0, file.getPath().lastIndexOf(File.separator));
-			TileMolester.settings.setLastPath(lastPath);
-			openFile(file);
-		}
-	}
 
 	/**
 	 * Handles menu command "Close".
 	 * Closes a view. If it is the last (only) view of a FileImage,
 	 * and the file is modified, the user is prompted to save the file.
 	 **/
-	public void doCloseCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			FileImage img = view.getFileImage();
-
-			// check if it's the last view
-			if (img.getViews().length == 1) {
-				saveResources(img); // TODO
-				// check if saving required/desired
-				if (img.isModified()) {
-					int retVal = JOptionPane.showConfirmDialog(this,
-							xlate("Save_Changes_To") + " " + img.getName() + "?", "Tile Molester",
-							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-					if (retVal == JOptionPane.YES_OPTION) {
-						doSaveCommand();
-					} else if (retVal == JOptionPane.NO_OPTION) {
-					} else if (retVal == JOptionPane.CANCEL_OPTION) {
-						return; // return to program without saving and/or closing
-					}
-				}
-				// remove potential file listener
-				fileListenerHashtable.remove(img.getContents());
-			}
-
-			// update recent files
-			File f = new File(img.getFile().getAbsolutePath());
-			addToRecentFiles(f);
-			buildReopenMenu();
-
-			// remove view from the FileImage and desktop
-			img.removeView(view);
-			desktop.remove(view);
-			view.dispose();
-			desktop.revalidate();
-			desktop.repaint();
-
-			img = null;
-			view = null;
-			System.gc();
-		}
-
-		desktop.setSelectedFrame(null);
-		JInternalFrame[] frames = desktop.getAllFrames();
-		if (frames.length == 0) {
-			// no more frames left on the desktop, hide MDI menus and toolbars
-			disableMDIStuff();
-			setTitle("Tile Molester");
-		} else {
-			// select a random frame (Swing doesn't do it for you...)
-			try {
-				frames[0].setSelected(true);
-			} catch (java.beans.PropertyVetoException e) {
-			}
-		}
-	}
 
 	/**
 	 * Saves the resources for the given fileimage to a file in XML format.
 	 * @param img img value
 	 **/
-	public void saveResources(FileImage img) {
-		// TODO: should only save if # bookmarks | # of palettes > 0?
-		File resourceFile = TMFileResources.getResourceFileFor(img.getFile());
-		try {
-			File res = new File("./resources");
-			if (!res.exists()) {
-				res.mkdir();
-			}
-			FileWriter fw = new FileWriter(resourceFile);
-			if(img.getResources() != null) {
-				fw.write(img.getResources().toXML());
-				fw.close();
-			}
-		} catch (IOException e) {
-			showError("Save_Resources_Error", e);
-		}
-	}
 
 	/**
 	 *
@@ -779,336 +674,126 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Close All".
 	 * Does the same as "Close", only for all the current frames.
 	 **/
-	public void doCloseAllCommand() {
-		JInternalFrame[] frames = desktop.getAllFrames();
-		for (int i = 0; i < frames.length; i++) {
-			TMView view = (TMView) frames[i];
-			FileImage img = view.getFileImage();
-			if (img.getViews().length == 1) {
-				// check if saving required/desired
-				if (img.isModified()) {
-					int retVal = JOptionPane.showConfirmDialog(this,
-							xlate("Save_Changes_To") + " " + img.getName() + "?", "Tile Molester",
-							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-					if (retVal == JOptionPane.YES_OPTION) {
-						try {
-							view.setSelected(true);
-						} catch (java.beans.PropertyVetoException x) {
-							x.printStackTrace();
-						}
-						doSaveCommand();
-					} else if (retVal == JOptionPane.NO_OPTION) {
-					} else if (retVal == JOptionPane.CANCEL_OPTION) {
-						return;
-					}
-				}
-				// remove potential file listener
-				fileListenerHashtable.remove(img.getContents());
-			}
-		}
-
-		// remove them all
-		for (int i = 0; i < frames.length; i++) {
-			TMView view = (TMView) frames[i];
-			FileImage img = view.getFileImage();
-
-			saveResources(img); // TODO
-
-			addToRecentFiles(new File(img.getFile().getAbsolutePath()));
-
-			// remove the view
-			img.removeView(view);
-			desktop.remove(view);
-			view.dispose();
-		}
-
-		buildReopenMenu();
-		desktop.setSelectedFrame(null);
-		desktop.revalidate();
-		desktop.repaint();
-		disableMDIStuff();
-		setTitle("Tile Molester");
-
-		System.gc();
-	}
 
 	/**
 	 * Handles menu command "Save".
 	 **/
-	public void doSaveCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			FileImage img = view.getFileImage();
-			File file = img.getFile();
-			String ext = TMFileFilter.getExtension(file);
-
-			saveResources(img); // TODO
-
-			// if (img.isModified()) {
-			if (file.exists()) {
-				if (!file.canWrite()) {
-					showError("File_Write_Error", file.getName());
-				} else {
-					FileSaverThread thread = null;
-					byte[] contents = img.getContents();
-					try {
-						thread = new FileSaverThread(contents, file);
-					} catch (IOException e) {
-						showError("File_Save_Error", e);
-						return;
-					}
-
-					// see if a filelistener should be notified
-					TMFileListener fl = fileListenerHashtable.get(contents);
-					if (fl != null) {
-						fl.fileSaving(contents, ext);
-					}
-
-					// save it!
-					new ProgressDialog(this, thread);
-					img.setModified(false);
-					setSaveButtonsEnabled(false);
-
-					if (fl != null) {
-						fl.fileLoaded(contents, ext);
-					}
-				}
-			} else {
-				doSaveAsCommand();
-			}
-			// }
-		}
-	}
 
 	/**
 	 * Handles menu command "Save As...".
 	 **/
-	public void doSaveAsCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			fileSaveChooser.setCurrentDirectory(view.getFileImage().getFile().getParentFile());
-			fileSaveChooser.setSelectedFile(view.getFileImage().getFile());
-			int retVal = fileSaveChooser.showSaveDialog(this);
-			if (retVal == JFileChooser.APPROVE_OPTION) {
-				File file = fileSaveChooser.getSelectedFile();
-				view.getFileImage().setFile(file);
-				doSaveCommand();
-				setTitle("Tile Molester - " + view.getTitle());
-			}
-		}
-		setSaveButtonsEnabled(false);
-	}
 
 	/**
 	 * Handles menu command "Save All".
 	 **/
-	public void doSaveAllCommand() {
-		JInternalFrame[] frames = desktop.getAllFrames();
-		for (int i = 0; i < frames.length; i++) {
-			TMView view = (TMView) frames[i];
-			if (view.getFileImage().isModified()) {
-				try {
-					view.setSelected(true);
-				} catch (java.beans.PropertyVetoException x) {
-					x.printStackTrace();
-				}
-				doSaveCommand();
-			}
-		}
-		setSaveButtonsEnabled(false);
-	}
 
 	/**
 	 * Handles menu command "Exit".
 	 **/
-	public void doExitCommand() {
-		doCloseAllCommand();
-		// if all frames were closed, the operation was successful and we can exit.
-		if (desktop.getAllFrames().length == 0) {
-			TileMolester.settings.saveSettings();
-			System.exit(0);
-		}
-	}
+
+
+	public void doNewCommand() { fileActions.doNewCommand(); }
+
+	public void doOpenCommand() { fileActions.doOpenCommand(); }
+
+	public void doCloseCommand() { fileActions.doCloseCommand(); }
+
+	public void saveResources(FileImage img) { fileActions.saveResources(img); }
+
+	public void doCloseAllCommand() { fileActions.doCloseAllCommand(); }
+
+	public void doSaveCommand() { fileActions.doSaveCommand(); }
+
+	public void doSaveAsCommand() { fileActions.doSaveAsCommand(); }
+
+	public void doSaveAllCommand() { fileActions.doSaveAllCommand(); }
+
+	public void doExitCommand() { fileActions.doExitCommand(); }
+
+	public void doReopenCommand(File recentFile) { fileActions.doReopenCommand(recentFile); }
+
+	public void openFile(File file) { fileActions.openFile(file); }
+
+	public void buildReopenMenu() { fileActions.buildReopenMenu(); }
+
+	public void addToRecentFiles(File f) { fileActions.addToRecentFiles(f); }
+
+	public void doUndoCommand() { editActions.doUndoCommand(); }
+	public void doRedoCommand() { editActions.doRedoCommand(); }
+	public void doCutCommand() { editActions.doCutCommand(); }
+	public void doCopyCommand() { editActions.doCopyCommand(); }
+	public void doPasteCommand() { editActions.doPasteCommand(); }
+	public void doClearCommand() { editActions.doClearCommand(); }
+	public void doGoToCommand() { editActions.doGoToCommand(); }
+	public void doGoToAgainCommand() { editActions.doGoToAgainCommand(); }
+	public void doSelectAllCommand() { editActions.doSelectAllCommand(); }
+	public boolean exportSelectionAs() { return editActions.exportSelectionAs(); }
+	public void doCopyToCommand() { editActions.doCopyToCommand(); }
+	public void doCutAsCommand() { editActions.doCutAsCommand(); }
+	public void doPasteFromCommand() { editActions.doPasteFromCommand(); }
+
 
 	/**
 	 * Handles menu command "Undo".
 	 * Extracts the top item in the Undo stack and undoes it.
 	 * Moves the item to the Redo stack.
 	 **/
-	public void doUndoCommand() {
-		withSelectedView(view -> {
-			view.undo();
-			refreshUndoRedo();
-			fileImageModified(view.getFileImage());
-		});
-	}
 
 	/**
 	 * Handles menu command "Redo".
 	 * Extracts the top item in the Redo stack and redoes it.
 	 * Moves the item to the Undo stack.
 	 **/
-	public void doRedoCommand() {
-		withSelectedView(view -> {
-			view.redo();
-			refreshUndoRedo();
-			fileImageModified(view.getFileImage());
-		});
-	}
 
 	/**
 	 * Handles menu command "Cut".
 	 * The current selection of the selected frame is cut to the
 	 * central selection.
 	 **/
-	public void doCutCommand() {
-		withSelectedView(view -> {
-			copiedSelection = view.getEditorCanvas().cutSelection();
-			pasteButton.setEnabled(true);
-			pasteMenuItem.setEnabled(true);
-		});
-	}
 
 	/**
 	 * Handles menu command "Copy".
 	 **/
-	public void doCopyCommand() {
-		withSelectedView(view -> {
-			copiedSelection = view.getEditorCanvas().copySelection();
-			pasteButton.setEnabled(true);
-			pasteMenuItem.setEnabled(true);
-		});
-	}
 
 	/**
 	 * Handles menu command "Paste".
 	 **/
-	public void doPasteCommand() {
-		withSelectedView(view -> {
-			if (copiedSelection != null) {
-				view.getEditorCanvas().paste(copiedSelection);
-			}
-		});
-	}
 
 	/**
 	 * Handles menu command "Clear".
 	 **/
-	public void doClearCommand() {
-		withSelectedView(view -> view.getEditorCanvas().clearSelection());
-	}
 
 	/**
 	 * Handles menu command "Go To...".
 	 * Shows a dialog where the user can enter an absolute or relative
 	 * file offset to jump to. Then jumps to that offset.
 	 **/
-	public void doGoToCommand() {
-		withSelectedView(view -> {
-			int retVal = goToDialog.showDialog();
-			if (retVal == JOptionPane.OK_OPTION) {
-				if (goToDialog.getMode() == TMGoToDialog.ABSOLUTE_MODE) {
-					view.setAbsoluteOffset(goToDialog.getOffset());
-				} else {
-					view.setRelativeOffset(goToDialog.getOffset());
-				}
-				view.repaint();
-			}
-		});
-	}
 
 	/**
 	 * Handles menu command "Go To Again".
 	 * Only applicable when the preceding "Go To..." was of relative type.
 	 **/
-	public void doGoToAgainCommand() {
-		withSelectedView(view -> {
-			if (goToDialog.getMode() == TMGoToDialog.ABSOLUTE_MODE) {
-				view.setAbsoluteOffset(goToDialog.getOffset());
-			} else {
-				view.setRelativeOffset(goToDialog.getOffset());
-			}
-			view.repaint();
-		});
-	}
 
 	/**
 	 * Handles menu command "Select All".
 	 **/
-	public void doSelectAllCommand() {
-		withSelectedView(view -> view.getEditorCanvas().selectAll());
-	}
 
 	/**
 	 * Handles menu command "Save Selection As...".
 	 * @return export selection as flag
 	 **/
-	public boolean exportSelectionAs() {
-		TMView view = getSelectedView();
-		if (view == null) {
-			return false;
-		}
-		bitmapSaveChooser.setFileFilter(bmf.bmp);
-		int retVal = bitmapSaveChooser.showSaveDialog(this);
-		if (retVal == JFileChooser.APPROVE_OPTION) {
-			File file = bitmapSaveChooser.getSelectedFile();
-			try {
-				TMBitmapExporter.saveTileCanvasToFile(view.getEditorCanvas().getSelectionCanvas(), file);
-				// Keep selection and palette in sync after export.
-				view.refreshPaletteDisplay();
-				return true;
-			} catch (IOException e) {
-				showError("Save_Bitmap_Error", e);
-				return false;
-			}
-		}
-		return false;
-	}
 
 	/**
 	 * Handles the "CopyTo" menu or toolbar command.
 	 **/
-	public void doCopyToCommand() {
-		exportSelectionAs();
-	}
 
 	/**
 	 * Handles the "CutAs" menu or toolbar command.
 	 **/
-	public void doCutAsCommand() {
-		if (exportSelectionAs()) {
-			doCutCommand();
-		}
-	}
 
 	/**
 	 * Handles menu command "Paste From...".
 	 **/
-	public void doPasteFromCommand() {
-		withSelectedView(view -> {
-			if (new File(this.lastPath).exists()) {
-				this.bitmapOpenChooser.setCurrentDirectory(new File(this.lastPath));
-			} else {
-				this.bitmapOpenChooser.setCurrentDirectory(new File("."));
-			}
-			int retVal = bitmapOpenChooser.showOpenDialog(this);
-			if (retVal == JFileChooser.APPROVE_OPTION) {
-				File file = bitmapOpenChooser.getSelectedFile();
-				TMTileCanvas bitmapCanvas;
-				try {
-					bitmapCanvas = TMBitmapImporter.loadTileCanvasFromFile(file);
-				} catch (InterruptedException | IOException e) {
-					showError("Load_Bitmap_Error", e);
-					return;
-				}
-				TMSelectionCanvas selCanvas = new TMSelectionCanvas(
-						this, bitmapCanvas, 0, 0,
-						bitmapCanvas.getCols(),
-						bitmapCanvas.getRows());
-				view.getEditorCanvas().paste(selCanvas);
-			}
-		});
-	}
 
 	/**
 	 * Handles menu command "Tile".
@@ -1465,15 +1150,6 @@ public class TMUI extends JFrame {
 	 * Handles the "Reopen" menu or toolbar command.
 	 * @param recentFile recentFile value
 	 **/
-	public void doReopenCommand(File recentFile) {
-		if (recentFile.exists() && recentFile.canRead()) {
-			java.util.List<File> recentFiles = TileMolester.settings.getRecentFiles();
-			fileOpenChooser.setFileFilter(getTileCodecFilterForFile(recentFile));
-			openFile(recentFile);
-			recentFiles.remove(recentFile);
-			buildReopenMenu();
-		}
-	}
 
 	/**
 	 * Handles the menu command "Custom Codec".
@@ -2367,7 +2043,7 @@ public class TMUI extends JFrame {
 	 * @return tile codec filter for file
 	 * @param file file value
 	 **/
-	private TMTileCodecFileFilter getTileCodecFilterForFile(File file) {
+	TMTileCodecFileFilter getTileCodecFilterForFile(File file) {
 		for (int i = 0; i < filefilters.size(); i++) {
 			TMTileCodecFileFilter cff = filefilters.get(i);
 			if (cff.accept(file)) {
@@ -2584,104 +2260,10 @@ public class TMUI extends JFrame {
 	 * Opens the specified file.
 	 * @param file file value
 	 **/
-	public void openFile(File file) {
-		System.gc();
-		// read file
-		FileLoaderThread thread = null;
-		try {
-			thread = new FileLoaderThread(file);
-		} catch (OutOfMemoryError e) {
-			showError("Out_Of_Memory", file.length() + " bytes needed to load file.");
-			return;
-		} catch (FileNotFoundException e) {
-			showError("Load_File_Error", e);
-			return;
-		}
-		ProgressDialog dialog = new ProgressDialog(this, thread);
-		byte[] contents = thread.getContents();
-
-		// see if a filelistener should receive notification
-		String ext = TMFileFilter.getExtension(file);
-		for (int i = 0; i < filelisteners.size(); i++) {
-			TMFileListener fl = filelisteners.get(i);
-			if (fl.doFormatDetect(contents, ext)) {
-				fileListenerHashtable.put(contents, fl);
-				fl.fileLoaded(contents, ext);
-				break;
-			}
-		}
-
-		// create fileimage
-		FileImage img = new FileImage(file, contents);
-		// create resources for it
-		File resourceFile = TMFileResources.getResourceFileFor(file);
-		if (resourceFile.exists() && resourceFile.length() > 0) {
-			// load the resources from XML document
-			try {
-				new TMFileResources(resourceFile, img, this);
-			} catch (SAXException e) {
-				showError("Parser_Parse_Error", e);
-			} catch (ParserConfigurationException e) {
-				showError("Parser_Config_Error", e);
-			} catch (IOException e) {
-				showError("Parser_IO_Error", e);
-			}
-		} else {
-			// create default resources
-			new TMFileResources(img, this);
-		}
-		// figure out mode and codec based on file filter
-		FileFilter ff = fileOpenChooser.getFileFilter();
-		if (!(ff instanceof TMTileCodecFileFilter)) {
-			ff = getTileCodecFilterForFile(file);
-		}
-		int mode = ((TMTileCodecFileFilter) ff).getDefaultMode();
-		TileCodec tc = getTileCodecByID(((TMTileCodecFileFilter) ff).getCodecID());
-		// hardcode 4bpp planar for opened files
-		TileCodec forcedTc = getTileCodecByID("PL03");
-		if (forcedTc != null) {
-			tc = forcedTc;
-		}
-		TMPalette pal = new TMPalette("PAL000", TMPalette.defaultPalette, getColorCodecByID("CF01"),
-				ColorCodec.LITTLE_ENDIAN, true);
-
-		TMView view = createView(img, tc, pal, mode);
-		view.setGridSize(3, 36);
-		addViewToDesktop(view);
-
-		java.util.List<File> recentFiles = TileMolester.settings.getRecentFiles();
-		// Remove file from recentFiles, if it's there
-		for (int i = 0; i < recentFiles.size(); i++) {
-			File f = recentFiles.get(i);
-			if (f.compareTo(file) == 0) {
-				recentFiles.remove(f);
-				buildReopenMenu();
-				break;
-			}
-		}
-
-		thread.killContentsRef();
-		thread = null;
-		System.gc();
-	}
 
 	/**
 	 * Builds the menu containing most recently opened (closed) files.
 	 **/
-	public void buildReopenMenu() {
-		reopenMenu.removeAll();
-		java.util.List<File> recentFiles = TileMolester.settings.getRecentFiles();
-		if (recentFiles.size() == 0) {
-			JMenuItem emptyItem = new JMenuItem("(" + xlate("Empty") + ")");
-			emptyItem.setEnabled(false);
-			reopenMenu.add(emptyItem);
-		} else {
-			for (int i = 0; i < recentFiles.size(); i++) {
-				File recentFile = recentFiles.get(i);
-				reopenMenu.add(new TMRecentFileMenuItem(recentFile, this::doReopenCommand));
-			}
-		}
-	}
 
 	/**
 	 * Gets the color codecs.
@@ -2715,7 +2297,7 @@ public class TMUI extends JFrame {
 	 * Runs an action on the currently selected view, if one exists.
 	 * @param action callback receiving the active {@link TMView}
 	 **/
-	private void withSelectedView(Consumer<TMView> action) {
+	void withSelectedView(Consumer<TMView> action) {
 		TMView view = getSelectedView();
 		if (view != null) {
 			action.accept(view);
@@ -2735,7 +2317,7 @@ public class TMUI extends JFrame {
 	 * @param messageKey resource key for the primary message
 	 * @param detail additional detail appended on a new line, or null
 	 **/
-	private void showError(String messageKey, String detail) {
+	void showError(String messageKey, String detail) {
 		String message = xlate(messageKey);
 		if (detail != null && !detail.isEmpty()) {
 			message = message + "\n" + detail;
@@ -2748,7 +2330,7 @@ public class TMUI extends JFrame {
 	 * @param messageKey resource key for the primary message
 	 * @param e exception whose message is appended on a new line
 	 **/
-	private void showError(String messageKey, Exception e) {
+	void showError(String messageKey, Exception e) {
 		showError(messageKey, e.getMessage());
 	}
 
@@ -2764,23 +2346,4 @@ public class TMUI extends JFrame {
 	 * Adds the given file to the list of recently opened (closed) files.
 	 * @param f f value
 	 **/
-	public void addToRecentFiles(File f) {
-		java.util.List<File> recentFiles = TileMolester.settings.getRecentFiles();
-		// make sure it's not already in the list
-		for (int i = 0; i < recentFiles.size(); i++) {
-			File rf = recentFiles.get(i);
-			if (rf.compareTo(f) == 0) {
-				recentFiles.remove(i);
-				break;
-			}
-		}
-		// add it
-		recentFiles.add(0, f);
-		// check for "overflow"
-		int maxRecentFiles = TileMolester.settings.getMaxRecentFiles();
-		if (recentFiles.size() > maxRecentFiles) {
-			recentFiles.remove(maxRecentFiles - 1);
-		}
-		TileMolester.settings.setRecentFiles(recentFiles);
-	}
 }
