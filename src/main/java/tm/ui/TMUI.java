@@ -43,6 +43,7 @@ import com.formdev.flatlaf.util.SystemInfo;
 
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -4886,6 +4887,47 @@ public class TMUI extends JFrame {
 		} catch (NullPointerException e) {
 			return key;
 		}
+	}
+
+	/**
+	 * Runs an action on the currently selected view, if one exists.
+	 * @param action callback receiving the active {@link TMView}
+	 **/
+	private void withSelectedView(Consumer<TMView> action) {
+		TMView view = getSelectedView();
+		if (view != null) {
+			action.accept(view);
+		}
+	}
+
+	/**
+	 * Adjusts the file offset of the selected view by the given delta.
+	 * @param delta bytes to add to the current offset (negative to move back)
+	 **/
+	private void adjustOffset(int delta) {
+		withSelectedView(view -> view.setRelativeOffset(delta));
+	}
+
+	/**
+	 * Shows an error dialog with a translated message and optional detail text.
+	 * @param messageKey resource key for the primary message
+	 * @param detail additional detail appended on a new line, or null
+	 **/
+	private void showError(String messageKey, String detail) {
+		String message = xlate(messageKey);
+		if (detail != null && !detail.isEmpty()) {
+			message = message + "\n" + detail;
+		}
+		JOptionPane.showMessageDialog(this, message, "Tile Molester", JOptionPane.ERROR_MESSAGE);
+	}
+
+	/**
+	 * Shows an error dialog with a translated message and exception detail.
+	 * @param messageKey resource key for the primary message
+	 * @param e exception whose message is appended on a new line
+	 **/
+	private void showError(String messageKey, Exception e) {
+		showError(messageKey, e.getMessage());
 	}
 
 	/**
