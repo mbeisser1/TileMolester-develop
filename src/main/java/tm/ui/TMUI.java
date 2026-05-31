@@ -36,8 +36,6 @@ import java.io.*;
 
 import javax.swing.border.*;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.plaf.ButtonUI;
-import javax.swing.plaf.ComponentUI;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.util.SystemInfo;
 
@@ -114,76 +112,76 @@ public class TMUI extends JFrame {
 
 	// toolbar buttons
 	ClassLoader cl = getClass().getClassLoader();
-	private ToolButton newButton = new ToolButton(
+	private TMToolButton newButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/document_add_24_regular.svg", 22, 22));
-	private ToolButton openButton = new ToolButton(
+	private TMToolButton openButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/folder_open_24_regular.svg", 22, 22));
-	private ToolButton saveButton = new ToolButton(
+	private TMToolButton saveButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/save_24_regular.svg", 22, 22));
-	private ToolButton cutButton = new ToolButton(new FlatSVGIcon("icons/fluent/cut_24_regular.svg", 22, 22));
-	private ToolButton copyButton = new ToolButton(
+	private TMToolButton cutButton = new TMToolButton(new FlatSVGIcon("icons/fluent/cut_24_regular.svg", 22, 22));
+	private TMToolButton copyButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/copy_24_regular.svg", 22, 22));
-	private ToolButton pasteButton = new ToolButton(
+	private TMToolButton pasteButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/clipboard_paste_24_regular.svg", 22, 22));
-	private ToolButton undoButton = new ToolButton(
+	private TMToolButton undoButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/arrow_undo_24_regular.svg", 22, 22));
-	private ToolButton redoButton = new ToolButton(
+	private TMToolButton redoButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/arrow_redo_24_regular.svg", 22, 22));
-	private ToolButton gotoButton = new ToolButton(new FlatSVGIcon("icons/fluent/custom/jump-to.svg", 22, 22));
-	private ToolButton addBookmarkButton = new ToolButton(
+	private TMToolButton gotoButton = new TMToolButton(new FlatSVGIcon("icons/fluent/custom/jump-to.svg", 22, 22));
+	private TMToolButton addBookmarkButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/bookmark_add_24_regular.svg", 22, 22));
-	private ToolButton decWidthButton = new ToolButton(
+	private TMToolButton decWidthButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/panel_left_contract_24_regular.svg", 22, 22));
-	private ToolButton incWidthButton = new ToolButton(
+	private TMToolButton incWidthButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/panel_left_expand_24_regular.svg", 22, 22));
-	private ToolButton decHeightButton = new ToolButton(
+	private TMToolButton decHeightButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/custom/decrease-height.svg", 22, 22));
-	private ToolButton incHeightButton = new ToolButton(
+	private TMToolButton incHeightButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/custom/increase-height.svg", 22, 22));
 
 	// navigation bar buttons
-	private ToolButton minusPageButton = new ToolButton(
+	private TMToolButton minusPageButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/rewind_24_regular.svg", 22, 22));
-	private ToolButton plusPageButton = new ToolButton(
+	private TMToolButton plusPageButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/fast_forward_24_regular.svg", 22, 22));
-	private ToolButton minusRowButton = new ToolButton(
+	private TMToolButton minusRowButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/previous_frame_24_regular.svg", 22, 22));
-	private ToolButton plusRowButton = new ToolButton(
+	private TMToolButton plusRowButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/next_frame_24_regular.svg", 22, 22));
-	private ToolButton minusTileButton = new ToolButton(
+	private TMToolButton minusTileButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/custom/tile-previous.svg", 22, 22));
-	private ToolButton plusTileButton = new ToolButton(new FlatSVGIcon("icons/fluent/custom/tile-next.svg", 22, 22));
-	private ToolButton minusByteButton = new ToolButton(
+	private TMToolButton plusTileButton = new TMToolButton(new FlatSVGIcon("icons/fluent/custom/tile-next.svg", 22, 22));
+	private TMToolButton minusByteButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/subtract_square_24_regular.svg", 22, 22));
-	private ToolButton plusByteButton = new ToolButton(
+	private TMToolButton plusByteButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/add_square_24_regular.svg", 22, 22));
 
 	// tool palette buttons
-	private ToolToggleButton selectButton = new ToolToggleButton(
+	private TMToolToggleButton selectButton = new TMToolToggleButton(
 			new FlatSVGIcon("icons/fluent/square_hint_24_regular.svg", 22, 22));
-	private ToolToggleButton zoomButton = new ToolToggleButton(new FlatSVGIcon("icons/fluent/custom/zoom.svg", 22, 22));
-	private ToolToggleButton pickupButton = new ToolToggleButton(
+	private TMToolToggleButton zoomButton = new TMToolToggleButton(new FlatSVGIcon("icons/fluent/custom/zoom.svg", 22, 22));
+	private TMToolToggleButton pickupButton = new TMToolToggleButton(
 			new FlatSVGIcon("icons/fluent/eyedropper_24_regular.svg", 22, 22));
-	private ToolToggleButton brushButton = new ToolToggleButton(
+	private TMToolToggleButton brushButton = new TMToolToggleButton(
 			new FlatSVGIcon("icons/fluent/edit_24_regular.svg", 22, 22));
-	private ToolToggleButton lineButton = new ToolToggleButton(new FlatSVGIcon("icons/fluent/line_24_regular.svg", 22, 22));
-	private ToolToggleButton fillButton = new ToolToggleButton(new FlatSVGIcon("icons/fluent/paint_bucket_24_regular.svg", 22, 22));
-	private ToolToggleButton replaceButton = new ToolToggleButton(
+	private TMToolToggleButton lineButton = new TMToolToggleButton(new FlatSVGIcon("icons/fluent/line_24_regular.svg", 22, 22));
+	private TMToolToggleButton fillButton = new TMToolToggleButton(new FlatSVGIcon("icons/fluent/paint_bucket_24_regular.svg", 22, 22));
+	private TMToolToggleButton replaceButton = new TMToolToggleButton(
 			new FlatSVGIcon("icons/fluent/custom/color-replace.svg", 22, 22));
-	private ToolToggleButton moveButton = new ToolToggleButton(
+	private TMToolToggleButton moveButton = new TMToolToggleButton(
 			new FlatSVGIcon("icons/fluent/arrow_move_24_regular.svg", 22, 22));
 
 	// selection palette buttons
-	private ToolButton mirrorButton = new ToolButton(new FlatSVGIcon("icons/fluent/flip_horizontal_24_regular.svg", 22, 22));
-	private ToolButton flipButton = new ToolButton(new FlatSVGIcon("icons/fluent/flip_vertical_24_regular.svg", 22, 22));
-	private ToolButton rotateRightButton = new ToolButton(
+	private TMToolButton mirrorButton = new TMToolButton(new FlatSVGIcon("icons/fluent/flip_horizontal_24_regular.svg", 22, 22));
+	private TMToolButton flipButton = new TMToolButton(new FlatSVGIcon("icons/fluent/flip_vertical_24_regular.svg", 22, 22));
+	private TMToolButton rotateRightButton = new TMToolButton(
 			new FlatSVGIcon("icons/fluent/rotate_right_24_regular.svg", 22, 22));
-	private ToolButton rotateLeftButton = new ToolButton(new FlatSVGIcon("icons/fluent/rotate_left_24_regular.svg", 22, 22));
+	private TMToolButton rotateLeftButton = new TMToolButton(new FlatSVGIcon("icons/fluent/rotate_left_24_regular.svg", 22, 22));
 
-	private ToolButton shiftLeftButton = new ToolButton(new FlatSVGIcon("icons/fluent/table_move_left_24_regular.svg", 22, 22));
-	private ToolButton shiftRightButton = new ToolButton(new FlatSVGIcon("icons/fluent/table_move_right_24_regular.svg", 22, 22));
-	private ToolButton shiftUpButton = new ToolButton(new FlatSVGIcon("icons/fluent/table_move_above_24_regular.svg", 22, 22));
-	private ToolButton shiftDownButton = new ToolButton(new FlatSVGIcon("icons/fluent/table_move_below_24_regular.svg", 22, 22));
+	private TMToolButton shiftLeftButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_left_24_regular.svg", 22, 22));
+	private TMToolButton shiftRightButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_right_24_regular.svg", 22, 22));
+	private TMToolButton shiftUpButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_above_24_regular.svg", 22, 22));
+	private TMToolButton shiftDownButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_below_24_regular.svg", 22, 22));
 
 	// File menu
 	private JMenu fileMenu = new JMenu("File");
@@ -606,31 +604,6 @@ public class TMUI extends JFrame {
 
 	///////////////////////////////////////////////////////////////////////////////
 	// Begin long bunch of code for setting up menus, panels etc...
-
-	static class CButtonUI extends ButtonUI {
-
-		/*
-		 * private static final CButtonUI buttonUI = new CButtonUI();
-		 * 
-		 * ModifButtonUI() { }
-		 */
-
-		/**
-		 * Creates the custom button UI delegate.
-		 * @return UI delegate for the custom button
-		 * @param c Swing component requesting the UI delegate
-		 **/
-		public static ComponentUI createUI(JComponent c) {
-			return new CButtonUI();
-		}
-
-		/**
-		 * Paints no border for the custom toolbar button UI.
-		 * @param g graphics context used for drawing
-		 **/
-		public void paintBorder(Graphics g) {
-		}
-	}
 
 	/**
 	 * Sets up the toolbar.
@@ -2528,12 +2501,11 @@ public class TMUI extends JFrame {
 	 * Moves the item to the Redo stack.
 	 **/
 	public void doUndoCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.undo();
 			refreshUndoRedo();
 			fileImageModified(view.getFileImage());
-		}
+		});
 	}
 
 	/**
@@ -2542,12 +2514,11 @@ public class TMUI extends JFrame {
 	 * Moves the item to the Undo stack.
 	 **/
 	public void doRedoCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.redo();
 			refreshUndoRedo();
 			fileImageModified(view.getFileImage());
-		}
+		});
 	}
 
 	/**
@@ -2556,51 +2527,40 @@ public class TMUI extends JFrame {
 	 * central selection.
 	 **/
 	public void doCutCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			// get the frame's selection
+		withSelectedView(view -> {
 			copiedSelection = view.getEditorCanvas().cutSelection();
-			// enable relevant buttons
 			pasteButton.setEnabled(true);
 			pasteMenuItem.setEnabled(true);
-		}
+		});
 	}
 
 	/**
 	 * Handles menu command "Copy".
 	 **/
 	public void doCopyCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			// get the frame's selection
+		withSelectedView(view -> {
 			copiedSelection = view.getEditorCanvas().copySelection();
-			// enable relevant buttons
 			pasteButton.setEnabled(true);
 			pasteMenuItem.setEnabled(true);
-		}
+		});
 	}
 
 	/**
 	 * Handles menu command "Paste".
 	 **/
 	public void doPasteCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			if (copiedSelection != null) {
-				// paste selection
 				view.getEditorCanvas().paste(copiedSelection);
 			}
-		}
+		});
 	}
 
 	/**
 	 * Handles menu command "Clear".
 	 **/
 	public void doClearCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.getEditorCanvas().clearSelection();
-		}
+		withSelectedView(view -> view.getEditorCanvas().clearSelection());
 	}
 
 	/**
@@ -2609,19 +2569,17 @@ public class TMUI extends JFrame {
 	 * file offset to jump to. Then jumps to that offset.
 	 **/
 	public void doGoToCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			// TMGoToDialog goToDialog = new TMGoToDialog(this, xl);
+		withSelectedView(view -> {
 			int retVal = goToDialog.showDialog();
 			if (retVal == JOptionPane.OK_OPTION) {
 				if (goToDialog.getMode() == TMGoToDialog.ABSOLUTE_MODE) {
 					view.setAbsoluteOffset(goToDialog.getOffset());
-				} else { // RELATIVE_MODE
+				} else {
 					view.setRelativeOffset(goToDialog.getOffset());
 				}
 				view.repaint();
 			}
-		}
+		});
 	}
 
 	/**
@@ -2629,25 +2587,21 @@ public class TMUI extends JFrame {
 	 * Only applicable when the preceding "Go To..." was of relative type.
 	 **/
 	public void doGoToAgainCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			if (goToDialog.getMode() == TMGoToDialog.ABSOLUTE_MODE) {
 				view.setAbsoluteOffset(goToDialog.getOffset());
-			} else { // RELATIVE_MODE
+			} else {
 				view.setRelativeOffset(goToDialog.getOffset());
 			}
 			view.repaint();
-		}
+		});
 	}
 
 	/**
 	 * Handles menu command "Select All".
 	 **/
 	public void doSelectAllCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.getEditorCanvas().selectAll();
-		}
+		withSelectedView(view -> view.getEditorCanvas().selectAll());
 	}
 
 	/**
@@ -2696,8 +2650,7 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Paste From...".
 	 **/
 	public void doPasteFromCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			if (new File(this.lastPath).exists()) {
 				this.bitmapOpenChooser.setCurrentDirectory(new File(this.lastPath));
 			} else {
@@ -2706,8 +2659,7 @@ public class TMUI extends JFrame {
 			int retVal = bitmapOpenChooser.showOpenDialog(this);
 			if (retVal == JFileChooser.APPROVE_OPTION) {
 				File file = bitmapOpenChooser.getSelectedFile();
-				// paste it
-				TMTileCanvas bitmapCanvas = null;
+				TMTileCanvas bitmapCanvas;
 				try {
 					bitmapCanvas = TMBitmapImporter.loadTileCanvasFromFile(file);
 				} catch (InterruptedException | IOException e) {
@@ -2720,7 +2672,7 @@ public class TMUI extends JFrame {
 						bitmapCanvas.getRows());
 				view.getEditorCanvas().paste(selCanvas);
 			}
-		}
+		});
 	}
 
 	/**
@@ -2829,13 +2781,12 @@ public class TMUI extends JFrame {
 	 * @param codec tile codec used for encode/decode
 	 **/
 	public void doTileCodecCommand(TileCodec codec) {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.setTileCodec(codec);
 			refreshPalettePane();
 			refreshStatusBar();
 			refreshTileCodecSelection(view);
-		}
+		});
 	}
 
 	/**
@@ -2844,10 +2795,7 @@ public class TMUI extends JFrame {
 	 * @param scale zoom factor applied to the canvas
 	 **/
 	public void doZoomCommand(double scale) {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.setScale(scale);
-		}
+		withSelectedView(view -> view.setScale(scale));
 	}
 
 	/**
@@ -2855,10 +2803,7 @@ public class TMUI extends JFrame {
 	 * Scale += 1.0
 	 **/
 	public void doZoomInCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.setScale(view.getScale() + 1.0);
-		}
+		withSelectedView(view -> view.setScale(view.getScale() + 1.0));
 	}
 
 	/**
@@ -2866,46 +2811,40 @@ public class TMUI extends JFrame {
 	 * Scale -= 1.0
 	 **/
 	public void doZoomOutCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.setScale(view.getScale() - 1.0);
-		}
+		withSelectedView(view -> view.setScale(view.getScale() - 1.0));
 	}
 
 	/**
 	 * Handles menu command "Block Grid".
 	 **/
 	public void doBlockGridCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.setBlockGridVisible(!view.isBlockGridVisible());
 			blockGridMenuItem.setSelected(view.isBlockGridVisible());
 			view.repaint();
-		}
+		});
 	}
 
 	/**
 	 * Handles menu command "Tile Grid".
 	 **/
 	public void doTileGridCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.setTileGridVisible(!view.isTileGridVisible());
 			tileGridMenuItem.setSelected(view.isTileGridVisible());
 			view.repaint();
-		}
+		});
 	}
 
 	/**
 	 * Handles menu command "Pixel Grid".
 	 **/
 	public void doPixelGridCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.setPixelGridVisible(!view.isPixelGridVisible());
 			pixelGridMenuItem.setSelected(view.isPixelGridVisible());
 			view.repaint();
-		}
+		});
 	}
 
 	/**
@@ -2946,18 +2885,16 @@ public class TMUI extends JFrame {
 	 * Duplicates view settings (offset, codec, width/height etc.)
 	 **/
 	public void doNewWindowCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			FileImage img = view.getFileImage();
 			TMView newView = createView(img, view.getTileCodec(), view.getPalette(), view.getMode());
-			// TODO: Copy palette
 			newView.setPalIndex(view.getPalIndex());
 			newView.setFGColor(view.getFGColor());
 			newView.setBGColor(view.getBGColor());
 			newView.setAbsoluteOffset(view.getOffset());
 			newView.setGridSize(view.getCols(), view.getRows());
 			addViewToDesktop(newView);
-		}
+		});
 	}
 
 	/**
@@ -3020,30 +2957,26 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Stretch".
 	 **/
 	public void doStretchCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			// TMStretchDialog stretchDialog = new TMStretchDialog(this, xl);
+		withSelectedView(view -> {
 			int retVal = stretchDialog.showDialog(view.getEditorCanvas().getSelectionCanvas().getCols(),
 					view.getEditorCanvas().getSelectionCanvas().getRows());
 			if (retVal == JOptionPane.OK_OPTION) {
 				view.getEditorCanvas().stretchSelection(stretchDialog.getCols(), stretchDialog.getRows());
 			}
-		}
+		});
 	}
 
 	/**
 	 * Handles menu command "Canvas Size".
 	 **/
 	public void doCanvasSizeCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			// TMCanvasSizeDialog canvasSizeDialog = new TMCanvasSizeDialog(this, xl);
+		withSelectedView(view -> {
 			int retVal = canvasSizeDialog.showDialog(view.getCols(), view.getRows());
 			if (retVal == JOptionPane.OK_OPTION) {
 				view.setGridSize(canvasSizeDialog.getCols(), canvasSizeDialog.getRows());
 				view.setScale(view.getScale());
 			}
-		}
+		});
 	}
 
 	/**
@@ -3053,49 +2986,44 @@ public class TMUI extends JFrame {
 	 * @param mode tile layout mode ({@link tm.tilecodecs.TileCodec#MODE_1D} or {@link tm.tilecodecs.TileCodec#MODE_2D})
 	 **/
 	public void doModeCommand(int mode) {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.setMode(mode);
 			refreshStatusBar();
-		}
+		});
 	}
 
 	/**
 	 * Handles the "SizeBlockToCanvas" menu or toolbar command.
 	 **/
 	public void doSizeBlockToCanvasCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.setSizeBlockToCanvas(!view.getSizeBlockToCanvas());
 			sizeBlockToCanvasMenuItem.setSelected(view.getSizeBlockToCanvas());
-		}
+		});
 	}
 
 	/**
 	 * Handles the "CustomBlockSize" menu or toolbar command.
 	 **/
 	public void doCustomBlockSizeCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			// TMBlockSizeDialog blockSizeDialog = new TMBlockSizeDialog(this, xl);
+		withSelectedView(view -> {
 			int retVal = blockSizeDialog.showDialog(view.getBlockWidth(), view.getBlockHeight());
 			if (retVal == JOptionPane.OK_OPTION) {
 				view.setSizeBlockToCanvas(false);
 				sizeBlockToCanvasMenuItem.setSelected(false);
 				view.setBlockDimensions(blockSizeDialog.getCols(), blockSizeDialog.getRows());
 			}
-		}
+		});
 	}
 
 	/**
 	 * Handles the "RowInterleaveBlocks" menu or toolbar command.
 	 **/
 	public void doRowInterleaveBlocksCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.setRowInterleaveBlocks(!view.getRowInterleaveBlocks());
 			rowInterleaveBlocksMenuItem.setSelected(view.getRowInterleaveBlocks());
-		}
+		});
 	}
 
 	/**
@@ -3116,24 +3044,21 @@ public class TMUI extends JFrame {
 	 * Handles the menu command "Custom Codec".
 	 **/
 	public void doCustomCodecCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			customCodecDialog.setVisible(true);
 			int retVal = 0; // TODO
 			if (retVal == JOptionPane.OK_OPTION) {
-				// create the codec
 				int bpp = customCodecDialog.getBitsPerPixel();
 				int rmask = customCodecDialog.getRedMask();
 				int gmask = customCodecDialog.getBlueMask();
 				int bmask = customCodecDialog.getGreenMask();
 				int amask = customCodecDialog.getAlphaMask();
-				// int endianness = customCodecDialog.getEndianness();
 				String desc = customCodecDialog.getDescription();
 				DirectColorTileCodec codec = new DirectColorTileCodec("", bpp, rmask, gmask, bmask, amask, desc);
 				addTileCodec(codec);
 				view.setTileCodec(codec);
 			}
-		}
+		});
 	}
 
 	/**
@@ -3210,110 +3135,72 @@ public class TMUI extends JFrame {
 	 * Handles the menu command "Add To Bookmarks".
 	 **/
 	public void doAddToBookmarksCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			// TMAddToTreeDialog addBookmarkDialog = new TMAddToTreeDialog(this,
-			// "Add_To_Bookmarks_Dialog_Title", xl);
+		withSelectedView(view -> {
 			int retVal = addBookmarkDialog.showDialog(view.getFileImage().getResources().getBookmarksRoot());
 			if (retVal == JOptionPane.OK_OPTION) {
-				// Create & Add the bookmark
 				FolderNode folder = addBookmarkDialog.getFolder();
-				String description = addBookmarkDialog.getDescription();
 				BookmarkItemNode bookmark = view.createBookmark(addBookmarkDialog.getDescription());
-
-				/*
-				 * view.addReversibleAction(
-				 * new ReversibleAddBookmarkAction(
-				 * bookmark
-				 * )
-				 * );
-				 */
-
 				folder.add(bookmark);
-
 				refreshBookmarksMenu();
 			}
-		}
+		});
 	}
 
 	/**
 	 * Handles the menu command "Organize Bookmarks".
 	 **/
 	public void doOrganizeBookmarksCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			// TMOrganizeTreeDialog organizeBookmarksDialog = new TMOrganizeTreeDialog(this,
-			// "Organize_Bookmarks_Dialog_Title", xl);
+		withSelectedView(view -> {
 			organizeBookmarksDialog.showDialog(view.getFileImage().getResources().getBookmarksRoot());
 			refreshBookmarksMenu();
-		}
+		});
 	}
 
 	/**
 	 * Handles the menu command "Add To Palettes".
 	 **/
 	public void doAddToPalettesCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			// TMAddToTreeDialog addPaletteDialog = new TMAddToTreeDialog(this,
-			// "Add_To_Palettes_Dialog_Title", xl);
+		withSelectedView(view -> {
 			int retVal = addPaletteDialog.showDialog(view.getFileImage().getResources().getPalettesRoot());
 			if (retVal == JOptionPane.OK_OPTION) {
-				// Add the palette
 				FolderNode folder = addPaletteDialog.getFolder();
-				String description = addPaletteDialog.getDescription();
-				PaletteItemNode palNode = new PaletteItemNode(view.getPalette(), description);
+				PaletteItemNode palNode = new PaletteItemNode(view.getPalette(), addPaletteDialog.getDescription());
 				folder.add(palNode);
-
-				/*
-				 * view.addReversibleAction(
-				 * new ReversibleAddPaletteAction(
-				 * palette
-				 * )
-				 * );
-				 */
-
 				refreshPalettesMenu();
 			}
-		}
+		});
 	}
 
 	/**
 	 * Handles the menu command "Organize Palettes".
 	 **/
 	public void doOrganizePalettesCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			// TMOrganizeTreeDialog organizePalettesDialog = new TMOrganizeTreeDialog(this,
-			// "Organize_Palettes_Dialog_Title", xl);
+		withSelectedView(view -> {
 			organizePalettesDialog.showDialog(view.getFileImage().getResources().getPalettesRoot());
 			refreshPalettesMenu();
-		}
+		});
 	}
 
 	/**
 	 * Handles the menu command "Edit Colors".
 	 **/
 	public void doEditColorsCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			// let user edit the color
+		withSelectedView(view -> {
 			Color newColor = JColorChooser.showDialog(this, "Edit Color", new Color(view.getFGColor()));
 			if (newColor != null) {
 				int rgb = newColor.getRGB();
 				TMPaletteVizualiser vizualiser = palettePane.getVizualiser();
-
 				int colorIndex = vizualiser.getLastIndex();
-				
-				view.addReversibleAction(new ReversiblePaletteEditAction(view, view.getPalette(), colorIndex, view.getPalette().getEntryRGB(colorIndex), rgb));
+
+				view.addReversibleAction(new ReversiblePaletteEditAction(view, view.getPalette(), colorIndex,
+						view.getPalette().getEntryRGB(colorIndex), rgb));
 				view.getPalette().setEntryRGB(colorIndex, rgb);
 
 				this.setFGColor(rgb);
 				view.refreshPaletteDisplay();
 				repaint();
 			}
-			
-		}
+		});
 	}
 
 	/**
@@ -3321,104 +3208,81 @@ public class TMUI extends JFrame {
 	 * @param codec tile codec used for encode/decode
 	 **/
 	public void doColorCodecCommand(ColorCodec codec) {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.getPalette().setCodec(codec);
 			view.refreshPaletteDisplay();
 			refreshPalettePane();
-		}
+		});
 	}
 
 	/**
 	 * Handles the menu command "Set Palette Size".
 	 **/
 	public void doPaletteSizeCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			// TMPaletteSizeDialog paletteSizeDialog = new TMPaletteSizeDialog(this, xl);
+		withSelectedView(view -> {
 			int retVal = paletteSizeDialog.showDialog(view.getPalette().getSize());
 			if (retVal == JOptionPane.OK_OPTION) {
 				view.getPalette().setSize(paletteSizeDialog.getPaletteSize());
-				// TODO: Check some stuff
 				refreshPalettePane();
 			}
-		}
+		});
 	}
 
 	/**
 	 * Handles the menu command "New Palette".
 	 **/
 	public void doNewPaletteCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			// TMNewPaletteDialog newPaletteDialog = new TMNewPaletteDialog(this, xl);
-			// newPaletteDialog.setCodecs(colorcodecs);
+		withSelectedView(view -> {
 			int retVal = newPaletteDialog.showDialog();
 			if (retVal == JOptionPane.OK_OPTION) {
-				// get input
 				int size = newPaletteDialog.getPaletteSize();
 				ColorCodec codec = newPaletteDialog.getCodec();
 				int endianness = newPaletteDialog.getEndianness();
 
-				// create the palette
 				TMPalette palette = new TMPalette("ID", size, codec, endianness);
-
-				// set the new palette
 				view.setPalette(palette);
 				refreshPalettePane();
 				refreshPalettesMenu();
 			}
-		}
+		});
 	}
 
 	/**
 	 * Handles the menu command "Import Palette From This File".
 	 **/
 	public void doImportInternalPaletteCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			// TMImportInternalPaletteDialog importInternalPaletteDialog = new
-			// TMImportInternalPaletteDialog(this, xl);
-			// importInternalPaletteDialog.setCodecs(colorcodecs);
+		withSelectedView(view -> {
 			int retVal = importInternalPaletteDialog.showDialog();
 			if (retVal == JOptionPane.OK_OPTION) {
-				// get input
 				int offset = importInternalPaletteDialog.getOffset();
 				int size = importInternalPaletteDialog.getPaletteSize();
 				ColorCodec codec = importInternalPaletteDialog.getCodec();
 				int endianness = importInternalPaletteDialog.getEndianness();
 				boolean copy = importInternalPaletteDialog.getCopy();
 
-				// create the palette
 				byte[] data = view.getFileImage().getContents();
 				TMPalette palette = new TMPalette("ID", data, offset, size, codec, endianness, copy, false);
-
-				// set the new palette
 				view.setPalette(palette);
 				refreshPalettePane();
 				refreshPalettesMenu();
 			}
-		}
+		});
 	}
 
 	/**
 	 * Handles the menu command "Import Palette From Another File".
 	 **/
 	public void doImportExternalPaletteCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			if (new File(this.lastPath).exists()) {
 				this.paletteOpenChooser.setCurrentDirectory(new File(this.lastPath));
 			} else {
 				this.paletteOpenChooser.setCurrentDirectory(new File("."));
 			}
-			// have the user select a file
 			int retVal = paletteOpenChooser.showOpenDialog(this);
 			if (retVal == JFileChooser.APPROVE_OPTION) {
-				// get the selected file
 				File file = paletteOpenChooser.getSelectedFile();
 
-				// figure out palette info based on file filter
 				FileFilter ff = paletteOpenChooser.getFileFilter();
 				if (!(ff instanceof TMPaletteFileFilter)) {
 					ff = getPaletteFilterForFile(file);
@@ -3435,10 +3299,8 @@ public class TMUI extends JFrame {
 				int offset = pf.getOffset();
 				int endianness = pf.getEndianness();
 
-				// create buffer to hold the palette data
 				byte[] data = new byte[size * codec.getBytesPerPixel()];
 
-				// read the palette data
 				RandomAccessFile raf = null;
 				try {
 					raf = new RandomAccessFile(file, "r");
@@ -3450,15 +3312,12 @@ public class TMUI extends JFrame {
 					return;
 				}
 
-				// create the palette
 				TMPalette palette = new TMPalette("ID", data, 0, size, codec, endianness, true, false);
-
-				// set the new palette
 				view.setPalette(palette);
 				refreshPalettePane();
 				refreshPalettesMenu();
 			}
-		}
+		});
 	}
 
 	/**
@@ -3519,10 +3378,7 @@ public class TMUI extends JFrame {
 	 * @param endianness endianness value
 	 **/
 	public void doPaletteEndiannessCommand(int endianness) {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.getPalette().setEndianness(endianness);
-		}
+		withSelectedView(view -> view.getPalette().setEndianness(endianness));
 	}
 
 	/**
@@ -3530,10 +3386,7 @@ public class TMUI extends JFrame {
 	 * @param bookmark bookmark value
 	 **/
 	public void doGotoBookmarkCommand(BookmarkItemNode bookmark) {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.gotoBookmark(bookmark);
-		}
+		withSelectedView(view -> view.gotoBookmark(bookmark));
 	}
 
 	/**
@@ -3541,57 +3394,52 @@ public class TMUI extends JFrame {
 	 * @param palette palette whose colors are displayed or edited
 	 **/
 	public void doSelectPaletteCommand(TMPalette palette) {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.setPalette(palette);
 			refreshPalettePane();
 			refreshPaletteEndiannessSelection(view);
 			refreshColorCodecSelection(view);
-		}
+		});
 	}
 
 	/**
 	 * Handles the "DecreaseWidth" menu or toolbar command.
 	 **/
 	public void doDecreaseWidthCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.setGridSize(view.getCols() - 1, view.getRows());
 			view.setScale(view.getScale());
-		}
+		});
 	}
 
 	/**
 	 * Handles the "IncreaseWidth" menu or toolbar command.
 	 **/
 	public void doIncreaseWidthCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.setGridSize(view.getCols() + 1, view.getRows());
 			view.setScale(view.getScale());
-		}
+		});
 	}
 
 	/**
 	 * Handles the "DecreaseHeight" menu or toolbar command.
 	 **/
 	public void doDecreaseHeightCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.setGridSize(view.getCols(), view.getRows() - 1);
 			view.setScale(view.getScale());
-		}
+		});
 	}
 
 	/**
 	 * Handles the "IncreaseHeight" menu or toolbar command.
 	 **/
 	public void doIncreaseHeightCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.setGridSize(view.getCols(), view.getRows() + 1);
 			view.setScale(view.getScale());
-		}
+		});
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -3811,75 +3659,6 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 * Just a JButton with very small insets, to avoid lots of whitespace around the
-	 * ImageIcon.
-	 **/
-	private class ToolButton extends JButton {
-
-		Insets insets = null;
-
-		public ToolButton(String text) {
-			super(text);
-			if (isWindows) {
-				insets = new Insets(6, 6, 8, 8);
-			} else {
-				insets = new Insets(4, 4, 5, 5);
-			}
-		}
-
-		public ToolButton(ImageIcon icon) {
-			super(icon);
-			if (isWindows) {
-				insets = new Insets(8, 8, 8, 8);
-			} else {
-				insets = new Insets(6, 6, 7, 7);
-			}
-		}
-
-		/**
-		 * Gets the insets.
-		 * @return insets
-		 **/
-		public Insets getInsets() {
-			return insets;
-		}
-	}
-
-	/**
-	 * Just a JToggleButton with very small insets, to avoid lots of whitespace
-	 * around the ImageIcon.
-	 **/
-	private class ToolToggleButton extends JToggleButton {
-		Insets insets = null;
-
-		public ToolToggleButton(String text) {
-			super(text);
-			if (isWindows) {
-				insets = new Insets(6, 6, 8, 8);
-			} else {
-				insets = new Insets(4, 4, 5, 5);
-			}
-		}
-
-		public ToolToggleButton(ImageIcon icon) {
-			super(icon);
-			if (isWindows) {
-				insets = new Insets(8, 8, 8, 8);
-			} else {
-				insets = new Insets(6, 6, 7, 7);
-			}
-		}
-
-		/**
-		 * Gets the insets.
-		 * @return insets
-		 **/
-		public Insets getInsets() {
-			return insets;
-		}
-	}
-
-	/**
 	 * Gets the foreground color for the current view.
 	 * @return foreground draw color
 	 **/
@@ -3908,11 +3687,10 @@ public class TMUI extends JFrame {
 	 * @param fgColor foreground draw color as 32-bit ARGB
 	 **/
 	public void setFGColor(int fgColor) {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.setFGColor(fgColor);
 			palettePane.setFGColor(fgColor);
-		}
+		});
 	}
 
 	/**
@@ -3920,11 +3698,10 @@ public class TMUI extends JFrame {
 	 * @param bgColor background color used to clear pixels
 	 **/
 	public void setBGColor(int bgColor) {
-		TMView view = getSelectedView();
-		if (view != null) {
+		withSelectedView(view -> {
 			view.setBGColor(bgColor);
 			palettePane.setBGColor(bgColor);
-		}
+		});
 	}
 
 	/**
@@ -3932,10 +3709,7 @@ public class TMUI extends JFrame {
 	 * @param palIndex palette page index
 	 **/
 	public void setPalIndex(int palIndex) {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.setPalIndex(palIndex);
-		}
+		withSelectedView(view -> view.setPalIndex(palIndex));
 	}
 
 	/**
