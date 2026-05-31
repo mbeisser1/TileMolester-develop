@@ -2996,80 +2996,56 @@ public class TMUI extends JFrame {
 	 * Handles menu command "Mirror".
 	 **/
 	public void doMirrorCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.getEditorCanvas().flipSelectionHorizontally();
-		}
+		withSelectedView(view -> view.getEditorCanvas().flipSelectionHorizontally());
 	}
 
 	/**
 	 * Handles menu command "Flip".
 	 **/
 	public void doFlipCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.getEditorCanvas().flipSelectionVertically();
-		}
+		withSelectedView(view -> view.getEditorCanvas().flipSelectionVertically());
 	}
 
 	/**
 	 * Handles menu command "Rotate +90".
 	 **/
 	public void doRotateRightCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.getEditorCanvas().rotateSelectionClockwise();
-		}
+		withSelectedView(view -> view.getEditorCanvas().rotateSelectionClockwise());
 	}
 
 	/**
 	 * Handles menu command "Rotate Left".
 	 **/
 	public void doRotateLeftCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.getEditorCanvas().rotateSelectionCounterClockwise();
-		}
+		withSelectedView(view -> view.getEditorCanvas().rotateSelectionCounterClockwise());
 	}
 
 	/**
 	 * Handles menu command "Shift Left".
 	 **/
 	public void doShiftLeftCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.getEditorCanvas().shiftSelectionLeft();
-		}
+		withSelectedView(view -> view.getEditorCanvas().shiftSelectionLeft());
 	}
 
 	/**
 	 * Handles menu command "Shift Right".
 	 **/
 	public void doShiftRightCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.getEditorCanvas().shiftSelectionRight();
-		}
+		withSelectedView(view -> view.getEditorCanvas().shiftSelectionRight());
 	}
 
 	/**
 	 * Handles menu command "Shift Up".
 	 **/
 	public void doShiftUpCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.getEditorCanvas().shiftSelectionUp();
-		}
+		withSelectedView(view -> view.getEditorCanvas().shiftSelectionUp());
 	}
 
 	/**
 	 * Handles menu command "Shift Down".
 	 **/
 	public void doShiftDownCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.getEditorCanvas().shiftSelectionDown();
-		}
+		withSelectedView(view -> view.getEditorCanvas().shiftSelectionDown());
 	}
 
 	/**
