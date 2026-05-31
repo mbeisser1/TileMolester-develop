@@ -43,6 +43,12 @@ import java.util.List;
  * shown in the titlebar, along with a * when the file has been modified.
  **/
 public class TMView extends JInternalFrame {
+	private static final int SLIDER_WIDTH = 24;
+	private static final int INITIAL_SLIDER_HEIGHT = 384;
+	private static final Dimension SCROLL_PANE_SIZE = new Dimension(550, 530);
+	private static final double INITIAL_SCALE = 4.0;
+	private static final int INITIAL_GRID = 16;
+
 	private static int frameCount = 0;
 	private JPanel contentPane = new JPanel();
 	public JSlider slider = new JSlider(JSlider.VERTICAL);
@@ -79,112 +85,98 @@ public class TMView extends JInternalFrame {
 	 * Constructs a TMView for the given FileImage.
 	 **/
 	public TMView(TMUI ui, FileImage fileImage, TileCodec tileCodec) {
-		super(fileImage.getName(), true, true, true, true);	
+		super(fileImage.getName(), true, true, true, true);
 		this.ui = ui;
 		this.fileImage = fileImage;
 		this.frameIcon = null;
 		fileImage.addView(this);
+
+		initFrame();
+		buildContentPane(tileCodec);
+		positionFrame();
+	}
+
+	private void initFrame() {
 		setDoubleBuffered(true);
-		// TODO: Load icon depending on file type
-		//setFrameIcon(null);
-
 		setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
-
 		addInternalFrameListener(new InternalFrameAdapter() {
-			/**
-			 * Refreshes UI state when this view becomes the active internal frame.
-			 * @param e event from the AWT/Swing listener
-			 **/
+			@Override
 			public void internalFrameActivated(InternalFrameEvent e) {
 				doViewSelected();
 			}
 
-			/**
-			 * Handles the user request to close this view.
-			 * @param e event from the AWT/Swing listener
-			 **/
+			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
 				doCloseCommand();
 			}
 		});
+	}
 
-		addComponentListener(new ComponentAdapter() {
-			/**
-			 * Resizes the vertical offset slider when the view is resized.
-			 * @param e event from the AWT/Swing listener
-			 **/
-			public void componentResized(ComponentEvent e) {
-				slider.setSize(slider.getWidth(), editorCanvas.getHeight());
-				// slider.setSize(slider.getWidth(),
-				// getHeight()-((BasicInternalFrameUI)getUI()).getNorthPane().getHeight());
-			}
-		});
-
-		// init UI components
-		// the panel containing the slider and editor canvas
+	private void buildContentPane(TileCodec tileCodec) {
 		contentPane.setLayout(null);
 		contentPane.setFocusable(true);
 		contentPane.addKeyListener(new TMViewKeyListener(this));
-		contentPane.setFocusTraversalKeysEnabled(false); // so VK_TAB key events are caught
-		
-		contentPane.addMouseListener(
-				new MouseAdapter() {
-					/**
-					 * Applies any pending selection when the user clicks the view background.
-					 * @param e event from the AWT/Swing listener
-					 **/
-					public void mousePressed(MouseEvent e) {
-						editorCanvas.maybeApplySelection();
-					}
-				});
+		contentPane.setFocusTraversalKeysEnabled(false);
 
-		// the editor canvas
 		editorCanvas = new TMEditorCanvas(ui, this);
 		contentPane.add(editorCanvas);
-		editorCanvas.setLocation(24, 0);
+		editorCanvas.setLocation(SLIDER_WIDTH, 0);
 
-		// the slider
-		slider.setFocusable(false);
-		slider.setInverted(true);
-		contentPane.add(slider);
-
-		//slider.setForeground(SystemColor.BLUE);
-		//slider.setBackground(SystemColor.RED);
-
-		slider.setLocation(0, 0);
-		slider.setSize(24, 384);
-
-		// the scrollpane
-		scrollPane = new JScrollPane(contentPane);
-		scrollPane.setPreferredSize(new Dimension(550, 530));
-		setContentPane(scrollPane);
-
-		// set some initial view properties
-		editorCanvas.setOffset(0);
-		editorCanvas.setGridSize(16, 16);
-		editorCanvas.setBlockDimensions(16, 16);
-		editorCanvas.setCodec(tileCodec);
-		editorCanvas.unpackPixels();
-		setScale(4.0);
-		updateSlider();
-		slider.setValue(minOffset);
-
-		slider.addChangeListener(new ChangeListener() {
-			/**
-			 * Updates the file offset when the vertical slider moves.
-			 * @param e event from the AWT/Swing listener
-			 **/
-			public void stateChanged(ChangeEvent e) {
-				int rowSize = editorCanvas.getRowIncrement();
-				if (rowSize > 0) {
-					int offset = editorCanvas.getOffset();
-					int relOfs = offset % rowSize;
-					int newOfs = (slider.getValue() / rowSize) * rowSize;
-					setAbsoluteOffset(relOfs + newOfs);
-				}
+		contentPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				editorCanvas.maybeApplySelection();
 			}
 		});
 
+		setupOffsetSlider();
+		configureEditorCanvas(tileCodec);
+		wireOffsetSlider();
+
+		scrollPane = new JScrollPane(contentPane);
+		scrollPane.setPreferredSize(SCROLL_PANE_SIZE);
+		setContentPane(scrollPane);
+
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				slider.setSize(slider.getWidth(), editorCanvas.getHeight());
+			}
+		});
+	}
+
+	private void setupOffsetSlider() {
+		slider.setFocusable(false);
+		slider.setInverted(true);
+		contentPane.add(slider);
+		slider.setLocation(0, 0);
+		slider.setSize(SLIDER_WIDTH, INITIAL_SLIDER_HEIGHT);
+	}
+
+	private void configureEditorCanvas(TileCodec tileCodec) {
+		editorCanvas.setOffset(0);
+		editorCanvas.setGridSize(INITIAL_GRID, INITIAL_GRID);
+		editorCanvas.setBlockDimensions(INITIAL_GRID, INITIAL_GRID);
+		editorCanvas.setCodec(tileCodec);
+		editorCanvas.unpackPixels();
+		setScale(INITIAL_SCALE);
+		updateSlider();
+		slider.setValue(minOffset);
+	}
+
+	private void wireOffsetSlider() {
+		slider.addChangeListener(e -> {
+			int rowSize = editorCanvas.getRowIncrement();
+			if (rowSize > 0) {
+				int offset = editorCanvas.getOffset();
+				int relOfs = offset % rowSize;
+				int newOfs = (slider.getValue() / rowSize) * rowSize;
+				setAbsoluteOffset(relOfs + newOfs);
+			}
+		});
+	}
+
+	private void positionFrame() {
 		pack();
 		setLocation(frameCount * 20, frameCount * 20);
 		frameCount += 1;
