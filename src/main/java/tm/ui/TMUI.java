@@ -3196,100 +3196,70 @@ public class TMUI extends JFrame {
 	 * Navigation button press handlers.
 	 **/
 	public void doHomeCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.setAbsoluteOffset(view.getMinOffset());
-		}
+		withSelectedView(view -> view.setAbsoluteOffset(view.getMinOffset()));
 	}
 
 	/**
 	 * Handles the "MinusPage" menu or toolbar command.
 	 **/
 	public void doMinusPageCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.setRelativeOffset(-view.getEditorCanvas().getPageIncrement());
-		}
+		withSelectedView(view -> view.setRelativeOffset(-view.getEditorCanvas().getPageIncrement()));
 	}
 
 	/**
 	 * Handles the "MinusRow" menu or toolbar command.
 	 **/
 	public void doMinusRowCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.setRelativeOffset(-view.getEditorCanvas().getRowIncrement());
-		}
+		withSelectedView(view -> view.setRelativeOffset(-view.getEditorCanvas().getRowIncrement()));
 	}
 
 	/**
 	 * Handles the "MinusTile" menu or toolbar command.
 	 **/
 	public void doMinusTileCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.setRelativeOffset(-view.getEditorCanvas().getTileIncrement());
-		}
+		withSelectedView(view -> view.setRelativeOffset(-view.getEditorCanvas().getTileIncrement()));
 	}
 
 	/**
 	 * Handles the "MinusByte" menu or toolbar command.
 	 **/
 	public void doMinusByteCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.setRelativeOffset(-1);
-		}
+		adjustOffset(-1);
 	}
 
 	/**
 	 * Handles the "PlusByte" menu or toolbar command.
 	 **/
 	public void doPlusByteCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.setRelativeOffset(1);
-		}
+		adjustOffset(1);
 	}
 
 	/**
 	 * Handles the "PlusTile" menu or toolbar command.
 	 **/
 	public void doPlusTileCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.setRelativeOffset(view.getEditorCanvas().getTileIncrement());
-		}
+		withSelectedView(view -> view.setRelativeOffset(view.getEditorCanvas().getTileIncrement()));
 	}
 
 	/**
 	 * Handles the "PlusRow" menu or toolbar command.
 	 **/
 	public void doPlusRowCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.setRelativeOffset(view.getEditorCanvas().getRowIncrement());
-		}
+		withSelectedView(view -> view.setRelativeOffset(view.getEditorCanvas().getRowIncrement()));
 	}
 
 	/**
 	 * Handles the "PlusPage" menu or toolbar command.
 	 **/
 	public void doPlusPageCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.setRelativeOffset(view.getEditorCanvas().getPageIncrement());
-		}
+		withSelectedView(view -> view.setRelativeOffset(view.getEditorCanvas().getPageIncrement()));
 	}
 
 	/**
 	 * Handles the "End" menu or toolbar command.
 	 **/
 	public void doEndCommand() {
-		TMView view = getSelectedView();
-		if (view != null) {
-			view.setRelativeOffset(view.getMaxOffset());
-		}
+		withSelectedView(view -> view.setRelativeOffset(view.getMaxOffset()));
 	}
 
 	/**
