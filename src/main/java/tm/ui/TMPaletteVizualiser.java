@@ -27,11 +27,35 @@ import java.awt.*;
  **/
 public class TMPaletteVizualiser extends JPanel {
 
-    private TMPalette palette=null;
+    private static final int DEFAULT_BIT_DEPTH = 8;
+
+    private TMPalette palette;
     private int palIndex;
     private int bitDepth;
     private int colorCount;
-	private int lastIndex = 0;
+    private int lastIndex;
+
+    /**
+     * Creates a palette visualizer with safe defaults (8 bpp, page 0).
+     * Call {@link #configure(TMPalette, int, int)} when binding to a view.
+     **/
+    public TMPaletteVizualiser() {
+        setBitDepth(DEFAULT_BIT_DEPTH);
+        setPalIndex(0);
+    }
+
+    /**
+     * Sets palette, page index, and bit depth together (typical view binding).
+     * @param palette palette whose colors are displayed or edited (may be null)
+     * @param palIndex palette page index
+     * @param bitDepth bits per pixel determining how many colors are shown
+     **/
+    public void configure(TMPalette palette, int palIndex, int bitDepth) {
+        setBitDepth(bitDepth);
+        setPalIndex(palIndex);
+        setPalette(palette);
+        repaint();
+    }
 
     /**
      * Sets the palette that is to be displayed.
@@ -65,11 +89,15 @@ public class TMPaletteVizualiser extends JPanel {
      * @param bitDepth bits per pixel determining how many colors are shown
      **/
     public void setBitDepth(int bitDepth) {
-        if(bitDepth > 8) {
+        if (bitDepth < 1) {
+            bitDepth = 1;
+        }
+        if (bitDepth > 8) {
             bitDepth = 8;
         }
         this.bitDepth = bitDepth;
         colorCount = 1 << bitDepth;
+        this.lastIndex = this.palIndex * this.colorCount;
     }
 
     /**
@@ -78,40 +106,47 @@ public class TMPaletteVizualiser extends JPanel {
      **/
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (palette != null) {
-            int colorIndex = palIndex * colorCount;
-            int w = getBoxWidth();
-            int h = getBoxHeight();
-            // draw color boxes
-            int x=0, y=0;
-            for (int i=0; i<colorCount; i++) {
-                // figure out location of color box
-                switch (bitDepth) {
-                    case 1:
-                    case 2:
-                    case 3:
+        if (palette == null || colorCount <= 0) {
+            return;
+        }
+        int colorIndex = palIndex * colorCount;
+        int w = getBoxWidth();
+        int h = getBoxHeight();
+        if (w <= 0 || h <= 0) {
+            return;
+        }
+        // draw color boxes
+        int x = 0;
+        int y = 0;
+        for (int i = 0; i < colorCount; i++) {
+            // figure out location of color box
+            switch (bitDepth) {
+                case 1:
+                case 2:
+                case 3:
                     x = i * w;
                     y = 0;
                     break;
-                    case 4:
+                case 4:
                     x = (i % 8) * w;
                     y = (i / 8) * h;
                     break;
-                    case 5:
-                    case 6:
+                case 5:
+                case 6:
                     x = (i % 16) * w;
                     y = (i / 16) * h;
                     break;
-                    case 7:
-                    case 8:
+                case 7:
+                case 8:
                     x = (i % 32) * w;
                     y = (i / 32) * h;
                     break;
-                }
-                // draw it
-                g.setColor(new Color(palette.getEntryRGB(colorIndex+i)));
-                g.fillRect(x, y, w, h);
+                default:
+                    break;
             }
+            // draw it
+            g.setColor(new Color(palette.getEntryRGB(colorIndex + i)));
+            g.fillRect(x, y, w, h);
         }
     }
 
@@ -122,24 +157,36 @@ public class TMPaletteVizualiser extends JPanel {
      * @param y vertical pixel or tile coordinate
      **/
     public int getIndexOfColorAt(int x, int y) {
+        if (palette == null || colorCount <= 0) {
+            return lastIndex;
+        }
         int colorIndex = palIndex * colorCount;
         int w = getBoxWidth();
         int h = getBoxHeight();
+        if (w <= 0 || h <= 0) {
+            return lastIndex;
+        }
         int colorsPerRow = getWidth() / w;
+        if (colorsPerRow <= 0) {
+            return lastIndex;
+        }
         x /= w;
         y /= h;
         int i = (y * colorsPerRow) + x;
-		lastIndex = colorIndex + i;
+        lastIndex = colorIndex + i;
         return lastIndex;
     }
 
     /**
      * Gets the RGB value of the color whose rectangle contains the point (x,y).
-     * @return 32-bit RGB value for the color at (x, y)
+     * @return 32-bit RGB value for the color at (x, y), or 0 if no palette is set
      * @param x horizontal pixel or tile coordinate
      * @param y vertical pixel or tile coordinate
      **/
     public int getColorAt(int x, int y) {
+        if (palette == null) {
+            return 0;
+        }
         int i = getIndexOfColorAt(x, y);
         return palette.getEntryRGB(i);
     }
@@ -149,21 +196,25 @@ public class TMPaletteVizualiser extends JPanel {
      * @return width of one palette color swatch
      **/
     public int getBoxWidth() {
+        if (colorCount <= 0 || getWidth() <= 0) {
+            return 1;
+        }
         switch (bitDepth) {
             case 1:
             case 2:
             case 3:
-            return getWidth() / colorCount;
+                return Math.max(1, getWidth() / colorCount);
             case 4:
-            return getWidth() / 8;
+                return Math.max(1, getWidth() / 8);
             case 5:
             case 6:
-            return getWidth() / 16;
+                return Math.max(1, getWidth() / 16);
             case 7:
             case 8:
-            return getWidth() / 32;
+                return Math.max(1, getWidth() / 32);
+            default:
+                return getWidth();
         }
-        return getWidth();
     }
 
     /**
@@ -171,21 +222,25 @@ public class TMPaletteVizualiser extends JPanel {
      * @return height of one palette color swatch
      **/
     public int getBoxHeight() {
+        if (getHeight() <= 0) {
+            return 1;
+        }
         switch (bitDepth) {
             case 1:
             case 2:
             case 3:
-            return getHeight();
+                return getHeight();
             case 4:
             case 5:
-            return getHeight() / 2;
+                return Math.max(1, getHeight() / 2);
             case 6:
             case 7:
-            return getHeight() / 4;
+                return Math.max(1, getHeight() / 4);
             case 8:
-            return getHeight() / 8;
+                return Math.max(1, getHeight() / 8);
+            default:
+                return getHeight();
         }
-        return getHeight();
     }
 
 }

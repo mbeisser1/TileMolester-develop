@@ -49,13 +49,11 @@ import java.util.Map;
 public class TMPalettePane extends JPanel implements MouseInputListener {
 
     private TMView view;
-    private TMUI ui;
-    private TMPaletteVizualiser vizualiser = new TMPaletteVizualiser();
-    private ColorBox fgColorBox = new ColorBox();
-	private ColorBox bgColorBox = new ColorBox();
-	
-    ClassLoader cl = getClass().getClassLoader();
-    private Cursor pickupCursor = Toolkit.getDefaultToolkit().createCustomCursor(new ImageIcon(cl.getResource("icons/DropperCursor24.gif")).getImage(), new Point(8,23), "Dropper");
+    private final TMUI ui;
+    private final TMPaletteVizualiser vizualiser;
+    private final ColorBox fgColorBox = new ColorBox();
+    private final ColorBox bgColorBox = new ColorBox();
+    private final Cursor pickupCursor;
     private JButton decButton = new JButton(new FlatSVGIcon("icons/fluent/caret_left_24_filled.svg", 32, 32));
     private JButton incButton = new JButton(new FlatSVGIcon("icons/fluent/caret_right_24_filled.svg", 32, 32));
     private JButton rotatePaletteRightButton = new JButton(new FlatSVGIcon("icons/fluent/rotate_right_24_regular.svg", 32, 32));
@@ -76,6 +74,10 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
      **/
     public TMPalettePane(TMUI ui) {
         this.ui = ui;
+        ClassLoader cl = getClass().getClassLoader();
+        pickupCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+                new ImageIcon(cl.getResource("icons/DropperCursor24.gif")).getImage(),
+                new Point(8, 23), "Dropper");
         vizualiser = new TMPaletteVizualiser();
         //setBorder(new EtchedBorder(EtchedBorder.RAISED));
         swapButton.setBorder(null);
@@ -227,8 +229,16 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
      * @param palette palette whose colors are displayed or edited
      **/
     public void setPalette(TMPalette palette) {
-        if (palette.isDirect()) { lockShiftButtons(); }
-        else { unlockShiftButtons(); }
+        if (palette == null) {
+            lockShiftButtons();
+            vizualiser.setPalette(null);
+            return;
+        }
+        if (palette.isDirect()) {
+            lockShiftButtons();
+        } else {
+            unlockShiftButtons();
+        }
         vizualiser.setPalette(palette);
     }
 
@@ -270,14 +280,29 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
      * @param view file view associated with this component
      **/
     public void viewSelected(TMView view) {
+        if (view == null) {
+            this.view = null;
+            vizualiser.setPalette(null);
+            repaint();
+            return;
+        }
         if (this.view != view) {
             palettePageBaseline.clear();
         }
         this.view = view;
-        // get view palette,color settings
-        setPalette(view.getPalette());
-        setPalIndex(view.getPalIndex());
-        setBitDepth(view.getTileCodec().getBitsPerPixel());
+        TMPalette palette = view.getPalette();
+        int palIndex = view.getPalIndex();
+        int bitDepth = view.getTileCodec().getBitsPerPixel();
+        vizualiser.configure(palette, palIndex, bitDepth);
+        if (palette != null) {
+            if (palette.isDirect()) {
+                lockShiftButtons();
+            } else {
+                unlockShiftButtons();
+            }
+        } else {
+            lockShiftButtons();
+        }
         setFGColor(view.getFGColor());
         setBGColor(view.getBGColor());
         boolean palettized = view.getTileCodec().getBitsPerPixel() <= 8;
@@ -292,6 +317,9 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
      * @param e event from the AWT/Swing listener
      **/
     public void mousePressed(MouseEvent e) {
+        if (view == null) {
+            return;
+        }
         // get the color
         int color = vizualiser.getColorAt(e.getX(), e.getY());
         // set it
@@ -312,44 +340,45 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
      * @param e event from the AWT/Swing listener
      **/
     public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() == 2) {
-            // let user edit the color
-            Color newColor = JColorChooser.showDialog(ui, "Edit Color", new Color(fgColorBox.getColor()));
-            if (newColor != null) {
-                boolean equal = view.getFGColor() == view.getBGColor();
-                int rgb = newColor.getRGB();
-                int colorIndex = vizualiser.getIndexOfColorAt(e.getX(), e.getY());
-                TMPalette palette = view.getPalette();
+        if (view == null || e.getClickCount() != 2) {
+            return;
+        }
+        // let user edit the color
+        Color newColor = JColorChooser.showDialog(ui, "Edit Color", new Color(fgColorBox.getColor()));
+        if (newColor != null) {
+            boolean equal = view.getFGColor() == view.getBGColor();
+            int rgb = newColor.getRGB();
+            int colorIndex = vizualiser.getIndexOfColorAt(e.getX(), e.getY());
+            TMPalette palette = view.getPalette();
 
-                /* view.addReversibleAction(
-                    new ReversiblePaletteEditAction(
-                        view,
-                        palette,
-                        colorIndex,
-                        palette.getEntryRGB(colorIndex),
-                        rgb
-                    )
-                ;*/
+            /* view.addReversibleAction(
+                new ReversiblePaletteEditAction(
+                    view,
+                    palette,
+                    colorIndex,
+                    palette.getEntryRGB(colorIndex),
+                    rgb
+                )
+            ;*/
 
-                // set the new color(s)
-                palette.setEntryRGB(colorIndex, rgb);
-                ui.setFGColor(palette.getEntryRGB(colorIndex));
-                if (equal) {
-                    ui.setBGColor(palette.getEntryRGB(colorIndex));
-                }
-
-                // PS: If palette is NOT direct then this means fileimage.modified!!
-                if (!palette.isDirect()) {
-                    byte[] src = palette.getEntryBytes(colorIndex);
-                    byte[] dest = view.getFileImage().getContents();
-                    System.arraycopy(src, 0, dest, palette.getOffset()+(colorIndex*src.length), src.length);
-                    ui.fileImageModified(view.getFileImage());
-                }
-
-                // redraw stuff
-                view.refreshPaletteDisplay();
-                repaint();
+            // set the new color(s)
+            palette.setEntryRGB(colorIndex, rgb);
+            ui.setFGColor(palette.getEntryRGB(colorIndex));
+            if (equal) {
+                ui.setBGColor(palette.getEntryRGB(colorIndex));
             }
+
+            // PS: If palette is NOT direct then this means fileimage.modified!!
+            if (!palette.isDirect()) {
+                byte[] src = palette.getEntryBytes(colorIndex);
+                byte[] dest = view.getFileImage().getContents();
+                System.arraycopy(src, 0, dest, palette.getOffset()+(colorIndex*src.length), src.length);
+                ui.fileImageModified(view.getFileImage());
+            }
+
+            // redraw stuff
+            view.refreshPaletteDisplay();
+            repaint();
         }
     }
 
@@ -413,6 +442,9 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
      * Wrap-around is employed if the current index is the first one (0).
      **/
     public void setPreviousPalIndex() {
+        if (view == null) {
+            return;
+        }
         view.setKeysEnabled(false);
         //
         resetPalettePageRotation(view.getPalIndex());
@@ -430,6 +462,9 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
      * Wrap-around is employed if the current index is the last one (maximum).
      **/
     public void setNextPalIndex() {
+        if (view == null) {
+            return;
+        }
         view.setKeysEnabled(false);
         //
         resetPalettePageRotation(view.getPalIndex());
@@ -479,6 +514,9 @@ public class TMPalettePane extends JPanel implements MouseInputListener {
      * @param shift number of palette entries to shift by
      **/
     public void shiftPalette(int shift) {
+        if (view == null) {
+            return;
+        }
         view.setKeysEnabled(false);
         //
         TMPalette palette = view.getPalette();
