@@ -18,7 +18,6 @@
 
 package tm.ui;
 
-import tm.ui.TMUI;
 import tm.utils.BrowserControl;
 import javax.swing.*;
 import java.io.File;
@@ -36,12 +35,11 @@ public class TMUIHelpActions extends TMUICommandGroup {
 
 
 	public void doHelpTopicsCommand() {
-		File localizedHelpFile = new File("docs/help_" + ui.locale.toString() + ".htm");
-		if (localizedHelpFile.exists()) {
-			BrowserControl.displayURL("file://" + localizedHelpFile.getAbsolutePath());
-		} else {
-			BrowserControl.displayURL("docs\\help.htm");
+		File helpFile = new File("docs/help_" + ui.locale.toString() + ".htm");
+		if (!helpFile.isFile()) {
+			helpFile = new File("docs/help.htm");
 		}
+		BrowserControl.displayFile(helpFile);
 	}
 
 	public void doAboutCommand() {

@@ -18,8 +18,6 @@
 
 package tm.ui;
 
-import tm.ui.TMUI;
-import tm.ui.TMUIConstants;
 import tm.ui.menu.TMRecentFileMenuItem;
 import tm.ui.view.TMView;
 import tm.ui.widget.TMProgressDialog;

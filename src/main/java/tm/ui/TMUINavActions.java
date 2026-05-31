@@ -18,7 +18,6 @@
 
 package tm.ui;
 
-import tm.ui.TMUI;
 import tm.treenodes.*;
 import javax.swing.*;
 

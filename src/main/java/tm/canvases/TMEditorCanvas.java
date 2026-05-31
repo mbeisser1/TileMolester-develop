@@ -361,31 +361,31 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
                 int dx = p.x - moveMousePoint.x;
                 int dy = p.y - moveMousePoint.y;
 
-                TMView view = (TMView)ui.getDesktop().getSelectedFrame();
-                JScrollBar hsb = view.getScrollPane().getHorizontalScrollBar();
-                JScrollBar vsb = view.getScrollPane().getVerticalScrollBar();
-                int newXpos = hsb.getValue() + dx;
-                int newYpos = vsb.getValue() + dy;
-
-                if(newXpos < hsb.getMinimum()) {
-                    newXpos = hsb.getMinimum();
+                TMView view = (TMView) ui.getDesktop().getSelectedFrame();
+                if (dx != 0) {
+                    JScrollBar hsb = view.getScrollPane().getHorizontalScrollBar();
+                    int newXpos = hsb.getValue() + dx;
+                    if (newXpos < hsb.getMinimum()) {
+                        newXpos = hsb.getMinimum();
+                    } else if (newXpos > hsb.getMaximum()) {
+                        newXpos = hsb.getMaximum();
+                    }
+                    hsb.setValue(newXpos);
                 }
-                else if(newXpos > hsb.getMaximum()) {
-                    newXpos = hsb.getMaximum();
+                if (dy != 0) {
+                    int scaledRow = getScaledTileDim();
+                    if (scaledRow > 0) {
+                        int rowIncrement = getRowIncrement();
+                        int offsetDelta = (int) ((long) dy * rowIncrement / scaledRow);
+                        if (offsetDelta != 0) {
+                            view.setRelativeOffset(offsetDelta);
+                        }
+                    }
                 }
-                if(newYpos < vsb.getMinimum()) {
-                    newYpos = vsb.getMinimum();
+                if (dx != 0) {
+                    view.getScrollPane().revalidate();
+                    view.revalidate();
                 }
-                else if(newYpos > vsb.getMaximum()) {
-                    newYpos = vsb.getMaximum();
-                }
-
-                hsb.setValue(newXpos);
-                hsb.revalidate();
-                vsb.setValue(newYpos);
-                vsb.revalidate();
-                view.getScrollPane().revalidate();
-                view.revalidate();
 
                 moveMousePoint = new Point(p);
                 break;

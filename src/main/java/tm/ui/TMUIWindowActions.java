@@ -18,8 +18,6 @@
 
 package tm.ui;
 
-import tm.ui.TMUI;
-import tm.ui.TMUIConstants;
 import tm.ui.view.TMView;
 import javax.swing.*;
 

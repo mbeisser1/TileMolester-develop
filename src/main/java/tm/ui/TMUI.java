@@ -27,7 +27,6 @@ import tm.colorcodecs.*;
 import tm.tilecodecs.*;
 import tm.fileselection.*;
 import tm.modaldialog.*;
-import tm.reversibleaction.ReversiblePaletteEditAction;
 import tm.treenodes.*;
 import tm.utils.*;
 import tm.threads.*;
@@ -39,11 +38,8 @@ import java.awt.event.*;
 import java.io.*;
 
 import javax.swing.border.*;
-import javax.swing.filechooser.FileFilter;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.util.SystemInfo;
 
-import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.Consumer;
 import javax.xml.parsers.ParserConfigurationException;

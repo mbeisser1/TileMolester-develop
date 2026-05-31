@@ -1,6 +1,7 @@
 package tm.utils;
 
 import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
@@ -37,6 +38,26 @@ public class BrowserControl
         }
         catch (IOException | IllegalArgumentException | UnsupportedOperationException x) {
             TMLog.logException("Could not invoke browser, url=" + url, x);
+        }
+    }
+
+    /**
+     * Opens a local file in the system default browser using a platform-correct file URI.
+     *
+     * @param file HTML or other file to open
+     */
+    public static void displayFile(File file) {
+        if (file == null || !file.isFile()) {
+            TMLog.severe("Help file not found: " + file);
+            return;
+        }
+        try {
+            Desktop desktop = Desktop.getDesktop();
+            if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                desktop.browse(file.toURI());
+            }
+        } catch (IOException | UnsupportedOperationException x) {
+            TMLog.logException("Could not invoke browser, file=" + file.getAbsolutePath(), x);
         }
     }
 

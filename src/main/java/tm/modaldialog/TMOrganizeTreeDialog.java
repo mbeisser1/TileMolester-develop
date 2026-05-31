@@ -20,7 +20,6 @@ package tm.modaldialog;
 
 import tm.treenodes.*;
 import tm.utils.TMLog;
-import tm.modaldialog.TMNewFolderDialog;
 import tm.utils.Xlator;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

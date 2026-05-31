@@ -26,6 +26,7 @@ import tm.reversibleaction.*;
 import tm.canvases.TMEditorCanvas;
 import tm.canvases.TMTileCanvas;
 import tm.tilecodecs.TileCodec;
+import tm.ui.widget.TMOffsetNavigator;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -38,20 +39,21 @@ import java.util.List;
 /**
  * A graphical view of a file image.
  * The frame contains a panel that's used for rendering the tile data, and a
- * slider for keeping track of the file position. The keyboard can also be used
+ * offset navigator (up/down buttons and slider) for keeping track of the file position. The keyboard can also be used
  * to change the file position (see class TMViewKeyListener). The filename is
  * shown in the titlebar, along with a * when the file has been modified.
  **/
 public class TMView extends JInternalFrame {
-	private static final int SLIDER_WIDTH = 24;
-	private static final int INITIAL_SLIDER_HEIGHT = 384;
+	private static final int INITIAL_OFFSET_NAV_HEIGHT = 384;
 	private static final Dimension SCROLL_PANE_SIZE = new Dimension(550, 530);
 	private static final double INITIAL_SCALE = 4.0;
 	private static final int INITIAL_GRID = 16;
 
 	private static int frameCount = 0;
 	private JPanel contentPane = new JPanel();
-	public JSlider slider = new JSlider(JSlider.VERTICAL);
+	private TMOffsetNavigator offsetNavigator;
+	private boolean offsetControlUpdating;
+	private boolean fittingRowsToViewport;
 	private JScrollPane scrollPane;
 	private TMEditorCanvas editorCanvas;
 	private TMUI ui;
@@ -120,7 +122,14 @@ public class TMView extends JInternalFrame {
 
 		editorCanvas = new TMEditorCanvas(ui, this);
 		contentPane.add(editorCanvas);
-		editorCanvas.setLocation(SLIDER_WIDTH, 0);
+		editorCanvas.setLocation(TMOffsetNavigator.WIDTH, 0);
+
+		offsetNavigator = new TMOffsetNavigator(
+				() -> nudgeOffsetByRows(-1),
+				() -> nudgeOffsetByRows(1));
+		contentPane.add(offsetNavigator);
+		offsetNavigator.setLocation(0, 0);
+		offsetNavigator.setSize(TMOffsetNavigator.WIDTH, INITIAL_OFFSET_NAV_HEIGHT);
 
 		contentPane.addMouseListener(new MouseAdapter() {
 			@Override
@@ -129,28 +138,23 @@ public class TMView extends JInternalFrame {
 			}
 		});
 
-		setupOffsetSlider();
 		configureEditorCanvas(tileCodec);
-		wireOffsetSlider();
+		wireOffsetNavigator();
 
 		scrollPane = new JScrollPane(contentPane);
 		scrollPane.setPreferredSize(SCROLL_PANE_SIZE);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		setContentPane(scrollPane);
 
-		addComponentListener(new ComponentAdapter() {
+		ComponentAdapter resizeHandler = new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				slider.setSize(slider.getWidth(), editorCanvas.getHeight());
+				onViewAreaResized();
 			}
-		});
-	}
-
-	private void setupOffsetSlider() {
-		slider.setFocusable(false);
-		slider.setInverted(true);
-		contentPane.add(slider);
-		slider.setLocation(0, 0);
-		slider.setSize(SLIDER_WIDTH, INITIAL_SLIDER_HEIGHT);
+		};
+		addComponentListener(resizeHandler);
+		scrollPane.getViewport().addComponentListener(resizeHandler);
 	}
 
 	private void configureEditorCanvas(TileCodec tileCodec) {
@@ -160,24 +164,96 @@ public class TMView extends JInternalFrame {
 		editorCanvas.setCodec(tileCodec);
 		editorCanvas.unpackPixels();
 		setScale(INITIAL_SCALE);
-		updateSlider();
-		slider.setValue(minOffset);
+		updateOffsetNavigator();
+		syncOffsetControlValue(minOffset);
 	}
 
-	private void wireOffsetSlider() {
-		slider.addChangeListener(e -> {
+	private void wireOffsetNavigator() {
+		offsetNavigator.slider.addChangeListener(e -> {
+			if (offsetControlUpdating) {
+				return;
+			}
 			int rowSize = editorCanvas.getRowIncrement();
 			if (rowSize > 0) {
 				int offset = editorCanvas.getOffset();
 				int relOfs = offset % rowSize;
-				int newOfs = (slider.getValue() / rowSize) * rowSize;
+				int newOfs = (offsetNavigator.slider.getValue() / rowSize) * rowSize;
 				setAbsoluteOffset(relOfs + newOfs);
 			}
 		});
 	}
 
+	private void nudgeOffsetByRows(int direction) {
+		int rowSize = editorCanvas.getRowIncrement();
+		if (rowSize > 0) {
+			setRelativeOffset(direction * rowSize);
+		}
+	}
+
+	private void onViewAreaResized() {
+		if (fittingRowsToViewport) {
+			return;
+		}
+		if (offsetNavigator != null && offsetNavigator.slider.getValueIsAdjusting()) {
+			return;
+		}
+		fitRowsToViewport();
+	}
+
+	/**
+	 * Adjusts visible row count so the tile canvas fills the viewport height.
+	 **/
+	private void fitRowsToViewport() {
+		if (scrollPane == null || editorCanvas == null || offsetNavigator == null) {
+			return;
+		}
+		int viewportHeight = scrollPane.getViewport().getExtentSize().height;
+		if (viewportHeight <= 0) {
+			return;
+		}
+		int scaledRowHeight = Math.max(1, editorCanvas.getScaledTileDim());
+		int rows = Math.max(1, Math.min(1024, viewportHeight / scaledRowHeight));
+		if (rows != editorCanvas.getRows()) {
+			fittingRowsToViewport = true;
+			try {
+				setGridSize(editorCanvas.getCols(), rows);
+			} finally {
+				fittingRowsToViewport = false;
+			}
+		} else {
+			layoutOffsetNavigator();
+			syncContentPanePreferredSize();
+		}
+	}
+
+	private void layoutOffsetNavigator() {
+		offsetNavigator.setBounds(0, 0, TMOffsetNavigator.WIDTH, editorCanvas.getHeight());
+		offsetNavigator.revalidate();
+		editorCanvas.setLocation(TMOffsetNavigator.WIDTH, 0);
+	}
+
+	private void syncContentPanePreferredSize() {
+		contentPane.setPreferredSize(new Dimension(
+				offsetNavigator.getWidth() + editorCanvas.getWidth(), editorCanvas.getHeight()));
+		contentPane.revalidate();
+	}
+
+	private void syncOffsetControlValue(int absOfs) {
+		JSlider slider = offsetNavigator.slider;
+		if (slider.getValue() == absOfs) {
+			return;
+		}
+		offsetControlUpdating = true;
+		try {
+			slider.setValue(absOfs);
+		} finally {
+			offsetControlUpdating = false;
+		}
+	}
+
 	private void positionFrame() {
 		pack();
+		fitRowsToViewport();
 		setLocation(frameCount * 20, frameCount * 20);
 		frameCount += 1;
 	}
@@ -205,7 +281,7 @@ public class TMView extends JInternalFrame {
 		// update display
 		editorCanvas.unpackPixels();
 		editorCanvas.repaint();
-		updateSlider();
+		updateOffsetNavigator();
 	}
 
 	/**
@@ -380,23 +456,26 @@ public class TMView extends JInternalFrame {
 	}
 
 	/**
-	 * Updates the tick size of the slider according to current tile settings.
+	 * Updates the file-offset slider range and tick spacing for the current tile layout.
 	 **/
-	private void updateSlider() {
-		slider.setMinimum(minOffset); // not here
-		// set slider tick spacings and maximum
-		slider.setMinorTickSpacing(editorCanvas.getRowIncrement());
-		slider.setMajorTickSpacing(editorCanvas.getPageIncrement());
+	private void updateOffsetNavigator() {
+		JSlider slider = offsetNavigator.slider;
+		int rowIncrement = Math.max(1, editorCanvas.getRowIncrement());
+		int pageIncrement = Math.max(1, editorCanvas.getPageIncrement());
+		slider.setMinimum(minOffset);
+		slider.setMinorTickSpacing(rowIncrement);
+		slider.setMajorTickSpacing(pageIncrement);
+
 		maxOffset = getFileImage().getSize();
-		if (maxOffset > editorCanvas.getPageIncrement()) {
-			maxOffset -= editorCanvas.getPageIncrement();
+		if (maxOffset > pageIncrement) {
+			maxOffset -= pageIncrement;
 		} else {
 			maxOffset = 0;
 		}
-		if (slider.getValue() > maxOffset) {
-			slider.setValue(maxOffset);
-		}
 		slider.setMaximum(maxOffset);
+		if (slider.getValue() > maxOffset) {
+			syncOffsetControlValue(maxOffset);
+		}
 	}
 
 	/**
@@ -421,7 +500,7 @@ public class TMView extends JInternalFrame {
 		if (sizeBlockToCanvas) {
 			editorCanvas.setBlockDimensions(cols, rows);
 		}
-		updateSlider();
+		updateOffsetNavigator();
 		editorCanvas.unpackPixels();
 		setScale(getScale());
 
@@ -463,7 +542,7 @@ public class TMView extends JInternalFrame {
 		} else if (absOfs > maxOffset) {
 			absOfs = maxOffset; // upper boundary
 		}
-		slider.setValue(absOfs);
+		syncOffsetControlValue(absOfs);
 		editorCanvas.setOffset(absOfs);
 		editorCanvas.unpackPixels();
 		editorCanvas.repaint();
@@ -487,14 +566,8 @@ public class TMView extends JInternalFrame {
 	public void setScale(double scale) {
 		editorCanvas.setScale(scale);
 
-		slider.setSize(slider.getWidth(), editorCanvas.getHeight());
-
-		// set preferred size of contentPane
-		contentPane
-				.setPreferredSize(new Dimension(slider.getWidth() + editorCanvas.getWidth(), editorCanvas.getHeight()));
-		// update scrollbars
-		contentPane.revalidate();
-
+		layoutOffsetNavigator();
+		syncContentPanePreferredSize();
 	}
 
 	/**
@@ -674,12 +747,12 @@ public class TMView extends JInternalFrame {
 	 * There are two cases when they shouldn't be handled (i.e. be ignored):
 	 * 1) When setKeysEnabled(true) has been executed programatically by, say, the
 	 * editor canvas mousePressed event; or
-	 * 2) When the user is adjusting the position of the slider with the mouse.
+	 * 2) When the user is adjusting the file-offset slider with the mouse.
 	 * @return whether keyboard navigation is active
 	 **/
 	public boolean getKeysEnabled() {
-		if (slider.getValueIsAdjusting()) {
-			return false; // don't respond to key presses when slider is being adjusting
+		if (offsetNavigator.slider.getValueIsAdjusting()) {
+			return false;
 		}
 		return keysEnabled;
 	}
@@ -834,10 +907,10 @@ public class TMView extends JInternalFrame {
 	}
 
 	/**
-	 * Resizes the internal frame so the content pane fits the editor canvas and slider.
+	 * Resizes the internal frame so the content pane fits the editor canvas and offset navigator.
 	 **/
 	public void fitTilesInWindow() {
-		contentPane.setSize(slider.getWidth() + editorCanvas.getWidth(), editorCanvas.getHeight());
+		contentPane.setSize(offsetNavigator.getWidth() + editorCanvas.getWidth(), editorCanvas.getHeight());
 		Insets ins = getInsets();
 		setSize(contentPane.getWidth() + ins.left + ins.right, 20 + contentPane.getHeight() + ins.top + ins.bottom);
 	}
