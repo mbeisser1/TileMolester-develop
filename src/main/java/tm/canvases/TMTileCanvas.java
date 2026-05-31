@@ -199,7 +199,9 @@ public class TMTileCanvas extends TMPixelCanvas {
      * Decodes tile data to pixel buffer.
      **/
     public void unpackPixels() {
-        if (codec == null) return;
+        if(codec == null) {
+            return;
+        }
         int[] decodedTile;
         int pixOfs = 0;
         int bitsOfs, tileOfs, pos;
@@ -255,7 +257,9 @@ public class TMTileCanvas extends TMPixelCanvas {
      * Encodes tile data.
      **/
     public void packPixels() {
-        if (codec == null) return;
+        if(codec == null) {
+            return;
+        }
         int pixOfs = 0;
         int bitsOfs, tileOfs, pos;
         int colorCount = codec.getColorCount();    // only valid for palettized codecs
@@ -369,7 +373,9 @@ public class TMTileCanvas extends TMPixelCanvas {
         else {
             limit = bits.length - getRowIncrement();
         }
-        if (absOfs <= limit) return absOfs;
+        if(absOfs <= limit) {
+            return absOfs;
+        }
         return -1;
     }
 
@@ -378,10 +384,12 @@ public class TMTileCanvas extends TMPixelCanvas {
      * @return byte size of one row of tiles
      **/
     public int getRowSize() {
-        if (codec != null)
+        if(codec != null) {
             return cols * codec.getTileSize();
-        else
+        }
+        else {
             return 0;
+        }
     }
 
     /**
@@ -389,10 +397,12 @@ public class TMTileCanvas extends TMPixelCanvas {
      * @return byte size of the full tile grid
      **/
     public int getPageSize() {
-        if (codec != null)
+        if(codec != null) {
             return rows * getRowSize();
-        else
+        }
+        else {
             return 0;
+        }
     }
 
     /**

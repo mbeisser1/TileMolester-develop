@@ -113,9 +113,13 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
         if (isBlockGridVisible()) {
             g.setColor(Color.blue);    // gridline color
             int blockRows = rows / blockHeight;
-            if ((rows % blockHeight) != 0) blockRows++;
+            if((rows % blockHeight) != 0) {
+                blockRows++;
+            }
             int blockCols = cols / blockWidth;
-            if ((cols % blockWidth) != 0) blockCols++;
+            if((cols % blockWidth) != 0) {
+                blockCols++;
+            }
             // draw horizontal lines
             for (int i=1; i<blockRows; i++) {
                 g.fillRect(0, (int)(i*scale*blockHeight*8), getWidth(), 2);
@@ -363,10 +367,18 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
                 int newXpos = hsb.getValue() + dx;
                 int newYpos = vsb.getValue() + dy;
 
-                if (newXpos < hsb.getMinimum()) newXpos = hsb.getMinimum();
-                else if (newXpos > hsb.getMaximum()) newXpos = hsb.getMaximum();
-                if (newYpos < vsb.getMinimum()) newYpos = vsb.getMinimum();
-                else if (newYpos > vsb.getMaximum()) newYpos = vsb.getMaximum();
+                if(newXpos < hsb.getMinimum()) {
+                    newXpos = hsb.getMinimum();
+                }
+                else if(newXpos > hsb.getMaximum()) {
+                    newXpos = hsb.getMaximum();
+                }
+                if(newYpos < vsb.getMinimum()) {
+                    newYpos = vsb.getMinimum();
+                }
+                else if(newYpos > vsb.getMaximum()) {
+                    newYpos = vsb.getMaximum();
+                }
 
                 hsb.setValue(newXpos);
                 hsb.revalidate();
@@ -481,7 +493,9 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
             Point p = seeds.remove(0);
             x = p.x;
             y = p.y;
-            if (getPixel(x, y) == colorDraw) continue;
+            if(getPixel(x, y) == colorDraw) {
+                continue;
+            }
             setPixelTraceable(x, y, colorDraw);
 
             // find left side, filling along the way
@@ -529,10 +543,14 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
      **/
     private void fillRecursive(int x, int y) {
         // bounds check
-        if ((x < 0) || (y < 0) || (x >= canvasWidth) || (y >= canvasHeight)) return;
+        if((x < 0) || (y < 0) || (x >= canvasWidth) || (y >= canvasHeight)) {
+            return;
+        }
 
         // color check
-        if (getPixel(x, y) != filledColor) return;
+        if(getPixel(x, y) != filledColor) {
+            return;
+        }
 
         // replace color
         setPixelTraceable(x, y, colorDraw);
@@ -569,20 +587,24 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
             if (dy < 0) {
                 double i = x2;
                 for (int j=y2; j<=y1; j++) {
-                    if (trace)
+                    if(trace) {
                         setPixelTraceable((int)i, j, colorDraw);
-                    else
+                    }
+                    else {
                         xorPixel((int)i, j);
+                    }
                     i += delta;
                 }
             }
             else {
                 double i = x1;
                 for (int j=y1; j<=y2; j++) {
-                    if (trace)
+                    if(trace) {
                         setPixelTraceable((int)i, j, colorDraw);
-                    else
+                    }
+                    else {
                         xorPixel((int)i, j);
+                    }
                     i += delta;
                 }
             }
@@ -592,20 +614,24 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
             if (dx < 0) {
                 double j = y2;
                 for (int i=x2; i<=x1; i++) {
-                    if (trace)
+                    if(trace) {
                         setPixelTraceable(i, (int)j, colorDraw);
-                    else
+                    }
+                    else {
                         xorPixel(i, (int)j);
+                    }
                     j += delta;
                 }
             }
             else {
                 double j = y1;
                 for (int i=x1; i<=x2; i++) {
-                    if (trace)
+                    if(trace) {
                         setPixelTraceable(i, (int)j, colorDraw);
-                    else
+                    }
+                    else {
                         xorPixel(i, (int)j);
+                    }
                     j += delta;
                 }
             }
@@ -1389,7 +1415,9 @@ public class TMEditorCanvas extends TMTileCanvas implements MouseInputListener {
         else {
             limit = bits.length - getRowIncrement();
         }
-        if (absOfs <= limit) return absOfs;
+        if(absOfs <= limit) {
+            return absOfs;
+        }
         return -1;
     }
 

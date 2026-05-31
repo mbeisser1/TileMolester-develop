@@ -136,8 +136,9 @@ public class BMP {
             int h=height-1;
 
             // dword align width            
-            if (w%4 != 0) 
+            if(w%4 != 0) {
                 w += (4-(w%4));
+            }
 
             if (model instanceof IndexColorModel) {
                 // not tested - (can't get IndexColorModel from PixelGrabber??!)
@@ -193,10 +194,12 @@ public class BMP {
             bmp_fileheader.read(file);
             bmp_infoheader.read(file);
 
-            if (bmp_infoheader.biClrUsed != 0)
+            if(bmp_infoheader.biClrUsed != 0) {
                 coloursUsed = bmp_infoheader.biClrUsed;
-            else if (bmp_infoheader.biBitCount < 16)
+            }
+            else if(bmp_infoheader.biBitCount < 16) {
                 coloursUsed = 1 << bmp_infoheader.biBitCount;
+            }
 
             bmp_palette = new BmpPalette(coloursUsed);
             bmp_palette.read(file);
@@ -212,10 +215,12 @@ public class BMP {
 
             scanlineSize = ((bmp_infoheader.biWidth*bmp_infoheader.biBitCount+31)/32)*4;
 
-            if (bmp_infoheader.biSizeImage != 0)
+            if(bmp_infoheader.biSizeImage != 0) {
                 bitplaneSize = bmp_infoheader.biSizeImage;
-            else
+            }
+            else {
                 bitplaneSize = scanlineSize * bmp_infoheader.biHeight;
+            }
 
             rawData = new byte[bitplaneSize];
             file.readByteArray(rawData);
@@ -360,11 +365,13 @@ public class BMP {
             TMLog.logException("BMP write failed", e);
         }
 
-            if (biSizeImage == 0)
+            if(biSizeImage == 0) {
                 biSizeImage = (((biWidth*biBitCount+31)>>5)<<2)*biHeight;
+            }
 
-            if (biClrUsed == 0 && biBitCount < 16)
+            if(biClrUsed == 0 && biBitCount < 16) {
                 biClrUsed = 1 << biBitCount;
+            }
         }
 
         void write(PCBinaryOutputStream file) {
@@ -413,8 +420,9 @@ public class BMP {
             try {
                 bfType[0] = file.readByte();
                 bfType[1] = file.readByte();
-                if (bfType[0] != 'B' && bfType[1] != 'M')
+                if(bfType[0] != 'B' && bfType[1] != 'M') {
                     throw new IOException("Invalid BMP 3.0 File.");
+                }
                 bfSize = file.readInt();
                 bfReserved1 = file.readShort();
                 bfReserved2 = file.readShort();

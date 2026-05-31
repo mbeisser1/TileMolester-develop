@@ -188,16 +188,19 @@ public class BMPLoader
         bh.read(fs);
 
 
-        if (bh.nbitcount==24)
+        if(bh.nbitcount==24) {
             return(readMap24(fs,bh));
+        }
 
 
-        if (bh.nbitcount==32)
+        if(bh.nbitcount==32) {
             return(readMap32(fs,bh));
+        }
 
 
-        if (bh.nbitcount==8)
+        if(bh.nbitcount==8) {
             return(readMap8(fs,bh));
+        }
 
 
         fs.close();

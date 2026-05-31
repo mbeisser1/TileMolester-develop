@@ -252,7 +252,9 @@ public class DirectColorTileCodec extends TileCodec {
     private static int getByteIntegralBitCount(int bits) {
         int bytes = bits / 8;
         int extrabits = bits % 8;
-        if (extrabits != 0) bytes++;
+        if(extrabits != 0) {
+            bytes++;
+        }
         return bytes * 8;
     }
 

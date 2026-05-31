@@ -39,7 +39,9 @@ import javax.swing.JOptionPane;
             FileFilter ff = getFileFilter();
             if (!ff.accept(file)) {
                 String absPath = file.getAbsolutePath();
-                if (!absPath.endsWith(".")) absPath += ".";
+                if(!absPath.endsWith(".")) {
+                    absPath += ".";
+                }
                 String[] exts = ((TMFileFilter)ff).getExtensions();
                 File tempFile=null;
                 for (int i=0; i<exts.length; i++) {

@@ -122,12 +122,24 @@ public class TMTheme {
 	 * @return theme identifier constant from this class
 	 **/
 	public static int getCurrentTheme() {
-		if(isWindows && darkMode) return WINDOWS_DARK_THEME;
-		if(isWindows && !darkMode) return WINDOWS_LIGHT_THEME;
-		if(isLinux && darkMode) return LINUX_DARK_THEME;
-		if(isLinux && !darkMode) return LINUX_LIGHT_THEME;
-		if(isMacOs && darkMode) return MACOS_DARK_THEME;
-		if(isMacOs && !darkMode) return MACOS_LIGHT_THEME;
+		if(isWindows && darkMode) {
+			return WINDOWS_DARK_THEME;
+		}
+		if(isWindows && !darkMode) {
+			return WINDOWS_LIGHT_THEME;
+		}
+		if(isLinux && darkMode) {
+			return LINUX_DARK_THEME;
+		}
+		if(isLinux && !darkMode) {
+			return LINUX_LIGHT_THEME;
+		}
+		if(isMacOs && darkMode) {
+			return MACOS_DARK_THEME;
+		}
+		if(isMacOs && !darkMode) {
+			return MACOS_LIGHT_THEME;
+		}
 		return WINDOWS_DARK_THEME;
 	}
 

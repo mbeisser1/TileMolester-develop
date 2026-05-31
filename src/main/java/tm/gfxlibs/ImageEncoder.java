@@ -121,8 +121,9 @@ public abstract class ImageEncoder implements ImageConsumer
 	    catch ( InterruptedException e ) {
 		TMLog.logException("Image encoding interrupted", e);
 	    }
-	if ( iox != null )
-	    throw iox;
+	if( iox != null ) {
+		throw iox;
+	}
 	}
 
     private boolean accumulate = false;
@@ -145,14 +146,16 @@ public abstract class ImageEncoder implements ImageConsumer
 		accumulator = new int[width * height];
 		}
 	    }
-	if ( accumulate )
-	    for ( int row = 0; row < h; ++row )
+	if( accumulate ) {
+	    for ( int row = 0; row < h; ++row ) {
 		System.arraycopy(
 		    rgbPixels, row * scansize + off,
 		    accumulator, ( y + row ) * width + x,
 		    w );
-	else
+	    }
+	} else {
 	    encodePixels( x, y, w, h, rgbPixels, off, scansize );
+	}
 	}
 
     /**

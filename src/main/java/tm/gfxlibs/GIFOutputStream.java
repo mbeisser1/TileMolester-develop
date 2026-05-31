@@ -129,8 +129,9 @@ public class GIFOutputStream extends FilterOutputStream
 
          ++n;
 
-         if (n % 3 == 0)
-            ++n;
+         if(n % 3 == 0) {
+             ++n;
+         }
       }
    }
 
@@ -233,8 +234,9 @@ public class GIFOutputStream extends FilterOutputStream
    {
       errorStatus = NO_ERROR;
 
-      if (image == null)
-         return;
+      if(image == null) {
+          return;
+      }
 
       PixelGrabber   pg = new PixelGrabber(image, 0, 0, -1, -1, true);
 
@@ -335,8 +337,9 @@ public class GIFOutputStream extends FilterOutputStream
 
       writeColorTable(colorTable, bitsPerPixel);
 
-      if (transparentColor != null)
-         writeGraphicControlExtension(transparentColor, colorTable);
+      if(transparentColor != null) {
+          writeGraphicControlExtension(transparentColor, colorTable);
+      }
 
       writeImageDescriptor(width, height);
 
@@ -367,8 +370,9 @@ public class GIFOutputStream extends FilterOutputStream
             --needsChecking;
 
             colorSet.put(color, colorIndex);
-            if (++colorIndex > 256)
-               break;
+            if(++colorIndex > 256) {
+                break;
+            }
 
             for (int j2 = j + 1; j2 < pixels.length; ++j2) {
                if ((pixels[j2] & 0x00FFFFFF) == color) {
@@ -380,10 +384,12 @@ public class GIFOutputStream extends FilterOutputStream
       }
 
       if (colorIndex == 1) {
-         if (colorSet.get(0) == null)
-            colorSet.put(0, 1);
-         else
+         if(colorSet.get(0) == null) {
+             colorSet.put(0, 1);
+         }
+         else {
             colorSet.put(0xFFFFFF, 1);
+         }
       }
 
       return colorSet;
@@ -449,10 +455,12 @@ public class GIFOutputStream extends FilterOutputStream
       byte[]   bytePixels = new byte[pixels.length];
 
       for (int j = 0; j < pixels.length; ++j) {
-         if (grayscaleValue(pixels[j]) < 0x80)
-            bytePixels[j] = (byte) BLACK_INDEX;
-         else
+         if(grayscaleValue(pixels[j]) < 0x80) {
+             bytePixels[j] = (byte) BLACK_INDEX;
+         }
+         else {
             bytePixels[j] = (byte) WHITE_INDEX;
+         }
       }
 
       return bytePixels;
@@ -627,14 +635,17 @@ public class GIFOutputStream extends FilterOutputStream
             y = j / width;
             threshold = ditherPattern[x % 4][y % 4] / 5;
 
-            if (r2 < 5 && r % 0x33 >= threshold)
-               ++r2;
+            if(r2 < 5 && r % 0x33 >= threshold) {
+                ++r2;
+            }
 
-            if (g2 < 5 && g % 0x33 >= threshold)
-               ++g2;
+            if(g2 < 5 && g % 0x33 >= threshold) {
+                ++g2;
+            }
 
-            if (b2 < 5 && b % 0x33 >= threshold)
-               ++b2;
+            if(b2 < 5 && b % 0x33 >= threshold) {
+                ++b2;
+            }
 
             bytePixels[j] = (byte) (r2 * 36 + g2 * 6 + b2);
          }
@@ -645,8 +656,9 @@ public class GIFOutputStream extends FilterOutputStream
                for (int g0 = g2; g0 <= g2 + 1 && g0 < 6; ++g0) {
                   for (int b0 = b2; b0 <= b2 + 1 && b0 < 6; ++b0) {
                      sampleIndex = 40 + r0 * 36 + g0 * 6 + b0;
-                     if (sampleIndex == 40)
-                        sampleIndex = 0;
+                     if(sampleIndex == 40) {
+                         sampleIndex = 0;
+                     }
 
                      error = colorMatchError(color, standard256[sampleIndex]);
                      if (error < minError || minIndex < 0) {
@@ -779,10 +791,12 @@ public class GIFOutputStream extends FilterOutputStream
       int   colorCount = 1 << bitsPerPixel;
 
       for (int j = 0; j < colorCount; ++j) {
-         if (j < colorTable.length)
-            writeGIFColor(colorTable[j]);
-         else
+         if(j < colorTable.length) {
+             writeGIFColor(colorTable[j]);
+         }
+         else {
             writeGIFColor(0);
+         }
       }
    }
 
@@ -913,8 +927,9 @@ public class GIFOutputStream extends FilterOutputStream
    {
       int   init_bits = bitsPerPixel;
 
-      if (init_bits < 2)
-         init_bits = 2;
+      if(init_bits < 2) {
+          init_bits = 2;
+      }
 
       write(init_bits);
 
@@ -938,11 +953,13 @@ public class GIFOutputStream extends FilterOutputStream
 
       for (int j = 0; j < bytePixels.length; ++j) {
          c = (int) bytePixels[j];
-         if (c < 0)
-            c += 256;
+         if(c < 0) {
+             c += 256;
+         }
 
-         if ((rl_count > 0) && (c != rl_pixel))
-            rl_flush();
+         if((rl_count > 0) && (c != rl_pixel)) {
+             rl_flush();
+         }
 
          if (rl_pixel == c) {
             rl_count++;
@@ -953,8 +970,9 @@ public class GIFOutputStream extends FilterOutputStream
          }
       }
 
-      if (rl_count > 0)
-         rl_flush();
+      if(rl_count > 0) {
+          rl_flush();
+      }
 
       output(code_eof);
       output_flush();
@@ -978,8 +996,9 @@ public class GIFOutputStream extends FilterOutputStream
    protected void block_out(int c) throws IOException
    {
       oblock[oblen++] = (byte) c;
-      if (oblen >= 255)
-         write_block();
+      if(oblen >= 255) {
+          write_block();
+      }
    }
 
    /**
@@ -987,8 +1006,9 @@ public class GIFOutputStream extends FilterOutputStream
     **/
    protected void block_flush() throws IOException
    {
-      if (oblen > 0)
-         write_block();
+      if(oblen > 0) {
+          write_block();
+      }
    }
 
    /**
@@ -1011,8 +1031,9 @@ public class GIFOutputStream extends FilterOutputStream
     **/
    protected void output_flush() throws IOException
    {
-      if (obits > 0)
-         block_out(obuf);
+      if(obits > 0) {
+          block_out(obuf);
+      }
       block_flush();
    }
 
@@ -1058,15 +1079,17 @@ public class GIFOutputStream extends FilterOutputStream
       int   r;
       int   v;
 
-      if (x < 2)
-         return x;
+      if(x < 2) {
+          return x;
+      }
 
       for (v = x, r = 1; v != 0; v >>= 2, r <<= 1);
 
       while (true) {
          v = ((x / r) + r) / 2;
-         if ((v == r) || (v == r + 1))
-            return r;
+         if((v == r) || (v == r + 1)) {
+             return r;
+         }
          r = v;
       }
    }
@@ -1153,10 +1176,12 @@ public class GIFOutputStream extends FilterOutputStream
             count = 0;
          }
 
-         if (out_count == 0)
-            n = 1;
-         else
+         if(out_count == 0) {
+             n = 1;
+         }
+         else {
             n++;
+         }
       }
 
       reset_out_clear();

@@ -61,9 +61,13 @@ public class mxScrollableDesktop extends JDesktopPane {
         int maxY = 0;
         for (int i = 0; i<array.length; i++) {
             int x = array[i].getX() + array[i].getWidth();
-            if (x > maxX) maxX = x;
+            if(x > maxX) {
+                maxX = x;
+            }
             int y = array[i].getY() + array[i].getHeight();
-            if (y > maxY) maxY = y;
+            if(y > maxY) {
+                maxY = y;
+            }
         }
         return new Dimension(maxX, maxY);
     }

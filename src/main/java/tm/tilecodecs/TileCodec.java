@@ -97,7 +97,9 @@ public abstract class TileCodec {
      * @return palette entry count usable by the editor
      **/
     public int getColorCount() {
-        if (bitsPerPixel < 8) return (1 << bitsPerPixel);
+        if(bitsPerPixel < 8) {
+            return (1 << bitsPerPixel);
+        }
         return 256;
     }
 

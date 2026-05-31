@@ -154,7 +154,9 @@ public abstract class ColorCodec {
     private static int getBytesRequired(int bits) {
         int bytes = bits / 8;
         int extrabits = bits % 8;
-        if (extrabits != 0) bytes++;
+        if(extrabits != 0) {
+            bytes++;
+        }
         return bytes;
     }
 

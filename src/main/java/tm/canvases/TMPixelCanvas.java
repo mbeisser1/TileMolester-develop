@@ -112,8 +112,12 @@ public abstract class TMPixelCanvas extends JPanel {
      * @param scale zoom factor applied to the canvas
      **/
     public void setScale(double scale) {
-        if (scale < 1.0) scale = 1.0;   // minimum
-        else if (scale > 32.0) scale = 32.0;  // maximum
+        if(scale < 1.0) { // minimum
+            scale = 1.0;
+        }
+        else if(scale > 32.0) { // maximum
+            scale = 32.0;
+        }
         this.scale = scale;
 
         // set size
@@ -161,7 +165,9 @@ public abstract class TMPixelCanvas extends JPanel {
      * @param g graphics context used for drawing
      **/
     private void drawPixelGrid(Graphics g) {
-        if (scale < 8.0) return;    // don't show it for scales less than 8
+        if(scale < 8.0) { // don't show it for scales less than 8
+            return;
+        }
         g.setColor(Color.gray);
         // draw horizontal lines
         for (int i=1; i<canvasHeight; i++) {

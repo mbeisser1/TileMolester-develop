@@ -144,10 +144,12 @@ public class TMStatusBar extends JPanel {
      * @param mode tile layout mode ({@link tm.tilecodecs.TileCodec#MODE_1D} or {@link tm.tilecodecs.TileCodec#MODE_2D})
      **/
     public void setMode(int mode) {
-        if (mode == TileCodec.MODE_1D)
+        if(mode == TileCodec.MODE_1D) {
             modeLabel.setText(" 1-Dimensional "); // i18n
-        else
+        }
+        else {
             modeLabel.setText(" 2-Dimensional "); // i18n
+        }
     }
 
     /**

@@ -62,7 +62,9 @@ public class TMSpecReader {
         palettefilters = new ArrayList<>();
         filelisteners = new ArrayList<>();
         Document doc = XMLParser.parse(file);
-        if (doc == null) return;
+        if(doc == null) {
+            return;
+        }
 
         tmspec = doc.getDocumentElement();   // root element (<tmspec> tag)
 
@@ -92,8 +94,9 @@ public class TMSpecReader {
             int gmask = (int)Long.parseLong(dc.getAttribute("gmask"), 16);
             int bmask = (int)Long.parseLong(dc.getAttribute("bmask"), 16);
             int amask = 0;
-            if (!dc.getAttribute("amask").equals(""))
+            if(!dc.getAttribute("amask").equals("")) {
                 amask = (int)Long.parseLong(dc.getAttribute("amask"), 16);
+            }
             String desc = XMLParser.getNodeValue(dc.getElementsByTagName("description").item(0));
             colorcodecs.add(new DirectColorCodec(id, bpp, rmask, gmask, bmask, amask, desc));
         }
@@ -154,8 +157,9 @@ public class TMSpecReader {
             String id = lnc.getAttribute("id");
             int bpp = Integer.parseInt(lnc.getAttribute("bpp"));
             int ordering = LinearTileCodec.IN_ORDER;
-            if(lnc.getAttribute("ordering").equals("reverse"))
+            if(lnc.getAttribute("ordering").equals("reverse")) {
                 ordering = LinearTileCodec.REVERSE_ORDER;
+            }
             String desc = XMLParser.getNodeValue(lnc.getElementsByTagName("description").item(0));
             tilecodecs.add(new LinearTileCodec(id, bpp, ordering, desc));
         }
@@ -175,8 +179,9 @@ public class TMSpecReader {
             int gmask = (int)Long.parseLong(dcc.getAttribute("gmask"), 16);
             int bmask = (int)Long.parseLong(dcc.getAttribute("bmask"), 16);
             int amask = 0;
-            if (!dcc.getAttribute("amask").equals(""))
+            if(!dcc.getAttribute("amask").equals("")) {
                 amask = (int)Long.parseLong(dcc.getAttribute("amask"), 16);
+            }
             String desc = XMLParser.getNodeValue(dcc.getElementsByTagName("description").item(0));
             tilecodecs.add(new DirectColorTileCodec(id, bpp, rmask, gmask, bmask, amask, desc));
         }
@@ -209,7 +214,9 @@ public class TMSpecReader {
                     }
                 }
             }
-            if (cc != codecs.length) continue;  // one or more codec IDs invalid
+            if(cc != codecs.length) { // one or more codec IDs invalid
+                continue;
+            }
             tilecodecs.add(new CompositeTileCodec(id, bpp, codecs, desc));
         }
     }
@@ -225,8 +232,9 @@ public class TMSpecReader {
             String desc = XMLParser.getNodeValue(ff.getElementsByTagName("description").item(0));
             String codecID = ff.getAttribute("tileformat");
             int defaultMode = TileCodec.MODE_1D;
-            if (ff.getAttribute("mode").equals("2D"))
+            if(ff.getAttribute("mode").equals("2D")) {
                 defaultMode = TileCodec.MODE_2D;
+            }
             filefilters.add(new TMTileCodecFileFilter(extlist, desc, codecID, defaultMode));
         }
     }

@@ -156,7 +156,9 @@ public class PCXReader
         for(int i = 0; i < imagebytes; i++)
         {
           int paletteEntry = imageData[i];
-          if(paletteEntry < 0) paletteEntry += 256;
+          if(paletteEntry < 0) {
+              paletteEntry += 256;
+          }
           RGBImageData[i] = new Color(intPal[paletteEntry*3],
                                       intPal[paletteEntry*3+1],
                                       intPal[paletteEntry*3+2]).getRGB();
@@ -240,7 +242,9 @@ public class PCXReader
       }
         
       imageData[i] = abyte;
-      if(imageData[i] < 0) imageData[i] += 256;
+      if(imageData[i] < 0) {
+          imageData[i] += 256;
+      }
     }    
   }
 }

@@ -58,7 +58,9 @@ public class TMTreeNodeTree extends JTree {
      **/
     public TMTreeNode getSelectedNode() {
         TMTreeNode n = (TMTreeNode)getLastSelectedPathComponent();
-        if (n != null) return n;
+        if(n != null) {
+            return n;
+        }
         return (TMTreeNode)getModel().getRoot();
     }
 

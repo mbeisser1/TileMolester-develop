@@ -109,8 +109,9 @@ public class TMSettings {
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			TMLog.showError(null, xlate("Load_Settings_Error"), e);
 		}
-		if (doc == null)
+		if(doc == null) {
 			return;
+		}
 
 		Element settings = doc.getDocumentElement();
 		NodeList properties = settings.getElementsByTagName("property");
@@ -123,8 +124,9 @@ public class TMSettings {
 			// handle property
 			if (key.equals("locale")) {
 				StringTokenizer st = new StringTokenizer(value, "_");
-				if (st.countTokens() != 2)
+				if(st.countTokens() != 2) {
 					continue;
+				}
 				String language = st.nextToken();
 				String country = st.nextToken();
 				locale = Locale.forLanguageTag(language + "-" + country);
@@ -142,12 +144,16 @@ public class TMSettings {
 				maxRecentFiles = Integer.parseInt(value);
 			} else if (key.equals("recentFile")) {
 				File file = new File(value);
-				if (file.exists()) recentFiles.add(file);
+				if(file.exists()) {
+					recentFiles.add(file);
+				}
 			} else if (key.equals("lastPath")) {
 				lastPath = value;
 			}
 		}
-		if (!loadedLocale) selectLanguage();
+		if(!loadedLocale) {
+			selectLanguage();
+		}
 	}
 
 
@@ -168,8 +174,9 @@ public class TMSettings {
 				String country = name.substring(name.lastIndexOf('_') + 1, name.lastIndexOf('.'));
 				locales[i] = Locale.forLanguageTag(language + "-" + country);
 				displayNames[i] = locales[i].getDisplayName();
-				if (language.equals("en"))
+				if(language.equals("en")) {
 					defaultIndex = i;
+				}
 			}
 
 			// ask user to select language

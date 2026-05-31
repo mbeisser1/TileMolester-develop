@@ -542,8 +542,9 @@ public class TMUI extends JFrame {
 	 * @param bpp bpp value
 	 **/
 	public static int getColorIndex(int palIndex, int bpp) {
-		if (bpp > 8)
+		if(bpp > 8) {
 			bpp = 8;
+		}
 		int cols = 1 << bpp;
 		return palIndex * cols;
 	}

@@ -44,7 +44,9 @@ import javax.swing.JOptionPane;
             FileFilter ff = getFileFilter();
             if (!ff.accept(file)) {
                 String absPath = file.getAbsolutePath();
-                if (!absPath.endsWith(".")) absPath += ".";
+                if(!absPath.endsWith(".")) {
+                    absPath += ".";
+                }
                 setSelectedFile(new File(absPath+((TMFileFilter)ff).getDefaultExtension()));
             }
             file = getSelectedFile();
@@ -54,8 +56,9 @@ import javax.swing.JOptionPane;
                     "",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE);
-                if (retVal == JOptionPane.NO_OPTION)
+                if(retVal == JOptionPane.NO_OPTION) {
                     return;
+                }
                 // delete and recreate the file
                 file.delete();
                 try {

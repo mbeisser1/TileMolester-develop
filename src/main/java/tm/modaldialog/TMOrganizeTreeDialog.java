@@ -213,7 +213,9 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
      **/
     public void doRenameCommand() {
         DefaultMutableTreeNode node = tree.getSelectedNode();
-        if (node.isRoot()) return;
+        if(node.isRoot()) {
+            return;
+        }
         tree.startEditingAtPath(tree.getSelectionPath());
     }
 
@@ -234,7 +236,9 @@ public class TMOrganizeTreeDialog extends JDialog implements TreeModelListener {
      **/
     public void doDeleteCommand() {
         TMTreeNode node = tree.getSelectedNode();
-        if (node.isRoot()) return;
+        if(node.isRoot()) {
+            return;
+        }
         int retVal = JOptionPane.showConfirmDialog(this,
                         "You sure about this?", // i18n
                         "Tile Molester",

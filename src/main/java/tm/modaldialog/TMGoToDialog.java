@@ -58,8 +58,9 @@ public class TMGoToDialog extends TMModalDialog {
      * Gets the offset that was entered.
      **/
     public int getOffset() {
-        if (inputOK())
+        if(inputOK()) {
             return Integer.parseInt(ofsField.getText(), getRadix());
+        }
         return 0;
     }
 

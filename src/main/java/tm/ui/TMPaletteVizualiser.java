@@ -65,8 +65,9 @@ public class TMPaletteVizualiser extends JPanel {
      * @param bitDepth bits per pixel determining how many colors are shown
      **/
     public void setBitDepth(int bitDepth) {
-        if (bitDepth > 8)
+        if(bitDepth > 8) {
             bitDepth = 8;
+        }
         this.bitDepth = bitDepth;
         colorCount = 1 << bitDepth;
     }

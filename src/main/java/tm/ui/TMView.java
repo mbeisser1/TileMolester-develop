@@ -414,14 +414,18 @@ public class TMView extends JInternalFrame {
 	 * @param rows number of tile rows
 	 **/
 	public void setGridSize(int cols, int rows) {
-		if (cols < 1)
+		if(cols < 1) {
 			cols = 1;
-		else if (cols > 1024)
+		}
+		else if(cols > 1024) {
 			cols = 1024;
-		if (rows < 1)
+		}
+		if(rows < 1) {
 			rows = 1;
-		else if (rows > 1024)
+		}
+		else if(rows > 1024) {
 			rows = 1024;
+		}
 		editorCanvas.setGridSize(cols, rows);
 		if (sizeBlockToCanvas) {
 			editorCanvas.setBlockDimensions(cols, rows);

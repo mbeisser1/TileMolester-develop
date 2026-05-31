@@ -46,8 +46,9 @@ public class TMSelectionCanvas extends TMTileCanvas implements MouseInputListene
     public TMSelectionCanvas(TMUI ui, TMTileCanvas canvas, int x1, int y1, int w, int h) {
         super(null);
         this.ui = ui;
-        if (selectionPopup == null)
+        if(selectionPopup == null) {
             initSelectionPopup();
+        }
         addMouseListener(this);
         addMouseMotionListener(this);
         setMode(TileCodec.MODE_1D); // all copied data is stored in 1-Dimensional mode

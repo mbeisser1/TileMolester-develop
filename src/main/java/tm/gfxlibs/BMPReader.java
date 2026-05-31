@@ -66,7 +66,9 @@ public class BMPReader extends Object
 
         int colorsUsed = intelInt(in.readInt());
         int colorsImportant = intelInt(in.readInt());
-        if (colorsUsed == 0) colorsUsed = 1 << bitCount;
+        if(colorsUsed == 0) {
+            colorsUsed = 1 << bitCount;
+        }
 
         int colorTable[] = new int[colorsUsed];
 

@@ -43,8 +43,9 @@ public class TMUIWindowActions extends TMUICommandGroup {
 		// count frames that aren't iconized
 		int frameCount = 0;
 		for (int i = 0; i < frames.length; i++) {
-			if (!frames[i].isIcon())
+			if(!frames[i].isIcon()) {
 				frameCount++;
+			}
 		}
 		int rows = (int) Math.sqrt(frameCount);
 		int cols = frameCount / rows;
