@@ -35,119 +35,119 @@ public class TMUIRefresh {
 	public void setMdiMode(boolean enabled) {
 		if (enabled) {
 		// Show MDI menus
-				ui.menuBar.remove(ui.helpMenu);
-				ui.menuBar.add(ui.editMenu);
-				ui.menuBar.add(ui.viewMenu);
-				ui.menuBar.add(ui.imageMenu);
-				ui.menuBar.add(ui.navigateMenu);
-				ui.menuBar.add(ui.paletteMenu);
-				ui.menuBar.add(ui.windowMenu);
-				ui.menuBar.add(ui.helpMenu);
+				ui.widgets.menuBar.remove(ui.widgets.helpMenu);
+				ui.widgets.menuBar.add(ui.widgets.editMenu);
+				ui.widgets.menuBar.add(ui.widgets.viewMenu);
+				ui.widgets.menuBar.add(ui.widgets.imageMenu);
+				ui.widgets.menuBar.add(ui.widgets.navigateMenu);
+				ui.widgets.menuBar.add(ui.widgets.paletteMenu);
+				ui.widgets.menuBar.add(ui.widgets.windowMenu);
+				ui.widgets.menuBar.add(ui.widgets.helpMenu);
 				// Show File menu items
-				ui.closeMenuItem.setVisible(true);
-				ui.closeAllMenuItem.setVisible(true);
-				ui.saveMenuItem.setVisible(true);
-				ui.saveAsMenuItem.setVisible(true);
-				ui.saveAllMenuItem.setVisible(true);
-				ui.saveAllMenuItem.setEnabled(false);
+				ui.widgets.closeMenuItem.setVisible(true);
+				ui.widgets.closeAllMenuItem.setVisible(true);
+				ui.widgets.saveMenuItem.setVisible(true);
+				ui.widgets.saveAsMenuItem.setVisible(true);
+				ui.widgets.saveAllMenuItem.setVisible(true);
+				ui.widgets.saveAllMenuItem.setEnabled(false);
 		
-				Component[] menuComponents = ui.fileMenu.getMenuComponents();
+				Component[] menuComponents = ui.widgets.fileMenu.getMenuComponents();
 				if (menuComponents.length >= 6) {
 		            menuComponents[5].setVisible(true);
 		        }
 		
 				// TODO: Enable previously hidden menu items w/ key accelerators
 				// Show Toolbar buttons
-				ui.saveButton.setVisible(true);
-				ui.cutButton.setVisible(true);
-				ui.copyButton.setVisible(true);
-				ui.pasteButton.setVisible(true);
-				ui.undoButton.setVisible(true);
-				ui.redoButton.setVisible(true);
-				ui.gotoButton.setVisible(true);
-				ui.addBookmarkButton.setVisible(true);
-				ui.decWidthButton.setVisible(true);
-				ui.incWidthButton.setVisible(true);
-				ui.decHeightButton.setVisible(true);
-				ui.incHeightButton.setVisible(true);
+				ui.widgets.saveButton.setVisible(true);
+				ui.widgets.cutButton.setVisible(true);
+				ui.widgets.copyButton.setVisible(true);
+				ui.widgets.pasteButton.setVisible(true);
+				ui.widgets.undoButton.setVisible(true);
+				ui.widgets.redoButton.setVisible(true);
+				ui.widgets.gotoButton.setVisible(true);
+				ui.widgets.addBookmarkButton.setVisible(true);
+				ui.widgets.decWidthButton.setVisible(true);
+				ui.widgets.incWidthButton.setVisible(true);
+				ui.widgets.decHeightButton.setVisible(true);
+				ui.widgets.incHeightButton.setVisible(true);
 				// disable some buttons
-				ui.saveButton.setEnabled(false);
-				ui.pasteButton.setEnabled(false);
-				ui.pasteMenuItem.setEnabled(false);
-				ui.undoButton.setEnabled(false);
-				ui.redoButton.setEnabled(false);
+				ui.widgets.saveButton.setEnabled(false);
+				ui.widgets.pasteButton.setEnabled(false);
+				ui.widgets.pasteMenuItem.setEnabled(false);
+				ui.widgets.undoButton.setEnabled(false);
+				ui.widgets.redoButton.setEnabled(false);
 				// Show navigation bar
-				ui.navBar.setVisible(true);
+				ui.widgets.navBar.setVisible(true);
 				// Show tool pane
-				ui.toolPane.setVisible(true);
+				ui.widgets.toolPane.setVisible(true);
 				// Maybe show statusbar
-				ui.statusBar.setVisible(ui.viewStatusBar);
+				ui.widgets.statusBar.setVisible(ui.viewStatusBar);
 				// show bottom pane
-				ui.bottomPane.setVisible(true);
+				ui.widgets.bottomPane.setVisible(true);
 				} else {
 		// Hide MDI menus
-				ui.menuBar.remove(ui.editMenu);
-				ui.menuBar.remove(ui.viewMenu);
-				ui.menuBar.remove(ui.imageMenu);
-				ui.menuBar.remove(ui.navigateMenu);
-				ui.menuBar.remove(ui.paletteMenu);
-				ui.menuBar.remove(ui.windowMenu);
+				ui.widgets.menuBar.remove(ui.widgets.editMenu);
+				ui.widgets.menuBar.remove(ui.widgets.viewMenu);
+				ui.widgets.menuBar.remove(ui.widgets.imageMenu);
+				ui.widgets.menuBar.remove(ui.widgets.navigateMenu);
+				ui.widgets.menuBar.remove(ui.widgets.paletteMenu);
+				ui.widgets.menuBar.remove(ui.widgets.windowMenu);
 				// Hide some File menu items
-				ui.closeMenuItem.setVisible(false);
-				ui.closeAllMenuItem.setVisible(false);
-				ui.saveMenuItem.setVisible(false);
-				ui.saveAsMenuItem.setVisible(false);
-				ui.saveAllMenuItem.setVisible(false);
+				ui.widgets.closeMenuItem.setVisible(false);
+				ui.widgets.closeAllMenuItem.setVisible(false);
+				ui.widgets.saveMenuItem.setVisible(false);
+				ui.widgets.saveAsMenuItem.setVisible(false);
+				ui.widgets.saveAllMenuItem.setVisible(false);
 		
 		
-				Component[] menuComponents = ui.fileMenu.getMenuComponents();
+				Component[] menuComponents = ui.widgets.fileMenu.getMenuComponents();
 				if (menuComponents.length >= 6) {
 		            menuComponents[5].setVisible(false);
 		        }
 		
 				// Hide some Toolbar buttons
-				ui.saveButton.setVisible(false);
-				ui.cutButton.setVisible(false);
-				ui.copyButton.setVisible(false);
-				ui.pasteButton.setVisible(false);
-				ui.undoButton.setVisible(false);
-				ui.redoButton.setVisible(false);
-				ui.gotoButton.setVisible(false);
-				ui.addBookmarkButton.setVisible(false);
-				ui.decWidthButton.setVisible(false);
-				ui.incWidthButton.setVisible(false);
-				ui.decHeightButton.setVisible(false);
-				ui.incHeightButton.setVisible(false);
+				ui.widgets.saveButton.setVisible(false);
+				ui.widgets.cutButton.setVisible(false);
+				ui.widgets.copyButton.setVisible(false);
+				ui.widgets.pasteButton.setVisible(false);
+				ui.widgets.undoButton.setVisible(false);
+				ui.widgets.redoButton.setVisible(false);
+				ui.widgets.gotoButton.setVisible(false);
+				ui.widgets.addBookmarkButton.setVisible(false);
+				ui.widgets.decWidthButton.setVisible(false);
+				ui.widgets.incWidthButton.setVisible(false);
+				ui.widgets.decHeightButton.setVisible(false);
+				ui.widgets.incHeightButton.setVisible(false);
 				// Hide navigation bar
-				ui.navBar.setVisible(false);
+				ui.widgets.navBar.setVisible(false);
 				// Hide tool pane
-				ui.toolPane.setVisible(false);
+				ui.widgets.toolPane.setVisible(false);
 				// hide bottom pane
-				ui.bottomPane.setVisible(false);
+				ui.widgets.bottomPane.setVisible(false);
 				}
 	}
 
 	public void refreshBlockSizeSelection(TMView view) {
-		ui.sizeBlockToCanvasMenuItem.setSelected(view.getSizeBlockToCanvas());
+		ui.widgets.sizeBlockToCanvasMenuItem.setSelected(view.getSizeBlockToCanvas());
 	}
 
 	public void refreshModeSelection(TMView view) {
 		// select the correct mode menu item
 		if (view.getMode() == TileCodec.MODE_1D) {
-			ui._1DimensionalMenuItem.setSelected(true);
+			ui.widgets._1DimensionalMenuItem.setSelected(true);
 		} else {
-			ui._2DimensionalMenuItem.setSelected(true);
+			ui.widgets._2DimensionalMenuItem.setSelected(true);
 		}
 	}
 
 	public void refreshTileCodecSelection(TMView view) {
-		ui.tileCodecButtonHashtable.get(view.getTileCodec()).setSelected(true);
+		ui.widgets.tileCodecButtonHashtable.get(view.getTileCodec()).setSelected(true);
 	}
 
 	public void refreshPalettePane() {
 		TMView view = ui.getSelectedView();
 		if (view != null) {
-			ui.palettePane.viewSelected(view);
+			ui.widgets.palettePane.viewSelected(view);
 		}
 	}
 
@@ -156,26 +156,26 @@ public class TMUIRefresh {
 		if (view != null) {
 			ui.setUndoButtonsEnabled(view.canUndo());
 			if (view.canUndo()) {
-				ui.undoMenuItem.setText(ui.xlate("Undo") + " " + ui.xlate(view.getFirstUndoableAction().getPresentationName()));
+				ui.widgets.undoMenuItem.setText(ui.xlate("Undo") + " " + ui.xlate(view.getFirstUndoableAction().getPresentationName()));
 			} else {
-				ui.undoMenuItem.setText(ui.xlate("Cant_Undo"));
+				ui.widgets.undoMenuItem.setText(ui.xlate("Cant_Undo"));
 			}
-			ui.undoButton.setToolTipText(ui.undoMenuItem.getText());
+			ui.widgets.undoButton.setToolTipText(ui.widgets.undoMenuItem.getText());
 
 			ui.setRedoButtonsEnabled(view.canRedo());
 			if (view.canRedo()) {
-				ui.redoMenuItem.setText(ui.xlate("Redo") + " " + ui.xlate(view.getFirstRedoableAction().getPresentationName()));
+				ui.widgets.redoMenuItem.setText(ui.xlate("Redo") + " " + ui.xlate(view.getFirstRedoableAction().getPresentationName()));
 			} else {
-				ui.redoMenuItem.setText(ui.xlate("Cant_Redo"));
+				ui.widgets.redoMenuItem.setText(ui.xlate("Cant_Redo"));
 			}
-			ui.redoButton.setToolTipText(ui.redoMenuItem.getText());
+			ui.widgets.redoButton.setToolTipText(ui.widgets.redoMenuItem.getText());
 		}
 	}
 
 	public void refreshStatusBar() {
 		TMView view = ui.getSelectedView();
 		if (view != null) {
-			ui.statusBar.viewSelected(view);
+			ui.widgets.statusBar.viewSelected(view);
 		}
 	}
 
@@ -197,24 +197,24 @@ public class TMUIRefresh {
 	}
 
 	public void refreshPaletteSelection(TMView view) {
-		TMPaletteMenuItem item = ui.paletteButtonHashtable.get(view.getPalette());
+		TMPaletteMenuItem item = ui.widgets.paletteButtonHashtable.get(view.getPalette());
 		if (item != null) {
 			item.setSelected(true);
 		} else {
-			ui.dummyPaletteMenuItem.setSelected(true);
+			ui.widgets.dummyPaletteMenuItem.setSelected(true);
 		}
 	}
 
 	public void refreshPaletteEndiannessSelection(TMView view) {
 		if (view.getPalette().getEndianness() == ColorCodec.LITTLE_ENDIAN) {
-			ui.paletteLittleEndianMenuItem.setSelected(true);
+			ui.widgets.paletteLittleEndianMenuItem.setSelected(true);
 		} else {
-			ui.paletteBigEndianMenuItem.setSelected(true);
+			ui.widgets.paletteBigEndianMenuItem.setSelected(true);
 		}
 	}
 
 	public void refreshColorCodecSelection(TMView view) {
-		ui.colorCodecButtonHashtable.get(view.getPalette().getCodec()).setSelected(true);
+		ui.widgets.colorCodecButtonHashtable.get(view.getPalette().getCodec()).setSelected(true);
 	}
 
 }

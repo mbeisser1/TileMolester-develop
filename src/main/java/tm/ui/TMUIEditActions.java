@@ -52,16 +52,16 @@ public class TMUIEditActions {
 	public void doCutCommand() {
 		ui.withSelectedView(view -> {
 			ui.copiedSelection = view.getEditorCanvas().cutSelection();
-			ui.pasteButton.setEnabled(true);
-			ui.pasteMenuItem.setEnabled(true);
+			ui.widgets.pasteButton.setEnabled(true);
+			ui.widgets.pasteMenuItem.setEnabled(true);
 		});
 	}
 
 	public void doCopyCommand() {
 		ui.withSelectedView(view -> {
 			ui.copiedSelection = view.getEditorCanvas().copySelection();
-			ui.pasteButton.setEnabled(true);
-			ui.pasteMenuItem.setEnabled(true);
+			ui.widgets.pasteButton.setEnabled(true);
+			ui.widgets.pasteMenuItem.setEnabled(true);
 		});
 	}
 
@@ -79,12 +79,12 @@ public class TMUIEditActions {
 
 	public void doGoToCommand() {
 		ui.withSelectedView(view -> {
-			int retVal = ui.goToDialog.showDialog();
+			int retVal = ui.widgets.goToDialog.showDialog();
 			if (retVal == JOptionPane.OK_OPTION) {
-				if (ui.goToDialog.getMode() == TMGoToDialog.ABSOLUTE_MODE) {
-					view.setAbsoluteOffset(ui.goToDialog.getOffset());
+				if (ui.widgets.goToDialog.getMode() == TMGoToDialog.ABSOLUTE_MODE) {
+					view.setAbsoluteOffset(ui.widgets.goToDialog.getOffset());
 				} else {
-					view.setRelativeOffset(ui.goToDialog.getOffset());
+					view.setRelativeOffset(ui.widgets.goToDialog.getOffset());
 				}
 				view.repaint();
 			}
@@ -93,10 +93,10 @@ public class TMUIEditActions {
 
 	public void doGoToAgainCommand() {
 		ui.withSelectedView(view -> {
-			if (ui.goToDialog.getMode() == TMGoToDialog.ABSOLUTE_MODE) {
-				view.setAbsoluteOffset(ui.goToDialog.getOffset());
+			if (ui.widgets.goToDialog.getMode() == TMGoToDialog.ABSOLUTE_MODE) {
+				view.setAbsoluteOffset(ui.widgets.goToDialog.getOffset());
 			} else {
-				view.setRelativeOffset(ui.goToDialog.getOffset());
+				view.setRelativeOffset(ui.widgets.goToDialog.getOffset());
 			}
 			view.repaint();
 		});
@@ -111,10 +111,10 @@ public class TMUIEditActions {
 		if (view == null) {
 			return false;
 		}
-		ui.bitmapSaveChooser.setFileFilter(ui.bmf.bmp);
-		int retVal = ui.bitmapSaveChooser.showSaveDialog(ui);
+		ui.widgets.bitmapSaveChooser.setFileFilter(ui.widgets.bmf.bmp);
+		int retVal = ui.widgets.bitmapSaveChooser.showSaveDialog(ui);
 		if (retVal == JFileChooser.APPROVE_OPTION) {
-			File file = ui.bitmapSaveChooser.getSelectedFile();
+			File file = ui.widgets.bitmapSaveChooser.getSelectedFile();
 			try {
 				TMBitmapExporter.saveTileCanvasToFile(view.getEditorCanvas().getSelectionCanvas(), file);
 				// Keep selection and palette in sync after export.
@@ -141,13 +141,13 @@ public class TMUIEditActions {
 	public void doPasteFromCommand() {
 		ui.withSelectedView(view -> {
 			if (new File(ui.lastPath).exists()) {
-				ui.bitmapOpenChooser.setCurrentDirectory(new File(ui.lastPath));
+				ui.widgets.bitmapOpenChooser.setCurrentDirectory(new File(ui.lastPath));
 			} else {
-				ui.bitmapOpenChooser.setCurrentDirectory(new File("."));
+				ui.widgets.bitmapOpenChooser.setCurrentDirectory(new File("."));
 			}
-			int retVal = ui.bitmapOpenChooser.showOpenDialog(ui);
+			int retVal = ui.widgets.bitmapOpenChooser.showOpenDialog(ui);
 			if (retVal == JFileChooser.APPROVE_OPTION) {
-				File file = ui.bitmapOpenChooser.getSelectedFile();
+				File file = ui.widgets.bitmapOpenChooser.getSelectedFile();
 				TMTileCanvas bitmapCanvas;
 				try {
 					bitmapCanvas = TMBitmapImporter.loadTileCanvasFromFile(file);

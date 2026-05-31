@@ -34,8 +34,8 @@ public class TMUITreeMenuBuilder {
 
 	public void buildBookmarksMenu(FolderNode root) {
 		// remove old bookmark menuitems, if any
-		while (ui.navigateMenu.getItemCount() > 5) {
-			ui.navigateMenu.remove(5);
+		while (ui.widgets.navigateMenu.getItemCount() > 5) {
+			ui.widgets.navigateMenu.remove(5);
 		}
 
 		TMTreeNode[] children = root.getChildren();
@@ -43,9 +43,9 @@ public class TMUITreeMenuBuilder {
 			// no bookmarks exist
 		} else {
 			// add all the bookmarks
-			ui.navigateMenu.addSeparator();
+			ui.widgets.navigateMenu.addSeparator();
 			for (int i = 0; i < children.length; i++) {
-				addToBookmarksMenu(children[i], ui.navigateMenu);
+				addToBookmarksMenu(children[i], ui.widgets.navigateMenu);
 			}
 		}
 	}
@@ -74,24 +74,24 @@ public class TMUITreeMenuBuilder {
 
 	public void buildPalettesMenu(FolderNode root) {
 		// remove old palette menuitems, if any
-		while (ui.paletteMenu.getItemCount() > 10) {
-			ui.paletteMenu.remove(10);
+		while (ui.widgets.paletteMenu.getItemCount() > 10) {
+			ui.widgets.paletteMenu.remove(10);
 		}
 
-		ui.paletteButtonHashtable.clear();
-		ui.paletteButtonGroup = new ButtonGroup();
+		ui.widgets.paletteButtonHashtable.clear();
+		ui.widgets.paletteButtonGroup = new ButtonGroup();
 
 		TMTreeNode[] children = root.getChildren();
 		if (children.length == 0) {
 			// no palettes exist (shouldn't be possible)
 		} else {
 			// add all the palettes
-			ui.paletteMenu.addSeparator();
+			ui.widgets.paletteMenu.addSeparator();
 			for (int i = 0; i < children.length; i++) {
-				addToPalettesMenu(children[i], ui.paletteMenu);
+				addToPalettesMenu(children[i], ui.widgets.paletteMenu);
 			}
 		}
-		ui.paletteButtonGroup.add(ui.dummyPaletteMenuItem);
+		ui.widgets.paletteButtonGroup.add(ui.widgets.dummyPaletteMenuItem);
 	}
 
 	public void addToPalettesMenu(TMTreeNode node, JMenu menu) {
@@ -100,8 +100,8 @@ public class TMUITreeMenuBuilder {
 			PaletteItemNode paletteNode = (PaletteItemNode) node;
 			TMPaletteMenuItem paletteMenuItem = new TMPaletteMenuItem(paletteNode, ui::doSelectPaletteCommand);
 			menu.add(paletteMenuItem);
-			ui.paletteButtonGroup.add(paletteMenuItem);
-			ui.paletteButtonHashtable.put(paletteNode.getPalette(), paletteMenuItem);
+			ui.widgets.paletteButtonGroup.add(paletteMenuItem);
+			ui.widgets.paletteButtonHashtable.put(paletteNode.getPalette(), paletteMenuItem);
 		} else {
 			// folder
 			JMenu subMenu = new JMenu(node.toString());

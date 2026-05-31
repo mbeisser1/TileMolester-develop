@@ -32,126 +32,126 @@ public class TMUIToolbarBuilder {
 	}
 
 	public void buildToolBar() {
-		TMUIBind.addToolBarButton(ui.toolBar, ui.newButton, ui.newMenuItem.getText(), ui::doNewCommand);
-		TMUIBind.addToolBarButton(ui.toolBar, ui.openButton, ui.openMenuItem.getText(), ui::doOpenCommand);
-		TMUIBind.addToolBarButton(ui.toolBar, ui.saveButton, ui.saveMenuItem.getText(), ui::doSaveCommand);
+		TMUIBind.addToolBarButton(ui.widgets.toolBar, ui.widgets.newButton, ui.widgets.newMenuItem.getText(), ui::doNewCommand);
+		TMUIBind.addToolBarButton(ui.widgets.toolBar, ui.widgets.openButton, ui.widgets.openMenuItem.getText(), ui::doOpenCommand);
+		TMUIBind.addToolBarButton(ui.widgets.toolBar, ui.widgets.saveButton, ui.widgets.saveMenuItem.getText(), ui::doSaveCommand);
 
-		ui.toolBarMDI.addSeparator();
-		TMUIBind.addToolBarButton(ui.toolBarMDI, ui.cutButton, ui.cutMenuItem.getText(), ui::doCutCommand);
-		TMUIBind.addToolBarButton(ui.toolBarMDI, ui.copyButton, ui.copyMenuItem.getText(), ui::doCopyCommand);
-		TMUIBind.addToolBarButton(ui.toolBarMDI, ui.pasteButton, ui.pasteMenuItem.getText(), ui::doPasteCommand);
+		ui.widgets.toolBarMDI.addSeparator();
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.cutButton, ui.widgets.cutMenuItem.getText(), ui::doCutCommand);
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.copyButton, ui.widgets.copyMenuItem.getText(), ui::doCopyCommand);
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.pasteButton, ui.widgets.pasteMenuItem.getText(), ui::doPasteCommand);
 
-		ui.toolBarMDI.addSeparator();
-		TMUIBind.addToolBarButton(ui.toolBarMDI, ui.undoButton, ui.undoMenuItem.getText(), ui::doUndoCommand);
-		TMUIBind.addToolBarButton(ui.toolBarMDI, ui.redoButton, ui.redoMenuItem.getText(), ui::doRedoCommand);
+		ui.widgets.toolBarMDI.addSeparator();
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.undoButton, ui.widgets.undoMenuItem.getText(), ui::doUndoCommand);
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.redoButton, ui.widgets.redoMenuItem.getText(), ui::doRedoCommand);
 
-		ui.toolBarMDI.addSeparator();
-		TMUIBind.addToolBarButton(ui.toolBarMDI, ui.gotoButton, ui.goToMenuItem.getText(), ui::doGoToCommand);
-		TMUIBind.addToolBarButton(ui.toolBarMDI, ui.addBookmarkButton, ui.addToBookmarksMenuItem.getText(),
+		ui.widgets.toolBarMDI.addSeparator();
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.gotoButton, ui.widgets.goToMenuItem.getText(), ui::doGoToCommand);
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.addBookmarkButton, ui.widgets.addToBookmarksMenuItem.getText(),
 				ui::doAddToBookmarksCommand);
 
-		ui.toolBarMDI.addSeparator();
-		TMUIBind.addToolBarButton(ui.toolBarMDI, ui.decWidthButton, ui.xlate("Decrease_Width"),
+		ui.widgets.toolBarMDI.addSeparator();
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.decWidthButton, ui.xlate("Decrease_Width"),
 				ui::doDecreaseWidthCommand);
-		TMUIBind.addToolBarButton(ui.toolBarMDI, ui.incWidthButton, ui.xlate("Increase_Width"),
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.incWidthButton, ui.xlate("Increase_Width"),
 				ui::doIncreaseWidthCommand);
-		TMUIBind.addToolBarButton(ui.toolBarMDI, ui.decHeightButton, ui.xlate("Decrease_Height"),
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.decHeightButton, ui.xlate("Decrease_Height"),
 				ui::doDecreaseHeightCommand);
-		TMUIBind.addToolBarButton(ui.toolBarMDI, ui.incHeightButton, ui.xlate("Increase_Height"),
+		TMUIBind.addToolBarButton(ui.widgets.toolBarMDI, ui.widgets.incHeightButton, ui.xlate("Increase_Height"),
 				ui::doIncreaseHeightCommand);
 
-		ui.toolBar.setFocusable(false);
-		ui.toolBar.setFloatable(false);
-		ui.toolBarMDI.setFocusable(false);
-		ui.toolBarMDI.setFloatable(false);
+		ui.widgets.toolBar.setFocusable(false);
+		ui.widgets.toolBar.setFloatable(false);
+		ui.widgets.toolBarMDI.setFocusable(false);
+		ui.widgets.toolBarMDI.setFloatable(false);
 	}
 
 	public void buildNavBar() {
-		ui.navBar.addSeparator();
+		ui.widgets.navBar.addSeparator();
 
-		TMUIBind.addToolBarButton(ui.navBar, ui.minusPageButton, ui.xlate("Page_Back"), ui::doMinusPageCommand);
-		TMUIBind.addToolBarButton(ui.navBar, ui.plusPageButton, ui.xlate("Page_Forward"), ui::doPlusPageCommand);
-		TMUIBind.addToolBarButton(ui.navBar, ui.minusRowButton, ui.xlate("Row_Back"), ui::doMinusRowCommand);
-		TMUIBind.addToolBarButton(ui.navBar, ui.plusRowButton, ui.xlate("Row_Forward"), ui::doPlusRowCommand);
-		TMUIBind.addToolBarButton(ui.navBar, ui.minusTileButton, ui.xlate("Tile_Back"), ui::doMinusTileCommand);
-		TMUIBind.addToolBarButton(ui.navBar, ui.plusTileButton, ui.xlate("Tile_Forward"), ui::doPlusTileCommand);
-		TMUIBind.addToolBarButton(ui.navBar, ui.minusByteButton, ui.xlate("Byte_Back"), ui::doMinusByteCommand);
-		TMUIBind.addToolBarButton(ui.navBar, ui.plusByteButton, ui.xlate("Byte_Forward"), ui::doPlusByteCommand);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.minusPageButton, ui.xlate("Page_Back"), ui::doMinusPageCommand);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.plusPageButton, ui.xlate("Page_Forward"), ui::doPlusPageCommand);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.minusRowButton, ui.xlate("Row_Back"), ui::doMinusRowCommand);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.plusRowButton, ui.xlate("Row_Forward"), ui::doPlusRowCommand);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.minusTileButton, ui.xlate("Tile_Back"), ui::doMinusTileCommand);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.plusTileButton, ui.xlate("Tile_Forward"), ui::doPlusTileCommand);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.minusByteButton, ui.xlate("Byte_Back"), ui::doMinusByteCommand);
+		TMUIBind.addToolBarButton(ui.widgets.navBar, ui.widgets.plusByteButton, ui.xlate("Byte_Forward"), ui::doPlusByteCommand);
 
-		ui.navBar.setFloatable(false);
-		ui.navBar.setFocusable(false);
+		ui.widgets.navBar.setFloatable(false);
+		ui.widgets.navBar.setFocusable(false);
 	}
 
 	public void buildToolPalette() {
-		ui.toolPalette.setBorder(null);
+		ui.widgets.toolPalette.setBorder(null);
 
-		TMUIBind.addToolBarButton(ui.toolPalette, ui.selectButton, ui.xlate("Selection"), () -> {
+		TMUIBind.addToolBarButton(ui.widgets.toolPalette, ui.widgets.selectButton, ui.xlate("Selection"), () -> {
 			ui.toolType = TMTools.ToolType.SELECT_TOOL;
 			ui.deselectToolPalette();
-			ui.selectButton.setSelected(true);
+			ui.widgets.selectButton.setSelected(true);
 		});
-		TMUIBind.addToolBarButton(ui.toolPalette, ui.zoomButton, ui.xlate("Zoom"), () -> {
+		TMUIBind.addToolBarButton(ui.widgets.toolPalette, ui.widgets.zoomButton, ui.xlate("Zoom"), () -> {
 			ui.toolType = TMTools.ToolType.ZOOM_TOOL;
 			ui.deselectToolPalette();
-			ui.zoomButton.setSelected(true);
+			ui.widgets.zoomButton.setSelected(true);
 		});
-		TMUIBind.addToolBarButton(ui.toolPalette, ui.pickupButton, ui.xlate("Dropper"), () -> {
+		TMUIBind.addToolBarButton(ui.widgets.toolPalette, ui.widgets.pickupButton, ui.xlate("Dropper"), () -> {
 			ui.toolType = TMTools.ToolType.PICKUP_TOOL;
 			ui.deselectToolPalette();
-			ui.pickupButton.setSelected(true);
+			ui.widgets.pickupButton.setSelected(true);
 		});
-		TMUIBind.addToolBarButton(ui.toolPalette, ui.brushButton, ui.xlate("Brush"), () -> {
+		TMUIBind.addToolBarButton(ui.widgets.toolPalette, ui.widgets.brushButton, ui.xlate("Brush"), () -> {
 			ui.toolType = TMTools.ToolType.BRUSH_TOOL;
 			ui.deselectToolPalette();
-			ui.brushButton.setSelected(true);
+			ui.widgets.brushButton.setSelected(true);
 		});
-		TMUIBind.addToolBarButton(ui.toolPalette, ui.lineButton, ui.xlate("Line"), () -> {
+		TMUIBind.addToolBarButton(ui.widgets.toolPalette, ui.widgets.lineButton, ui.xlate("Line"), () -> {
 			ui.toolType = TMTools.ToolType.LINE_TOOL;
 			ui.deselectToolPalette();
-			ui.lineButton.setSelected(true);
+			ui.widgets.lineButton.setSelected(true);
 		});
-		TMUIBind.addToolBarButton(ui.toolPalette, ui.fillButton, ui.xlate("Flood_Fill"), () -> {
+		TMUIBind.addToolBarButton(ui.widgets.toolPalette, ui.widgets.fillButton, ui.xlate("Flood_Fill"), () -> {
 			ui.toolType = TMTools.ToolType.FILL_TOOL;
 			ui.deselectToolPalette();
-			ui.fillButton.setSelected(true);
+			ui.widgets.fillButton.setSelected(true);
 		});
-		TMUIBind.addToolBarButton(ui.toolPalette, ui.replaceButton, ui.xlate("Color_Replacer"), () -> {
+		TMUIBind.addToolBarButton(ui.widgets.toolPalette, ui.widgets.replaceButton, ui.xlate("Color_Replacer"), () -> {
 			ui.toolType = TMTools.ToolType.REPLACE_TOOL;
 			ui.deselectToolPalette();
-			ui.replaceButton.setSelected(true);
+			ui.widgets.replaceButton.setSelected(true);
 		});
-		TMUIBind.addToolBarButton(ui.toolPalette, ui.moveButton, ui.xlate("Mover"), () -> {
+		TMUIBind.addToolBarButton(ui.widgets.toolPalette, ui.widgets.moveButton, ui.xlate("Mover"), () -> {
 			ui.toolType = TMTools.ToolType.MOVE_TOOL;
 			ui.deselectToolPalette();
-			ui.moveButton.setSelected(true);
+			ui.widgets.moveButton.setSelected(true);
 		});
 
-		ui.toolPalette.setFloatable(false);
-		ui.toolPalette.setFocusable(false);
-		ui.selectButton.setSelected(true);
+		ui.widgets.toolPalette.setFloatable(false);
+		ui.widgets.toolPalette.setFocusable(false);
+		ui.widgets.selectButton.setSelected(true);
 	}
 
 	public void buildSelectionToolBar() {
-		ui.selectionToolBar.setBorder(null);
+		ui.widgets.selectionToolBar.setBorder(null);
 
-		TMUIBind.addToolBarButton(ui.selectionToolBar, ui.mirrorButton, ui.mirrorMenuItem.getText(),
+		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.mirrorButton, ui.widgets.mirrorMenuItem.getText(),
 				ui::doMirrorCommand);
-		TMUIBind.addToolBarButton(ui.selectionToolBar, ui.flipButton, ui.flipMenuItem.getText(), ui::doFlipCommand);
-		TMUIBind.addToolBarButton(ui.selectionToolBar, ui.rotateRightButton, ui.rotateRightMenuItem.getText(),
+		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.flipButton, ui.widgets.flipMenuItem.getText(), ui::doFlipCommand);
+		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.rotateRightButton, ui.widgets.rotateRightMenuItem.getText(),
 				ui::doRotateRightCommand);
-		TMUIBind.addToolBarButton(ui.selectionToolBar, ui.rotateLeftButton, ui.rotateLeftMenuItem.getText(),
+		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.rotateLeftButton, ui.widgets.rotateLeftMenuItem.getText(),
 				ui::doRotateLeftCommand);
-		TMUIBind.addToolBarButton(ui.selectionToolBar, ui.shiftLeftButton, ui.shiftLeftMenuItem.getText(),
+		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.shiftLeftButton, ui.widgets.shiftLeftMenuItem.getText(),
 				ui::doShiftLeftCommand);
-		TMUIBind.addToolBarButton(ui.selectionToolBar, ui.shiftRightButton, ui.shiftRightMenuItem.getText(),
+		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.shiftRightButton, ui.widgets.shiftRightMenuItem.getText(),
 				ui::doShiftRightCommand);
-		TMUIBind.addToolBarButton(ui.selectionToolBar, ui.shiftUpButton, ui.shiftUpMenuItem.getText(),
+		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.shiftUpButton, ui.widgets.shiftUpMenuItem.getText(),
 				ui::doShiftUpCommand);
-		TMUIBind.addToolBarButton(ui.selectionToolBar, ui.shiftDownButton, ui.shiftDownMenuItem.getText(),
+		TMUIBind.addToolBarButton(ui.widgets.selectionToolBar, ui.widgets.shiftDownButton, ui.widgets.shiftDownMenuItem.getText(),
 				ui::doShiftDownCommand);
 
-		ui.selectionToolBar.setFloatable(false);
-		ui.selectionToolBar.setFocusable(false);
+		ui.widgets.selectionToolBar.setFloatable(false);
+		ui.widgets.selectionToolBar.setFocusable(false);
 	}
 
 }

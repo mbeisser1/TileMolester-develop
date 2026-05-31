@@ -42,10 +42,10 @@ public class TMUIPaletteActions {
 
 	public void doAddToPalettesCommand() {
 		ui.withSelectedView(view -> {
-			int retVal = ui.addPaletteDialog.showDialog(view.getFileImage().getResources().getPalettesRoot());
+			int retVal = ui.widgets.addPaletteDialog.showDialog(view.getFileImage().getResources().getPalettesRoot());
 			if (retVal == JOptionPane.OK_OPTION) {
-				FolderNode folder = ui.addPaletteDialog.getFolder();
-				PaletteItemNode palNode = new PaletteItemNode(view.getPalette(), ui.addPaletteDialog.getDescription());
+				FolderNode folder = ui.widgets.addPaletteDialog.getFolder();
+				PaletteItemNode palNode = new PaletteItemNode(view.getPalette(), ui.widgets.addPaletteDialog.getDescription());
 				folder.add(palNode);
 				ui.refreshPalettesMenu();
 			}
@@ -54,7 +54,7 @@ public class TMUIPaletteActions {
 
 	public void doOrganizePalettesCommand() {
 		ui.withSelectedView(view -> {
-			ui.organizePalettesDialog.showDialog(view.getFileImage().getResources().getPalettesRoot());
+			ui.widgets.organizePalettesDialog.showDialog(view.getFileImage().getResources().getPalettesRoot());
 			ui.refreshPalettesMenu();
 		});
 	}
@@ -64,7 +64,7 @@ public class TMUIPaletteActions {
 			Color newColor = JColorChooser.showDialog(ui, "Edit Color", new Color(view.getFGColor()));
 			if (newColor != null) {
 				int rgb = newColor.getRGB();
-				TMPaletteVizualiser vizualiser = ui.palettePane.getVizualiser();
+				TMPaletteVizualiser vizualiser = ui.widgets.palettePane.getVizualiser();
 				int colorIndex = vizualiser.getLastIndex();
 
 				view.addReversibleAction(new ReversiblePaletteEditAction(view, view.getPalette(), colorIndex,
@@ -88,9 +88,9 @@ public class TMUIPaletteActions {
 
 	public void doPaletteSizeCommand() {
 		ui.withSelectedView(view -> {
-			int retVal = ui.paletteSizeDialog.showDialog(view.getPalette().getSize());
+			int retVal = ui.widgets.paletteSizeDialog.showDialog(view.getPalette().getSize());
 			if (retVal == JOptionPane.OK_OPTION) {
-				view.getPalette().setSize(ui.paletteSizeDialog.getPaletteSize());
+				view.getPalette().setSize(ui.widgets.paletteSizeDialog.getPaletteSize());
 				ui.refreshPalettePane();
 			}
 		});
@@ -98,11 +98,11 @@ public class TMUIPaletteActions {
 
 	public void doNewPaletteCommand() {
 		ui.withSelectedView(view -> {
-			int retVal = ui.newPaletteDialog.showDialog();
+			int retVal = ui.widgets.newPaletteDialog.showDialog();
 			if (retVal == JOptionPane.OK_OPTION) {
-				int size = ui.newPaletteDialog.getPaletteSize();
-				ColorCodec codec = ui.newPaletteDialog.getCodec();
-				int endianness = ui.newPaletteDialog.getEndianness();
+				int size = ui.widgets.newPaletteDialog.getPaletteSize();
+				ColorCodec codec = ui.widgets.newPaletteDialog.getCodec();
+				int endianness = ui.widgets.newPaletteDialog.getEndianness();
 
 				TMPalette palette = new TMPalette("ID", size, codec, endianness);
 				view.setPalette(palette);
@@ -114,13 +114,13 @@ public class TMUIPaletteActions {
 
 	public void doImportInternalPaletteCommand() {
 		ui.withSelectedView(view -> {
-			int retVal = ui.importInternalPaletteDialog.showDialog();
+			int retVal = ui.widgets.importInternalPaletteDialog.showDialog();
 			if (retVal == JOptionPane.OK_OPTION) {
-				int offset = ui.importInternalPaletteDialog.getOffset();
-				int size = ui.importInternalPaletteDialog.getPaletteSize();
-				ColorCodec codec = ui.importInternalPaletteDialog.getCodec();
-				int endianness = ui.importInternalPaletteDialog.getEndianness();
-				boolean copy = ui.importInternalPaletteDialog.getCopy();
+				int offset = ui.widgets.importInternalPaletteDialog.getOffset();
+				int size = ui.widgets.importInternalPaletteDialog.getPaletteSize();
+				ColorCodec codec = ui.widgets.importInternalPaletteDialog.getCodec();
+				int endianness = ui.widgets.importInternalPaletteDialog.getEndianness();
+				boolean copy = ui.widgets.importInternalPaletteDialog.getCopy();
 
 				byte[] data = view.getFileImage().getContents();
 				TMPalette palette = new TMPalette("ID", data, offset, size, codec, endianness, copy, false);
@@ -134,15 +134,15 @@ public class TMUIPaletteActions {
 	public void doImportExternalPaletteCommand() {
 		ui.withSelectedView(view -> {
 			if (new File(ui.lastPath).exists()) {
-				ui.paletteOpenChooser.setCurrentDirectory(new File(ui.lastPath));
+				ui.widgets.paletteOpenChooser.setCurrentDirectory(new File(ui.lastPath));
 			} else {
-				ui.paletteOpenChooser.setCurrentDirectory(new File("."));
+				ui.widgets.paletteOpenChooser.setCurrentDirectory(new File("."));
 			}
-			int retVal = ui.paletteOpenChooser.showOpenDialog(ui);
+			int retVal = ui.widgets.paletteOpenChooser.showOpenDialog(ui);
 			if (retVal == JFileChooser.APPROVE_OPTION) {
-				File file = ui.paletteOpenChooser.getSelectedFile();
+				File file = ui.widgets.paletteOpenChooser.getSelectedFile();
 
-				FileFilter ff = ui.paletteOpenChooser.getFileFilter();
+				FileFilter ff = ui.widgets.paletteOpenChooser.getFileFilter();
 				if (!(ff instanceof TMPaletteFileFilter)) {
 					ff = ui.getPaletteFilterForFile(file);
 				}

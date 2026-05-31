@@ -71,229 +71,9 @@ public class TMUI extends JFrame {
 
 	TMSelectionCanvas copiedSelection = null;
 
-	// UI components
-	mxScrollableDesktop desktop = new mxScrollableDesktop();
-	TMStatusBar statusBar = new TMStatusBar();
-	JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
-	JToolBar toolBarMDI = new JToolBar(JToolBar.HORIZONTAL);
-	JToolBar toolPalette = new JToolBar(JToolBar.VERTICAL);
-	JToolBar selectionToolBar = new JToolBar(JToolBar.VERTICAL);
-	JToolBar navBar = new JToolBar(JToolBar.HORIZONTAL);
-	JMenuBar menuBar = new JMenuBar();
-	JPanel toolPane = new JPanel(); // the drawing tools and such
-	JPanel toolBarPane = new JPanel(); // the program toolbars
-	JPanel bottomPane = new JPanel(); // palette and statusbar
-	TMPalettePane palettePane;
-
-	// file choosers
-	TMApprovedFileOpenChooser fileOpenChooser = new TMApprovedFileOpenChooser();
-	TMApprovedFileSaveChooser fileSaveChooser = new TMApprovedFileSaveChooser();
-	TMApprovedFileOpenChooser bitmapOpenChooser = new TMApprovedFileOpenChooser();
-	TMApprovedFileSaveChooser bitmapSaveChooser = new TMApprovedFileSaveChooser();
-	TMApprovedFileOpenChooser paletteOpenChooser = new TMApprovedFileOpenChooser();
-
-	TMBitmapFilters bmf = new TMBitmapFilters();
-	TMFileFilter allFilter;
-
-	// custom dialogs
-	TMGoToDialog goToDialog;
-	TMNewFileDialog newFileDialog;
-	TMCustomCodecDialog customCodecDialog;
-	TMStretchDialog stretchDialog;
-	TMCanvasSizeDialog canvasSizeDialog;
-	TMBlockSizeDialog blockSizeDialog;
-	TMAddToTreeDialog addBookmarkDialog;
-	TMAddToTreeDialog addPaletteDialog;
-	TMOrganizeTreeDialog organizeBookmarksDialog;
-	TMOrganizeTreeDialog organizePalettesDialog;
-	TMNewPaletteDialog newPaletteDialog;
-	TMPaletteSizeDialog paletteSizeDialog;
-	TMImportInternalPaletteDialog importInternalPaletteDialog;
-
-	// toolbar buttons
 	ClassLoader cl = getClass().getClassLoader();
-	TMToolButton newButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/document_add_24_regular.svg", 22, 22));
-	TMToolButton openButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/folder_open_24_regular.svg", 22, 22));
-	TMToolButton saveButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/save_24_regular.svg", 22, 22));
-	TMToolButton cutButton = new TMToolButton(new FlatSVGIcon("icons/fluent/cut_24_regular.svg", 22, 22));
-	TMToolButton copyButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/copy_24_regular.svg", 22, 22));
-	TMToolButton pasteButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/clipboard_paste_24_regular.svg", 22, 22));
-	TMToolButton undoButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/arrow_undo_24_regular.svg", 22, 22));
-	TMToolButton redoButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/arrow_redo_24_regular.svg", 22, 22));
-	TMToolButton gotoButton = new TMToolButton(new FlatSVGIcon("icons/fluent/custom/jump-to.svg", 22, 22));
-	TMToolButton addBookmarkButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/bookmark_add_24_regular.svg", 22, 22));
-	TMToolButton decWidthButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/panel_left_contract_24_regular.svg", 22, 22));
-	TMToolButton incWidthButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/panel_left_expand_24_regular.svg", 22, 22));
-	TMToolButton decHeightButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/custom/decrease-height.svg", 22, 22));
-	TMToolButton incHeightButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/custom/increase-height.svg", 22, 22));
 
-	// navigation bar buttons
-	TMToolButton minusPageButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/rewind_24_regular.svg", 22, 22));
-	TMToolButton plusPageButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/fast_forward_24_regular.svg", 22, 22));
-	TMToolButton minusRowButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/previous_frame_24_regular.svg", 22, 22));
-	TMToolButton plusRowButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/next_frame_24_regular.svg", 22, 22));
-	TMToolButton minusTileButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/custom/tile-previous.svg", 22, 22));
-	TMToolButton plusTileButton = new TMToolButton(new FlatSVGIcon("icons/fluent/custom/tile-next.svg", 22, 22));
-	TMToolButton minusByteButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/subtract_square_24_regular.svg", 22, 22));
-	TMToolButton plusByteButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/add_square_24_regular.svg", 22, 22));
-
-	// tool palette buttons
-	TMToolToggleButton selectButton = new TMToolToggleButton(
-			new FlatSVGIcon("icons/fluent/square_hint_24_regular.svg", 22, 22));
-	TMToolToggleButton zoomButton = new TMToolToggleButton(new FlatSVGIcon("icons/fluent/custom/zoom.svg", 22, 22));
-	TMToolToggleButton pickupButton = new TMToolToggleButton(
-			new FlatSVGIcon("icons/fluent/eyedropper_24_regular.svg", 22, 22));
-	TMToolToggleButton brushButton = new TMToolToggleButton(
-			new FlatSVGIcon("icons/fluent/edit_24_regular.svg", 22, 22));
-	TMToolToggleButton lineButton = new TMToolToggleButton(new FlatSVGIcon("icons/fluent/line_24_regular.svg", 22, 22));
-	TMToolToggleButton fillButton = new TMToolToggleButton(new FlatSVGIcon("icons/fluent/paint_bucket_24_regular.svg", 22, 22));
-	TMToolToggleButton replaceButton = new TMToolToggleButton(
-			new FlatSVGIcon("icons/fluent/custom/color-replace.svg", 22, 22));
-	TMToolToggleButton moveButton = new TMToolToggleButton(
-			new FlatSVGIcon("icons/fluent/arrow_move_24_regular.svg", 22, 22));
-
-	// selection palette buttons
-	TMToolButton mirrorButton = new TMToolButton(new FlatSVGIcon("icons/fluent/flip_horizontal_24_regular.svg", 22, 22));
-	TMToolButton flipButton = new TMToolButton(new FlatSVGIcon("icons/fluent/flip_vertical_24_regular.svg", 22, 22));
-	TMToolButton rotateRightButton = new TMToolButton(
-			new FlatSVGIcon("icons/fluent/rotate_right_24_regular.svg", 22, 22));
-	TMToolButton rotateLeftButton = new TMToolButton(new FlatSVGIcon("icons/fluent/rotate_left_24_regular.svg", 22, 22));
-
-	TMToolButton shiftLeftButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_left_24_regular.svg", 22, 22));
-	TMToolButton shiftRightButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_right_24_regular.svg", 22, 22));
-	TMToolButton shiftUpButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_above_24_regular.svg", 22, 22));
-	TMToolButton shiftDownButton = new TMToolButton(new FlatSVGIcon("icons/fluent/table_move_below_24_regular.svg", 22, 22));
-
-	// File menu
-	JMenu fileMenu = new JMenu("File");
-	JMenuItem newMenuItem = new JMenuItem("New...");
-	JMenuItem openMenuItem = new JMenuItem("Open...");
-	JMenu reopenMenu = new JMenu("Reopen");
-	JMenuItem closeMenuItem = new JMenuItem("Close");
-	JMenuItem closeAllMenuItem = new JMenuItem("Close All");
-	JMenuItem saveMenuItem = new JMenuItem("Save");
-	JMenuItem saveAsMenuItem = new JMenuItem("Save As...");
-	JMenuItem saveAllMenuItem = new JMenuItem("Save All");
-	JMenuItem exitMenuItem = new JMenuItem("Exit");
-	// Edit menu
-	JMenu editMenu = new JMenu("Edit");
-	JMenuItem undoMenuItem = new JMenuItem("Undo");
-	JMenuItem redoMenuItem = new JMenuItem("Redo");
-	JMenuItem cutMenuItem = new JMenuItem("Cut");
-	JMenuItem copyMenuItem = new JMenuItem("Copy");
-	JMenuItem pasteMenuItem = new JMenuItem("Paste");
-	JMenuItem clearMenuItem = new JMenuItem("Clear");
-	JMenuItem selectAllMenuItem = new JMenuItem("Select All");
-	JMenuItem copyToMenuItem = new JMenuItem("Export As...");
-	JMenuItem pasteFromMenuItem = new JMenuItem("Paste From...");
-	JMenuItem newSelectionMenuItem = new JMenuItem("New Selection");
-	JMenuItem applySelectionMenuItem = new JMenuItem("Apply Selection");
-	// Image menu
-	JMenu imageMenu = new JMenu("Image");
-	JMenuItem mirrorMenuItem = new JMenuItem("Mirror");
-	JMenuItem flipMenuItem = new JMenuItem("Flip");
-	JMenuItem rotateRightMenuItem = new JMenuItem("Rotate Right");
-	JMenuItem rotateLeftMenuItem = new JMenuItem("Rotate Left");
-	JMenuItem shiftLeftMenuItem = new JMenuItem("Shift Left");
-	JMenuItem shiftRightMenuItem = new JMenuItem("Shift Right");
-	JMenuItem shiftUpMenuItem = new JMenuItem("Shift Up");
-	JMenuItem shiftDownMenuItem = new JMenuItem("Shift Down");
-	JMenuItem canvasSizeMenuItem = new JMenuItem("Canvas Size...");
-	JMenuItem stretchMenuItem = new JMenuItem("Stretch...");
-	// View menu
-	JMenu viewMenu = new JMenu("View");
-	JCheckBoxMenuItem statusBarMenuItem = new JCheckBoxMenuItem("Statusbar");
-	JCheckBoxMenuItem toolBarMenuItem = new JCheckBoxMenuItem("Toolbar");
-	JCheckBoxMenuItem darkModeMenuItem = new JCheckBoxMenuItem("Dark mode");
-	JMenu tileCodecMenu = new JMenu("Codec");
-	JMenu zoomMenu = new JMenu("Zoom");
-	JMenuItem zoomInMenuItem = new JMenuItem("In");
-	JMenuItem zoomOutMenuItem = new JMenuItem("Out");
-	JMenuItem _100MenuItem = new JMenuItem("100%");
-	JMenuItem _200MenuItem = new JMenuItem("200%");
-	JMenuItem _400MenuItem = new JMenuItem("400%");
-	JMenuItem _800MenuItem = new JMenuItem("800%");
-	JMenuItem _1600MenuItem = new JMenuItem("1600%");
-	JMenuItem _3200MenuItem = new JMenuItem("3200%");
-	JMenu blockSizeMenu = new JMenu("Block Size");
-	JCheckBoxMenuItem sizeBlockToCanvasMenuItem = new JCheckBoxMenuItem("Full Canvas");
-	JMenuItem customBlockSizeMenuItem = new JMenuItem("Custom...");
-	JRadioButtonMenuItem rowInterleaveBlocksMenuItem = new JRadioButtonMenuItem("Row-interleave Blocks");
-	JMenu modeMenu = new JMenu("Mode");
-	JRadioButtonMenuItem _1DimensionalMenuItem = new JRadioButtonMenuItem("1-Dimensional");
-	JRadioButtonMenuItem _2DimensionalMenuItem = new JRadioButtonMenuItem("2-Dimensional");
-	JCheckBoxMenuItem blockGridMenuItem = new JCheckBoxMenuItem("Block Grid");
-	JCheckBoxMenuItem tileGridMenuItem = new JCheckBoxMenuItem("Tile Grid");
-	JCheckBoxMenuItem pixelGridMenuItem = new JCheckBoxMenuItem("Pixel Grid");
-	// Navigate menu
-	JMenu navigateMenu = new JMenu("Navigate");
-	JMenuItem goToMenuItem = new JMenuItem("Go To...");
-	JMenuItem goToAgainMenuItem = new JMenuItem("Go To Again");
-	JMenuItem addToBookmarksMenuItem = new JMenuItem("Add To Bookmarks...");
-	JMenuItem organizeBookmarksMenuItem = new JMenuItem("Organize Bookmarks...");
-	// private JMenuItem saveBookmarksMenuItem = new JMenuItem("Save Bookmarks");
-	// Palette menu
-	JMenu paletteMenu = new JMenu("Palette");
-	JMenuItem editColorsMenuItem = new JMenuItem("Edit Color");
-	JMenu colorCodecMenu = new JMenu("Format");
-	JMenu paletteEndiannessMenu = new JMenu("Endianness");
-	JRadioButtonMenuItem paletteLittleEndianMenuItem = new JRadioButtonMenuItem("Little");
-	JRadioButtonMenuItem paletteBigEndianMenuItem = new JRadioButtonMenuItem("Big");
-	JRadioButtonMenuItem dummyPaletteMenuItem = new JRadioButtonMenuItem();
-	JMenuItem paletteSizeMenuItem = new JMenuItem("Size...");
-	JMenuItem newPaletteMenuItem = new JMenuItem("New...");
-	JMenu importPaletteMenu = new JMenu("Import From");
-	JMenuItem importInternalPaletteMenuItem = new JMenuItem("This File...");
-	JMenuItem importExternalPaletteMenuItem = new JMenuItem("Another File...");
-	JMenuItem addToPalettesMenuItem = new JMenuItem("Add To Palettes...");
-	JMenuItem organizePalettesMenuItem = new JMenuItem("Organize Palettes...");
-	// private JMenuItem savePalettesMenuItem = new JMenuItem("Save Palettes");
-	// private JMenuItem exportPaletteMenuItem = new JMenuItem("Export..."); // tpl,
-	// c, asm, java?
-	// Window menu
-	JMenu windowMenu = new JMenu("Window");
-	JMenuItem newWindowMenuItem = new JMenuItem("New Window");
-	JMenuItem tileMenuItem = new JMenuItem("Tile");
-	JMenuItem cascadeMenuItem = new JMenuItem("Cascade");
-	JMenuItem arrangeIconsMenuItem = new JMenuItem("Arrange Icons");
-	// Help menu
-	JMenu helpMenu = new JMenu("Help");
-	JMenuItem helpTopicsMenuItem = new JMenuItem("Help Topics");
-	// private JMenuItem tipMenuItem = new JMenuItem("Tip of the Millennium..."); //
-	// Still say no to drugs, okay?
-	JMenuItem aboutMenuItem = new JMenuItem("About Tile Molester...");
-
-	// button groups
-	//private ButtonGroup toolButtonGroup = new ButtonGroup();
-	ButtonGroup colorCodecButtonGroup = new ButtonGroup();
-	ButtonGroup tileCodecButtonGroup = new ButtonGroup();
-	ButtonGroup paletteButtonGroup = new ButtonGroup();
-	ButtonGroup modeButtonGroup = new ButtonGroup();
-	ButtonGroup paletteEndiannessButtonGroup = new ButtonGroup();
-
-	Map<TileCodec, TMTileCodecMenuItem> tileCodecButtonHashtable = new HashMap<>();
-	Map<ColorCodec, TMColorCodecMenuItem> colorCodecButtonHashtable = new HashMap<>();
-	Map<TMPalette, TMPaletteMenuItem> paletteButtonHashtable = new HashMap<>();
-	Map<byte[], TMFileListener> fileListenerHashtable = new HashMap<>();
+	final TMUIWidgets widgets = new TMUIWidgets();
 
 	private Xlator xl;
 
@@ -337,7 +117,7 @@ public class TMUI extends JFrame {
 			System.exit(0);
 		}
 
-		allFilter = new TMAllFilter(xlate("All_Files"));
+		widgets.allFilter = new TMAllFilter(xlate("All_Files"));
 
 		
 		setLocale(locale);
@@ -346,107 +126,107 @@ public class TMUI extends JFrame {
 		// separator.setForeground(Color.decode("#292929"));
 
 		// File menu
-		fileMenu.setText(xlate("File"));
-		newMenuItem.setText(xlate("New"));
-		openMenuItem.setText(xlate("Open"));
-		reopenMenu.setText(xlate("Reopen"));
-		closeMenuItem.setText(xlate("Close"));
-		closeAllMenuItem.setText(xlate("Close_All"));
-		saveMenuItem.setText(xlate("Save"));
-		saveAsMenuItem.setText(xlate("Save_As"));
-		saveAllMenuItem.setText(xlate("Save_All"));
-		exitMenuItem.setText(xlate("Exit"));
+		widgets.fileMenu.setText(xlate("File"));
+		widgets.newMenuItem.setText(xlate("New"));
+		widgets.openMenuItem.setText(xlate("Open"));
+		widgets.reopenMenu.setText(xlate("Reopen"));
+		widgets.closeMenuItem.setText(xlate("Close"));
+		widgets.closeAllMenuItem.setText(xlate("Close_All"));
+		widgets.saveMenuItem.setText(xlate("Save"));
+		widgets.saveAsMenuItem.setText(xlate("Save_As"));
+		widgets.saveAllMenuItem.setText(xlate("Save_All"));
+		widgets.exitMenuItem.setText(xlate("Exit"));
 		// Edit menu
-		editMenu.setText(xlate("Edit"));
-		undoMenuItem.setText(xlate("Undo"));
-		redoMenuItem.setText(xlate("Redo"));
-		cutMenuItem.setText(xlate("Cut"));
-		copyMenuItem.setText(xlate("Copy"));
-		pasteMenuItem.setText(xlate("Paste"));
-		clearMenuItem.setText(xlate("Clear"));
-		selectAllMenuItem.setText(xlate("Select_All"));
-		copyToMenuItem.setText(xlate("Export_As"));
-		pasteFromMenuItem.setText(xlate("Paste_From"));
-		newSelectionMenuItem.setText(xlate("New_Selection"));
-		applySelectionMenuItem.setText(xlate("Apply_Selection"));
+		widgets.editMenu.setText(xlate("Edit"));
+		widgets.undoMenuItem.setText(xlate("Undo"));
+		widgets.redoMenuItem.setText(xlate("Redo"));
+		widgets.cutMenuItem.setText(xlate("Cut"));
+		widgets.copyMenuItem.setText(xlate("Copy"));
+		widgets.pasteMenuItem.setText(xlate("Paste"));
+		widgets.clearMenuItem.setText(xlate("Clear"));
+		widgets.selectAllMenuItem.setText(xlate("Select_All"));
+		widgets.copyToMenuItem.setText(xlate("Export_As"));
+		widgets.pasteFromMenuItem.setText(xlate("Paste_From"));
+		widgets.newSelectionMenuItem.setText(xlate("New_Selection"));
+		widgets.applySelectionMenuItem.setText(xlate("Apply_Selection"));
 		// Image menu
-		imageMenu.setText(xlate("Image"));
-		mirrorMenuItem.setText(xlate("Mirror"));
-		flipMenuItem.setText(xlate("Flip"));
-		rotateRightMenuItem.setText(xlate("Rotate_Right"));
-		rotateLeftMenuItem.setText(xlate("Rotate_Left"));
-		shiftLeftMenuItem.setText(xlate("Shift_Left"));
-		shiftRightMenuItem.setText(xlate("Shift_Right"));
-		shiftUpMenuItem.setText(xlate("Shift_Up"));
-		shiftDownMenuItem.setText(xlate("Shift_Down"));
-		canvasSizeMenuItem.setText(xlate("Canvas_Size"));
-		stretchMenuItem.setText(xlate("Stretch"));
+		widgets.imageMenu.setText(xlate("Image"));
+		widgets.mirrorMenuItem.setText(xlate("Mirror"));
+		widgets.flipMenuItem.setText(xlate("Flip"));
+		widgets.rotateRightMenuItem.setText(xlate("Rotate_Right"));
+		widgets.rotateLeftMenuItem.setText(xlate("Rotate_Left"));
+		widgets.shiftLeftMenuItem.setText(xlate("Shift_Left"));
+		widgets.shiftRightMenuItem.setText(xlate("Shift_Right"));
+		widgets.shiftUpMenuItem.setText(xlate("Shift_Up"));
+		widgets.shiftDownMenuItem.setText(xlate("Shift_Down"));
+		widgets.canvasSizeMenuItem.setText(xlate("Canvas_Size"));
+		widgets.stretchMenuItem.setText(xlate("Stretch"));
 		// View menu
-		viewMenu.setText(xlate("View"));
-		statusBarMenuItem.setText(xlate("Statusbar"));
-		toolBarMenuItem.setText(xlate("Toolbar"));
-		darkModeMenuItem.setText(xlate("Dark_Mode"));
-		tileCodecMenu.setText(xlate("Codec"));
-		zoomMenu.setText(xlate("Zoom"));
-		zoomInMenuItem.setText(xlate("In"));
-		zoomOutMenuItem.setText(xlate("Out"));
-		_100MenuItem.setText(xlate("100%"));
-		_200MenuItem.setText(xlate("200%"));
-		_400MenuItem.setText(xlate("400%"));
-		_800MenuItem.setText(xlate("800%"));
-		_1600MenuItem.setText(xlate("1600%"));
-		_3200MenuItem.setText(xlate("3200%"));
-		modeMenu.setText(xlate("Mode"));
-		_1DimensionalMenuItem.setText(xlate("1_Dimensional"));
-		_2DimensionalMenuItem.setText(xlate("2_Dimensional"));
-		blockSizeMenu.setText(xlate("Block_Size"));
-		sizeBlockToCanvasMenuItem.setText(xlate("Full_Canvas"));
-		customBlockSizeMenuItem.setText(xlate("Custom_Block_Size"));
-		rowInterleaveBlocksMenuItem.setText(xlate("Row_Interleave_Blocks"));
-		blockGridMenuItem.setText(xlate("Block_Grid"));
-		tileGridMenuItem.setText(xlate("Tile_Grid"));
-		pixelGridMenuItem.setText(xlate("Pixel_Grid"));
+		widgets.viewMenu.setText(xlate("View"));
+		widgets.statusBarMenuItem.setText(xlate("Statusbar"));
+		widgets.toolBarMenuItem.setText(xlate("Toolbar"));
+		widgets.darkModeMenuItem.setText(xlate("Dark_Mode"));
+		widgets.tileCodecMenu.setText(xlate("Codec"));
+		widgets.zoomMenu.setText(xlate("Zoom"));
+		widgets.zoomInMenuItem.setText(xlate("In"));
+		widgets.zoomOutMenuItem.setText(xlate("Out"));
+		widgets._100MenuItem.setText(xlate("100%"));
+		widgets._200MenuItem.setText(xlate("200%"));
+		widgets._400MenuItem.setText(xlate("400%"));
+		widgets._800MenuItem.setText(xlate("800%"));
+		widgets._1600MenuItem.setText(xlate("1600%"));
+		widgets._3200MenuItem.setText(xlate("3200%"));
+		widgets.modeMenu.setText(xlate("Mode"));
+		widgets._1DimensionalMenuItem.setText(xlate("1_Dimensional"));
+		widgets._2DimensionalMenuItem.setText(xlate("2_Dimensional"));
+		widgets.blockSizeMenu.setText(xlate("Block_Size"));
+		widgets.sizeBlockToCanvasMenuItem.setText(xlate("Full_Canvas"));
+		widgets.customBlockSizeMenuItem.setText(xlate("Custom_Block_Size"));
+		widgets.rowInterleaveBlocksMenuItem.setText(xlate("Row_Interleave_Blocks"));
+		widgets.blockGridMenuItem.setText(xlate("Block_Grid"));
+		widgets.tileGridMenuItem.setText(xlate("Tile_Grid"));
+		widgets.pixelGridMenuItem.setText(xlate("Pixel_Grid"));
 		// Navigate menu
-		navigateMenu.setText(xlate("Navigate"));
-		goToMenuItem.setText(xlate("Go_To"));
-		goToAgainMenuItem.setText(xlate("Go_To_Again"));
-		addToBookmarksMenuItem.setText(xlate("Add_To_Bookmarks"));
-		organizeBookmarksMenuItem.setText(xlate("Organize_Bookmarks"));
+		widgets.navigateMenu.setText(xlate("Navigate"));
+		widgets.goToMenuItem.setText(xlate("Go_To"));
+		widgets.goToAgainMenuItem.setText(xlate("Go_To_Again"));
+		widgets.addToBookmarksMenuItem.setText(xlate("Add_To_Bookmarks"));
+		widgets.organizeBookmarksMenuItem.setText(xlate("Organize_Bookmarks"));
 		// Palette menu
-		paletteMenu.setText(xlate("Palette"));
-		editColorsMenuItem.setText(xlate("Edit_Color"));
-		colorCodecMenu.setText(xlate("Format"));
-		paletteEndiannessMenu.setText(xlate("Endianness"));
-		paletteLittleEndianMenuItem.setText(xlate("Little_Endian"));
-		paletteBigEndianMenuItem.setText(xlate("Big_Endian"));
-		paletteSizeMenuItem.setText(xlate("Size"));
-		newPaletteMenuItem.setText(xlate("New"));
-		importPaletteMenu.setText(xlate("Import_From"));
-		importInternalPaletteMenuItem.setText(xlate("This_File"));
-		importExternalPaletteMenuItem.setText(xlate("Another_File"));
-		addToPalettesMenuItem.setText(xlate("Add_To_Palettes"));
-		organizePalettesMenuItem.setText(xlate("Organize_Palettes"));
+		widgets.paletteMenu.setText(xlate("Palette"));
+		widgets.editColorsMenuItem.setText(xlate("Edit_Color"));
+		widgets.colorCodecMenu.setText(xlate("Format"));
+		widgets.paletteEndiannessMenu.setText(xlate("Endianness"));
+		widgets.paletteLittleEndianMenuItem.setText(xlate("Little_Endian"));
+		widgets.paletteBigEndianMenuItem.setText(xlate("Big_Endian"));
+		widgets.paletteSizeMenuItem.setText(xlate("Size"));
+		widgets.newPaletteMenuItem.setText(xlate("New"));
+		widgets.importPaletteMenu.setText(xlate("Import_From"));
+		widgets.importInternalPaletteMenuItem.setText(xlate("This_File"));
+		widgets.importExternalPaletteMenuItem.setText(xlate("Another_File"));
+		widgets.addToPalettesMenuItem.setText(xlate("Add_To_Palettes"));
+		widgets.organizePalettesMenuItem.setText(xlate("Organize_Palettes"));
 		// Window menu
-		windowMenu.setText(xlate("Window"));
-		newWindowMenuItem.setText(xlate("New_Window"));
-		tileMenuItem.setText(xlate("Tile"));
-		cascadeMenuItem.setText(xlate("Cascade"));
-		arrangeIconsMenuItem.setText(xlate("Arrange_Icons"));
+		widgets.windowMenu.setText(xlate("Window"));
+		widgets.newWindowMenuItem.setText(xlate("New_Window"));
+		widgets.tileMenuItem.setText(xlate("Tile"));
+		widgets.cascadeMenuItem.setText(xlate("Cascade"));
+		widgets.arrangeIconsMenuItem.setText(xlate("Arrange_Icons"));
 		// Help menu
-		helpMenu.setText(xlate("Help"));
-		helpTopicsMenuItem.setText(xlate("Help_Topics"));
-		aboutMenuItem.setText(xlate("About_Tile_Molester"));
+		widgets.helpMenu.setText(xlate("Help"));
+		widgets.helpTopicsMenuItem.setText(xlate("Help_Topics"));
+		widgets.aboutMenuItem.setText(xlate("About_Tile_Molester"));
 
 		UIManager.put("OptionPane.yesButtonText", xlate("Yes"));
 		UIManager.put("OptionPane.noButtonText", xlate("No"));
 		UIManager.put("OptionPane.cancelButtonText", xlate("Cancel"));
 		UIManager.put("OptionPane.okButtonText", xlate("OK"));
 
-		fileOpenChooser.setDialogTitle(xlate("Open_File_Dialog_Title"));
-		fileSaveChooser.setDialogTitle(xlate("Save_As_Dialog_Title"));
-		bitmapOpenChooser.setDialogTitle(xlate("Paste_From_Dialog_Title"));
-		bitmapSaveChooser.setDialogTitle(xlate("Export_As_Dialog_Title"));
-		paletteOpenChooser.setDialogTitle(xlate("Open_Palette_Dialog_Title"));
+		widgets.fileOpenChooser.setDialogTitle(xlate("Open_File_Dialog_Title"));
+		widgets.fileSaveChooser.setDialogTitle(xlate("Save_As_Dialog_Title"));
+		widgets.bitmapOpenChooser.setDialogTitle(xlate("Paste_From_Dialog_Title"));
+		widgets.bitmapSaveChooser.setDialogTitle(xlate("Export_As_Dialog_Title"));
+		widgets.paletteOpenChooser.setDialogTitle(xlate("Open_Palette_Dialog_Title"));
 
 		///////// Read specs
 		try {
@@ -477,22 +257,22 @@ public class TMUI extends JFrame {
 		//////////
 
 		// create dialogs.
-		goToDialog = new TMGoToDialog(this, xl);
-		newFileDialog = new TMNewFileDialog(this, xl);
-		// customCodecDialog = new TMCustomCodecDialog(this, "Custom Codec", true, xl);
-		stretchDialog = new TMStretchDialog(this, xl);
-		canvasSizeDialog = new TMCanvasSizeDialog(this, xl);
-		blockSizeDialog = new TMBlockSizeDialog(this, xl);
-		addBookmarkDialog = new TMAddToTreeDialog(this, "Add_To_Bookmarks_Dialog_Title", xl);
-		addPaletteDialog = new TMAddToTreeDialog(this, "Add_To_Palettes_Dialog_Title", xl);
-		organizeBookmarksDialog = new TMOrganizeTreeDialog(this, "Organize_Bookmarks_Dialog_Title", xl);
-		organizePalettesDialog = new TMOrganizeTreeDialog(this, "Organize_Palettes_Dialog_Title", xl);
-		newPaletteDialog = new TMNewPaletteDialog(this, xl);
-		paletteSizeDialog = new TMPaletteSizeDialog(this, xl);
-		importInternalPaletteDialog = new TMImportInternalPaletteDialog(this, xl);
+		widgets.goToDialog = new TMGoToDialog(this, xl);
+		widgets.newFileDialog = new TMNewFileDialog(this, xl);
+		// widgets.customCodecDialog = new TMCustomCodecDialog(this, "Custom Codec", true, xl);
+		widgets.stretchDialog = new TMStretchDialog(this, xl);
+		widgets.canvasSizeDialog = new TMCanvasSizeDialog(this, xl);
+		widgets.blockSizeDialog = new TMBlockSizeDialog(this, xl);
+		widgets.addBookmarkDialog = new TMAddToTreeDialog(this, "Add_To_Bookmarks_Dialog_Title", xl);
+		widgets.addPaletteDialog = new TMAddToTreeDialog(this, "Add_To_Palettes_Dialog_Title", xl);
+		widgets.organizeBookmarksDialog = new TMOrganizeTreeDialog(this, "Organize_Bookmarks_Dialog_Title", xl);
+		widgets.organizePalettesDialog = new TMOrganizeTreeDialog(this, "Organize_Palettes_Dialog_Title", xl);
+		widgets.newPaletteDialog = new TMNewPaletteDialog(this, xl);
+		widgets.paletteSizeDialog = new TMPaletteSizeDialog(this, xl);
+		widgets.importInternalPaletteDialog = new TMImportInternalPaletteDialog(this, xl);
 
-		newPaletteDialog.setCodecs(colorcodecs);
-		importInternalPaletteDialog.setCodecs(colorcodecs);
+		widgets.newPaletteDialog.setCodecs(colorcodecs);
+		widgets.importInternalPaletteDialog.setCodecs(colorcodecs);
 
 		menuBuilder = new TMUIMenuBuilder(this);
 		toolbarBuilder = new TMUIToolbarBuilder(this);
@@ -513,22 +293,22 @@ public class TMUI extends JFrame {
 		// main toolbar
 		toolbarBuilder.buildToolBar();
 		toolbarBuilder.buildNavBar();
-		toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT));
-		toolBarPane.add(toolBar);
-		toolBarPane.add(toolBarMDI);
-		toolBarPane.add(navBar);
-		pane.add(toolBarPane, BorderLayout.NORTH);
+		widgets.toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT));
+		widgets.toolBarPane.add(widgets.toolBar);
+		widgets.toolBarPane.add(widgets.toolBarMDI);
+		widgets.toolBarPane.add(widgets.navBar);
+		pane.add(widgets.toolBarPane, BorderLayout.NORTH);
 
-		// desktop
-		pane.add(new JScrollPane(desktop), BorderLayout.CENTER);
+		// widgets.desktop
+		pane.add(new JScrollPane(widgets.desktop), BorderLayout.CENTER);
 
 		// palette pane & statusbar
-		palettePane = new TMPalettePane(this);
-		// statusBar.setBorder(new BevelBorder(BevelBorder.LOWERED));
-		bottomPane.setLayout(new BorderLayout());
-		bottomPane.add(palettePane, BorderLayout.CENTER);
-		bottomPane.add(statusBar, BorderLayout.SOUTH);
-		pane.add(bottomPane, BorderLayout.SOUTH);
+		widgets.palettePane = new TMPalettePane(this);
+		// widgets.statusBar.setBorder(new BevelBorder(BevelBorder.LOWERED));
+		widgets.bottomPane.setLayout(new BorderLayout());
+		widgets.bottomPane.add(widgets.palettePane, BorderLayout.CENTER);
+		widgets.bottomPane.add(widgets.statusBar, BorderLayout.SOUTH);
+		pane.add(widgets.bottomPane, BorderLayout.SOUTH);
 
 		JPanel barPane = new JPanel();
 		// tool palettes
@@ -536,15 +316,15 @@ public class TMUI extends JFrame {
 		toolbarBuilder.buildSelectionToolBar();
 		//barPane.setLayout(new GridLayout(1, 2));
 
-		barPane.add(selectionToolBar);
-		barPane.add(toolPalette);
-		toolPane.setLayout(new BorderLayout());
-		toolPane.add(barPane, BorderLayout.NORTH);
-		pane.add(toolPane, BorderLayout.WEST);
+		barPane.add(widgets.selectionToolBar);
+		barPane.add(widgets.toolPalette);
+		widgets.toolPane.setLayout(new BorderLayout());
+		widgets.toolPane.add(barPane, BorderLayout.NORTH);
+		pane.add(widgets.toolPane, BorderLayout.WEST);
 
 		// menus
 		menuBuilder.buildMenuBar();
-		setJMenuBar(menuBar);
+		setJMenuBar(widgets.menuBar);
 		buildReopenMenu();
 
 		initTileCodecUIStuff();
@@ -552,28 +332,28 @@ public class TMUI extends JFrame {
 		initPaletteOpenChooser();
 
 		// Set up file save chooser.
-		fileSaveChooser.setAcceptAllFileFilterUsed(false);
-		fileSaveChooser.addChoosableFileFilter(allFilter);
-		fileSaveChooser.setFileFilter(allFilter);
+		widgets.fileSaveChooser.setAcceptAllFileFilterUsed(false);
+		widgets.fileSaveChooser.addChoosableFileFilter(widgets.allFilter);
+		widgets.fileSaveChooser.setFileFilter(widgets.allFilter);
 
 		// Set up bitmap open chooser.
-		bitmapOpenChooser.setAcceptAllFileFilterUsed(false);
-		bitmapOpenChooser.addChoosableFileFilter(bmf.supported);
-		bitmapOpenChooser.addChoosableFileFilter(bmf.gif);
-		bitmapOpenChooser.addChoosableFileFilter(bmf.jpeg);
-		bitmapOpenChooser.addChoosableFileFilter(bmf.png);
-		bitmapOpenChooser.addChoosableFileFilter(bmf.bmp);
-		bitmapOpenChooser.addChoosableFileFilter(bmf.pcx);
-		bitmapOpenChooser.setFileFilter(bmf.supported);
+		widgets.bitmapOpenChooser.setAcceptAllFileFilterUsed(false);
+		widgets.bitmapOpenChooser.addChoosableFileFilter(widgets.bmf.supported);
+		widgets.bitmapOpenChooser.addChoosableFileFilter(widgets.bmf.gif);
+		widgets.bitmapOpenChooser.addChoosableFileFilter(widgets.bmf.jpeg);
+		widgets.bitmapOpenChooser.addChoosableFileFilter(widgets.bmf.png);
+		widgets.bitmapOpenChooser.addChoosableFileFilter(widgets.bmf.bmp);
+		widgets.bitmapOpenChooser.addChoosableFileFilter(widgets.bmf.pcx);
+		widgets.bitmapOpenChooser.setFileFilter(widgets.bmf.supported);
 
 		// Set up bitmap save chooser.
-		bitmapSaveChooser.setAcceptAllFileFilterUsed(false);
-		bitmapSaveChooser.addChoosableFileFilter(bmf.gif);
-		bitmapSaveChooser.addChoosableFileFilter(bmf.jpeg);
-		bitmapSaveChooser.addChoosableFileFilter(bmf.png);
-		bitmapSaveChooser.addChoosableFileFilter(bmf.bmp);
-		bitmapSaveChooser.addChoosableFileFilter(bmf.pcx);
-		bitmapSaveChooser.setFileFilter(bmf.bmp);
+		widgets.bitmapSaveChooser.setAcceptAllFileFilterUsed(false);
+		widgets.bitmapSaveChooser.addChoosableFileFilter(widgets.bmf.gif);
+		widgets.bitmapSaveChooser.addChoosableFileFilter(widgets.bmf.jpeg);
+		widgets.bitmapSaveChooser.addChoosableFileFilter(widgets.bmf.png);
+		widgets.bitmapSaveChooser.addChoosableFileFilter(widgets.bmf.bmp);
+		widgets.bitmapSaveChooser.addChoosableFileFilter(widgets.bmf.pcx);
+		widgets.bitmapSaveChooser.setFileFilter(widgets.bmf.bmp);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -614,7 +394,7 @@ public class TMUI extends JFrame {
 		// MDI menus and such shouldn't be shown until file loaded.
 		refresh.setMdiMode(false);
 
-		toolBarPane.setVisible(viewToolBar);
+		widgets.toolBarPane.setVisible(viewToolBar);
 
 		com.formdev.flatlaf.FlatLaf.updateUI();
 		// Show and maximize.
@@ -625,14 +405,14 @@ public class TMUI extends JFrame {
 	 * Deselects all tools in the tool palette.
 	 **/
 	public void deselectToolPalette() {
-		selectButton.setSelected(false);
-		zoomButton.setSelected(false);
-		pickupButton.setSelected(false);
-		brushButton.setSelected(false);
-		lineButton.setSelected(false);
-		fillButton.setSelected(false);
-		replaceButton.setSelected(false);
-		moveButton.setSelected(false);
+		widgets.selectButton.setSelected(false);
+		widgets.zoomButton.setSelected(false);
+		widgets.pickupButton.setSelected(false);
+		widgets.brushButton.setSelected(false);
+		widgets.lineButton.setSelected(false);
+		widgets.fillButton.setSelected(false);
+		widgets.replaceButton.setSelected(false);
+		widgets.moveButton.setSelected(false);
 	}
 
 	public void saveBookmarks() {
@@ -713,7 +493,7 @@ public class TMUI extends JFrame {
 	 * Code ruthlessly stolen from some guy on the Java forums. Thanks and sorry. :)
 	 **/
 	public void doTileCommand() {
-		JInternalFrame[] frames = desktop.getAllFrames();
+		JInternalFrame[] frames = widgets.desktop.getAllFrames();
 		// count frames that aren't iconized
 		int frameCount = 0;
 		for (int i = 0; i < frames.length; i++) {
@@ -724,8 +504,8 @@ public class TMUI extends JFrame {
 		int cols = frameCount / rows;
 		int extra = frameCount % rows;
 		// number of columns with an extra row
-		int width = desktop.getWidth() / cols;
-		int height = desktop.getHeight() / rows;
+		int width = widgets.desktop.getWidth() / cols;
+		int height = widgets.desktop.getHeight() / rows;
 		int r = 0;
 		int c = 0;
 		for (int i = 0; i < frames.length; i++) {
@@ -738,12 +518,12 @@ public class TMUI extends JFrame {
 					if (c == cols - extra) {
 						// start adding an extra row
 						rows++;
-						height = desktop.getHeight() / rows;
+						height = widgets.desktop.getHeight() / rows;
 					}
 				}
 			}
 		}
-		desktop.revalidate();
+		widgets.desktop.revalidate();
 	}
 
 	/**
@@ -753,9 +533,9 @@ public class TMUI extends JFrame {
 	public void doCascadeCommand() {
 		int FRAME_OFFSET = 30;
 		int xpos = 0, ypos = 0;
-		JInternalFrame frames[] = desktop.getAllFrames();
-		int cascadeWidth = desktop.getBounds().width - 5;
-		int cascadeHeight = desktop.getBounds().height - 5;
+		JInternalFrame frames[] = widgets.desktop.getAllFrames();
+		int cascadeWidth = widgets.desktop.getBounds().width - 5;
+		int cascadeHeight = widgets.desktop.getBounds().height - 5;
 		int frameHeight = cascadeHeight - frames.length * FRAME_OFFSET;
 		int frameWidth = cascadeWidth - frames.length * FRAME_OFFSET;
 		for (int i = frames.length - 1; i >= 0; i--) {
@@ -765,24 +545,24 @@ public class TMUI extends JFrame {
 				ypos += FRAME_OFFSET;
 			}
 		}
-		desktop.revalidate();
+		widgets.desktop.revalidate();
 	}
 
 	/**
 	 * Handles menu command "Arrange Icons".
 	 **/
 	public void doArrangeIconsCommand() {
-		JInternalFrame[] frames = desktop.getAllFrames();
+		JInternalFrame[] frames = widgets.desktop.getAllFrames();
 		int xpos = 0;
 		int ypos = 0;
 		for (int i = 0; i < frames.length; i++) {
 			if (frames[i].isIcon()) {
 				JInternalFrame.JDesktopIcon icon = frames[i].getDesktopIcon();
-				icon.setLocation(xpos, desktop.getHeight() - icon.getHeight());
+				icon.setLocation(xpos, widgets.desktop.getHeight() - icon.getHeight());
 				xpos += icon.getWidth();
 			}
 		}
-		desktop.revalidate();
+		widgets.desktop.revalidate();
 	}
 
 	/**
@@ -853,7 +633,7 @@ public class TMUI extends JFrame {
 	public void doBlockGridCommand() {
 		withSelectedView(view -> {
 			view.setBlockGridVisible(!view.isBlockGridVisible());
-			blockGridMenuItem.setSelected(view.isBlockGridVisible());
+			widgets.blockGridMenuItem.setSelected(view.isBlockGridVisible());
 			view.repaint();
 		});
 	}
@@ -864,7 +644,7 @@ public class TMUI extends JFrame {
 	public void doTileGridCommand() {
 		withSelectedView(view -> {
 			view.setTileGridVisible(!view.isTileGridVisible());
-			tileGridMenuItem.setSelected(view.isTileGridVisible());
+			widgets.tileGridMenuItem.setSelected(view.isTileGridVisible());
 			view.repaint();
 		});
 	}
@@ -875,7 +655,7 @@ public class TMUI extends JFrame {
 	public void doPixelGridCommand() {
 		withSelectedView(view -> {
 			view.setPixelGridVisible(!view.isPixelGridVisible());
-			pixelGridMenuItem.setSelected(view.isPixelGridVisible());
+			widgets.pixelGridMenuItem.setSelected(view.isPixelGridVisible());
 			view.repaint();
 		});
 	}
@@ -887,8 +667,8 @@ public class TMUI extends JFrame {
 	public void doStatusBarCommand() {
 		viewStatusBar = !viewStatusBar;
 		TileMolester.settings.setViewStatusBar(viewStatusBar);
-		statusBar.setVisible(viewStatusBar);
-		statusBarMenuItem.setSelected(viewStatusBar);
+		widgets.statusBar.setVisible(viewStatusBar);
+		widgets.statusBarMenuItem.setSelected(viewStatusBar);
 	}
 
 	/**
@@ -898,8 +678,8 @@ public class TMUI extends JFrame {
 	public void doToolBarCommand() {
 		viewToolBar = !viewToolBar;
 		TileMolester.settings.setViewToolBar(viewToolBar);
-		toolBarPane.setVisible(viewToolBar);
-		toolBarMenuItem.setSelected(viewToolBar);
+		widgets.toolBarPane.setVisible(viewToolBar);
+		widgets.toolBarMenuItem.setSelected(viewToolBar);
 	}
 
 	/**
@@ -908,7 +688,7 @@ public class TMUI extends JFrame {
 	 **/
 	public void doDarkModeCommand() {
 		darkMode = !TMTheme.darkMode;
-		darkModeMenuItem.setSelected(darkMode);
+		widgets.darkModeMenuItem.setSelected(darkMode);
 		TMTheme.setDarkMode(darkMode);
 	}
 
@@ -991,10 +771,10 @@ public class TMUI extends JFrame {
 	 **/
 	public void doStretchCommand() {
 		withSelectedView(view -> {
-			int retVal = stretchDialog.showDialog(view.getEditorCanvas().getSelectionCanvas().getCols(),
+			int retVal = widgets.stretchDialog.showDialog(view.getEditorCanvas().getSelectionCanvas().getCols(),
 					view.getEditorCanvas().getSelectionCanvas().getRows());
 			if (retVal == JOptionPane.OK_OPTION) {
-				view.getEditorCanvas().stretchSelection(stretchDialog.getCols(), stretchDialog.getRows());
+				view.getEditorCanvas().stretchSelection(widgets.stretchDialog.getCols(), widgets.stretchDialog.getRows());
 			}
 		});
 	}
@@ -1004,9 +784,9 @@ public class TMUI extends JFrame {
 	 **/
 	public void doCanvasSizeCommand() {
 		withSelectedView(view -> {
-			int retVal = canvasSizeDialog.showDialog(view.getCols(), view.getRows());
+			int retVal = widgets.canvasSizeDialog.showDialog(view.getCols(), view.getRows());
 			if (retVal == JOptionPane.OK_OPTION) {
-				view.setGridSize(canvasSizeDialog.getCols(), canvasSizeDialog.getRows());
+				view.setGridSize(widgets.canvasSizeDialog.getCols(), widgets.canvasSizeDialog.getRows());
 				view.setScale(view.getScale());
 			}
 		});
@@ -1031,7 +811,7 @@ public class TMUI extends JFrame {
 	public void doSizeBlockToCanvasCommand() {
 		withSelectedView(view -> {
 			view.setSizeBlockToCanvas(!view.getSizeBlockToCanvas());
-			sizeBlockToCanvasMenuItem.setSelected(view.getSizeBlockToCanvas());
+			widgets.sizeBlockToCanvasMenuItem.setSelected(view.getSizeBlockToCanvas());
 		});
 	}
 
@@ -1040,11 +820,11 @@ public class TMUI extends JFrame {
 	 **/
 	public void doCustomBlockSizeCommand() {
 		withSelectedView(view -> {
-			int retVal = blockSizeDialog.showDialog(view.getBlockWidth(), view.getBlockHeight());
+			int retVal = widgets.blockSizeDialog.showDialog(view.getBlockWidth(), view.getBlockHeight());
 			if (retVal == JOptionPane.OK_OPTION) {
 				view.setSizeBlockToCanvas(false);
-				sizeBlockToCanvasMenuItem.setSelected(false);
-				view.setBlockDimensions(blockSizeDialog.getCols(), blockSizeDialog.getRows());
+				widgets.sizeBlockToCanvasMenuItem.setSelected(false);
+				view.setBlockDimensions(widgets.blockSizeDialog.getCols(), widgets.blockSizeDialog.getRows());
 			}
 		});
 	}
@@ -1055,7 +835,7 @@ public class TMUI extends JFrame {
 	public void doRowInterleaveBlocksCommand() {
 		withSelectedView(view -> {
 			view.setRowInterleaveBlocks(!view.getRowInterleaveBlocks());
-			rowInterleaveBlocksMenuItem.setSelected(view.getRowInterleaveBlocks());
+			widgets.rowInterleaveBlocksMenuItem.setSelected(view.getRowInterleaveBlocks());
 		});
 	}
 
@@ -1064,15 +844,15 @@ public class TMUI extends JFrame {
 	 **/
 	public void doCustomCodecCommand() {
 		withSelectedView(view -> {
-			customCodecDialog.setVisible(true);
+			widgets.customCodecDialog.setVisible(true);
 			int retVal = 0; // TODO
 			if (retVal == JOptionPane.OK_OPTION) {
-				int bpp = customCodecDialog.getBitsPerPixel();
-				int rmask = customCodecDialog.getRedMask();
-				int gmask = customCodecDialog.getBlueMask();
-				int bmask = customCodecDialog.getGreenMask();
-				int amask = customCodecDialog.getAlphaMask();
-				String desc = customCodecDialog.getDescription();
+				int bpp = widgets.customCodecDialog.getBitsPerPixel();
+				int rmask = widgets.customCodecDialog.getRedMask();
+				int gmask = widgets.customCodecDialog.getBlueMask();
+				int bmask = widgets.customCodecDialog.getGreenMask();
+				int amask = widgets.customCodecDialog.getAlphaMask();
+				String desc = widgets.customCodecDialog.getDescription();
 				DirectColorTileCodec codec = new DirectColorTileCodec("", bpp, rmask, gmask, bmask, amask, desc);
 				addTileCodec(codec);
 				view.setTileCodec(codec);
@@ -1129,7 +909,7 @@ public class TMUI extends JFrame {
 	public void fileImageModified(FileImage img) {
 		img.setModified(true);
 		setSaveButtonsEnabled(true);
-		saveAllMenuItem.setEnabled(true);
+		widgets.saveAllMenuItem.setEnabled(true);
 	}
 
 	/**
@@ -1137,8 +917,8 @@ public class TMUI extends JFrame {
 	 * @param b b value
 	 **/
 	public void setSaveButtonsEnabled(boolean b) {
-		saveButton.setEnabled(b);
-		saveMenuItem.setEnabled(b);
+		widgets.saveButton.setEnabled(b);
+		widgets.saveMenuItem.setEnabled(b);
 	}
 
 	/**
@@ -1146,8 +926,8 @@ public class TMUI extends JFrame {
 	 * @param b b value
 	 **/
 	public void setUndoButtonsEnabled(boolean b) {
-		undoButton.setEnabled(b);
-		undoMenuItem.setEnabled(b);
+		widgets.undoButton.setEnabled(b);
+		widgets.undoMenuItem.setEnabled(b);
 	}
 
 	/**
@@ -1155,8 +935,8 @@ public class TMUI extends JFrame {
 	 * @param b b value
 	 **/
 	public void setRedoButtonsEnabled(boolean b) {
-		redoButton.setEnabled(b);
-		redoMenuItem.setEnabled(b);
+		widgets.redoButton.setEnabled(b);
+		widgets.redoMenuItem.setEnabled(b);
 	}
 
 	public void disableMDIStuff() { refresh.setMdiMode(false); }
@@ -1180,9 +960,9 @@ public class TMUI extends JFrame {
 	 **/
 	public void addTileCodec(TileCodec codec) {
 		TMTileCodecMenuItem codecMenuItem = new TMTileCodecMenuItem(codec, this::doTileCodecCommand);
-		tileCodecMenu.add(codecMenuItem);
-		tileCodecButtonGroup.add(codecMenuItem);
-		tileCodecButtonHashtable.put(codec, codecMenuItem);
+		widgets.tileCodecMenu.add(codecMenuItem);
+		widgets.tileCodecButtonGroup.add(codecMenuItem);
+		widgets.tileCodecButtonHashtable.put(codec, codecMenuItem);
 	}
 
 	/**
@@ -1246,7 +1026,7 @@ public class TMUI extends JFrame {
 	public void setFGColor(int fgColor) {
 		withSelectedView(view -> {
 			view.setFGColor(fgColor);
-			palettePane.setFGColor(fgColor);
+			widgets.palettePane.setFGColor(fgColor);
 		});
 	}
 
@@ -1257,7 +1037,7 @@ public class TMUI extends JFrame {
 	public void setBGColor(int bgColor) {
 		withSelectedView(view -> {
 			view.setBGColor(bgColor);
-			palettePane.setBGColor(bgColor);
+			widgets.palettePane.setBGColor(bgColor);
 		});
 	}
 
@@ -1278,11 +1058,11 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 * Gets the desktop.
-	 * @return MDI desktop pane
+	 * Gets the widgets.desktop.
+	 * @return MDI widgets.desktop pane
 	 **/
 	public JDesktopPane getDesktop() {
-		return desktop;
+		return widgets.desktop;
 	}
 
 	/**
@@ -1314,20 +1094,20 @@ public class TMUI extends JFrame {
 	}
 
 	/**
-	 * Adds a view to the desktop.
+	 * Adds a view to the widgets.desktop.
 	 * @param view file view associated with this component
 	 **/
 	public void addViewToDesktop(TMView view) {
-		desktop.add(view);
+		widgets.desktop.add(view);
 		try {
 			view.setSelected(true);
 		} catch (java.beans.PropertyVetoException x) {
 			x.printStackTrace();
 		}
-		desktop.revalidate();
-		desktop.repaint();
+		widgets.desktop.revalidate();
+		widgets.desktop.repaint();
 
-		if (desktop.getAllFrames().length == 1) {
+		if (widgets.desktop.getAllFrames().length == 1) {
 			// this is the first frame, show the MDI toolbars and menus
 			refresh.setMdiMode(true);
 		}
@@ -1335,7 +1115,7 @@ public class TMUI extends JFrame {
 
 	/**
 	 * Initializes the View->Codec menu based on the tilecodecs present, and sets up
-	 * the fileOpenChooser accordingly.
+	 * the widgets.fileOpenChooser accordingly.
 	 **/
 	private void initTileCodecUIStuff() {
 		buildTileCodecsMenu();
@@ -1346,8 +1126,8 @@ public class TMUI extends JFrame {
 	 * Builds the View->Codec menu.
 	 **/
 	private void buildTileCodecsMenu() {
-		tileCodecMenu.setMnemonic(KeyEvent.VK_C);
-		tileCodecMenu.removeAll();
+		widgets.tileCodecMenu.setMnemonic(KeyEvent.VK_C);
+		widgets.tileCodecMenu.removeAll();
 		for (int i = 0; i < tilecodecs.size(); i++) {
 			addTileCodec(tilecodecs.get(i));
 		}
@@ -1358,8 +1138,8 @@ public class TMUI extends JFrame {
 	 * Builds the Palette->Format menu.
 	 **/
 	private void buildColorCodecsMenu() {
-		colorCodecMenu.setMnemonic(KeyEvent.VK_F);
-		colorCodecMenu.removeAll();
+		widgets.colorCodecMenu.setMnemonic(KeyEvent.VK_F);
+		widgets.colorCodecMenu.removeAll();
 		for (int i = 0; i < colorcodecs.size(); i++) {
 			addColorCodec(colorcodecs.get(i));
 		}
@@ -1371,17 +1151,17 @@ public class TMUI extends JFrame {
 	 **/
 	public void addColorCodec(ColorCodec codec) {
 		TMColorCodecMenuItem codecMenuItem = new TMColorCodecMenuItem(codec, this::doColorCodecCommand);
-		colorCodecMenu.add(codecMenuItem);
-		colorCodecButtonGroup.add(codecMenuItem);
-		colorCodecButtonHashtable.put(codec, codecMenuItem);
+		widgets.colorCodecMenu.add(codecMenuItem);
+		widgets.colorCodecButtonGroup.add(codecMenuItem);
+		widgets.colorCodecButtonHashtable.put(codec, codecMenuItem);
 	}
 
 	/**
 	 * Sets up the file open chooser.
 	 **/
 	private void initFileOpenChooser() {
-		fileOpenChooser.setAcceptAllFileFilterUsed(false);
-		fileOpenChooser.resetChoosableFileFilters();
+		widgets.fileOpenChooser.setAcceptAllFileFilterUsed(false);
+		widgets.fileOpenChooser.resetChoosableFileFilters();
 		ArrayList<TMTileCodecFileFilter> sortedFileFilters = new ArrayList<>();
 		for (int i = 0; i < filefilters.size(); i++) {
 			sortedFileFilters.add(filefilters.get(i));
@@ -1391,15 +1171,15 @@ public class TMUI extends JFrame {
 		String extlist = "";
 		for (int i = 0; i < sortedFileFilters.size(); i++) {
 			TMTileCodecFileFilter cff = sortedFileFilters.get(i);
-			fileOpenChooser.addChoosableFileFilter(cff);
+			widgets.fileOpenChooser.addChoosableFileFilter(cff);
 			if (i > 0)
 				extlist += ",";
 			extlist += cff.getExtlist();
 		}
 		TMFileFilter supportedFilter = new TMFileFilter(extlist, xlate("All_Supported_Formats"));
-		fileOpenChooser.addChoosableFileFilter(supportedFilter);
-		fileOpenChooser.addChoosableFileFilter(allFilter);
-		fileOpenChooser.setFileFilter(supportedFilter);
+		widgets.fileOpenChooser.addChoosableFileFilter(supportedFilter);
+		widgets.fileOpenChooser.addChoosableFileFilter(widgets.allFilter);
+		widgets.fileOpenChooser.setFileFilter(supportedFilter);
 	}
 
 	/**
@@ -1455,8 +1235,8 @@ public class TMUI extends JFrame {
 	}
 
 	private void initPaletteOpenChooser() {
-		paletteOpenChooser.setAcceptAllFileFilterUsed(false);
-		paletteOpenChooser.resetChoosableFileFilters();
+		widgets.paletteOpenChooser.setAcceptAllFileFilterUsed(false);
+		widgets.paletteOpenChooser.resetChoosableFileFilters();
 		ArrayList<TMPaletteFileFilter> sortedPaletteFilters = new ArrayList<>();
 		for (int i = 0; i < palettefilters.size(); i++) {
 			sortedPaletteFilters.add(palettefilters.get(i));
@@ -1472,15 +1252,15 @@ public class TMUI extends JFrame {
 		String extlist = "";
 		for (int i = 0; i < sortedPaletteFilters.size(); i++) {
 			TMPaletteFileFilter pff = sortedPaletteFilters.get(i);
-			paletteOpenChooser.addChoosableFileFilter(pff);
+			widgets.paletteOpenChooser.addChoosableFileFilter(pff);
 			if (i > 0) {
 				extlist += ",";
 			}
 			extlist += pff.getExtlist();
 		}
 		TMFileFilter supportedFilter = new TMFileFilter(extlist, xlate("All_Supported_Formats"));
-		paletteOpenChooser.addChoosableFileFilter(supportedFilter);
-		paletteOpenChooser.setFileFilter(sortedPaletteFilters.get(0));
+		widgets.paletteOpenChooser.addChoosableFileFilter(supportedFilter);
+		widgets.paletteOpenChooser.setFileFilter(sortedPaletteFilters.get(0));
 	}
 
 	/**
@@ -1545,10 +1325,10 @@ public class TMUI extends JFrame {
 
 		// (un)check some menu items
 		TMEditorCanvas ec = view.getEditorCanvas();
-		blockGridMenuItem.setSelected(ec.isBlockGridVisible());
-		tileGridMenuItem.setSelected(ec.isTileGridVisible());
-		pixelGridMenuItem.setSelected(ec.isPixelGridVisible());
-		rowInterleaveBlocksMenuItem.setSelected(ec.getRowInterleaveBlocks());
+		widgets.blockGridMenuItem.setSelected(ec.isBlockGridVisible());
+		widgets.tileGridMenuItem.setSelected(ec.isTileGridVisible());
+		widgets.pixelGridMenuItem.setSelected(ec.isPixelGridVisible());
+		widgets.rowInterleaveBlocksMenuItem.setSelected(ec.getRowInterleaveBlocks());
 
 		refresh.refreshModeSelection(view);
 		refresh.refreshTileCodecSelection(view);
@@ -1566,7 +1346,7 @@ public class TMUI extends JFrame {
 	 * Hide the statusbar coordenates.
 	 **/
 	public void hideStatusBarCoords() {
-		statusBar.setCoords("");
+		widgets.statusBar.setCoords("");
 	}
 
 	/**
@@ -1624,7 +1404,7 @@ public class TMUI extends JFrame {
 	 * @return currently selected file view
 	 **/
 	public TMView getSelectedView() {
-		return (TMView) desktop.getSelectedFrame();
+		return (TMView) widgets.desktop.getSelectedFrame();
 	}
 
 }

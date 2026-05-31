@@ -47,11 +47,11 @@ public class TMUIFileActions {
 
 	public void doNewCommand() {
 		// Show dialog for creating new file
-		// TMNewFileDialog ui.newFileDialog = new TMNewFileDialog(ui, xl);
-		int retVal = ui.newFileDialog.showDialog();
+		// TMNewFileDialog ui.widgets.newFileDialog = new TMNewFileDialog(ui, xl);
+		int retVal = ui.widgets.newFileDialog.showDialog();
 		if (retVal == JOptionPane.OK_OPTION) {
 			// create fileimage
-			FileImage img = new FileImage(ui.newFileDialog.getFileSize());
+			FileImage img = new FileImage(ui.widgets.newFileDialog.getFileSize());
 			new TMFileResources(img, ui);
 			// create view for it
 			TileCodec tc = ui.tilecodecs.get(0); // default
@@ -65,18 +65,18 @@ public class TMUIFileActions {
 		// set to directory of selected file, if there is one
 		TMView view = ui.getSelectedView();
 		if (view != null) {
-			ui.fileOpenChooser.setCurrentDirectory(view.getFileImage().getFile().getParentFile());
+			ui.widgets.fileOpenChooser.setCurrentDirectory(view.getFileImage().getFile().getParentFile());
 		} else if (new File(ui.lastPath).exists()) {
-			ui.fileOpenChooser.setCurrentDirectory(new File(ui.lastPath));
+			ui.widgets.fileOpenChooser.setCurrentDirectory(new File(ui.lastPath));
 		} else {
-			ui.fileOpenChooser.setCurrentDirectory(new File("."));
+			ui.widgets.fileOpenChooser.setCurrentDirectory(new File("."));
 		}
 
 		// have the user select a file
-		int retVal = ui.fileOpenChooser.showOpenDialog(ui);
+		int retVal = ui.widgets.fileOpenChooser.showOpenDialog(ui);
 		if (retVal == JFileChooser.APPROVE_OPTION) {
 			// get the selected file and open it
-			File file = ui.fileOpenChooser.getSelectedFile();
+			File file = ui.widgets.fileOpenChooser.getSelectedFile();
 			// updates the last path opened
 			ui.lastPath = file.getPath().substring(0, file.getPath().lastIndexOf(File.separator));
 			TileMolester.settings.setLastPath(ui.lastPath);
@@ -105,7 +105,7 @@ public class TMUIFileActions {
 					}
 				}
 				// remove potential file listener
-				ui.fileListenerHashtable.remove(img.getContents());
+				ui.widgets.fileListenerHashtable.remove(img.getContents());
 			}
 
 			// update recent files
@@ -113,22 +113,22 @@ public class TMUIFileActions {
 			addToRecentFiles(f);
 			buildReopenMenu();
 
-			// remove view from the FileImage and ui.desktop
+			// remove view from the FileImage and ui.widgets.desktop
 			img.removeView(view);
-			ui.desktop.remove(view);
+			ui.widgets.desktop.remove(view);
 			view.dispose();
-			ui.desktop.revalidate();
-			ui.desktop.repaint();
+			ui.widgets.desktop.revalidate();
+			ui.widgets.desktop.repaint();
 
 			img = null;
 			view = null;
 			System.gc();
 		}
 
-		ui.desktop.setSelectedFrame(null);
-		JInternalFrame[] frames = ui.desktop.getAllFrames();
+		ui.widgets.desktop.setSelectedFrame(null);
+		JInternalFrame[] frames = ui.widgets.desktop.getAllFrames();
 		if (frames.length == 0) {
-			// no more frames left on the ui.desktop, hide MDI menus and toolbars
+			// no more frames left on the ui.widgets.desktop, hide MDI menus and toolbars
 			ui.disableMDIStuff();
 			ui.setTitle("Tile Molester");
 		} else {
@@ -159,7 +159,7 @@ public class TMUIFileActions {
 	}
 
 	public void doCloseAllCommand() {
-		JInternalFrame[] frames = ui.desktop.getAllFrames();
+		JInternalFrame[] frames = ui.widgets.desktop.getAllFrames();
 		for (int i = 0; i < frames.length; i++) {
 			TMView view = (TMView) frames[i];
 			FileImage img = view.getFileImage();
@@ -182,7 +182,7 @@ public class TMUIFileActions {
 					}
 				}
 				// remove potential file listener
-				ui.fileListenerHashtable.remove(img.getContents());
+				ui.widgets.fileListenerHashtable.remove(img.getContents());
 			}
 		}
 
@@ -197,14 +197,14 @@ public class TMUIFileActions {
 
 			// remove the view
 			img.removeView(view);
-			ui.desktop.remove(view);
+			ui.widgets.desktop.remove(view);
 			view.dispose();
 		}
 
 		buildReopenMenu();
-		ui.desktop.setSelectedFrame(null);
-		ui.desktop.revalidate();
-		ui.desktop.repaint();
+		ui.widgets.desktop.setSelectedFrame(null);
+		ui.widgets.desktop.revalidate();
+		ui.widgets.desktop.repaint();
 		ui.disableMDIStuff();
 		ui.setTitle("Tile Molester");
 
@@ -235,7 +235,7 @@ public class TMUIFileActions {
 					}
 
 					// see if a filelistener should be notified
-					TMFileListener fl = ui.fileListenerHashtable.get(contents);
+					TMFileListener fl = ui.widgets.fileListenerHashtable.get(contents);
 					if (fl != null) {
 						fl.fileSaving(contents, ext);
 					}
@@ -259,11 +259,11 @@ public class TMUIFileActions {
 	public void doSaveAsCommand() {
 		TMView view = ui.getSelectedView();
 		if (view != null) {
-			ui.fileSaveChooser.setCurrentDirectory(view.getFileImage().getFile().getParentFile());
-			ui.fileSaveChooser.setSelectedFile(view.getFileImage().getFile());
-			int retVal = ui.fileSaveChooser.showSaveDialog(ui);
+			ui.widgets.fileSaveChooser.setCurrentDirectory(view.getFileImage().getFile().getParentFile());
+			ui.widgets.fileSaveChooser.setSelectedFile(view.getFileImage().getFile());
+			int retVal = ui.widgets.fileSaveChooser.showSaveDialog(ui);
 			if (retVal == JFileChooser.APPROVE_OPTION) {
-				File file = ui.fileSaveChooser.getSelectedFile();
+				File file = ui.widgets.fileSaveChooser.getSelectedFile();
 				view.getFileImage().setFile(file);
 				doSaveCommand();
 				ui.setTitle("Tile Molester - " + view.getTitle());
@@ -273,7 +273,7 @@ public class TMUIFileActions {
 	}
 
 	public void doSaveAllCommand() {
-		JInternalFrame[] frames = ui.desktop.getAllFrames();
+		JInternalFrame[] frames = ui.widgets.desktop.getAllFrames();
 		for (int i = 0; i < frames.length; i++) {
 			TMView view = (TMView) frames[i];
 			if (view.getFileImage().isModified()) {
@@ -291,7 +291,7 @@ public class TMUIFileActions {
 	public void doExitCommand() {
 		doCloseAllCommand();
 		// if all frames were closed, the operation was successful and we can exit.
-		if (ui.desktop.getAllFrames().length == 0) {
+		if (ui.widgets.desktop.getAllFrames().length == 0) {
 			TileMolester.settings.saveSettings();
 			System.exit(0);
 		}
@@ -300,7 +300,7 @@ public class TMUIFileActions {
 	public void doReopenCommand(File recentFile) {
 		if (recentFile.exists() && recentFile.canRead()) {
 			java.util.List<File> recentFiles = TileMolester.settings.getRecentFiles();
-			ui.fileOpenChooser.setFileFilter(ui.getTileCodecFilterForFile(recentFile));
+			ui.widgets.fileOpenChooser.setFileFilter(ui.getTileCodecFilterForFile(recentFile));
 			openFile(recentFile);
 			recentFiles.remove(recentFile);
 			buildReopenMenu();
@@ -328,7 +328,7 @@ public class TMUIFileActions {
 		for (int i = 0; i < ui.filelisteners.size(); i++) {
 			TMFileListener fl = ui.filelisteners.get(i);
 			if (fl.doFormatDetect(contents, ext)) {
-				ui.fileListenerHashtable.put(contents, fl);
+				ui.widgets.fileListenerHashtable.put(contents, fl);
 				fl.fileLoaded(contents, ext);
 				break;
 			}
@@ -354,7 +354,7 @@ public class TMUIFileActions {
 			new TMFileResources(img, ui);
 		}
 		// figure out mode and codec based on file filter
-		FileFilter ff = ui.fileOpenChooser.getFileFilter();
+		FileFilter ff = ui.widgets.fileOpenChooser.getFileFilter();
 		if (!(ff instanceof TMTileCodecFileFilter)) {
 			ff = ui.getTileCodecFilterForFile(file);
 		}
@@ -389,16 +389,16 @@ public class TMUIFileActions {
 	}
 
 	public void buildReopenMenu() {
-		ui.reopenMenu.removeAll();
+		ui.widgets.reopenMenu.removeAll();
 		java.util.List<File> recentFiles = TileMolester.settings.getRecentFiles();
 		if (recentFiles.size() == 0) {
 			JMenuItem emptyItem = new JMenuItem("(" + ui.xlate("Empty") + ")");
 			emptyItem.setEnabled(false);
-			ui.reopenMenu.add(emptyItem);
+			ui.widgets.reopenMenu.add(emptyItem);
 		} else {
 			for (int i = 0; i < recentFiles.size(); i++) {
 				File recentFile = recentFiles.get(i);
-				ui.reopenMenu.add(new TMRecentFileMenuItem(recentFile, ui::doReopenCommand));
+				ui.widgets.reopenMenu.add(new TMRecentFileMenuItem(recentFile, ui::doReopenCommand));
 			}
 		}
 	}

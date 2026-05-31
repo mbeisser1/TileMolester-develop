@@ -72,10 +72,10 @@ public class TMUINavActions {
 
 	public void doAddToBookmarksCommand() {
 		ui.withSelectedView(view -> {
-			int retVal = ui.addBookmarkDialog.showDialog(view.getFileImage().getResources().getBookmarksRoot());
+			int retVal = ui.widgets.addBookmarkDialog.showDialog(view.getFileImage().getResources().getBookmarksRoot());
 			if (retVal == JOptionPane.OK_OPTION) {
-				FolderNode folder = ui.addBookmarkDialog.getFolder();
-				BookmarkItemNode bookmark = view.createBookmark(ui.addBookmarkDialog.getDescription());
+				FolderNode folder = ui.widgets.addBookmarkDialog.getFolder();
+				BookmarkItemNode bookmark = view.createBookmark(ui.widgets.addBookmarkDialog.getDescription());
 				folder.add(bookmark);
 				ui.refreshBookmarksMenu();
 			}
@@ -84,7 +84,7 @@ public class TMUINavActions {
 
 	public void doOrganizeBookmarksCommand() {
 		ui.withSelectedView(view -> {
-			ui.organizeBookmarksDialog.showDialog(view.getFileImage().getResources().getBookmarksRoot());
+			ui.widgets.organizeBookmarksDialog.showDialog(view.getFileImage().getResources().getBookmarksRoot());
 			ui.refreshBookmarksMenu();
 		});
 	}
