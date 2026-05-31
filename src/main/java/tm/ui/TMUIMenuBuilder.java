@@ -18,300 +18,258 @@
 
 package tm.ui;
 
-import tm.colorcodecs.ColorCodec;
-import tm.tilecodecs.TileCodec;
 import javax.swing.*;
 import java.awt.event.*;
 
 /**
- * Builds Tile Molester menu bar items and wires them to {@link TMUI} commands.
+ * Builds Tile Molester menu bar items and wires them to command actions.
  **/
 public class TMUIMenuBuilder {
 
 	private final TMUI ui;
+	private final TMUIWidgets w;
 
 	public TMUIMenuBuilder(TMUI ui) {
 		this.ui = ui;
+		this.w = ui.widgets;
 	}
 
 	public void buildMenuBar() {
-		// File menu
-		ui.widgets.fileMenu.setMnemonic(KeyEvent.VK_F);
-		ui.widgets.newMenuItem.setMnemonic(KeyEvent.VK_N);
-		ui.widgets.newMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
-		TMUIBind.bind(ui.widgets.newMenuItem, ui.fileActions.newFile);
-		ui.widgets.fileMenu.add(ui.widgets.newMenuItem);
-		ui.widgets.openMenuItem.setMnemonic(KeyEvent.VK_O);
-		ui.widgets.openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
-		TMUIBind.bind(ui.widgets.openMenuItem, ui.fileActions.open);
-		ui.widgets.fileMenu.add(ui.widgets.openMenuItem);
-		ui.widgets.reopenMenu.setMnemonic(KeyEvent.VK_R);
-		ui.widgets.fileMenu.add(ui.widgets.reopenMenu);
-		ui.widgets.closeMenuItem.setMnemonic(KeyEvent.VK_C);
-		TMUIBind.bind(ui.widgets.closeMenuItem, ui.fileActions.close);
-		ui.widgets.fileMenu.add(ui.widgets.closeMenuItem);
-		ui.widgets.closeAllMenuItem.setMnemonic(KeyEvent.VK_E);
-		TMUIBind.bind(ui.widgets.closeAllMenuItem, ui.fileActions.closeAll);
-		ui.widgets.fileMenu.add(ui.widgets.closeAllMenuItem);
-		ui.widgets.fileMenu.addSeparator();
-		ui.widgets.saveMenuItem.setMnemonic(KeyEvent.VK_S);
-		ui.widgets.saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
-		TMUIBind.bind(ui.widgets.saveMenuItem, ui.fileActions.save);
-		ui.widgets.fileMenu.add(ui.widgets.saveMenuItem);
-		ui.widgets.saveAsMenuItem.setMnemonic(KeyEvent.VK_A);
-		TMUIBind.bind(ui.widgets.saveAsMenuItem, ui.fileActions.saveAs);
-		ui.widgets.fileMenu.add(ui.widgets.saveAsMenuItem);
-		ui.widgets.saveAllMenuItem.setMnemonic(KeyEvent.VK_L);
-		TMUIBind.bind(ui.widgets.saveAllMenuItem, ui.fileActions.saveAll);
-		ui.widgets.fileMenu.add(ui.widgets.saveAllMenuItem);
-		ui.widgets.fileMenu.addSeparator();
-		ui.widgets.exitMenuItem.setMnemonic(KeyEvent.VK_X);
-		TMUIBind.bind(ui.widgets.exitMenuItem, ui.fileActions.exit);
-		ui.widgets.fileMenu.add(ui.widgets.exitMenuItem);
-		ui.widgets.menuBar.add(ui.widgets.fileMenu);
+		buildFileMenu();
+		buildEditMenu();
+		buildViewMenu();
+		buildImageMenu();
+		buildNavigateMenu();
+		buildPaletteMenu();
+		buildWindowMenu();
+		buildHelpMenu();
+	}
 
-		// Edit menu
-		ui.widgets.editMenu.setMnemonic(KeyEvent.VK_E);
-		ui.widgets.undoMenuItem.setMnemonic(KeyEvent.VK_U);
-		ui.widgets.undoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK));
-		TMUIBind.bind(ui.widgets.undoMenuItem, ui.editActions.undo);
-		ui.widgets.editMenu.add(ui.widgets.undoMenuItem);
-		ui.widgets.redoMenuItem.setMnemonic(KeyEvent.VK_R);
-		ui.widgets.redoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
-		TMUIBind.bind(ui.widgets.redoMenuItem, ui.editActions.redo);
-		ui.widgets.editMenu.add(ui.widgets.redoMenuItem);
-		ui.widgets.editMenu.addSeparator();
-		ui.widgets.cutMenuItem.setMnemonic(KeyEvent.VK_T);
-		ui.widgets.cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));
-		TMUIBind.bind(ui.widgets.cutMenuItem, ui.editActions.cut);
-		ui.widgets.editMenu.add(ui.widgets.cutMenuItem);
-		ui.widgets.copyMenuItem.setMnemonic(KeyEvent.VK_C);
-		ui.widgets.copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
-		TMUIBind.bind(ui.widgets.copyMenuItem, ui.editActions.copy);
-		ui.widgets.editMenu.add(ui.widgets.copyMenuItem);
-		ui.widgets.pasteMenuItem.setMnemonic(KeyEvent.VK_P);
-		ui.widgets.pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
-		TMUIBind.bind(ui.widgets.pasteMenuItem, ui.editActions.paste);
-		ui.widgets.editMenu.add(ui.widgets.pasteMenuItem);
-		ui.widgets.clearMenuItem.setMnemonic(KeyEvent.VK_L);
-		ui.widgets.clearMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
-		TMUIBind.bind(ui.widgets.clearMenuItem, ui.editActions.clear);
-		ui.widgets.editMenu.add(ui.widgets.clearMenuItem);
-		ui.widgets.editMenu.addSeparator();
-		ui.widgets.selectAllMenuItem.setMnemonic(KeyEvent.VK_S);
-		ui.widgets.selectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
-		TMUIBind.bind(ui.widgets.selectAllMenuItem, ui.editActions.selectAll);
-		ui.widgets.editMenu.add(ui.widgets.selectAllMenuItem);
-		ui.widgets.editMenu.addSeparator();
-		ui.widgets.copyToMenuItem.setMnemonic(KeyEvent.VK_O);
-		TMUIBind.bind(ui.widgets.copyToMenuItem, ui.editActions.copyTo);
-		ui.widgets.editMenu.add(ui.widgets.copyToMenuItem);
-		ui.widgets.pasteFromMenuItem.setMnemonic(KeyEvent.VK_F);
-		TMUIBind.bind(ui.widgets.pasteFromMenuItem, ui.editActions.pasteFrom);
-		ui.widgets.editMenu.add(ui.widgets.pasteFromMenuItem);
-		ui.widgets.menuBar.add(ui.widgets.editMenu);
+	private void buildFileMenu() {
+		JMenu menu = w.fileMenu;
+		menu.setMnemonic(KeyEvent.VK_F);
 
-		// View menu
-		ui.widgets.viewMenu.setMnemonic(KeyEvent.VK_V);
-		ui.widgets.viewMenu.add(ui.widgets.tileCodecMenu);
-		ui.widgets.zoomMenu.setMnemonic(KeyEvent.VK_Z);
-		ui.widgets.zoomInMenuItem.setMnemonic(KeyEvent.VK_I);
-		TMUIBind.bind(ui.widgets.zoomInMenuItem, ui.viewActions.zoomIn);
-		ui.widgets.zoomMenu.add(ui.widgets.zoomInMenuItem);
-		ui.widgets.zoomOutMenuItem.setMnemonic(KeyEvent.VK_O);
-		TMUIBind.bind(ui.widgets.zoomOutMenuItem, ui.viewActions.zoomOut);
-		ui.widgets.zoomMenu.add(ui.widgets.zoomOutMenuItem);
-		ui.widgets.zoomMenu.addSeparator();
-		ui.widgets._100MenuItem.setMnemonic(KeyEvent.VK_1);
-		TMUIBind.bind(ui.widgets._100MenuItem, ui.viewActions.zoom100);
-		ui.widgets.zoomMenu.add(ui.widgets._100MenuItem);
-		ui.widgets._200MenuItem.setMnemonic(KeyEvent.VK_2);
-		TMUIBind.bind(ui.widgets._200MenuItem, ui.viewActions.zoom200);
-		ui.widgets.zoomMenu.add(ui.widgets._200MenuItem);
-		ui.widgets._400MenuItem.setMnemonic(KeyEvent.VK_4);
-		TMUIBind.bind(ui.widgets._400MenuItem, ui.viewActions.zoom400);
-		ui.widgets.zoomMenu.add(ui.widgets._400MenuItem);
-		ui.widgets._800MenuItem.setMnemonic(KeyEvent.VK_8);
-		TMUIBind.bind(ui.widgets._800MenuItem, ui.viewActions.zoom800);
-		ui.widgets.zoomMenu.add(ui.widgets._800MenuItem);
-		ui.widgets._1600MenuItem.setMnemonic(KeyEvent.VK_6);
-		TMUIBind.bind(ui.widgets._1600MenuItem, ui.viewActions.zoom1600);
-		ui.widgets.zoomMenu.add(ui.widgets._1600MenuItem);
-		ui.widgets._3200MenuItem.setMnemonic(KeyEvent.VK_3);
-		TMUIBind.bind(ui.widgets._3200MenuItem, ui.viewActions.zoom3200);
-		ui.widgets.zoomMenu.add(ui.widgets._3200MenuItem);
-		ui.widgets.viewMenu.add(ui.widgets.zoomMenu);
-		ui.widgets.modeMenu.setMnemonic(KeyEvent.VK_M);
-		TMUIBind.bind(ui.widgets._1DimensionalMenuItem, ui.viewActions.mode1D);
-		ui.widgets.modeMenu.add(ui.widgets._1DimensionalMenuItem);
-		TMUIBind.bind(ui.widgets._2DimensionalMenuItem, ui.viewActions.mode2D);
-		ui.widgets.modeMenu.add(ui.widgets._2DimensionalMenuItem);
-		ui.widgets.viewMenu.add(ui.widgets.modeMenu);
-		ui.widgets.modeButtonGroup.add(ui.widgets._1DimensionalMenuItem);
-		ui.widgets.modeButtonGroup.add(ui.widgets._2DimensionalMenuItem);
-		ui.widgets.viewMenu.addSeparator();
-		ui.widgets.blockSizeMenu.setMnemonic(KeyEvent.VK_B);
-		ui.widgets.sizeBlockToCanvasMenuItem.setMnemonic(KeyEvent.VK_F);
-		TMUIBind.bind(ui.widgets.sizeBlockToCanvasMenuItem, ui.viewActions.sizeBlockToCanvas);
-		ui.widgets.blockSizeMenu.add(ui.widgets.sizeBlockToCanvasMenuItem);
-		ui.widgets.blockSizeMenu.addSeparator();
-		ui.widgets.customBlockSizeMenuItem.setMnemonic(KeyEvent.VK_C);
-		TMUIBind.bind(ui.widgets.customBlockSizeMenuItem, ui.viewActions.customBlockSize);
-		ui.widgets.blockSizeMenu.add(ui.widgets.customBlockSizeMenuItem);
-		ui.widgets.viewMenu.add(ui.widgets.blockSizeMenu);
-		ui.widgets.rowInterleaveBlocksMenuItem.setMnemonic(KeyEvent.VK_R);
-		TMUIBind.bind(ui.widgets.rowInterleaveBlocksMenuItem, ui.viewActions.rowInterleaveBlocks);
-		ui.widgets.viewMenu.add(ui.widgets.rowInterleaveBlocksMenuItem);
-		ui.widgets.viewMenu.addSeparator();
-		ui.widgets.blockGridMenuItem.setMnemonic(KeyEvent.VK_V);
-		TMUIBind.bind(ui.widgets.blockGridMenuItem, ui.viewActions.blockGrid);
-		ui.widgets.viewMenu.add(ui.widgets.blockGridMenuItem);
-		ui.widgets.tileGridMenuItem.setMnemonic(KeyEvent.VK_A);
-		TMUIBind.bind(ui.widgets.tileGridMenuItem, ui.viewActions.tileGrid);
-		ui.widgets.viewMenu.add(ui.widgets.tileGridMenuItem);
-		ui.widgets.pixelGridMenuItem.setMnemonic(KeyEvent.VK_P);
-		TMUIBind.bind(ui.widgets.pixelGridMenuItem, ui.viewActions.pixelGrid);
-		ui.widgets.viewMenu.add(ui.widgets.pixelGridMenuItem);
-		ui.widgets.viewMenu.addSeparator();
-		ui.widgets.statusBarMenuItem.setMnemonic(KeyEvent.VK_S);
-		ui.widgets.statusBarMenuItem.setSelected(ui.viewStatusBar);
-		TMUIBind.bind(ui.widgets.statusBarMenuItem, ui.viewActions.statusBar);
-		ui.widgets.viewMenu.add(ui.widgets.statusBarMenuItem);
-		ui.widgets.toolBarMenuItem.setMnemonic(KeyEvent.VK_T);
-		ui.widgets.toolBarMenuItem.setSelected(ui.viewToolBar);
-		TMUIBind.bind(ui.widgets.toolBarMenuItem, ui.viewActions.toolBar);
-		ui.widgets.viewMenu.add(ui.widgets.toolBarMenuItem);
-		ui.widgets.darkModeMenuItem.setMnemonic(KeyEvent.VK_K);
-		ui.widgets.darkModeMenuItem.setSelected(ui.darkMode);
-		TMUIBind.bind(ui.widgets.darkModeMenuItem, ui.viewActions.darkMode);
-		ui.widgets.viewMenu.add(ui.widgets.darkModeMenuItem);
-		ui.widgets.menuBar.add(ui.widgets.viewMenu);
+		add(menu, w.newMenuItem, KeyEvent.VK_N, ctrl(KeyEvent.VK_N), ui.fileActions.newFile);
+		add(menu, w.openMenuItem, KeyEvent.VK_O, ctrl(KeyEvent.VK_O), ui.fileActions.open);
+		add(menu, w.reopenMenu, KeyEvent.VK_R);
+		add(menu, w.closeMenuItem, KeyEvent.VK_C, ui.fileActions.close);
+		add(menu, w.closeAllMenuItem, KeyEvent.VK_E, ui.fileActions.closeAll);
+		menu.addSeparator();
+		add(menu, w.saveMenuItem, KeyEvent.VK_S, ctrl(KeyEvent.VK_S), ui.fileActions.save);
+		add(menu, w.saveAsMenuItem, KeyEvent.VK_A, ui.fileActions.saveAs);
+		add(menu, w.saveAllMenuItem, KeyEvent.VK_L, ui.fileActions.saveAll);
+		menu.addSeparator();
+		add(menu, w.exitMenuItem, KeyEvent.VK_X, ui.fileActions.exit);
 
-		// Image menu
-		ui.widgets.imageMenu.setMnemonic(KeyEvent.VK_I);
-		ui.widgets.mirrorMenuItem.setMnemonic(KeyEvent.VK_M);
-		ui.widgets.mirrorMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK));
-		TMUIBind.bind(ui.widgets.mirrorMenuItem, ui.imageActions.mirror);
-		ui.widgets.imageMenu.add(ui.widgets.mirrorMenuItem);
-		ui.widgets.flipMenuItem.setMnemonic(KeyEvent.VK_F);
-		ui.widgets.flipMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK));
-		TMUIBind.bind(ui.widgets.flipMenuItem, ui.imageActions.flip);
-		ui.widgets.imageMenu.add(ui.widgets.flipMenuItem);
-		ui.widgets.imageMenu.addSeparator();
-		ui.widgets.rotateRightMenuItem.setMnemonic(KeyEvent.VK_O);
-		TMUIBind.bind(ui.widgets.rotateRightMenuItem, ui.imageActions.rotateRight);
-		ui.widgets.imageMenu.add(ui.widgets.rotateRightMenuItem);
-		ui.widgets.rotateLeftMenuItem.setMnemonic(KeyEvent.VK_A);
-		TMUIBind.bind(ui.widgets.rotateLeftMenuItem, ui.imageActions.rotateLeft);
-		ui.widgets.imageMenu.add(ui.widgets.rotateLeftMenuItem);
-		ui.widgets.imageMenu.addSeparator();
-		ui.widgets.shiftLeftMenuItem.setMnemonic(KeyEvent.VK_L);
-		TMUIBind.bind(ui.widgets.shiftLeftMenuItem, ui.imageActions.shiftLeft);
-		ui.widgets.imageMenu.add(ui.widgets.shiftLeftMenuItem);
-		ui.widgets.shiftRightMenuItem.setMnemonic(KeyEvent.VK_R);
-		TMUIBind.bind(ui.widgets.shiftRightMenuItem, ui.imageActions.shiftRight);
-		ui.widgets.imageMenu.add(ui.widgets.shiftRightMenuItem);
-		ui.widgets.shiftUpMenuItem.setMnemonic(KeyEvent.VK_U);
-		TMUIBind.bind(ui.widgets.shiftUpMenuItem, ui.imageActions.shiftUp);
-		ui.widgets.imageMenu.add(ui.widgets.shiftUpMenuItem);
-		ui.widgets.shiftDownMenuItem.setMnemonic(KeyEvent.VK_D);
-		TMUIBind.bind(ui.widgets.shiftDownMenuItem, ui.imageActions.shiftDown);
-		ui.widgets.imageMenu.add(ui.widgets.shiftDownMenuItem);
-		ui.widgets.imageMenu.addSeparator();
-		ui.widgets.canvasSizeMenuItem.setMnemonic(KeyEvent.VK_S);
-		TMUIBind.bind(ui.widgets.canvasSizeMenuItem, ui.imageActions.canvasSize);
-		ui.widgets.imageMenu.add(ui.widgets.canvasSizeMenuItem);
-		ui.widgets.stretchMenuItem.setMnemonic(KeyEvent.VK_E);
-		TMUIBind.bind(ui.widgets.stretchMenuItem, ui.imageActions.stretch);
-		ui.widgets.imageMenu.add(ui.widgets.stretchMenuItem);
-		ui.widgets.menuBar.add(ui.widgets.imageMenu);
+		w.menuBar.add(menu);
+	}
 
-		// Navigate menu
-		ui.widgets.navigateMenu.setMnemonic(KeyEvent.VK_N);
-		ui.widgets.goToMenuItem.setMnemonic(KeyEvent.VK_G);
-		ui.widgets.goToMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.CTRL_DOWN_MASK));
-		TMUIBind.bind(ui.widgets.goToMenuItem, ui.editActions.goTo);
-		ui.widgets.navigateMenu.add(ui.widgets.goToMenuItem);
-		ui.widgets.goToAgainMenuItem.setMnemonic(KeyEvent.VK_A);
-		ui.widgets.goToAgainMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
-		TMUIBind.bind(ui.widgets.goToAgainMenuItem, ui.editActions.goToAgain);
-		ui.widgets.navigateMenu.add(ui.widgets.goToAgainMenuItem);
-		ui.widgets.navigateMenu.addSeparator();
-		ui.widgets.addToBookmarksMenuItem.setMnemonic(KeyEvent.VK_A);
-		TMUIBind.bind(ui.widgets.addToBookmarksMenuItem, ui.navActions.addToBookmarks);
-		ui.widgets.navigateMenu.add(ui.widgets.addToBookmarksMenuItem);
-		ui.widgets.organizeBookmarksMenuItem.setMnemonic(KeyEvent.VK_O);
-		TMUIBind.bind(ui.widgets.organizeBookmarksMenuItem, ui.navActions.organizeBookmarks);
-		ui.widgets.navigateMenu.add(ui.widgets.organizeBookmarksMenuItem);
-		ui.widgets.menuBar.add(ui.widgets.navigateMenu);
+	private void buildEditMenu() {
+		JMenu menu = w.editMenu;
+		menu.setMnemonic(KeyEvent.VK_E);
 
-		// Palette menu
-		ui.widgets.paletteMenu.setMnemonic(KeyEvent.VK_P);
-		ui.widgets.editColorsMenuItem.setMnemonic(KeyEvent.VK_E);
-		TMUIBind.bind(ui.widgets.editColorsMenuItem, ui.paletteActions.editColors);
-		ui.widgets.paletteMenu.add(ui.widgets.editColorsMenuItem);
-		ui.widgets.colorCodecMenu.setMnemonic(KeyEvent.VK_F);
-		ui.widgets.paletteMenu.add(ui.widgets.colorCodecMenu);
-		ui.widgets.paletteEndiannessMenu.setMnemonic(KeyEvent.VK_N);
-		ui.widgets.paletteLittleEndianMenuItem.setMnemonic(KeyEvent.VK_L);
-		TMUIBind.bind(ui.widgets.paletteLittleEndianMenuItem, ui.paletteActions.paletteLittleEndian);
-		ui.widgets.paletteEndiannessMenu.add(ui.widgets.paletteLittleEndianMenuItem);
-		ui.widgets.paletteBigEndianMenuItem.setMnemonic(KeyEvent.VK_B);
-		TMUIBind.bind(ui.widgets.paletteBigEndianMenuItem, ui.paletteActions.paletteBigEndian);
-		ui.widgets.paletteEndiannessMenu.add(ui.widgets.paletteBigEndianMenuItem);
-		ui.widgets.paletteEndiannessButtonGroup.add(ui.widgets.paletteLittleEndianMenuItem);
-		ui.widgets.paletteEndiannessButtonGroup.add(ui.widgets.paletteBigEndianMenuItem);
-		ui.widgets.paletteMenu.add(ui.widgets.paletteEndiannessMenu);
-		ui.widgets.paletteSizeMenuItem.setMnemonic(KeyEvent.VK_S);
-		TMUIBind.bind(ui.widgets.paletteSizeMenuItem, ui.paletteActions.paletteSize);
-		ui.widgets.paletteMenu.add(ui.widgets.paletteSizeMenuItem);
-		ui.widgets.paletteMenu.addSeparator();
-		ui.widgets.newPaletteMenuItem.setMnemonic(KeyEvent.VK_N);
-		TMUIBind.bind(ui.widgets.newPaletteMenuItem, ui.paletteActions.newPalette);
-		ui.widgets.paletteMenu.add(ui.widgets.newPaletteMenuItem);
-		ui.widgets.importPaletteMenu.setMnemonic(KeyEvent.VK_I);
-		ui.widgets.importInternalPaletteMenuItem.setMnemonic(KeyEvent.VK_T);
-		TMUIBind.bind(ui.widgets.importInternalPaletteMenuItem, ui.paletteActions.importInternalPalette);
-		ui.widgets.importPaletteMenu.add(ui.widgets.importInternalPaletteMenuItem);
-		ui.widgets.importExternalPaletteMenuItem.setMnemonic(KeyEvent.VK_A);
-		TMUIBind.bind(ui.widgets.importExternalPaletteMenuItem, ui.paletteActions.importExternalPalette);
-		ui.widgets.importPaletteMenu.add(ui.widgets.importExternalPaletteMenuItem);
-		ui.widgets.paletteMenu.add(ui.widgets.importPaletteMenu);
-		ui.widgets.paletteMenu.addSeparator();
-		ui.widgets.addToPalettesMenuItem.setMnemonic(KeyEvent.VK_A);
-		TMUIBind.bind(ui.widgets.addToPalettesMenuItem, ui.paletteActions.addToPalettes);
-		ui.widgets.paletteMenu.add(ui.widgets.addToPalettesMenuItem);
-		ui.widgets.organizePalettesMenuItem.setMnemonic(KeyEvent.VK_O);
-		TMUIBind.bind(ui.widgets.organizePalettesMenuItem, ui.paletteActions.organizePalettes);
-		ui.widgets.paletteMenu.add(ui.widgets.organizePalettesMenuItem);
-		ui.widgets.menuBar.add(ui.widgets.paletteMenu);
+		add(menu, w.undoMenuItem, KeyEvent.VK_U, ctrl(KeyEvent.VK_Z), ui.editActions.undo);
+		add(menu, w.redoMenuItem, KeyEvent.VK_R, ctrl(KeyEvent.VK_Y), ui.editActions.redo);
+		menu.addSeparator();
+		add(menu, w.cutMenuItem, KeyEvent.VK_T, ctrl(KeyEvent.VK_X), ui.editActions.cut);
+		add(menu, w.copyMenuItem, KeyEvent.VK_C, ctrl(KeyEvent.VK_C), ui.editActions.copy);
+		add(menu, w.pasteMenuItem, KeyEvent.VK_P, ctrl(KeyEvent.VK_V), ui.editActions.paste);
+		add(menu, w.clearMenuItem, KeyEvent.VK_L, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), ui.editActions.clear);
+		menu.addSeparator();
+		add(menu, w.selectAllMenuItem, KeyEvent.VK_S, ctrl(KeyEvent.VK_A), ui.editActions.selectAll);
+		menu.addSeparator();
+		add(menu, w.copyToMenuItem, KeyEvent.VK_O, ui.editActions.copyTo);
+		add(menu, w.pasteFromMenuItem, KeyEvent.VK_F, ui.editActions.pasteFrom);
 
-		// Window menu
-		ui.widgets.windowMenu.setMnemonic(KeyEvent.VK_W);
-		ui.widgets.newWindowMenuItem.setMnemonic(KeyEvent.VK_N);
-		TMUIBind.bind(ui.widgets.newWindowMenuItem, ui.windowActions.newWindow);
-		ui.widgets.windowMenu.add(ui.widgets.newWindowMenuItem);
-		ui.widgets.windowMenu.addSeparator();
-		ui.widgets.tileMenuItem.setMnemonic(KeyEvent.VK_T);
-		TMUIBind.bind(ui.widgets.tileMenuItem, ui.windowActions.tile);
-		ui.widgets.windowMenu.add(ui.widgets.tileMenuItem);
-		ui.widgets.cascadeMenuItem.setMnemonic(KeyEvent.VK_C);
-		TMUIBind.bind(ui.widgets.cascadeMenuItem, ui.windowActions.cascade);
-		ui.widgets.windowMenu.add(ui.widgets.cascadeMenuItem);
-		ui.widgets.arrangeIconsMenuItem.setMnemonic(KeyEvent.VK_I);
-		TMUIBind.bind(ui.widgets.arrangeIconsMenuItem, ui.windowActions.arrangeIcons);
-		ui.widgets.windowMenu.add(ui.widgets.arrangeIconsMenuItem);
-		ui.widgets.menuBar.add(ui.widgets.windowMenu);
+		w.menuBar.add(menu);
+	}
 
-		// Help menu
-		ui.widgets.helpMenu.setMnemonic(KeyEvent.VK_H);
-		ui.widgets.helpTopicsMenuItem.setMnemonic(KeyEvent.VK_H);
-		ui.widgets.helpTopicsMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
-		TMUIBind.bind(ui.widgets.helpTopicsMenuItem, ui.helpActions.helpTopics);
-		ui.widgets.helpMenu.add(ui.widgets.helpTopicsMenuItem);
-		ui.widgets.aboutMenuItem.setMnemonic(KeyEvent.VK_A);
-		TMUIBind.bind(ui.widgets.aboutMenuItem, ui.helpActions.about);
-		ui.widgets.helpMenu.add(ui.widgets.aboutMenuItem);
-		ui.widgets.menuBar.add(ui.widgets.helpMenu);
+	private void buildViewMenu() {
+		JMenu menu = w.viewMenu;
+		menu.setMnemonic(KeyEvent.VK_V);
+
+		menu.add(w.tileCodecMenu);
+		buildZoomMenu();
+		menu.add(w.zoomMenu);
+		buildModeMenu();
+		menu.add(w.modeMenu);
+		w.modeButtonGroup.add(w._1DimensionalMenuItem);
+		w.modeButtonGroup.add(w._2DimensionalMenuItem);
+		menu.addSeparator();
+		buildBlockSizeMenu();
+		menu.add(w.blockSizeMenu);
+		add(menu, w.rowInterleaveBlocksMenuItem, KeyEvent.VK_R, ui.viewActions.rowInterleaveBlocks);
+		menu.addSeparator();
+		add(menu, w.blockGridMenuItem, KeyEvent.VK_V, ui.viewActions.blockGrid);
+		add(menu, w.tileGridMenuItem, KeyEvent.VK_A, ui.viewActions.tileGrid);
+		add(menu, w.pixelGridMenuItem, KeyEvent.VK_P, ui.viewActions.pixelGrid);
+		menu.addSeparator();
+		addChecked(menu, w.statusBarMenuItem, KeyEvent.VK_S, ui.viewStatusBar, ui.viewActions.statusBar);
+		addChecked(menu, w.toolBarMenuItem, KeyEvent.VK_T, ui.viewToolBar, ui.viewActions.toolBar);
+		addChecked(menu, w.darkModeMenuItem, KeyEvent.VK_K, ui.darkMode, ui.viewActions.darkMode);
+
+		w.menuBar.add(menu);
+	}
+
+	private void buildZoomMenu() {
+		JMenu menu = w.zoomMenu;
+		menu.setMnemonic(KeyEvent.VK_Z);
+
+		add(menu, w.zoomInMenuItem, KeyEvent.VK_I, ui.viewActions.zoomIn);
+		add(menu, w.zoomOutMenuItem, KeyEvent.VK_O, ui.viewActions.zoomOut);
+		menu.addSeparator();
+		add(menu, w._100MenuItem, KeyEvent.VK_1, ui.viewActions.zoom100);
+		add(menu, w._200MenuItem, KeyEvent.VK_2, ui.viewActions.zoom200);
+		add(menu, w._400MenuItem, KeyEvent.VK_4, ui.viewActions.zoom400);
+		add(menu, w._800MenuItem, KeyEvent.VK_8, ui.viewActions.zoom800);
+		add(menu, w._1600MenuItem, KeyEvent.VK_6, ui.viewActions.zoom1600);
+		add(menu, w._3200MenuItem, KeyEvent.VK_3, ui.viewActions.zoom3200);
+	}
+
+	private void buildModeMenu() {
+		JMenu menu = w.modeMenu;
+		menu.setMnemonic(KeyEvent.VK_M);
+
+		add(menu, w._1DimensionalMenuItem, ui.viewActions.mode1D);
+		add(menu, w._2DimensionalMenuItem, ui.viewActions.mode2D);
+	}
+
+	private void buildBlockSizeMenu() {
+		JMenu menu = w.blockSizeMenu;
+		menu.setMnemonic(KeyEvent.VK_B);
+
+		add(menu, w.sizeBlockToCanvasMenuItem, KeyEvent.VK_F, ui.viewActions.sizeBlockToCanvas);
+		menu.addSeparator();
+		add(menu, w.customBlockSizeMenuItem, KeyEvent.VK_C, ui.viewActions.customBlockSize);
+	}
+
+	private void buildImageMenu() {
+		JMenu menu = w.imageMenu;
+		menu.setMnemonic(KeyEvent.VK_I);
+
+		add(menu, w.mirrorMenuItem, KeyEvent.VK_M, ctrl(KeyEvent.VK_M), ui.imageActions.mirror);
+		add(menu, w.flipMenuItem, KeyEvent.VK_F, ctrl(KeyEvent.VK_I), ui.imageActions.flip);
+		menu.addSeparator();
+		add(menu, w.rotateRightMenuItem, KeyEvent.VK_O, ui.imageActions.rotateRight);
+		add(menu, w.rotateLeftMenuItem, KeyEvent.VK_A, ui.imageActions.rotateLeft);
+		menu.addSeparator();
+		add(menu, w.shiftLeftMenuItem, KeyEvent.VK_L, ui.imageActions.shiftLeft);
+		add(menu, w.shiftRightMenuItem, KeyEvent.VK_R, ui.imageActions.shiftRight);
+		add(menu, w.shiftUpMenuItem, KeyEvent.VK_U, ui.imageActions.shiftUp);
+		add(menu, w.shiftDownMenuItem, KeyEvent.VK_D, ui.imageActions.shiftDown);
+		menu.addSeparator();
+		add(menu, w.canvasSizeMenuItem, KeyEvent.VK_S, ui.imageActions.canvasSize);
+		add(menu, w.stretchMenuItem, KeyEvent.VK_E, ui.imageActions.stretch);
+
+		w.menuBar.add(menu);
+	}
+
+	private void buildNavigateMenu() {
+		JMenu menu = w.navigateMenu;
+		menu.setMnemonic(KeyEvent.VK_N);
+
+		add(menu, w.goToMenuItem, KeyEvent.VK_G, ctrl(KeyEvent.VK_G), ui.editActions.goTo);
+		add(menu, w.goToAgainMenuItem, KeyEvent.VK_A, KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), ui.editActions.goToAgain);
+		menu.addSeparator();
+		add(menu, w.addToBookmarksMenuItem, KeyEvent.VK_A, ui.navActions.addToBookmarks);
+		add(menu, w.organizeBookmarksMenuItem, KeyEvent.VK_O, ui.navActions.organizeBookmarks);
+
+		w.menuBar.add(menu);
+	}
+
+	private void buildPaletteMenu() {
+		JMenu menu = w.paletteMenu;
+		menu.setMnemonic(KeyEvent.VK_P);
+
+		add(menu, w.editColorsMenuItem, KeyEvent.VK_E, ui.paletteActions.editColors);
+		w.colorCodecMenu.setMnemonic(KeyEvent.VK_F);
+		menu.add(w.colorCodecMenu);
+		buildPaletteEndiannessMenu();
+		menu.add(w.paletteEndiannessMenu);
+		add(menu, w.paletteSizeMenuItem, KeyEvent.VK_S, ui.paletteActions.paletteSize);
+		menu.addSeparator();
+		add(menu, w.newPaletteMenuItem, KeyEvent.VK_N, ui.paletteActions.newPalette);
+		buildImportPaletteMenu();
+		menu.add(w.importPaletteMenu);
+		menu.addSeparator();
+		add(menu, w.addToPalettesMenuItem, KeyEvent.VK_A, ui.paletteActions.addToPalettes);
+		add(menu, w.organizePalettesMenuItem, KeyEvent.VK_O, ui.paletteActions.organizePalettes);
+
+		w.menuBar.add(menu);
+	}
+
+	private void buildPaletteEndiannessMenu() {
+		JMenu menu = w.paletteEndiannessMenu;
+		menu.setMnemonic(KeyEvent.VK_N);
+
+		add(menu, w.paletteLittleEndianMenuItem, KeyEvent.VK_L, ui.paletteActions.paletteLittleEndian);
+		add(menu, w.paletteBigEndianMenuItem, KeyEvent.VK_B, ui.paletteActions.paletteBigEndian);
+		w.paletteEndiannessButtonGroup.add(w.paletteLittleEndianMenuItem);
+		w.paletteEndiannessButtonGroup.add(w.paletteBigEndianMenuItem);
+	}
+
+	private void buildImportPaletteMenu() {
+		JMenu menu = w.importPaletteMenu;
+		menu.setMnemonic(KeyEvent.VK_I);
+
+		add(menu, w.importInternalPaletteMenuItem, KeyEvent.VK_T, ui.paletteActions.importInternalPalette);
+		add(menu, w.importExternalPaletteMenuItem, KeyEvent.VK_A, ui.paletteActions.importExternalPalette);
+	}
+
+	private void buildWindowMenu() {
+		JMenu menu = w.windowMenu;
+		menu.setMnemonic(KeyEvent.VK_W);
+
+		add(menu, w.newWindowMenuItem, KeyEvent.VK_N, ui.windowActions.newWindow);
+		menu.addSeparator();
+		add(menu, w.tileMenuItem, KeyEvent.VK_T, ui.windowActions.tile);
+		add(menu, w.cascadeMenuItem, KeyEvent.VK_C, ui.windowActions.cascade);
+		add(menu, w.arrangeIconsMenuItem, KeyEvent.VK_I, ui.windowActions.arrangeIcons);
+
+		w.menuBar.add(menu);
+	}
+
+	private void buildHelpMenu() {
+		JMenu menu = w.helpMenu;
+		menu.setMnemonic(KeyEvent.VK_H);
+
+		add(menu, w.helpTopicsMenuItem, KeyEvent.VK_H, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0), ui.helpActions.helpTopics);
+		add(menu, w.aboutMenuItem, KeyEvent.VK_A, ui.helpActions.about);
+
+		w.menuBar.add(menu);
+	}
+
+	private static KeyStroke ctrl(int keyCode) {
+		return KeyStroke.getKeyStroke(keyCode, InputEvent.CTRL_DOWN_MASK);
+	}
+
+	private void add(JMenu menu, JMenuItem item, int mnemonic) {
+		item.setMnemonic(mnemonic);
+		menu.add(item);
+	}
+
+	private void add(JMenu menu, JMenuItem item, Action action) {
+		TMUIBind.bind(item, action);
+		menu.add(item);
+	}
+
+	private void add(JMenu menu, JMenuItem item, int mnemonic, Action action) {
+		item.setMnemonic(mnemonic);
+		TMUIBind.bind(item, action);
+		menu.add(item);
+	}
+
+	private void add(JMenu menu, JMenuItem item, int mnemonic, KeyStroke accelerator, Action action) {
+		item.setMnemonic(mnemonic);
+		item.setAccelerator(accelerator);
+		TMUIBind.bind(item, action);
+		menu.add(item);
+	}
+
+	private void addChecked(JMenu menu, JCheckBoxMenuItem item, int mnemonic, boolean selected, Action action) {
+		item.setMnemonic(mnemonic);
+		item.setSelected(selected);
+		TMUIBind.bind(item, action);
+		menu.add(item);
 	}
 }
