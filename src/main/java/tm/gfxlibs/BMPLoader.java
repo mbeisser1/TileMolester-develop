@@ -25,15 +25,15 @@ public class BMPLoader
      * @return 32-bit integer from little-endian bytes
      **/
     public static int constructInt(byte[] in,int offset) {
-        int ret =          ((int)in[offset + 3] & 0xff);
-        ret = (ret << 8) | ((int)in[offset + 2] & 0xff);
-        ret = (ret << 8) | ((int)in[offset + 1] & 0xff);
-        ret = (ret << 8) | ((int)in[offset + 0] & 0xff);
+        int ret =          ((int)in[offset + 3] & 0xFF);
+        ret = (ret << 8) | ((int)in[offset + 2] & 0xFF);
+        ret = (ret << 8) | ((int)in[offset + 1] & 0xFF);
+        ret = (ret << 8) | ((int)in[offset + 0] & 0xFF);
         return(ret);
     }
 
     // build an int from a byte array - convert little to big endian
-    // set high order bytes to 0xfff
+    // set high order bytes to 0xFFF
 
     /**
      * Builds a 24-bit RGB int from three little-endian bytes.
@@ -42,10 +42,10 @@ public class BMPLoader
      * @return 24-bit RGB integer from three bytes
      **/
     public static int constructInt3(byte[] in,int offset) {
-        int ret =            0xff;
-        ret = (ret << 8) | ((int)in[offset + 2] & 0xff);
-        ret = (ret << 8) | ((int)in[offset + 1] & 0xff);
-        ret = (ret << 8) | ((int)in[offset + 0] & 0xff);
+        int ret =            0xFF;
+        ret = (ret << 8) | ((int)in[offset + 2] & 0xFF);
+        ret = (ret << 8) | ((int)in[offset + 1] & 0xFF);
+        ret = (ret << 8) | ((int)in[offset + 0] & 0xFF);
         return(ret);
     }
 
@@ -58,14 +58,14 @@ public class BMPLoader
      * @return 64-bit long from little-endian bytes
      **/
     public static long constructLong(byte[] in,int offset) {
-        long ret =          ((long)in[offset + 7] & 0xff);
-        ret |= (ret << 8) | ((long)in[offset + 6] & 0xff);
-        ret |= (ret << 8) | ((long)in[offset + 5] & 0xff);
-        ret |= (ret << 8) | ((long)in[offset + 4] & 0xff);
-        ret |= (ret << 8) | ((long)in[offset + 3] & 0xff);
-        ret |= (ret << 8) | ((long)in[offset + 2] & 0xff);
-        ret |= (ret << 8) | ((long)in[offset + 1] & 0xff);
-        ret |= (ret << 8) | ((long)in[offset + 0] & 0xff);
+        long ret =          ((long)in[offset + 7] & 0xFF);
+        ret |= (ret << 8) | ((long)in[offset + 6] & 0xFF);
+        ret |= (ret << 8) | ((long)in[offset + 5] & 0xFF);
+        ret |= (ret << 8) | ((long)in[offset + 4] & 0xFF);
+        ret |= (ret << 8) | ((long)in[offset + 3] & 0xFF);
+        ret |= (ret << 8) | ((long)in[offset + 2] & 0xFF);
+        ret |= (ret << 8) | ((long)in[offset + 1] & 0xFF);
+        ret |= (ret << 8) | ((long)in[offset + 0] & 0xFF);
         return(ret);
     }
 
@@ -148,10 +148,10 @@ public class BMPLoader
             nheight = constructInt(bi,8);
             //  System.out.println("Height is :"+nheight);
 
-            nplanes = constructShort(bi,12); //(((int)bi[13]&0xff)<<8) | (int)bi[12]&0xff;
+            nplanes = constructShort(bi,12); //(((int)bi[13]&0xFF)<<8) | (int)bi[12]&0xFF;
             //  System.out.println("Planes is :"+nplanes);
 
-            nbitcount = constructShort(bi,14); //(((int)bi[15]&0xff)<<8) | (int)bi[14]&0xff;
+            nbitcount = constructShort(bi,14); //(((int)bi[15]&0xFF)<<8) | (int)bi[14]&0xFF;
             //  System.out.println("BitCount is :"+nbitcount);
 
             // Look for non-zero values to indicate compression
@@ -333,7 +333,7 @@ public class BMPLoader
         else
 
             {
-            nNumColors = (1&0xff)<< bh.nbitcount;
+            nNumColors = (1&0xFF)<< bh.nbitcount;
             }
 
     //     System.out.println("The number of Colors is"+nNumColors);

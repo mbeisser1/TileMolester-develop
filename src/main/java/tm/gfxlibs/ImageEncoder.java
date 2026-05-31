@@ -233,7 +233,7 @@ public abstract class ImageEncoder implements ImageConsumer
 	    {
 	    int rowOff = off + row * scansize;
 	    for ( int col = 0; col < w; ++col )
-		rgbPixels[col] = model.getRGB( pixels[rowOff + col] & 0xff );
+		rgbPixels[col] = model.getRGB( pixels[rowOff + col] & 0xFF );
 	    try
 		{
 		encodePixelsWrapper( x, y + row, w, 1, rgbPixels, 0, w );

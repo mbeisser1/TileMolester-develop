@@ -345,8 +345,8 @@ public class PngEncoder extends Object
      */
     protected int writeInt2( int n, int offset )
     {
-        byte[] temp = { (byte)((n >> 8) & 0xff),
-            (byte) (n & 0xff) };
+        byte[] temp = { (byte)((n >> 8) & 0xFF),
+            (byte) (n & 0xFF) };
         return writeBytes( temp, offset );
     }
 
@@ -359,10 +359,10 @@ public class PngEncoder extends Object
      */
     protected int writeInt4( int n, int offset )
     {
-        byte[] temp = { (byte)((n >> 24) & 0xff),
-            (byte) ((n >> 16) & 0xff ),
-            (byte) ((n >> 8) & 0xff ),
-            (byte) ( n & 0xff ) };
+        byte[] temp = { (byte)((n >> 24) & 0xFF),
+            (byte) ((n >> 16) & 0xFF ),
+            (byte) ((n >> 8) & 0xFF ),
+            (byte) ( n & 0xFF ) };
         return writeBytes( temp, offset );
     }
 
@@ -442,8 +442,8 @@ public class PngEncoder extends Object
         {
             leftBytes[leftInsert] =  pixels[i];
             pixels[i] = (byte) ((pixels[i] - leftBytes[leftExtract]) % 256);
-            leftInsert = (leftInsert+1) % 0x0f;
-            leftExtract = (leftExtract + 1) % 0x0f;
+            leftInsert = (leftInsert+1) % 0x0F;
+            leftExtract = (leftExtract + 1) % 0x0F;
         }
     }
 
@@ -551,12 +551,12 @@ public class PngEncoder extends Object
                         scanLines[scanPos++] = (byte) filter; 
                         startPos = scanPos;
                     }
-                    scanLines[scanPos++] = (byte) ((pixels[i] >> 16) & 0xff);
-                    scanLines[scanPos++] = (byte) ((pixels[i] >>  8) & 0xff);
-                    scanLines[scanPos++] = (byte) ((pixels[i]      ) & 0xff);
+                    scanLines[scanPos++] = (byte) ((pixels[i] >> 16) & 0xFF);
+                    scanLines[scanPos++] = (byte) ((pixels[i] >>  8) & 0xFF);
+                    scanLines[scanPos++] = (byte) ((pixels[i]      ) & 0xFF);
                     if (encodeAlpha)
                     {
-                        scanLines[scanPos++] = (byte) ((pixels[i] >> 24) & 0xff );
+                        scanLines[scanPos++] = (byte) ((pixels[i] >> 24) & 0xFF );
                     }
                     if ((i % width == width-1) && (filter != FILTER_NONE))
                     {

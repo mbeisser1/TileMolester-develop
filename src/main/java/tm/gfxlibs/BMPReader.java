@@ -74,7 +74,7 @@ public class BMPReader extends Object
 
         // Read the bitmap's color table
         for (int i=0; i < colorsUsed; i++) {
-            colorTable[i] = (intelInt(in.readInt()) & 0xffffff) + 0xff000000;
+            colorTable[i] = (intelInt(in.readInt()) & 0xFFFFFF) + 0xFF000000;
         }
 
         // Create space for the pixels
@@ -123,7 +123,7 @@ public class BMPReader extends Object
 
                 // Turn the red, green, and blue values into an RGB color with
                 // an alpha value of 255 (fully opaque)
-                pixels[pos++] = 0xff000000 + (red << 16) +
+                pixels[pos++] = 0xFF000000 + (red << 16) +
                     (green << 8) + blue;
             }
         }
@@ -241,12 +241,12 @@ public class BMPReader extends Object
                             // to the right as the pixel value
                             if (whichBit == 0) {
                                 pixels[y*width+x] = colorTable[(currByte >> 4)
-                                    & 0xf];
+                                    & 0xF];
                             } else {
 
                                 // The rest of the time, you mask out the upper 4 bits, save the pixel
                                 // value, then read in the next byte
-                                pixels[y*width+x] = colorTable[currByte & 0xf];
+                                pixels[y*width+x] = colorTable[currByte & 0xF];
                                 currByte = in.read();
                                 i++;
                             }
@@ -278,9 +278,9 @@ public class BMPReader extends Object
                     if (pixelSize == 4) {
                         // If j is odd, use the upper 4 bits
                         if ((j & 1) == 0) {
-                            pixels[y*width+x] = colorTable[(byte2 >> 4) & 0xf];
+                            pixels[y*width+x] = colorTable[(byte2 >> 4) & 0xF];
                         } else {
-                            pixels[y*width+x+1] = colorTable[byte2 & 0xf];
+                            pixels[y*width+x+1] = colorTable[byte2 & 0xF];
                         }
                     } else {
                         pixels[y*width+x+1] = colorTable[byte2];
@@ -304,7 +304,7 @@ public class BMPReader extends Object
      **/
     protected static int intelShort(int i)
     {
-        return ((i >> 8) & 0xff) + ((i << 8) & 0xff00);
+        return ((i >> 8) & 0xFF) + ((i << 8) & 0xFF00);
     }
 
     // intelInt converts a 32-bit number stored in intel byte order into
@@ -316,7 +316,7 @@ public class BMPReader extends Object
      **/
     protected static int intelInt(int i)
     {
-        return ((i & 0xff) << 24) + ((i & 0xff00) << 8) +
-            ((i & 0xff0000) >> 8) + ((i >> 24) & 0xff);
+        return ((i & 0xFF) << 24) + ((i & 0xFF00) << 8) +
+            ((i & 0xFF0000) >> 8) + ((i >> 24) & 0xFF);
     }
 }
