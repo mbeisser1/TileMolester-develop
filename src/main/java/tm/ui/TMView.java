@@ -28,17 +28,9 @@ import tm.tilecodecs.TileCodec;
 
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.plaf.InternalFrameUI;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
-
-import com.formdev.flatlaf.extras.components.FlatInternalFrame;
-import com.formdev.flatlaf.extras.components.FlatStyleableComponent;
-import com.formdev.flatlaf.ui.FlatInternalFrameTitlePane;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 

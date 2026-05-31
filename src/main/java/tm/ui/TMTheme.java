@@ -9,7 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;

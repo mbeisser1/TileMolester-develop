@@ -20,7 +20,6 @@ package tm.ui;
 
 import tm.tilecodecs.TileCodec;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.KeyAdapter;
 
 /**
